@@ -19,14 +19,14 @@ The other reason: `trader-memory-core` needs your actual trades to produce usefu
 
 ### Environment
 
-- [ ] Verify `pre-commit install && pre-commit install --hook-type pre-push` runs clean
-- [ ] Verify all hooks pass on a no-op commit
-- [ ] Fix any hook failures before continuing
-- [ ] Run `python3 -m pytest scripts/tests/ -v` — confirm baseline tests pass
+- [x] Verify `pre-commit install && pre-commit install --hook-type pre-push` runs clean
+- [x] Verify all hooks pass on a no-op commit
+- [x] Fix any hook failures before continuing
+- [x] Run `python3 -m pytest scripts/tests/ -v` — confirm baseline tests pass
 
 ### Directories the existing commands expect
 
-These should already exists, but verify.
+These should already exist, but verify.
 
 ```bash
 mkdir -p ~/trading-research/{reports,archives,intraday,options,logs}
@@ -36,15 +36,15 @@ mkdir -p reports/skill-improvement-log reports/skill-generation-log
 
 ### API keys & budget
 
-- [ ] FMP free tier: <https://financialmodelingprep.com/developer/docs>
-- [ ] export FMP_API_KEY=... in shell profile
-- [ ] Anthropic API key. Set $30/mo hard budget alert in console.
+- [x] FMP free tier: <https://financialmodelingprep.com/developer/docs>
+- [x] export FMP_API_KEY=... in shell profile
+- [x] Anthropic API key. Set $30/mo hard budget alert in console.
 
 ### Accounts
 
-- [ ] Lucid Trading account — LucidFlex 50K evaluation to learn the platform
-- [ ] Verify Tradovate login works (defer API access to Phase 2)
-- [ ] Confirm Robinhood account accessible for manual trade logging
+- [x] Lucid Trading account — LucidFlex 50K evaluation to learn the platform
+- [x] Verify Tradovate login works (defer API access to Phase 2)
+- [x] Confirm Robinhood account accessible for manual trade logging
 
 ### Defer
 

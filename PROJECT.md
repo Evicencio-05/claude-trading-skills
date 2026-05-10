@@ -67,7 +67,8 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 **This week's focus:**
 
-- [ ] [fill in]
+- [ ] [Audit all skills]
+- [ ] [Audit project structure, components, and files]
 
 **Blockers:** [none / describe]
 
