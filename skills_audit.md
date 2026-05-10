@@ -641,7 +641,7 @@ Pass it explicitly: `FMP_KEY=$(grep 'FMP_API_KEY=' ~/.bashrc | tail -1 | sed 's/
   gives exposure-coach a credible input set.
   LIVE RUN (2026-05-09): BALANCED 65/100 risk regime. Only Comm Services uptrending.
   Tech #1 by ratio (37.1%) but in downtrend and overbought. Late-cycle flag: Energy
-  + Materials lead both cyclical and defensive. Cycle phase: Mid (low confidence).
+  - Materials lead both cyclical and defensive. Cycle phase: Mid (low confidence).
   DAILY WORKFLOW: Third of the three free daily skills. No setup required.
 - Time: 9 min
 
