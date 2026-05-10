@@ -1,15 +1,17 @@
 # Phase 1 — Audit & Activate
 
 **Duration:** 4 weeks
-**Goal:** Understand what the existing fork already does, set up infrastructure, generate the data the system needs to learn from.
+**Goal:** Understand what the existing fork already does for both workflows, set up infrastructure, and generate the data the system needs to learn from.
 
 ---
 
 ## Why This Phase Exists
 
-The temptation is to start building futures skills immediately. **Don't.** This fork has 40+ skills with mature engineering. Until you've actually used them and understood them, you don't know what's missing vs. what just needs configuration. Audit first.
+The fork has 40+ skills covering stock research, screening, learning loops, and self-improvement infrastructure. Most of this is immediately useful for individual stock and options work. The futures gap is narrower than it might seem — market context, technical analysis, and position sizing exist and translate. What's missing is futures-specific execution plumbing, which gets built in Phase 2.
 
-The other reason: the learning loop infrastructure (`trader-memory-core`, `signal-postmortem`, `dual-axis-skill-reviewer`) is data-hungry. It needs your actual trades, your actual research reports, and your actual market context history to produce useful patterns. Generating that data is the real Phase 1 deliverable.
+The temptation is to start building futures skills immediately. Don't. Until you've used the existing skills, you won't know what actually needs building versus what just needs configuration. Audit first.
+
+The other reason: `trader-memory-core` needs your actual trades to produce useful patterns. Generating that data — across both stocks and futures — is the real Phase 1 deliverable.
 
 ---
 
@@ -18,178 +20,166 @@ The other reason: the learning loop infrastructure (`trader-memory-core`, `signa
 ### Environment
 
 - [ ] Verify `pre-commit install && pre-commit install --hook-type pre-push` runs clean
-- [ ] Verify all hooks pass on a no-op commit (`ruff`, `mypy`, `codespell`, `detect-secrets`, `no-absolute-paths`, `skill-frontmatter`, `docs-completeness`)
-- [ ] If any hook fails on existing files, fix before continuing — broken hooks invite skipping them later
+- [ ] Verify all hooks pass on a no-op commit
+- [ ] Fix any hook failures before continuing
 - [ ] Run `python3 -m pytest scripts/tests/ -v` — confirm baseline tests pass
 
 ### Directories the existing commands expect
 
+These should already exists, but verify.
+
 ```bash
 mkdir -p ~/trading-research/{reports,archives,intraday,options,logs}
-mkdir -p state/theses          # for trader-memory-core
+mkdir -p state/theses
 mkdir -p reports/skill-improvement-log reports/skill-generation-log
 ```
 
-### API keys & budget alerts
+### API keys & budget
 
-- [ ] Sign up for FMP free tier (250 calls/day): https://financialmodelingprep.com/developer/docs
-- [ ] `export FMP_API_KEY=...` in your shell profile
-- [ ] Sign up for Anthropic API. Set hard $30/mo budget alert in console.
-- [ ] Soft cap: $20/mo. If you hit it mid-month, stop and review usage.
+- [ ] FMP free tier: <https://financialmodelingprep.com/developer/docs>
+- [ ] export FMP_API_KEY=... in shell profile
+- [ ] Anthropic API key. Set $30/mo hard budget alert in console.
 
-### Lucid Trading account
+### Accounts
 
-- [ ] Open Lucid account. Start with **LucidFlex 50K evaluation** ($175 typical, often discounted to ~$100). Most forgiving rules, lowest cost to learn the platform.
-- [ ] Verify Tradovate login works
-- [ ] Log into the Lucid dashboard, locate: current EOD drawdown, daily loss buffer, qualifying days counter
-- [ ] **Do not buy multiple accounts yet.** Learn the platform on one account first.
+- [ ] Lucid Trading account — LucidFlex 50K evaluation to learn the platform
+- [ ] Verify Tradovate login works (defer API access to Phase 2)
+- [ ] Confirm Robinhood account accessible for manual trade logging
 
-### Decisions to defer
+### Defer
 
-The fork includes auto-PR pipelines (skill-improvement loop and skill-generation pipeline) that run via `launchd` and open GitHub PRs automatically. **Leave these disabled in Phase 1.** You don't have enough context yet to review their PRs intelligently. Re-evaluate enabling them in Phase 3.
+Launchd auto-PR pipelines (skill-improvement, skill-generation) — disable until Phase 3.
 
 ---
 
-## Weeks 2–3 — The Actual Audit
+## Weeks 2–3 — The Audit
 
-This is the core work of the phase. For each skill in the catalog, do a 15-minute evaluation. Build a personal `skills_audit.md` at the repo root tracking ratings.
+For each skill: read SKILL.md, run with realistic input, rate it. Build skills_audit.md at repo root.
 
 ### Audit template
 
-```markdown
+```
 ## <skill-name>
-
-- **Read SKILL.md:** ☐
-- **Ran with realistic input:** ☐
-- **Output usefulness for futures-focused workflow (1–5):** _
-- **Status:** works as-is / needs extension / not relevant for me
-- **Notes:** [what worked, what didn't, ideas for futures adaptation]
-- **Time invested:** _ min
+- [ ] Read SKILL.md
+- [ ] Ran with realistic input
+- Usefulness for stock/options workflow (1-5): _
+- Usefulness for futures workflow (1-5): _
+- Status: works as-is / needs extension / not relevant
+- Notes:
+- Time: _ min
 ```
 
-### Suggested audit order (highest leverage first)
+Rate BOTH workflows separately. A skill might be 1/5 for futures and 5/5 for stocks.
 
-**Tier 1 — likely highest value for your workflow**
+### Audit priority order
 
-1. `exposure-coach` — daily market posture synthesis. If this is good, it becomes the first thing you run every morning.
-2. `technical-analyst` — does it work on hourly/15min charts that matter for futures?
-3. `trader-memory-core` — start logging trades here today, not later
-4. `position-sizer` — does it handle futures contract math? (Probably not — this becomes a Phase 2 extension target)
-5. `market-news-analyst` — useful for catalyst awareness pre-market?
+**Tier 1 — Core stock & options workflow (audit first)**
 
-**Tier 2 — context-setting**
+These are immediately useful for your Robinhood account and options trading.
 
-6. `market-breadth-analyzer`, `uptrend-analyzer` — how do they compare? Is one redundant?
-7. `economic-calendar-fetcher` — critical for futures (FOMC, NFP, CPI move ES/NQ hard)
-8. `market-top-detector`, `ftd-detector` — useful for regime context but lower frequency
-9. `theme-detector` — probably less useful for futures than for equity stock-picking
-10. `sector-analyst` — same caveat as theme-detector
+1. exposure-coach — daily market posture, first thing every morning
+2. technical-analyst — chart analysis for stocks and futures
+3. us-stock-analysis — fundamental + technical equity research
+4. trader-memory-core — start logging trades here today
+5. position-sizer — risk-based sizing (futures extension in Phase 2)
+6. market-news-analyst — catalyst awareness
+7. earnings-trade-analyzer — post-earnings reaction scoring
+8. options-strategy-advisor — Black-Scholes, Greeks, strategy comparison
+9. economic-calendar-fetcher — critical for stocks and futures
+10. pead-screener — post-earnings drift setups
 
-**Tier 3 — likely lower priority for futures focus**
+**Tier 2 — Screening and context (audit second)**
 
-The screening skills (`vcp-screener`, `canslim-screener`, `value-dividend-screener`, `dividend-growth-pullback-screener`, `kanchi-dividend-sop`, etc.) are equity-focused. Audit them last and probably mark most as "not relevant for me" — but keep them around for when you want to research individual stocks.
+11. market-breadth-analyzer, uptrend-analyzer
+12. vcp-screener — Minervini VCP for swing trading
+13. canslim-screener — growth stock methodology
+14. market-top-detector, ftd-detector
+15. sector-analyst, theme-detector
+16. institutional-flow-tracker
+17. parabolic-short-trade-planner — study as Phase 2 template
+18. portfolio-manager — study as Tradovate integration template
 
-**Tier 4 — infrastructure (audit by reading, not running)**
+**Tier 3 — Learning loop infrastructure (read, don't necessarily run)**
 
-- `dual-axis-skill-reviewer` — read the SKILL.md to understand how it scores
-- `edge-pipeline-orchestrator` — read to understand the orchestration pattern (you'll mirror this in Phase 2)
-- `signal-postmortem` — read the schema; you'll feed it data in Phase 3
+19. edge-pipeline-orchestrator
+20. signal-postmortem
+21. dual-axis-skill-reviewer
+22. backtest-expert
+23. trader-memory-core scripts — read thesis_ingest.py in detail
 
-### What "works as-is" means
+**Tier 4 — Equity strategies (run if time permits)**
 
-A skill works as-is if: (a) you can run it without errors, (b) the output is intelligible to you, (c) it produces something you'd actually use in your decision-making. If you read the output and shrug, that's a 2/5 regardless of whether the script ran cleanly.
-
-### What "needs extension" means
-
-A skill needs extension if the core logic is sound but it's missing futures-specific behavior. Example: `position-sizer` does Kelly criterion math correctly, but doesn't know that ES is $50/point. The fix is wrapping it, not rebuilding it.
+24. pair-trade-screener
+25. value-dividend-screener, dividend-growth-pullback-screener
+26. kanchi-dividend-sop and related
+27. us-market-bubble-detector
 
 ---
 
 ## Week 4 — Generate Baseline Data
 
-The learning loop needs data. Generate it.
+### Run the existing commands
 
-### Run the existing pre-built commands
-
-- [ ] Pick 5 watchlist tickers (any liquid US stocks — you're testing the pipeline, not picking trades)
-- [ ] Run `/deep-research <TICKER>` on each. Save outputs to `~/trading-research/reports/`.
-- [ ] Run `/update-research <TICKER>` on one a week later to test the diff workflow
-- [ ] Run `/intraday-options <TICKER> 500` once on a day with an actual setup (not just to test — the output should be actionable)
+- [ ] /deep-research on 3-5 stocks you're actually watching right now
+- [ ] /intraday-options on a stock with a live setup
+- [ ] /update-research on one of the above a week later
+- [ ] /scenario-analyzer on one macro headline affecting your watchlist
 
 ### Daily market context routine
 
-For at least 10 trading days:
+For 10+ trading days before market open:
 
-- [ ] Run `market-breadth-analyzer` (morning)
-- [ ] Run `exposure-coach` (morning)
-- [ ] Save outputs to `~/trading-research/logs/market_context_YYYY-MM-DD.md`
-- [ ] At end of day, write 2–3 sentences: did the market context call match what actually happened?
+- [ ] Run market-breadth-analyzer
+- [ ] Run exposure-coach
+- [ ] Save to ~/trading-research/logs/market_context_YYYY-MM-DD.md
+- [ ] End of day: 2-3 sentences on whether the call matched what happened
 
-### Trade logging (the most important deliverable)
+### Trade logging — most important deliverable
 
-For every trade — paper or real, stocks or futures, manual or copilot-suggested:
+For every trade (stock, option, futures, paper or real):
 
-- [ ] Use `trader-memory-core`'s `thesis_ingest.py` or write a one-line wrapper script
-- [ ] Capture: ticker, direction, entry/exit, size, **thesis (free text — why)**, **confidence 1–5**, tags, stop, target
-- [ ] After close: pnl, **review (free text — what happened, what was missed)**
+- [ ] Log to trader-memory-core using thesis_ingest.py
+- [ ] Required: ticker, direction, entry/exit, size, thesis (why), confidence 1-5, tags, stop, target
+- [ ] After close: pnl, review (what happened, what was missed)
 
-If you take 0 trades in week 4, that's fine — log paper trades or hypothetical trades from the research reports. The point is to populate the database with text the embedding model can search later.
+Tag by workflow: ["stock_swing"], ["options_earnings"], ["futures_lucid_eval"] etc.
+If zero real trades: log paper trades or hypothetical setups from research.
 
 ### Lucid evaluation
 
-- [ ] If markets are open during week 4, take a few trades on the Lucid eval account
-- [ ] Even if you fail the eval — the data on *why* you failed is the most valuable Phase 1 output
-- [ ] Log every trade to `trader-memory-core` with the `account: lucid_eval` tag
+- [ ] Take trades on Lucid eval account
+- [ ] Note platform mechanics: drawdown buffer display, qualifying days counter, auto-flatten behavior
+- [ ] Log every trade to trader-memory-core with account: lucid_eval tag
 
 ---
 
-## Exit Criteria (all must be met to advance to Phase 2)
+## Exit Criteria
 
-- [ ] `skills_audit.md` exists with ratings for all skills you ran
-- [ ] At least 3 Tier 1 skills audited and rated
-- [ ] 10+ trades logged to `trader-memory-core` (paper or real, any market)
-- [ ] 10+ days of market context outputs in `~/trading-research/logs/`
-- [ ] At least one Lucid eval account purchased and at least one trade taken on it
+- [ ] skills_audit.md with dual ratings for all Tier 1-2 skills
+- [ ] At least 8 Tier 1 skills audited and rated
+- [ ] 10+ trades logged across at least 2 different trade types
+- [ ] 10+ days of daily market context saved
+- [ ] /deep-research run on at least 3 real tickers
+- [ ] At least one Lucid eval account opened and one trade taken
 - [ ] Total Anthropic spend < $20
-- [ ] Pre-commit hooks pass cleanly on every commit you made
+- [ ] Pre-commit hooks pass cleanly
 
 ---
 
-## Common Phase 1 Pitfalls
+## Common Pitfalls
 
-**Pitfall 1: "I'll just build the futures stuff first, audit later."**
-You'll build it on assumptions about what's missing. Half of what you build will duplicate something the existing repo already does, and you won't notice until much later. Audit first.
-
-**Pitfall 2: Spending too long on each skill audit.**
-15 minutes per skill. If you can't tell if it's useful in 15 minutes, mark it 3/5 and move on. You can revisit.
-
-**Pitfall 3: Not logging trades because you "haven't started trading yet."**
-Log paper trades. Log hypothetical trades. Log the trade you would have taken if you'd been at your desk. The database needs text and structure, not P&L.
-
-**Pitfall 4: Buying Lucid evaluations beyond the first one.**
-One account in Phase 1. You need to learn the platform's quirks (4:45 PM auto-flatten behavior, dashboard refresh delays, payout cycle mechanics) before scaling.
-
-**Pitfall 5: Enabling the launchd jobs.**
-The auto-PR pipelines are powerful but assume you have time to review PRs. In Phase 1, you don't. Disable them.
+1. Only auditing futures-relevant skills — stock research skills are your PRIMARY workflow right now
+2. Spending more than 15 min per skill — mark 3/5 and move on
+3. Not logging trades because "still setting up" — log hypotheticals
+4. Drifting into Phase 2 work — futures skill-building is Phase 2
+5. Enabling the launchd jobs — Phase 3
 
 ---
 
 ## What's NOT in Phase 1
 
-- Writing any new skill (Phase 2)
-- Touching the Lucid rules engine (Phase 2)
-- Tradovate API integration (Phase 2)
-- Behavioral pattern detection (Phase 3)
-- Backtesting (Phase 4)
-- Anything autonomous (Phase 5)
+Writing new skills, Tradovate API, behavioral detection, backtesting, anything autonomous.
 
-If the conversation drifts toward any of these in Phase 1, push back: *"That's Phase X. We're still in Phase 1, focused on audit and data generation."*
+## When Ready to Advance
 
----
-
-## When You're Ready to Advance
-
-Update the main `PROJECT.md`:
-- Change "Active Phase" to Phase 2
-- Reset "This week's focus"
-- Read `project-docs/phase-2-futures-skills.md` to set new context
+Update PROJECT.md Active Phase to Phase 2. Read project-docs/phase-2-futures-skills.md.

@@ -1,191 +1,221 @@
 # Phase 3 — Learning Loop & Co-Pilot
 
 **Duration:** 8 weeks (weeks 11–18)
-**Goal:** Personalize the existing learning infrastructure. Detect behavioral patterns. Receive useful proactive alerts. Make a deliberate decision on Skylit.
+**Goal:** Personalize the existing learning infrastructure for both workflows. Detect behavioral patterns across stocks, options, and futures. Receive useful proactive alerts. Make a deliberate decision on Skylit.
 
 ---
 
 ## Prerequisites
 
-Phase 2 exit criteria met. Specifically:
-- All 6 futures skills built and tested
-- `/futures-setup` used pre-market for 10+ trading days
-- 5+ futures trades logged to `trader-memory-core`
+Phase 2 exit criteria met. You should have:
 
-The existing learning loop infrastructure is in place (`trader-memory-core`, `signal-postmortem`, `edge-pipeline-orchestrator`, `dual-axis-skill-reviewer`). Phase 3 personalizes it for your patterns.
+- All 6 futures skills built and tested
+- /futures-setup used pre-market for 10+ days
+- 5+ futures trades logged to trader-memory-core
+- 30+ total trades logged (stocks + options + futures combined)
+
+The existing learning loop infrastructure is in place. Phase 3 personalizes it.
 
 ---
 
 ## What You're Building
 
-This phase is more design-heavy than build-heavy. The infrastructure exists; you're configuring and extending it.
+### 3.1 — behavioral-pattern-detector (Weeks 11–12)
 
-### 3.1 — `behavioral-pattern-detector` (Weeks 11–12)
+Reads your trader-memory-core history and flags patterns across ALL trade types — not just futures. The patterns that cost you money are often the same regardless of instrument.
 
-A new skill that reads your `trader-memory-core` history and flags patterns the agent should warn you about pre-trade.
+**Patterns to detect:**
 
-**Patterns to detect (start with these, expand as you discover your own):**
+For all trade types:
 
-- **Overtrading days:** >5 trades in a single session
-- **Revenge trades:** new entry within 30 minutes of a stopped-out loss
-- **Moved stops:** stop moved further from entry after the trade was open (vs. trailing in profit)
-- **FOMO entries:** entry within 15 min of a >1% intraday move that the trader was not previously watching
-- **Ignored kill rules:** trade taken when `lucid-rules-engine` had returned a warning
-- **Friday flatten failures:** position held into 4:30 PM ET (within 15 min of auto-flatten)
-- **Cycle-end pressure:** unusually high trade count in the last 2 days of a payout cycle when qualifying days were not yet met
+- Overtrading days: >5 trades in a single session
+- Revenge trades: new entry within 30 min of a stopped-out loss
+- Moved stops: stop moved away from entry after trade was open
+- FOMO entries: chasing a move already extended beyond your original plan
+- Ignored research: trade taken without a completed research report when one was warranted
+- Skipped stop: position closed manually at a larger loss than the stop defined
+- Confidence mismatch: took a large position on a 2/5 confidence trade
+
+Futures-specific additions:
+
+- Ignored kill rules: trade taken when lucid-rules-engine returned a warning
+- Friday flatten failures: position held within 15 min of auto-flatten
+- Cycle-end pressure: overtrading in last 2 days of payout cycle when qualifying days not met
+
+Stock/options-specific additions:
+
+- Earnings gamble: entered a position within 48 hrs of earnings without an explicit earnings thesis
+- IV ignorance: bought options when IV rank was above 70 (paying rich premium)
+- Thesis drift: held a position past the original thesis invalidation trigger
 
 **Output:**
-- Daily report of any patterns triggered yesterday
-- Pre-trade hook: when `/futures-setup` runs, it queries this skill for "what behaviors have I been showing this week?" and surfaces relevant warnings in the output
+
+- Daily report of patterns triggered yesterday
+- Pre-trade hook: /futures-setup AND /deep-research both query this skill and surface relevant warnings
+- Weekly summary in Streamlit dashboard
 
 **Architecture:**
-- Reads from `trader-memory-core` SQLite store
-- No external APIs needed
-- Pure pattern matching + thresholds in `config.yaml` (so you can tune without code changes)
+
+- Reads from trader-memory-core SQLite
+- No external APIs
+- Thresholds in config.yaml (tune without code changes)
+- Separate pattern configs for futures vs stocks/options
 
 ### 3.2 — Personal playbook (Weeks 12–14)
 
-Build `playbook/playbook.md` from scratch, then evolve it from your trade data.
+Build playbook/playbook.md covering BOTH workflows from the start.
 
-**Initial structure:**
+**Structure:**
 
 ```markdown
 # Personal Trading Playbook
 
-## Setups I Trade
+## Stock & Options Setups
 
-### Setup 1: <Name>
-- **What it looks like:** [chart description]
-- **Conditions required:** [structured criteria]
-- **Entry trigger:** [specific price action]
-- **Stop placement:** [where and why]
-- **Target methodology:** [1R/2R, key level, etc.]
-- **Historical performance (from my trades):** [updated by edge-pipeline-orchestrator]
-- **When NOT to take it:** [counter-conditions]
+### Setup: [Name]
+- What it looks like
+- Conditions required
+- Entry trigger
+- Stop placement
+- Target methodology
+- Historical performance (updated by edge-pipeline-orchestrator)
+- When NOT to take it
 
-### Setup 2: ...
+## Futures Setups (ES/NQ)
+
+### Setup: [Name]
+- Session context (open drive, trend day, range day)
+- Key level interaction required
+- Entry trigger
+- Stop placement (in points, not just dollars)
+- Target methodology
+- Lucid rule constraints that apply
+- When NOT to take it
 
 ## Risk Rules
 
-### Per-trade
+### Per-trade (stocks/options)
+- Max risk per trade: 1% of account
+- Max concurrent positions: [your number]
+
+### Per-trade (futures)
 - Max risk per trade: 0.5% of account
-- ...
+- Max concurrent positions: 1 (Phase 5 starting point)
 
-### Per-day
-- Max trades per day: 5 (warning at 3, hard stop at 5)
-- ...
+### Per-day (all instruments)
+- Max trades per day: 5 (warning at 3)
+- Stop trading after 2 consecutive losses
 
-### Per-cycle (Lucid-specific)
-- Cycle reset behavior
-- Qualifying day strategy
-- ...
+### Lucid-specific
+- Cycle qualifying day strategy
+- Behavior near drawdown limits
 
 ## Lessons (most recent first)
-
-### YYYY-MM-DD: <Lesson>
-- Trade context
-- What I observed
-- Rule change proposed
-- User decision (approve/reject/modify)
 ```
 
 **Process:**
-1. Week 12: Write down the 3–5 setups you actually trade (or want to trade) on Lucid
-2. Week 13: Run `edge-pipeline-orchestrator` against your trade history to extract candidate rules
-3. Week 14: Review proposed rules. Approve/reject/modify each. The orchestrator's output is a proposal — you decide what becomes a rule.
 
-**The playbook is a living document.** It grows as your trade history grows. Every 2 weeks, run the orchestrator again and review proposed updates.
+- Week 12: Write your current setups in both categories (even if just 2-3 each)
+- Week 13: Run edge-pipeline-orchestrator on your full trade history
+- Week 14: Review proposed rules. Approve/reject/modify. Every rule must be YOUR decision.
 
-### 3.3 — `signal-postmortem` configuration (Week 15)
+### 3.3 — signal-postmortem configuration (Week 15)
 
-The skill exists. Configure it for your futures workflow.
+Configure for both workflows:
 
-- Set up automatic post-trade review trigger when a trade is closed in `trader-memory-core`
-- Define your specific outcome categories beyond the defaults (TRUE_POSITIVE, FALSE_POSITIVE, MISSED_OPPORTUNITY, REGIME_MISMATCH)
-- Connect outputs to the playbook update process
+- Stocks: track which /deep-research verdicts were correct over 6-month windows
+- Options: track which options-strategy-advisor recommendations were profitable
+- Futures: track which /futures-setup setups played out as expected
+
+This is where your research quality gets measured over time. Don't skip it.
 
 ### 3.4 — Streamlit dashboard (Week 16)
 
-A local web UI you check first thing every morning. Lives at `scripts/dashboard.py`.
+One dashboard for both workflows. Run at `scripts/dashboard.py`.
 
 **Sections:**
-- Today's market posture (calls `exposure-coach`)
-- Open Lucid positions (calls `tradovate-integration`)
-- Lucid account status: EOD drawdown buffer per account, qualifying days for current payout cycle
-- Recent trade reviews (last 5 closed trades from `trader-memory-core`)
+
+- Today's market posture (exposure-coach output)
+- Open positions across all accounts (Robinhood manual entry + Lucid via Tradovate)
+- Lucid account status: drawdown buffer, qualifying days per cycle
+- Stock watchlist: tickers with open research reports and their current status
+- Recent trade reviews (last 5 closed, any type)
 - Behavioral pattern alerts (from 3.1)
-- Today's calendar (calls `economic-calendar-fetcher`)
-- Weekly P&L by account
+- Today's calendar (economic events + earnings)
+- Weekly P&L by account and instrument type
 
-**Run:** `streamlit run scripts/dashboard.py`. Bookmark `localhost:8501` in your browser.
+**Run:** `streamlit run scripts/dashboard.py`. Bookmark localhost:8501.
 
-### 3.5 — Skill auto-improvement loop (Weeks 17–18)
+### 3.5 — Research quality tracking (Week 17)
 
-In Phase 1 you disabled the auto-PR pipelines. Now you have enough context to enable them carefully.
+This is missing from the original plan and important for the stock/options workflow.
 
-**Setup:**
-1. Configure GitHub branch protection on `main`: require PR review, require passing tests, no direct pushes
-2. Enable `launchd/com.trade-analysis.skill-improvement.plist` (daily 5 AM)
-3. Leave `skill-generation` (the new-skill-mining one) disabled until Phase 4 — you don't need new skills yet, you need refinement of existing ones
-4. Review every PR the loop creates. Most will be improvements. Some won't. Reject the bad ones — your judgment is part of the system.
+Track every /deep-research report:
 
-**Cost note:** The improvement loop uses Claude API. Budget ~$10/mo for it.
+- Verdict at time of report (Strong Buy/Buy/Watch/Avoid/Short)
+- Confidence score
+- Actual price performance over 1 month, 3 months, 6 months
+- Did the thesis invalidation triggers fire? Did you act on them?
+- Were the bull/bear case probabilities well-calibrated?
 
-### 3.6 — Skylit decision (end of Week 18)
+After 20+ reports you'll know whether your research process has edge or just produces plausible-sounding analysis. This is how you improve the prompt and the workflow.
 
-By now you've used the system for 3+ months and have real trade data. Decide on Skylit.
+Store in: `~/trading-research/logs/research_outcomes.md`
 
-**Subscribe only if YES to all:**
-- You've identified a specific strategy that needs GEX/dark pool data (not "I'm curious," but "this exact setup needs this data")
-- You've extracted what edge you can from free data sources
-- You can afford 3 months ($297) to evaluate
+### 3.6 — Skill auto-improvement loop (Week 17–18)
+
+Enable carefully with branch protection:
+
+1. Branch protection on main: require PR review, require tests
+2. Enable skill-improvement loop (daily 5 AM)
+3. Leave skill-generation pipeline disabled until Phase 4
+
+Review every PR. Cost: ~$10/mo.
+
+### 3.7 — Skylit decision (end of Week 18)
+
+By now you have 3+ months of real trading data. Decide on Skylit.
+
+Subscribe only if YES to ALL:
+
+- You've identified a specific strategy needing GEX/dark pool data (not curiosity)
+- You've extracted all edge possible from free data
+- You can afford 3 months ($297)
 - The strategy could realistically pay for the subscription within 2 months at your account size
 
-**If NO to any of these, defer to Phase 4 or skip entirely.** Skylit is not a prerequisite for any subsequent phase.
+Note: GEX data is most useful for options strategies on individual stocks, not for futures. If your main use case is futures, Skylit's value proposition weakens further.
 
 ---
 
-## Exit Criteria (all must be met to advance to Phase 4)
+## Exit Criteria
 
-- [ ] `behavioral-pattern-detector` built, tested, and integrated into `/futures-setup` output
-- [ ] Personal playbook has 3+ setups with conditions, stops, targets
-- [ ] At least 30 trades logged in `trader-memory-core` since project start
-- [ ] At least 1 playbook rule has been added based on `edge-pipeline-orchestrator` output and your approval
-- [ ] Streamlit dashboard is operational and you check it daily
-- [ ] Skill-improvement loop is running with branch protection enforced
-- [ ] Explicit YES/NO decision on Skylit (documented in `decisions.md`)
-- [ ] At least one Lucid evaluation passed OR explicit lessons-learned written for any failed evaluations
-- [ ] Total monthly Anthropic spend < $30
+- [ ] behavioral-pattern-detector built for both stock/options and futures patterns
+- [ ] Personal playbook has 3+ setups in each category (stocks AND futures)
+- [ ] 30+ total trades logged (all instrument types)
+- [ ] At least 1 playbook rule from each category approved from edge-pipeline-orchestrator output
+- [ ] Research quality tracking active with 10+ reports tracked
+- [ ] Streamlit dashboard operational and used daily
+- [ ] Skill-improvement loop running with branch protection
+- [ ] Explicit YES/NO decision on Skylit documented in decisions.md
+- [ ] At least one Lucid evaluation completed (pass or fail — lessons documented)
+- [ ] Monthly Anthropic spend < $30
 
 ---
 
-## Common Phase 3 Pitfalls
+## Common Pitfalls
 
-**Pitfall 1: Writing a fancy playbook before having trade data.**
-A playbook with rules that aren't backed by your trade history is fiction. Start small (3 setups), grow with data.
-
-**Pitfall 2: Auto-merging skill-improvement PRs.**
-The loop will propose changes that look reasonable but degrade subtle skill behavior. Always read the PR diff.
-
-**Pitfall 3: Buying Skylit "just to see."**
-$99/mo is your entire monthly project budget. "Just to see" is how budgets get destroyed. Decide based on a specific strategy need.
-
-**Pitfall 4: Treating behavioral patterns as the agent nagging you.**
-They're data about you, surfaced by the system. If "revenge trade" fires three weeks in a row, the answer isn't to silence the alert — it's to address the pattern.
+1. Building the behavioral detector only for futures patterns — stocks and options have their own behavioral traps
+2. Separate playbooks for stocks vs futures — one unified document with clearly labeled sections
+3. Skipping research quality tracking — this is how you find out if /deep-research actually helps your returns
+4. Auto-merging skill-improvement PRs — always read the diff
+5. Buying Skylit "just to see" — $99/mo is the entire monthly project budget
 
 ---
 
 ## What's NOT in Phase 3
 
-- Backtesting against historical futures data (Phase 4)
-- Autonomous execution (Phase 5)
-- New skill creation (mostly — the auto-generation pipeline stays disabled)
+Backtesting, autonomous execution, new skill creation (mostly).
 
----
+## When Ready to Advance
 
-## When You're Ready to Advance
-
-Update the main `PROJECT.md`:
-- Change "Active Phase" to Phase 4
-- Reset "This week's focus"
-- Read `project-docs/phase-4-backtesting.md`
+Update PROJECT.md Active Phase to Phase 4. Read project-docs/phase-4-backtesting.md.
