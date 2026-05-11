@@ -59,18 +59,7 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 ## Current Status
 
-**Active Phase:** Phase 1 — Audit & Activate
-**Phase started:** [May 7, 2026]
-**Target phase exit:** [May 7, 2026 + 4 weeks]
-**Current monthly spend:** $0
-**Spend cap:** $30/mo
-
-**This week's focus:**
-
-- [ ] [Audit all skills]
-- [ ] [Audit project structure, components, and files]
-
-**Blockers:** [none / describe]
+**Current status:** See `project-docs/STATUS.md`
 
 ---
 
