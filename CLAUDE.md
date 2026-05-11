@@ -1,3 +1,20 @@
+## WARNING — PRIVATE FORK — READ THIS BEFORE ANYTHING ELSE
+
+This is a private fork with a personal project charter.
+
+Load order for every session:
+  1. PROJECT.md
+  2. LOAD_GUIDE.md
+  3. project-docs/STATUS.md
+
+The content below this line is UPSTREAM REFERENCE MATERIAL.
+Do not load CLAUDE.md in full routinely.
+Load only the specific section you need for the task at hand.
+Skill API requirements are in the table below.
+Full operational rules for this fork: project-docs/playbook.md
+
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
