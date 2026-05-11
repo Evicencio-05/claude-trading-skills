@@ -24,6 +24,13 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
 
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+
 # FOMC announcement dates for 2026 (second day of each meeting).
 # Source: federalreserve.gov/monetarypolicy/fomccalendars.htm
 # Update this list annually.

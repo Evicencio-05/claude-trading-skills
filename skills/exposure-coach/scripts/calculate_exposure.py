@@ -54,6 +54,11 @@ def extract_breadth_score(data: Optional[dict]) -> Optional[int]:
     """Extract breadth score from breadth analyzer output."""
     if data is None:
         return None
+    # market-breadth-analyzer outputs composite.composite_score (nested)
+    if "composite" in data and isinstance(data["composite"], dict):
+        score = data["composite"].get("composite_score")
+        if score is not None:
+            return int(score)
     # Support various field names from upstream skill
     if "breadth_score" in data:
         return int(data["breadth_score"])
@@ -77,6 +82,11 @@ def extract_uptrend_score(data: Optional[dict]) -> Optional[int]:
     """Extract uptrend participation score."""
     if data is None:
         return None
+    # uptrend-analyzer outputs composite.composite_score (nested)
+    if "composite" in data and isinstance(data["composite"], dict):
+        score = data["composite"].get("composite_score")
+        if score is not None:
+            return int(score)
     if "uptrend_score" in data:
         return int(data["uptrend_score"])
     if "uptrend_pct" in data:
@@ -171,6 +181,11 @@ def extract_sector_score(data: Optional[dict]) -> Optional[int]:
     """Extract sector condition score."""
     if data is None:
         return None
+    # sector-analyst outputs groups.score (nested)
+    if "groups" in data and isinstance(data["groups"], dict):
+        score = data["groups"].get("score")
+        if score is not None:
+            return int(score)
     if "sector_score" in data:
         return int(data["sector_score"])
     if "dispersion" in data and "leadership" in data:

@@ -21,6 +21,13 @@ from datetime import date, timedelta
 from typing import Optional
 
 try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+
+try:
     import requests
 except ImportError:
     print("ERROR: requests library not found. Install with: pip install requests", file=sys.stderr)

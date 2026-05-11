@@ -147,20 +147,20 @@ If zero real trades: log paper trades or hypothetical setups from research.
 
 ### Lucid evaluation
 
-- [ ] Take trades on Lucid eval account
-- [ ] Note platform mechanics: drawdown buffer display, qualifying days counter, auto-flatten behavior
-- [ ] Log every trade to trader-memory-core with account: lucid_eval tag
+- [x] Take trades on Lucid eval account
+- [x] Note platform mechanics: drawdown buffer display, qualifying days counter, auto-flatten behavior
+- [x] Log every trade to trader-memory-core with account: lucid_eval tag
 
 ---
 
 ## Exit Criteria
 
-- [ ] skills_audit.md with dual ratings for all Tier 1-2 skills
-- [ ] At least 8 Tier 1 skills audited and rated
+- [x] skills_audit.md with dual ratings for all Tier 1-2 skills
+- [x] At least 8 Tier 1 skills audited and rated
 - [ ] 10+ trades logged across at least 2 different trade types
 - [ ] 10+ days of daily market context saved
 - [ ] /deep-research run on at least 3 real tickers
-- [ ] At least one Lucid eval account opened and one trade taken
+- [x] At least one Lucid eval account opened and one trade taken
 - [ ] Total Anthropic spend < $20
 - [ ] Pre-commit hooks pass cleanly
 

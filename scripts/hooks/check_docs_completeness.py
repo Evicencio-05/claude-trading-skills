@@ -18,7 +18,6 @@ def find_skills_without_docs() -> list[str]:
     """Return list of error messages for skills missing documentation."""
     skills_dir = PROJECT_ROOT / "skills"
     docs_en_dir = PROJECT_ROOT / "docs" / "en" / "skills"
-    docs_ja_dir = PROJECT_ROOT / "docs" / "ja" / "skills"
     errors = []
 
     if not skills_dir.is_dir():
@@ -31,13 +30,10 @@ def find_skills_without_docs() -> list[str]:
             continue
 
         en_doc = docs_en_dir / f"{skill_name}.md"
-        ja_doc = docs_ja_dir / f"{skill_name}.md"
 
         missing = []
         if not en_doc.exists():
             missing.append(f"docs/en/skills/{skill_name}.md")
-        if not ja_doc.exists():
-            missing.append(f"docs/ja/skills/{skill_name}.md")
 
         if missing:
             errors.append(

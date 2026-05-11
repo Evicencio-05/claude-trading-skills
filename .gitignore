@@ -18,6 +18,7 @@ env/
 # Tool configurations
 .idea/
 .vscode/
+.env
 .envrc
 .mcp.json
 
