@@ -30,7 +30,8 @@ logs/
 # Jupyter
 .ipynb_checkpoints/
 
-# Generated reports
+# Skill output files — canonical location is ~/trading-research/
+# Do not commit generated reports to the repo.
 reports/
 reviews/
 
