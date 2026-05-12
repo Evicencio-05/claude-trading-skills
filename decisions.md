@@ -39,6 +39,14 @@ Revisit: Phase 3 start.
 
 ## Architecture
 
+**[2026-05-11] Built Robinhood sync instead of using Trayd MCP.**
+trayd-mcp passes credentials through third-party AWS servers.
+For Portfolio B (IRA), keeping credentials local is preferred.
+Decision: Build scripts/robinhood_sync.py using robin_stocks.
+This pattern becomes the template for Tradovate sync in Phase 2.
+Revisit: Never for Portfolio B. Could revisit Trayd for Portfolio A
+if robin_stocks auth becomes a persistent friction point.
+
 **[2026-05-09] launchd jobs disabled until Phase 3.**
 Skill-improvement loop and skill-generation pipeline disabled.
 Decision: Do not enable until Phase 3 exit criteria are met and enough session

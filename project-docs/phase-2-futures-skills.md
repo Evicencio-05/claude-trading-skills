@@ -141,6 +141,13 @@ def size_futures_position(
 
 Mirror the `portfolio-manager` Alpaca MCP pattern. Tradovate has a REST API and a WebSocket API.
 
+### Pattern template
+
+`robinhood_sync.py` (built in Phase 1) is the pattern template for this skill.
+Phase 2 `tradovate_sync.py` should follow the same architecture:
+pull positions → `state/pending_ingest.json` → `/log-positions`.
+Same command, different account tags.
+
 ### Phase 2 scope: read-only
 
 In Phase 2, **only implement read operations.** No order placement until Phase 4 (sim) and Phase 5 (live). This is a discipline boundary — even if order placement is technically easy, building it before you need it invites accidents.

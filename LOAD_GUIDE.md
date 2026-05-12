@@ -37,6 +37,7 @@
 | commands/intraday-options.md | Running /intraday-options |
 | commands/update-research.md | Running /update-research |
 | CLAUDE.md (specific section) | Working on a specific skill's internals only |
+| commands/log-positions.md | After running robinhood_sync.py to log new positions to trader-memory-core |
 
 ## Never Load Routinely
 

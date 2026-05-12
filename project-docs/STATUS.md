@@ -14,6 +14,9 @@ Target exit: ~2026-06-04 (4 weeks)
 - [ ] Complete audit of remaining skills
 - [ ] Set up Alpaca paper account
 - [ ] Upgrade FMP to Starter tier
+- [ ] First run of robinhood_sync.py (manual 2FA required)
+      Fill ACCOUNT_MAP with your account IDs after first run
+- [ ] Run /log-positions to add thesis to synced positions
 
 ## Open Blockers
 

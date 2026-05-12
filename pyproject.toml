@@ -16,6 +16,7 @@ dependencies = [
     "pandas>=2.3.3",
     "python-dotenv>=1.0.0",
     "pyyaml>=6.0",
+    "robin-stocks>=3.4.0",
     "scipy>=1.13.1",
 ]
 

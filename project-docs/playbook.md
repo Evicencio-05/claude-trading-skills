@@ -81,6 +81,18 @@ a taxable account. This reinforces the importance of:
 
 ## System Operational Rules
 
+**Robinhood sync workflow:**
+1. `python3 scripts/robinhood_sync.py` (2FA on first run only)
+2. Fill ACCOUNT_MAP in script with printed account IDs
+3. Run `/log-positions` in Claude Code — answer 4 questions
+   per position (thesis, confidence, stop, target — everything
+   else pre-filled from Robinhood)
+
+What sync captures automatically: ticker, size, avg cost,
+account, and for options: strike, expiry, type, contracts,
+IRA eligibility, basic tags.
+What always requires human input: thesis, confidence, stop, target.
+
 **economic-calendar-fetcher is permanently blocked on free FMP tier.**
 Returns [] silently — no error, empty output.
 Use scripts/fred_calendar.py instead (built 2026-05-09).

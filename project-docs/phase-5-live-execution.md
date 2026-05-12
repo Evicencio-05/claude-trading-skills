@@ -17,6 +17,16 @@ If any of these are not true, **do not start Phase 5.** The cost of skipping ahe
 
 ---
 
+## Sync Infrastructure
+
+Auto-execution in Phase 5 builds on the sync infrastructure established in earlier phases:
+- Phase 1: `robinhood_sync.py` → `state/pending_ingest.json` → `/log-positions`
+- Phase 2: `tradovate_sync.py` → same pipeline, futures account tags
+
+`state/synced_positions.json` becomes the source of truth for what the agent owns.
+The executor in Phase 5B reads this file before placing any order to verify
+current position state matches expectations.
+
 ## The Core Discipline of Phase 5
 
 You will progress through three sub-phases. **You cannot skip a sub-phase.** Each one runs for a defined minimum time period, regardless of how well it's going. The goal is not maximum returns — it's compounding evidence that the system is reliable enough to trust with more.
