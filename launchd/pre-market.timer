@@ -1,0 +1,11 @@
+[Unit]
+Description=Run pre-market routine at 8 AM ET weekdays
+
+[Timer]
+# 8 AM ET = 12:00 UTC (EDT) or 13:00 UTC (EST)
+# Adjust OnCalendar for your timezone offset
+OnCalendar=Mon-Fri 6:00 PDT
+Persistent=true
+
+[Install]
+WantedBy=timers.target

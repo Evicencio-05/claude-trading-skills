@@ -75,3 +75,11 @@ no undefined risk).
 Learning-first mandate. Capital cannot easily be replenished.
 Decision: All commands must flag IRA eligibility for Portfolio B.
 Revisit: When account structure changes.
+
+## Scheduler
+
+**[2026-05-14] Scheduler is systemd, not launchd.**
+System runs Arch Linux. launchd is macOS-only.
+Decision: All scheduled jobs use systemd user services.
+.plist files kept in launchd/ for reference only.
+Revisit: Never unless OS changes.

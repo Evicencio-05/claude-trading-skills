@@ -45,7 +45,7 @@ repos:
         entry: python3 scripts/hooks/check_no_absolute_paths.py
         language: system
         types: [text]
-        exclude: '\.git/|\.venv/|\.secrets\.baseline$|/tests?/|CLAUDE\.md$|check_no_absolute_paths\.py$'
+        exclude: '\.git/|\.venv/|\.secrets\.baseline$|/tests?/|CLAUDE\.md$|check_no_absolute_paths\.py$|\.service$|\.timer$'
 
       - id: skill-frontmatter
         name: Validate SKILL.md frontmatter

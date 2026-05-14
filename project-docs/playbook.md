@@ -100,6 +100,10 @@ account, and for options: strike, expiry, type, contracts,
 IRA eligibility, basic tags.
 What always requires human input: thesis, confidence, stop, target.
 
+For scheduled runs: install systemd service and timer
+(see launchd/README.md for setup commands).
+Enable ONLY after completing manual 2FA auth at least once.
+
 **economic-calendar-fetcher is permanently blocked on free FMP tier.**
 Returns [] silently — no error, empty output.
 Use scripts/fred_calendar.py instead (built 2026-05-09).

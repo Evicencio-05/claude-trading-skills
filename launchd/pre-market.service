@@ -1,0 +1,14 @@
+[Unit]
+Description=Trading pre-market routine
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/uv run /home/evice/repos/claude-trading-skills/scripts/pre_market.py
+WorkingDirectory=/home/evice/repos/claude-trading-skills
+StandardOutput=append:/tmp/pre_market.log
+StandardError=append:/tmp/pre_market_error.log
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

@@ -51,6 +51,7 @@
 | skills/[name]/ (full dir) | Load specific SKILL.md only when working on that skill |
 | reports/research/*.md | Load specific report only when needed |
 | reports/logs/ | Load specific log only when needed |
+| launchd/ | macOS only — use systemd on this system |
 
 ## Key Operational Facts (do not look these up elsewhere)
 

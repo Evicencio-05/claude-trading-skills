@@ -23,15 +23,42 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-# ── Configuration ────────────────────────────────────────────────────────────
-# Map Robinhood account numbers to your portfolio labels.
-# Find your account numbers by running: python3 -c "import robin_stocks.robinhood as r; r.login(); print(r.account.get_all_positions())"
-# or checking Robinhood app: Account > Settings > Account Information
+# ── Account Configuration ─────────────────────────────────────────────────────
+#
+# Portfolio structure:
+#
+#   Portfolio A — Robinhood individual (taxable)
+#     Login:    New Robinhood login (not the IRA login)
+#     Size:     ~$250 currently
+#     Access:   Full stock + options (standard margin account)
+#     API:      Reachable via robin_stocks — this is what gets synced
+#
+#   Portfolio B — Robinhood IRA (Roth or Traditional)
+#     Login:    Separate Robinhood login
+#     Size:     ~$10K
+#     Access:   IRA-eligible options only (long calls/puts, covered calls,
+#               cash-secured puts — no naked selling, no undefined risk)
+#     API:      NOT reachable via unofficial API — IRA accounts sit on a
+#               separate Robinhood internal path. Log positions manually
+#               via /log-positions command.
+#
+#   Lucid Trading — Futures prop firm account
+#     Platform: Tradovate (CME futures only)
+#     API:      Deferred to Phase 2 — tradovate_sync.py follows this pattern
+#
+# ── Account ID Map ────────────────────────────────────────────────────────────
+# Fill in the account URL printed on first sync run.
+# Run: python3 scripts/robinhood_sync.py --dry-run
+# Look for the "Found these account IDs" line in the output.
 
 ACCOUNT_MAP = {
-    # "your_account_number_here": "robinhood_taxable",   # Portfolio A (~$500)
-    # "your_ira_account_number_here": "ira_robinhood",   # Portfolio B (~$10K IRA)
+    "https://api.robinhood.com/accounts/487509309/": "robinhood_taxable",  # Portfolio A (~$500)
 }
+
+# NOTE: Only Portfolio A (taxable individual account) is synced here.
+# Portfolio B (IRA) positions are logged manually via /log-positions.
+# This is by design — Robinhood IRA accounts are not accessible via
+# the unofficial API regardless of authentication method.
 
 # If ACCOUNT_MAP is empty, all positions are labeled by their Robinhood account_id.
 # Fill in the map after first run — script will print account IDs it finds.

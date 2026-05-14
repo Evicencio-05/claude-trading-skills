@@ -36,6 +36,15 @@ Current: $0 | Cap: $30/mo
 - FMP Starter ($29/mo) upgrade — approved, not yet activated
 - Alpaca paper account setup — approved, not yet done
 
+## Open Blockers / Action Items
+
+- [ ] Run: uv run scripts/pre_market.py --dry-run to verify
+      output writes to reports/pre_market/ and reports/logs/
+- [ ] Create robinhood-sync.service + robinhood-sync.timer
+      (same pattern as pre-market systemd files)
+- [ ] Fill ACCOUNT_MAP in scripts/robinhood_sync.py with
+      account URL from first --dry-run output
+
 ## Phase 1 Exit Criteria Progress
 
 - [x] skills_audit.md with dual ratings for all Tier 1-2 skills
@@ -46,3 +55,12 @@ Current: $0 | Cap: $30/mo
 - [x] At least one Lucid eval account opened and one trade taken
 - [ ] Total Anthropic spend < $20
 - [ ] Pre-commit hooks pass cleanly
+
+## Recent Changes
+
+- pre_market.py outputs skill files to reports/pre_market/
+  and posture/history logs to reports/logs/
+- Scheduler is systemd (Arch Linux), not launchd (macOS)
+- robinhood_sync.py confirmed: Portfolio A (taxable) only.
+  Portfolio B (IRA) not reachable via unofficial API — manual
+  logging via /log-positions
