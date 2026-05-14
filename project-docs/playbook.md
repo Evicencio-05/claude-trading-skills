@@ -81,6 +81,13 @@ a taxable account. This reinforces the importance of:
 
 ## System Operational Rules
 
+**Reports live in reports/ within the repo (git tracked).**
+Structured reports (research, logs, options plans) are committed to `reports/`.
+Only intermediate skill run artifacts (loose `.json` files) are gitignored.
+`~/trading-research/` references in older notes are superseded — use `reports/` paths.
+
+
+
 **Robinhood sync workflow:**
 1. `python3 scripts/robinhood_sync.py` (2FA on first run only)
 2. Fill ACCOUNT_MAP in script with printed account IDs

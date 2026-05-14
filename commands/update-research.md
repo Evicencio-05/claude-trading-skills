@@ -7,7 +7,7 @@ Perform a targeted update on an existing research report for {TICKER}.
 
 STEP 1 — LOAD PREVIOUS REPORT
 
-Read the existing report from ~/trading-research/reports/{TICKER}.md.
+Read the existing report from reports/research/{TICKER}.md.
 If no report exists, say so and suggest running /deep-research {TICKER} first.
 Parse the previous report to extract:
   - The date it was generated.
@@ -137,16 +137,16 @@ Explain the reasoning in 2-3 sentences.
 
 STEP 7 — SAVE
 
-1. Archive the current ~/trading-research/reports/{TICKER}.md to
-   ~/trading-research/archives/{TICKER}_{date_of_old_report}.md
+1. Archive the current reports/research/{TICKER}.md to
+   reports/archives/{TICKER}_{date_of_old_report}.md
 
 2. Read the FULL previous report content. Regenerate a COMPLETE updated
    report (not just the diff) incorporating all changes, and write it to
-   ~/trading-research/reports/{TICKER}.md. The updated full report should
+   reports/research/{TICKER}.md. The updated full report should
    follow the same format as the original /deep-research output but with
    all data points refreshed.
 
-3. Append a summary entry to ~/trading-research/logs/{TICKER}_changelog.md:
+3. Append a summary entry to reports/logs/{TICKER}_changelog.md:
 
    ## {today's date}
    - Status: {INTACT/WEAKENED/INVALIDATED/STRENGTHENED}

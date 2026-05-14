@@ -471,13 +471,13 @@ Note failures, rate limits, unavailable data, and skipped sections.
 SAVE & VERSION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. Check if ~/trading-research/reports/{TICKER}.md already exists.
-   - If yes: archive to ~/trading-research/archives/{TICKER}_{old-date}.md
+1. Check if reports/research/{TICKER}.md already exists.
+   - If yes: archive to reports/archives/{TICKER}_{old-date}.md
      using the date from the OLD report's "Generated" line, not today.
-   - Write new report to ~/trading-research/reports/{TICKER}.md.
+   - Write new report to reports/research/{TICKER}.md.
    - If no: write directly.
 
-2. Append one line to ~/trading-research/logs/research_log.md:
+2. Append one line to reports/logs/research_log.md:
    `{date} | {TICKER} | Verdict: {verdict} | Composite: {score}/10 | Earnings: {date}`
 
-3. Confirm: "Report saved to ~/trading-research/reports/{TICKER}.md"
+3. Confirm: "Report saved to reports/research/{TICKER}.md"

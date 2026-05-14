@@ -24,15 +24,20 @@ env/
 
 # Logs & temp
 logs/
+!reports/logs/
+!reports/logs/**
 *.log
 *.tmp
 
 # Jupyter
 .ipynb_checkpoints/
 
-# Skill output files — canonical location is ~/trading-research/
-# Do not commit generated reports to the repo.
-reports/
+# Keep structured reports and logs tracked
+# Ignore intermediate skill run artifacts only
+reports/*.json
+reports/archives/*.json
+reports/skill-generation-log/*.json
+reports/skill-improvement-log/*.json
 reviews/
 
 # Robinhood auth (never commit)

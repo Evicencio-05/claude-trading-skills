@@ -175,4 +175,4 @@ premium paid. Not financial advice.*
 
 ---
 
-SAVE: Write to ~/trading-research/intraday/{TICKER}*options*{YYYY-MM-DD}.md
+SAVE: Write to reports/intraday/{TICKER}_options_{YYYY-MM-DD}.md

@@ -406,12 +406,12 @@ SAVE & VERSION
 
 After generating the plan:
 
-1. Check if ~/trading-research/options/{TICKER}.md already exists.
+1. Check if reports/options/{TICKER}.md already exists.
    - If it does, copy the existing file to:
-     ~/trading-research/archives/{TICKER}_options_{YYYY-MM-DD}.md
+     reports/archives/{TICKER}_options_{YYYY-MM-DD}.md
      (using the date from the OLD plan's "Generated" line, not today).
-   - Then overwrite ~/trading-research/options/{TICKER}.md with the new plan.
+   - Then overwrite reports/options/{TICKER}.md with the new plan.
    - If it doesn't exist, simply write the new plan there.
 
-2. Confirm save with: "Options plan saved to ~/trading-research/options/{TICKER}.md"
+2. Confirm save with: "Options plan saved to reports/options/{TICKER}.md"
    and if an archive was created, note that too.

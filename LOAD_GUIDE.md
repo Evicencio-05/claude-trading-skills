@@ -49,6 +49,8 @@
 | examples/ | Reference only, Phase 3 Streamlit study |
 | README.md | Upstream project README, not session context |
 | skills/[name]/ (full dir) | Load specific SKILL.md only when working on that skill |
+| reports/research/*.md | Load specific report only when needed |
+| reports/logs/ | Load specific log only when needed |
 
 ## Key Operational Facts (do not look these up elsewhere)
 

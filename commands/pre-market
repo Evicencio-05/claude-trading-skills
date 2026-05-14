@@ -1,0 +1,75 @@
+---
+description: "Pre-market routine. Market posture, calendar flags, and position alerts in under 5 minutes."
+---
+
+# /pre-market
+
+> Skills below exist in skills/ — read their SKILL.md and run scripts directly.
+> Do not create anything. Do not install anything.
+> skills/market-breadth-analyzer/ | skills/uptrend-analyzer/ | skills/sector-analyst/
+
+Run steps in order. Save full output to reports/logs/market_context_YYYY-MM-DD.md.
+
+---
+
+## STEP 1 — MARKET POSTURE
+
+Run these three skills. Report one line each — score and key signal only:
+- market-breadth-analyzer → composite score + zone
+- uptrend-analyzer → composite score + any warnings
+- sector-analyst → leading sector + cycle phase
+
+## STEP 2 — CALENDAR
+
+```bash
+python3 scripts/fred_calendar.py --days 3 --format brief
+```
+Report HIGH impact events only. One line: DATE | EVENT
+Skip LOW and MEDIUM entirely.
+
+If FMP active: run earnings-calendar. Report only earnings within 5 days
+on tickers held in Portfolio A or B, or >5% QQQ/SPY weight. Skip the rest.
+
+## STEP 3 — POSITION FLAGS
+
+Check state/theses/ for open positions. Flag:
+
+URGENT — report first:
+- Options expiring ≤ 7 days
+- Price breached logged stop level
+
+WATCH — report second:
+- Options expiring ≤ 14 days
+- Earnings within 5 days on held underlying
+
+Format: [URGENT/WATCH] TICKER | reason | stop/target for reference
+
+## STEP 4 — OUTPUT BLOCK
+
+Print exactly this. No prose around it:
+
+```
+Date:            YYYY-MM-DD
+Breadth:         X/100 (zone)
+Uptrend:         X/100
+Leading sector:  X
+Macro events:    X or none
+Earnings watch:  X or none
+Flags:           X or none
+Posture:         NEW_ENTRY_ALLOWED / CAUTIOUS / REDUCE_ONLY
+Ceiling:         X%
+Watch today:     [one sentence]
+```
+
+Posture rules:
+- Breadth > 60, no macro event today → NEW_ENTRY_ALLOWED, 70%
+- Breadth 40-60 OR macro event today → CAUTIOUS, 50%
+- Breadth < 40 OR any URGENT flag → REDUCE_ONLY, 30%
+- FTD conflict: use lower ceiling (playbook.md)
+
+## STEP 5 — LOG
+
+Append posture block to reports/logs/market_context_YYYY-MM-DD.md
+
+Append one line to reports/logs/posture_history.log:
+YYYY-MM-DD | breadth | uptrend | posture | ceiling% | watch_today

@@ -1,10 +1,10 @@
 ---
-description: "Run a batch update across all tracked tickers in ~/trading-research/reports/, showing staleness and offering to refresh selected or all reports with a portfolio summary table."
+description: "Run a batch update across all tracked tickers in reports/research/, showing staleness and offering to refresh selected or all reports with a portfolio summary table."
 ---
 
 Run a batch update across all tracked tickers.
 
-1. List all .md files in ~/trading-research/reports/ to identify active tickers.
+1. List all .md files in reports/research/ to identify active tickers.
 
 2. For each ticker found, print:
    - Ticker, last report date, days since last update.
@@ -29,4 +29,4 @@ Run a batch update across all tracked tickers.
    ## Stalest Reports
    {List any tickers not updated in >14 days}
 
-   Save this summary to ~/trading-research/logs/portfolio_summary_{YYYY-MM-DD}.md
+   Save this summary to reports/logs/portfolio_summary_{YYYY-MM-DD}.md
