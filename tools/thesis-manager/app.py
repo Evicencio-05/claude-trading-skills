@@ -111,7 +111,7 @@ def _build_thesis_data(
         "thesis_statement": thesis_text.strip(),
         "setup_type": strategy or "manual",
         "catalyst": "",
-        "mechanism_tag": "manual",
+        "mechanism_tag": "uncertain",
         "evidence": [],
         "kill_criteria": kill,
         "confidence": None,
@@ -129,7 +129,7 @@ def _build_thesis_data(
         },
         "origin": {
             "skill": "manual",
-            "output_file": "",
+            "output_file": "manual",
             "screening_grade": None,
             "screening_score": None,
             "raw_provenance": {},
@@ -226,7 +226,7 @@ def show_dashboard() -> None:
                 "Account": _fmt_account(pos.get("account_type") or ""),
                 "Expiry": expiry or "—",
                 "Confidence": int(cs * 5) if cs else "—",
-                "Days Left": dte if dte is not None else "—",
+                "Days Left": str(dte) if dte is not None else "—",
                 "Status": t.get("status", ""),
             }
         )
@@ -241,7 +241,7 @@ def show_dashboard() -> None:
                 "Account": _fmt_account(p.get("account", "")),
                 "Expiry": expiry or "—",
                 "Confidence": "—",
-                "Days Left": dte if dte is not None else "—",
+                "Days Left": str(dte) if dte is not None else "—",
                 "Status": "PENDING_THESIS",
             }
         )
@@ -250,13 +250,16 @@ def show_dashboard() -> None:
 
     def _style_row(row):
         status = row.get("Status", "")
-        dte = row.get("Days Left")
+        try:
+            dte = int(row.get("Days Left", ""))
+        except (ValueError, TypeError):
+            dte = None
         bg = ""
         if status == "PENDING_THESIS":
             bg = "background-color: #3d3500"
-        elif isinstance(dte, int) and dte <= 7:
+        elif dte is not None and dte <= 7:
             bg = "background-color: #3d0000"
-        elif isinstance(dte, int) and dte <= 14:
+        elif dte is not None and dte <= 14:
             bg = "background-color: #3d2000"
         return [bg] * len(row)
 
@@ -265,7 +268,7 @@ def show_dashboard() -> None:
 
     event = st.dataframe(
         styled,
-        use_container_width=True,
+        width="stretch",
         on_select="rerun",
         selection_mode="single-row",
         key="dash_table",
@@ -786,14 +789,14 @@ def show_review() -> None:
                 {
                     "Ticker": t.get("ticker", ""),
                     "Account": _fmt_account(pos.get("account_type") or ""),
-                    "Entry": ep or "—",
-                    "Exit": xp or "—",
+                    "Entry": str(ep) if ep is not None else "—",
+                    "Exit": str(xp) if xp is not None else "—",
                     "P&L": pnl,
                     "Confidence": f"{int(cs * 5)}/5" if cs else "—",
                     "Outcome": exit_d.get("exit_reason") or "—",
                 }
             )
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
 # ── entry point ────────────────────────────────────────────────────────────────
