@@ -39,17 +39,26 @@ def import_store() -> Any:
 
 
 def load_theses(statuses: list[str] | None = None) -> list[dict]:
-    """Return theses filtered by status list. Empty list if store missing."""
+    """Return full thesis objects filtered by status list. Empty list if store missing."""
     store = import_store()
     state_dir = get_state_dir()
     if not state_dir.exists():
         return []
     if statuses is None:
-        return store.query(state_dir)
-    results: list[dict] = []
-    for s in statuses:
-        results.extend(store.query(state_dir, status=s))
-    return results
+        index_entries = store.query(state_dir)
+    else:
+        index_entries = []
+        for s in statuses:
+            index_entries.extend(store.query(state_dir, status=s))
+    full_theses = []
+    for entry in index_entries:
+        tid = entry.get("thesis_id")
+        if tid:
+            try:
+                full_theses.append(store.get(state_dir, tid))
+            except Exception:  # noqa: BLE001
+                full_theses.append(entry)
+    return full_theses
 
 
 def load_pending_ingest() -> list[dict]:
