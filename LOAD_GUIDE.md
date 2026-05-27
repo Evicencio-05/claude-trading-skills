@@ -52,6 +52,7 @@
 | reports/research/*.md | Load specific report only when needed |
 | reports/logs/ | Load specific log only when needed |
 | launchd/ | macOS only — use systemd on this system |
+| tools/thesis-manager/ | Streamlit app — run directly, never load into context |
 
 ## Key Operational Facts (do not look these up elsewhere)
 
