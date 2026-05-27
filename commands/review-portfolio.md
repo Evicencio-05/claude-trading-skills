@@ -4,10 +4,13 @@ description: "Run a batch update across all tracked tickers in reports/research/
 
 Run a batch update across all tracked tickers.
 
-1. List all .md files in reports/research/ to identify active tickers.
+1. Glob reports/research/{TICKER}_{YYYY-MM-DD}.md files to identify active tickers.
+   Filenames follow the pattern {TICKER}_{YYYY-MM-DD}.md — extract the ticker as
+   everything before the first underscore-date suffix, and the date from the suffix.
+   If multiple dated files exist for the same ticker, use the most recent date only.
 
 2. For each ticker found, print:
-   - Ticker, last report date, days since last update.
+   - Ticker, last report date (from filename), days since last update.
 
 3. Sort by staleness (oldest update first).
 

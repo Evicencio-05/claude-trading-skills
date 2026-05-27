@@ -11,6 +11,8 @@ Old patterns handled:
 Target: reports/research/{TICKER}_{date}.md
 
 Run without --execute to preview moves (dry-run is default).
+Use --verbose to verify that files already in reports/research/ conform to the
+TICKER_YYYY-MM-DD.md pattern without moving anything.
 """
 
 import argparse
@@ -79,6 +81,41 @@ def plan_moves() -> list[tuple[Path, Path]]:
     return moves
 
 
+CANONICAL_RE = re.compile(r"^([A-Z]{1,6})_(\d{4}-\d{2}-\d{2})\.md$")
+
+
+def verify_research_dir() -> None:
+    """Print a conformance report for all files currently in reports/research/."""
+    files = sorted(RESEARCH_DIR.glob("*.md"))
+    if not files:
+        print("reports/research/ is empty or does not exist.")
+        return
+
+    ok: list[str] = []
+    bad: list[str] = []
+    for f in files:
+        if CANONICAL_RE.match(f.name):
+            ok.append(f.name)
+        else:
+            bad.append(f.name)
+
+    print(f"reports/research/ — {len(files)} file(s):\n")
+    for name in ok:
+        m = CANONICAL_RE.match(name)
+        assert m
+        print(f"  OK  {name}  (ticker={m.group(1)}, date={m.group(2)})")
+    for name in bad:
+        print(f"  FAIL  {name}  <- does not match TICKER_YYYY-MM-DD.md")
+
+    print()
+    if bad:
+        print(
+            f"FAIL: {len(bad)} file(s) do not conform. Re-run without --verbose to preview moves."
+        )
+    else:
+        print(f"OK: all {len(ok)} file(s) conform to TICKER_YYYY-MM-DD.md format.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -86,7 +123,16 @@ def main() -> None:
     parser.add_argument(
         "--execute", action="store_true", help="Actually move files (default: preview only)"
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Verify existing reports/research/ files; do not move anything",
+    )
     args = parser.parse_args()
+
+    if args.verbose:
+        verify_research_dir()
+        return
 
     moves = plan_moves()
 

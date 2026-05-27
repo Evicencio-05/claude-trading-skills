@@ -7,8 +7,9 @@ Perform a targeted update on an existing research report for {TICKER}.
 
 STEP 1 — LOAD PREVIOUS REPORT
 
-Read the existing report from reports/research/{TICKER}.md.
-If no report exists, say so and suggest running /deep-research {TICKER} first.
+Find the most recent report for {TICKER} by globbing reports/research/{TICKER}_*.md,
+sorting the results by date descending, and reading the first (newest) file.
+If no match exists, say so and suggest running /deep-research {TICKER} first.
 Parse the previous report to extract:
   - The date it was generated.
   - The scorecard ratings from last time.
@@ -137,14 +138,14 @@ Explain the reasoning in 2-3 sentences.
 
 STEP 7 — SAVE
 
-1. Archive the current reports/research/{TICKER}.md to
-   reports/archives/{TICKER}_{date_of_old_report}.md
+1. Archive the current report (the {TICKER}_{old-date}.md file found in STEP 1) to
+   reports/archives/{TICKER}_{old-date}.md using the date from its "Generated" line.
 
 2. Read the FULL previous report content. Regenerate a COMPLETE updated
    report (not just the diff) incorporating all changes, and write it to
-   reports/research/{TICKER}.md. The updated full report should
-   follow the same format as the original /deep-research output but with
-   all data points refreshed.
+   reports/research/{TICKER}_{YYYY-MM-DD}.md where the date is today's date.
+   The updated full report should follow the same format as the original
+   /deep-research output but with all data points refreshed.
 
 3. Append a summary entry to reports/logs/{TICKER}_changelog.md:
 

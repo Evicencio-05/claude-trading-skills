@@ -406,12 +406,13 @@ SAVE & VERSION
 
 After generating the plan:
 
-1. Check if reports/options/{TICKER}.md already exists.
-   - If it does, copy the existing file to:
-     reports/archives/{TICKER}_options_{YYYY-MM-DD}.md
+1. Check if any reports/options/{TICKER}_*.md already exists.
+   - If it does, copy the most recent existing file to:
+     reports/archives/{TICKER}_options_{old-date}.md
      (using the date from the OLD plan's "Generated" line, not today).
-   - Then overwrite reports/options/{TICKER}.md with the new plan.
-   - If it doesn't exist, simply write the new plan there.
+   - Write the new plan to reports/options/{TICKER}_{YYYY-MM-DD}.md
+     where the date is today's date.
+   - If none exists, write directly to reports/options/{TICKER}_{YYYY-MM-DD}.md.
 
-2. Confirm save with: "Options plan saved to reports/options/{TICKER}.md"
+2. Confirm save with: "Options plan saved to reports/options/{TICKER}_{YYYY-MM-DD}.md"
    and if an archive was created, note that too.
