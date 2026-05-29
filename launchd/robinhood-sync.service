@@ -1,0 +1,14 @@
+[Unit]
+Description=Robinhood position sync (Portfolio A taxable)
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/uv run /home/evice/repos/claude-trading-skills/scripts/robinhood_sync.py
+WorkingDirectory=/home/evice/repos/claude-trading-skills
+StandardOutput=append:/tmp/robinhood_sync.log
+StandardError=append:/tmp/robinhood_sync_error.log
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=default.target

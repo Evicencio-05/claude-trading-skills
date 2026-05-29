@@ -1,8 +1,10 @@
-# Load Guide — For Claude Code Sessions
+# Load Guide — For AI Sessions (Claude Code & Cursor)
 
 > Read this file after PROJECT.md at the start of every session.
 > It tells you exactly what to load, when, and what to skip.
 > Keeping context lean is a project non-negotiable.
+>
+> **Tool routing:** See [AGENTS.md](AGENTS.md) for which IDE to use per task.
 
 ## Every Session (always load these three)
 
@@ -33,9 +35,12 @@
 | project-docs/reference/tech-stack.md | Architecture decisions |
 | project-docs/reference/risk-register.md | Risk assessment or safety review |
 | decisions.md | A prior decision is being questioned or revisited |
-| commands/deep-research.md | Running /deep-research |
+| commands/deep-research.md | Deep research workflow (Claude `/deep-research` or Cursor `deep-research` skill) |
 | commands/intraday-options.md | Running /intraday-options |
-| commands/update-research.md | Running /update-research |
+| commands/update-research.md | Update research workflow |
+| AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
+| project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
+| .cursor/rules/ | Cursor auto-loads project-router; read on-demand if debugging rules |
 | CLAUDE.md (specific section) | Working on a specific skill's internals only |
 | commands/log-positions.md | After running robinhood_sync.py to log new positions to trader-memory-core |
 
@@ -64,3 +69,21 @@
 - Portfolio B is a Robinhood IRA — IRA options rules apply
 - AutoLiq = daily profit target hit ($625), not a rule violation
 - Full operational rules: project-docs/playbook.md
+
+## Cursor sessions
+
+Same load order as above. Cursor applies `.cursor/rules/project-router.mdc` automatically.
+
+1. Open repo in Cursor — rules load PROJECT charter constraints without pasting them each chat.
+2. Read `project-docs/STATUS.md` for this week's focus (or ask the agent to read it).
+3. For market context before research: `uv run python3 scripts/pre_market.py` (zero LLM cost).
+4. Invoke skills by name (`market-breadth-analyzer`, `deep-research on AAPL`, etc.) — see `.cursor/skills/README.md`.
+5. For workflows: use `.cursor/skills/deep-research`, `update-research`, `log-positions`, or `commands/*.md` directly.
+
+**Portfolio:** Alpaca MCP is configured in Claude Code by default. In Cursor, use Robinhood sync + `log-positions`, or add Alpaca MCP in Cursor settings (see AGENTS.md).
+
+## Claude Code sessions
+
+1. Read PROJECT.md, this file, STATUS.md (same as Cursor).
+2. Use slash commands in `commands/` when available (`/deep-research`, `/log-positions`).
+3. Symlink `skills/<name>` → `~/.claude/skills/<name>` so the repo stays the single source of truth.

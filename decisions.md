@@ -76,6 +76,26 @@ Learning-first mandate. Capital cannot easily be replenished.
 Decision: All commands must flag IRA eligibility for Portfolio B.
 Revisit: When account structure changes.
 
+**[2026-05-28] Three Robinhood portfolios + hybrid sync paths.**
+Portfolio A: ~$250 taxable (Robinhood individual) — `robinhood_sync.py` + ACCOUNT_MAP.
+Portfolio B: ~$10K Roth IRA — **not** reachable via unofficial `robin_stocks` API;
+log via thesis-manager or `/log-positions` after manual verification.
+Portfolio C: ~$50 Robinhood Agentic — official Robinhood Agentic MCP in Claude Code;
+equities first, options later. Account key in thesis-manager: `robinhood_agentic`.
+Decision: Do not replace IRA manual logging until MCP account list confirms IRA access.
+Agent documents MCP scope in decisions.md when user runs account discovery in Claude Code.
+Revisit: After MCP lists all linked accounts.
+
+## MCP & Brokerage
+
+**[2026-05-28] Robinhood Agentic MCP vs local sync.**
+Official Robinhood Agentic MCP is connected in Claude Code (see `.mcp.json`, gitignored).
+Use MCP for Portfolio C and any accounts it exposes; use `scripts/robinhood_sync.py` for
+Portfolio A taxable when MCP does not cover it or for `pending_ingest.json` → `/log-positions`.
+IRA (Portfolio B): manual thesis entry unless MCP discovery shows IRA read access.
+**Human step:** In Claude Code, list MCP accounts and append results to this file.
+Revisit: When MCP account list is confirmed.
+
 ## Scheduler
 
 **[2026-05-14] Scheduler is systemd, not launchd.**

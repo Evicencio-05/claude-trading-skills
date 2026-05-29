@@ -1,0 +1,22 @@
+---
+description: Multi-step trading workflows from commands/ (deep research, position logging, research updates)
+alwaysApply: false
+---
+
+# Command Workflows
+
+Slash commands in `commands/` are **workflow specs** shared by Claude Code and Cursor.
+When the user requests one of these workflows, read the linked file and follow it exactly.
+
+| User intent | Workflow file |
+|-------------|---------------|
+| Deep research on TICKER | [commands/deep-research.md](commands/deep-research.md) |
+| Update existing research | [commands/update-research.md](commands/update-research.md) |
+| Log positions after Robinhood sync | [commands/log-positions.md](commands/log-positions.md) |
+| Intraday options plan | [commands/intraday-options.md](commands/intraday-options.md) |
+| Portfolio review | [commands/review-portfolio.md](commands/review-portfolio.md) |
+| Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
+
+**Deep research rule:** Two-pass only — complete ALL Pass 1 data collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
+
+See [commands/README.md](commands/README.md) for Claude vs Cursor invocation.

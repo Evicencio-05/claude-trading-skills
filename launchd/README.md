@@ -14,8 +14,18 @@ Logs: tail /tmp/pre_market.log
 
 ## Robinhood Sync (systemd — Linux/Arch)
 Runs scripts/robinhood_sync.py at 4:30 PM ET weekdays.
-File: robinhood-sync.service + robinhood-sync.timer
-(Not yet created — follows same pattern as pre-market)
+Files: robinhood-sync.service + robinhood-sync.timer (install to ~/.config/systemd/user/)
+
+**Prerequisite:** Complete manual 2FA once; fill ACCOUNT_MAP in `scripts/robinhood_sync.py`.
+
+Setup:
+  cp launchd/robinhood-sync.service launchd/robinhood-sync.timer ~/.config/systemd/user/
+  systemctl --user daemon-reload
+  systemctl --user enable robinhood-sync.timer
+  systemctl --user start robinhood-sync.timer
+
+Test: uv run scripts/robinhood_sync.py --dry-run
+Logs: tail /tmp/robinhood_sync.log
 
 ## Note on .plist files
 The .plist files in this directory are macOS launchd format.

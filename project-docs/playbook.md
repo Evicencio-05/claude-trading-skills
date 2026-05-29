@@ -3,7 +3,7 @@
 > Canonical home for rules derived from live trading, audit,
 > and system operation. Load when planning trades or reviewing
 > positions. Updated at the end of each phase.
-> Last updated: 2026-05-10
+> Last updated: 2026-05-28
 
 ---
 
@@ -88,31 +88,39 @@ Only intermediate skill run artifacts (loose `.json` files) are gitignored.
 
 
 
-**Robinhood sync workflow:**
-1. `python3 scripts/robinhood_sync.py` (2FA on first run only)
-2. Fill ACCOUNT_MAP in script with printed account IDs
-3. Run `/log-positions` in Claude Code — answer 4 questions
-   per position (thesis, confidence, stop, target — everything
-   else pre-filled from Robinhood)
+**Portfolios (2026-05-28):**
 
-What sync captures automatically: ticker, size, avg cost,
-account, and for options: strike, expiry, type, contracts,
-IRA eligibility, basic tags.
+| Label | Account | Size | Sync path |
+|-------|---------|------|-----------|
+| A | Robinhood taxable | ~$250 | `robinhood_sync.py` → `pending_ingest.json` |
+| B | Robinhood Roth IRA | ~$10K | Manual — thesis-manager or `/log-positions` |
+| C | Robinhood Agentic | ~$50 | Official Robinhood Agentic MCP (Claude Code) |
+| Lucid | Tradovate eval | — | Manual / Phase 2 |
+
+**Robinhood sync workflow (Portfolio A):**
+1. `uv run python3 scripts/robinhood_sync.py` (2FA on first run only)
+2. Fill ACCOUNT_MAP in script with printed account IDs (refresh if login changed)
+3. Run `/log-positions` in Claude Code — answer 4 questions per position
+
+**Robinhood Agentic MCP (Portfolio C):**
+Use Claude Code MCP for positions when available. IRA (B) stays manual unless
+MCP account discovery confirms IRA read access — see [decisions.md](../decisions.md).
+
+What sync/MCP captures automatically: ticker, size, avg cost, account, options fields, IRA flags.
 What always requires human input: thesis, confidence, stop, target.
 
-For scheduled runs: install systemd service and timer
-(see launchd/README.md for setup commands).
-Enable ONLY after completing manual 2FA auth at least once.
+**Scheduled sync:** `robinhood-sync.timer` at 4:30 PM ET weekdays — see [launchd/README.md](../launchd/README.md).
+Enable only after manual 2FA succeeds once.
 
 **economic-calendar-fetcher is permanently blocked on free FMP tier.**
 Returns [] silently — no error, empty output.
 Use scripts/fred_calendar.py instead (built 2026-05-09).
 FRED_API_KEY required (free registration at fred.stlouisfed.org).
 
-**exposure-coach schema mismatch fixed 2026-05-10.**
-P2 fix applied — extract_breadth_score(), extract_uptrend_score(),
-extract_sector_score() all updated to read nested composite paths.
-55/55 tests pass. Confirm STATUS.md shows fix before trusting output.
+**exposure-coach schema mismatch fixed 2026-05-10 (verified 2026-05-28).**
+Nested `composite.composite_score` paths parse correctly (breadth/uptrend).
+LOW confidence when only breadth+uptrend provided is **expected** — missing
+`regime` and `top_risk` are in CRITICAL_INPUTS. Run weekly with full inputs when FMP allows.
 
 **vcp-screener is blocked on free FMP tier.**
 Batch quote endpoint restricted on free tier.
@@ -134,8 +142,9 @@ NASDAQ component restored when FMP Starter is active.
 
 ## Portfolio Scale Rules
 
-Portfolio A: ~$500 Robinhood taxable (deployment capital).
+Portfolio A: ~$250 Robinhood taxable (deployment capital).
 Portfolio B: ~$10K Robinhood IRA (full trading, IRA restrictions).
+Portfolio C: ~$50 Robinhood Agentic (equities; options later).
 
 **Skill ratings that scale with portfolio size:**
 - exposure-coach: H:3 at $500 -> H:5 at $50K

@@ -8,6 +8,7 @@
 
 | Category | Target | Hard Cap |
 |---|---|---|
+| Cursor subscription | (user plan) | Use for code/tests/refactors — not synthesis |
 | Anthropic API | $20 | $40 |
 | Data sources | $0 | $30 |
 | Prop firm evaluations | $0 (avg) | ~$30 (one eval every 2-3 months) |

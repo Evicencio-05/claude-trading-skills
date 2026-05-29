@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Robinhood sync at 4:30 PM ET weekdays
+
+[Timer]
+# 4:30 PM ET ≈ 1:30 PM PDT (adjust OnCalendar for your timezone / DST)
+OnCalendar=Mon-Fri 13:30
+Persistent=true
+
+[Install]
+WantedBy=timers.target

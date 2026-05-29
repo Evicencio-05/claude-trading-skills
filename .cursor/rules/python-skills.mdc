@@ -1,0 +1,38 @@
+---
+description: Python, pytest, uv, API keys, and pre-commit conventions for skills/ and scripts/
+globs: skills/**/*.py,scripts/**/*.py
+alwaysApply: false
+---
+
+# Python & Skill Scripts
+
+## Stack (locked — do not swap)
+
+- Python 3.11+, `uv`, `ruff`, `mypy`, `pytest`, `pre-commit`
+- Pydantic for schemas, `structlog` for logging, `httpx` + `asyncio` for async I/O
+
+## Workflow
+
+1. Write or update tests first (TDD)
+2. Minimal implementation to pass
+3. Run targeted tests: `uv run python3 -m pytest <path> -v`
+4. Before commit: `pre-commit run --files <changed files>`
+
+## API keys
+
+- Read from env first (`FMP_API_KEY`, `FINVIZ_API_KEY`, `ALPACA_*`), then CLI args
+- Keys load via `python-dotenv` from repo-root `.env` (gitignored)
+- Never hardcode secrets or commit `.env` / `.mcp.json`
+- API requirements by skill: see **API Key Management** table in [CLAUDE.md](CLAUDE.md)
+
+## Script patterns
+
+- Default `--output-dir` to `reports/`
+- Clear stderr errors, exit 0 on success / 1 on failure
+- Rate-limit retries with backoff for external APIs
+- Use `Path(__file__).resolve().parents[N]` — no `/Users/...` absolute paths
+
+## Paths
+
+- Skills live in `skills/<name>/` (source of truth)
+- Cursor discovers via `.cursor/skills/` symlinks — edit `skills/`, not copies

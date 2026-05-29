@@ -4,9 +4,14 @@ description: "Read state/pending_ingest.json and log each position to trader-mem
 
 # /log-positions
 
-Reads `state/pending_ingest.json` written by `scripts/robinhood_sync.py`.
+Reads `state/pending_ingest.json` written by `scripts/robinhood_sync.py` (Portfolio A taxable).
 For each position with status PENDING_THESIS, asks only for the four things
 that require human judgment. Everything else is already filled in.
+
+**Portfolio B (IRA):** Not populated by `robinhood_sync.py`. Use [tools/thesis-manager/](../tools/thesis-manager/)
+Add Thesis page, or paste positions from Robinhood Agentic MCP if Claude Code lists the IRA account.
+
+**Portfolio C (Agentic):** Prefer Robinhood Agentic MCP in Claude Code when connected; fall back to thesis-manager.
 
 ---
 

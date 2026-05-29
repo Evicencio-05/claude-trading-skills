@@ -1,6 +1,6 @@
 # AI Trading Agent — Project Charter
 
-> **Read this file at the start of every Claude Code session.**
+> **Read this file at the start of every AI session** (Claude Code or Cursor).
 > This is the lightweight router. Detailed guidance lives in `project-docs/` and is loaded only when working on that phase.
 
 ---
@@ -65,12 +65,16 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 ## How to Use This Project
 
-### Starting a Claude Code session
+### Starting a session (Claude Code or Cursor)
 
 1. Read this file (you're doing it now).
-2. Check the **Active Phase** above.
-3. Read the corresponding phase doc. **Only read the active phase doc.**
+2. Read [LOAD_GUIDE.md](LOAD_GUIDE.md) and [project-docs/STATUS.md](project-docs/STATUS.md).
+3. Check the **Active Phase** below and read that phase doc only.
 4. If working on a specific skill, read that skill's `SKILL.md` after the phase doc.
+
+**Cursor:** Rules in `.cursor/rules/` apply automatically; see [AGENTS.md](AGENTS.md) for hybrid routing.
+
+**Claude Code:** Use `commands/` slash workflows; symlink skills from `skills/` to `~/.claude/skills/`.
 
 ### Phase docs
 

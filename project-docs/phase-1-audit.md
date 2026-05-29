@@ -120,18 +120,18 @@ These are immediately useful for your Robinhood account and options trading.
 
 ### Run the existing commands
 
-- [ ] /deep-research on 3-5 stocks you're actually watching right now
+- [x] /deep-research on 3-5 stocks you're actually watching right now
 - [ ] /intraday-options on a stock with a live setup
-- [ ] /update-research on one of the above a week later
-- [ ] /scenario-analyzer on one macro headline affecting your watchlist
+- [x] /update-research on one of the above a week later
+- [x] /scenario-analyzer on one macro headline affecting your watchlist
 
 ### Daily market context routine
 
 For 10+ trading days before market open:
 
-- [ ] Run market-breadth-analyzer
-- [ ] Run exposure-coach
-- [ ] Save to ~/trading-research/logs/market_context_YYYY-MM-DD.md
+- [x] Run market-breadth-analyzer
+- [x] Run exposure-coach
+- [x] Save to ~/trading-research/logs/market_context_YYYY-MM-DD.md
 - [ ] End of day: 2-3 sentences on whether the call matched what happened
 
 ### Trade logging — most important deliverable
@@ -158,8 +158,8 @@ If zero real trades: log paper trades or hypothetical setups from research.
 - [x] skills_audit.md with dual ratings for all Tier 1-2 skills
 - [x] At least 8 Tier 1 skills audited and rated
 - [ ] 10+ trades logged across at least 2 different trade types
-- [ ] 10+ days of daily market context saved
-- [ ] /deep-research run on at least 3 real tickers
+- [x] 10+ days of daily market context saved
+- [x] /deep-research run on at least 3 real tickers
 - [x] At least one Lucid eval account opened and one trade taken
 - [ ] Total Anthropic spend < $20
 - [ ] Pre-commit hooks pass cleanly

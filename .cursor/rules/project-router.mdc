@@ -1,0 +1,64 @@
+---
+description: Project charter, load order, Lucid constraints, and session routing for this trading fork
+alwaysApply: true
+---
+
+# Trading Agent — Project Router
+
+Private fork of claude-trading-skills. **Extend what exists** — audit before building new skills.
+
+## Session start (read in order)
+
+1. [PROJECT.md](PROJECT.md) — goals, non-negotiables, budget
+2. [LOAD_GUIDE.md](LOAD_GUIDE.md) — what to load and skip
+3. [project-docs/STATUS.md](project-docs/STATUS.md) — active phase, blockers, focus
+
+Then load **only** the active phase doc (see STATUS.md). Do not load all phase docs.
+
+## Non-negotiables (every session)
+
+1. Audit before building — use existing skills first
+2. Lucid rules are sacred — see `project-docs/reference/lucid-rules.md` for futures
+3. No HFT / latency arbitrage
+4. **4:45 PM ET** hard flatten — agent closes earlier
+5. **No autonomous execution** before Phase 5 (co-pilot only)
+6. Risk controls are immutable from the agent
+7. Every trade logged via `trader-memory-core`
+8. Cost discipline — prefer free/local scripts over LLM calls
+9. Human review for auto-generated skill PRs
+10. Never commit secrets, API keys, or absolute paths with usernames
+
+## On-demand loads
+
+| When | Read |
+|------|------|
+| Planning/reviewing trades | `project-docs/playbook.md` |
+| Skill status | `project-docs/audit/skills_audit.md` |
+| Deep research on a ticker | `commands/deep-research.md` or `.cursor/skills/deep-research` |
+| Futures work | `project-docs/reference/lucid-rules.md` |
+| API costs | `project-docs/reference/cost-discipline.md` |
+| Cursor setup / MCP | `project-docs/reference/cursor-integration.md` |
+| Code architecture | `project-docs/reference/tech-stack.md` |
+
+## Never load routinely
+
+- Full `CLAUDE.md` (933 lines) — specific sections only
+- `docs/`, `examples/`, upstream `README.md`
+- Entire `skills/<name>/` dirs — only that skill's `SKILL.md` when needed
+- `reports/` bulk — specific files only
+
+## Key operational facts
+
+- Active phase: **Phase 1** (confirm in STATUS.md)
+- economic-calendar-fetcher: **BLOCKED** — use `scripts/fred_calendar.py`
+- vcp-screener: may need FMP Starter tier
+- market-top-detector: use `--static-basket` when needed
+- Portfolio B = Robinhood Roth IRA — flag IRA-ineligible options before actionable advice
+- AutoLiq at +$625 = daily profit target hit, not a rule violation
+- Daily breadth stack (zero API cost): `uv run python3 scripts/pre_market.py`
+
+## Output conventions
+
+- Analysis reports → `reports/` with date stamps, English
+- Code changes → TDD: tests first, then minimal implementation, run pytest
+- Hybrid tooling: see [AGENTS.md](AGENTS.md)
