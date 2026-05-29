@@ -15,7 +15,7 @@
 ## Setup checklist
 
 1. Open repo in Cursor — `project-router.mdc` loads automatically.
-2. Confirm symlinks: `ls -la .cursor/skills/` — each entry should point to `../../skills/<name>`.
+2. Confirm `.cursor/skills/`: most entries symlink to `../../skills/<name>`; wrapper dirs (`deep-research`, `log-positions`, `update-research`, `robinhood-portfolio-review`) are repo-local and link to `commands/` — see [.cursor/skills/README.md](../../.cursor/skills/README.md).
 3. Optional: `ln -sfn "$(pwd)/skills/<name>" ~/.claude/skills/<name>` for Claude Code parity.
 4. Ensure `.env` exists at repo root with `FMP_API_KEY` etc. (gitignored).
 5. Run `uv run python3 scripts/pre_market.py --dry-run` to verify daily stack.

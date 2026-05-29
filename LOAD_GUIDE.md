@@ -16,8 +16,9 @@
 
 | Phase | Load | Skip |
 |-------|------|------|
-| Phase 1 | project-docs/phase-1-audit.md | All other phase docs |
-| Phase 2 | project-docs/phase-2-futures-skills.md | All other phase docs |
+| Phase 1 | project-docs/phase-1-audit.md | Other phase docs (unless closing exit items) |
+| **Phase 1B** | project-docs/phase-1b-robinhood-research.md | All other phase docs |
+| Phase 2 | project-docs/phase-2-futures-skills.md | **Deferred** — banner only until 1B exit |
 | Phase 3 | project-docs/phase-3-learning-loop.md | All other phase docs |
 | Phase 4 | project-docs/phase-4-backtesting.md | All other phase docs |
 | Phase 5 | project-docs/phase-5-live-execution.md | All other phase docs |
@@ -63,7 +64,7 @@
 
 ## Key Operational Facts (do not look these up elsewhere)
 
-- Active phase: Phase 1 (check STATUS.md for current focus)
+- Active phase: **Phase 1B** (check STATUS.md; futures Phase 2 deferred per decisions.md)
 - economic-calendar-fetcher: BLOCKED — use scripts/fred_calendar.py
 - exposure-coach: Schema mismatch FIXED 2026-05-10 — check STATUS.md for current state
 - vcp-screener: BLOCKED on free FMP — FMP Starter upgrade pending

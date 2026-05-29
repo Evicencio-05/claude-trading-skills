@@ -1,70 +1,73 @@
 # Project Status
 
-**Last updated:** 2026-05-29
-**Phase 1 housekeeping completed:** 2026-05-10
-
-## Active Phase
-
-Phase 1 — Audit & Activate
-Phase started: 2026-05-07
-Target exit: ~2026-06-04 (4 weeks)
+**Last updated:** 2026-05-28
+**Active phase:** Phase 1B — Robinhood Research + Co-Pilot Trading
+**Phase doc:** [phase-1b-robinhood-research.md](phase-1b-robinhood-research.md)
+**Reprioritization:** [decisions.md](../decisions.md) [2026-05-28] — futures Phase 2 deferred
 
 ## This Week's Focus
 
-- [ ] Upgrade FMP to Starter tier (approved, not activated)
-- [ ] Log IRA positions via thesis-manager (human input)
-- [ ] Robinhood MCP: `bash scripts/setup_robinhood_mcp.sh`, restart Cursor, verify CLI `robinhood_mcp.py accounts`
-- [ ] Refresh ACCOUNT_MAP if taxable login changed
+- [ ] **Activate FMP Starter ($29/mo)** — approved verbally; enables batch vcp/canslim/earnings screeners
+- [ ] **Weekly research cadence** — `commands/review-portfolio.md` (FPS stale &gt;14d); next full deep-research candidate: FPS
+- [ ] **Robinhood co-pilot** — portfolio review + `ingest-pending` + `log-positions` for TE (taxable); first Agentic trade after user confirm
+- [ ] **IRA thesis logging** — MCP read + four questions for open IRA positions
+- [ ] **Close expired theses** — POWL, TSLA, PENG per PENDING_WORK
 
 ## Open Blockers
 
 | ID | Issue | Status |
 |----|-------|--------|
-| P1 | API keys unavailable in non-interactive shells | FIXED 2026-05-10 |
-| P2 | exposure-coach schema mismatch | FIXED 2026-05-10; verified 2026-05-28 |
-| P3 | vcp-screener blocked on free FMP tier | FMP Starter upgrade pending |
-| P4 | economic-calendar-fetcher blocked (silent empty response) | Workaround: scripts/fred_calendar.py |
+| P1 | API keys in non-interactive shells | FIXED 2026-05-10 |
+| P2 | exposure-coach schema mismatch | FIXED 2026-05-10 |
+| P3 | vcp-screener on free FMP (batch/ETFs) | **Partial** — single-ticker universe works; FMP Starter for full S&P500 pipeline |
+| P4 | economic-calendar-fetcher | Workaround: `scripts/fred_calendar.py` |
 
 ## Monthly Spend
 
-Current: $0 | Cap: $30/mo
+Current: $0 | Cap: $30/mo | FMP Starter pending activation
 
-## Key Decisions Pending
+## Robinhood MCP (verified 2026-05-28)
 
-- FMP Starter ($29/mo) upgrade — approved, not yet activated
-- Alpaca paper account setup — approved, not yet done
-- Robinhood Agentic MCP: which accounts exposed (human discovery in Claude Code)
+```bash
+uv run python3 scripts/robinhood_mcp.py accounts      # OK
+uv run python3 scripts/robinhood_mcp.py positions --all  # OK (TE taxable)
+```
 
-## Infrastructure (2026-05-28)
+Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml) | [decisions.md](../decisions.md)
 
-- [x] Robinhood hybrid MCP: direct URL for Cursor, `robinhood_mcp.py` CLI, `config/robinhood_accounts.yaml`, setup script
-- [x] Cursor harness: `.cursor/rules/`, `.cursor/skills/`, AGENTS.md
-- [x] PENDING_WORK.md task queue at repo root
-- [x] pre_market systemd timer installed (`~/.config/systemd/user/`)
-- [x] robinhood-sync systemd timer installed and enabled
-- [x] exposure-coach verified with latest pre_market JSON (breadth=42, uptrend=54)
-- [x] thesis-manager: compiles and Streamlit starts cleanly
+## Infrastructure
 
-## Open Blockers / Action Items
+- [x] `pre-market.timer` active (next trigger weekdays 8 AM ET)
+- [x] `robinhood-sync.timer` enabled
+- [x] MCP hybrid CLI + Cursor URL
+- [x] Phase 1 audit complete (Tier 1–2)
 
-- [ ] Fill ACCOUNT_MAP in scripts/robinhood_sync.py if login/account IDs changed
-- [ ] Complete Robinhood MCP account list → decisions.md
-- [ ] First successful scheduled robinhood_sync after 2FA
+## Phase 1B Exit Criteria Progress
 
-## Phase 1 Exit Criteria Progress
+| Criterion | Status |
+|-----------|--------|
+| FMP Starter + vcp on watchlist | Partial — vcp ran on MRAM; Starter not billed yet |
+| 14 days pre_market + posture log | In progress (13+ days in posture_history) |
+| 5+ deep/update on watchlist | In progress (MRAM/MU/P May 27; FPS stale May 13) |
+| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; many theses pre-1B |
+| 3+ Agentic co-pilot MCP trades | ❌ 0 — awaiting user confirm |
+| IRA logged via MCP | ❌ |
+| 2+ portfolio_review reports | 1 started 2026-05-28 |
+| Phase 1: Anthropic &lt;$20, pre-commit | Open |
 
-- [x] skills_audit.md with dual ratings for all Tier 1-2 skills
-- [x] At least 8 Tier 1 skills audited and rated
-- [ ] 10+ trades logged across at least 2 different trade types
-- [x] 10+ days of daily market context saved (13 rows in posture_history.log)
-- [x] /deep-research run on at least 3 real tickers (MRAM, MU, P, VECO, INO, FPS, …)
-- [x] At least one Lucid eval account opened and one trade taken
-- [ ] Total Anthropic spend < $20
-- [ ] Pre-commit hooks pass cleanly
+## Phase 1 Exit (carryover)
+
+- [x] skills_audit.md Tier 1–2
+- [x] 8+ Tier 1 skills rated
+- [ ] 10+ trades logged (≥2 types)
+- [x] 10+ days market context
+- [x] 3+ deep-research tickers
+- [x] Lucid eval + one trade
+- [ ] Anthropic spend &lt; $20
+- [ ] Pre-commit clean
 
 ## Recent Changes
 
-- Handoff execution: PENDING_WORK.md, robinhood-sync systemd units, doc sync
-- pre_market.py: 13+ daily posture log entries (May 14–28)
-- Portfolio sizes updated: A ~$250, B ~$10K IRA, C ~$50 Agentic
-- robinhood_sync.py: Portfolio A taxable only; B manual; C via MCP when available
+- Phase 1B kickoff: roadmap reprioritized; futures Phase 2 deferred
+- `phase-1b-robinhood-research.md` created
+- Pre-market run 2026-05-28: breadth 42.4, posture CAUTIOUS 50%

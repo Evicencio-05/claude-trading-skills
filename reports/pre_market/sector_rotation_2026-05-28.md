@@ -52,4 +52,4 @@ Evidence:
 - Technology: 39.7%
 
 ---
-*Generated: 2026-05-28T17:43:33*
+*Generated: 2026-05-28T20:45:22*

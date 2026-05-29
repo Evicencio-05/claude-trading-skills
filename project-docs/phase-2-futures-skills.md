@@ -1,5 +1,7 @@
 # Phase 2 — Futures Skills
 
+> **DEFERRED — do not start until Phase 1B exit.** See [decisions.md](../decisions.md) [2026-05-28] and [phase-1b-robinhood-research.md](phase-1b-robinhood-research.md). Phase 3–5 file numbers unchanged.
+
 **Duration:** 6 weeks (weeks 5–10)
 **Goal:** Build the missing futures-specific skills. Use existing skill patterns as templates.
 

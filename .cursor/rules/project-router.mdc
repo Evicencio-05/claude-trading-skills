@@ -51,7 +51,7 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 
 ## Key operational facts
 
-- Active phase: **Phase 1** (confirm in STATUS.md)
+- Active phase: **Phase 1B** — [phase-1b-robinhood-research.md](../../project-docs/phase-1b-robinhood-research.md) (futures Phase 2 deferred)
 - economic-calendar-fetcher: **BLOCKED** — use `scripts/fred_calendar.py`
 - vcp-screener: may need FMP Starter tier
 - market-top-detector: use `--static-basket` when needed

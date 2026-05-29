@@ -105,7 +105,7 @@ These are immediately useful for your Robinhood account and options trading.
 20. signal-postmortem
 21. dual-axis-skill-reviewer
 22. backtest-expert
-23. trader-memory-core scripts — read thesis_ingest.py in detail
+23. trader-memory-core scripts — read thesis_ingest.py for screener adapters (not open-position logging)
 
 **Tier 4 — Equity strategies (run if time permits)**
 
@@ -138,7 +138,7 @@ For 10+ trading days before market open:
 
 For every trade (stock, option, futures, paper or real):
 
-- [ ] Log to trader-memory-core using thesis_ingest.py
+- [ ] Log to trader-memory-core via `/log-positions` / `thesis_store.register()` (screener JSON still uses `thesis_ingest.py`)
 - [ ] Required: ticker, direction, entry/exit, size, thesis (why), confidence 1-5, tags, stop, target
 - [ ] After close: pnl, review (what happened, what was missed)
 

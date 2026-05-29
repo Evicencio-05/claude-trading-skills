@@ -37,6 +37,13 @@ Correct URL and OAuth setup unclear. No Phase 1 need.
 Decision: Defer to Phase 3 when skill-improvement PRs need review.
 Revisit: Phase 3 start.
 
+## Phase roadmap
+
+**[2026-05-28] Futures Phase 2 deferred; Robinhood research + co-pilot trading prioritized.**
+Phase 1 audit and MCP hybrid are largely done; swing pipeline (FMP screeners, thesis count, Agentic co-pilot) is not production-ready. Lucid eval continues manually without new futures skills.
+Decision: Active work = **Phase 1B** ([phase-1b-robinhood-research.md](project-docs/phase-1b-robinhood-research.md)). Old Phase 2 futures skills ([phase-2-futures-skills.md](project-docs/phase-2-futures-skills.md)) stay in repo with DEFERRED banner — do not start `lucid-rules-engine`, `tradovate-integration`, or futures-setup until Phase 1B exit.
+Revisit futures when: Phase 1B exit criteria met **and** 20+ logged stock/options trades in `trader-memory-core` (user may override trigger).
+
 ## Architecture
 
 **[2026-05-11] Built Robinhood sync instead of using Trayd MCP.**
@@ -64,6 +71,11 @@ Japanese output is hardcoded (~30-min SKILL.md edit to fix).
 Underlying methodology is sound. Not urgent.
 Decision: Rewrite during a quiet session when current priorities clear.
 Revisit: Phase 2 or whenever workflow needs macro scenario analysis.
+
+**[2026-05-28] scenario-analyzer SKILL.md thin wrapper.**
+Replaced upstream 339-line SKILL body with link to commands/scenario-analyzer.md.
+Workflow logic and Japanese output remain in commands/; references stay under skills/scenario-analyzer/references/.
+Revisit: English output rewrite (previously deferred).
 
 ## Portfolio
 

@@ -13,7 +13,7 @@ A private fork of `claude-trading-skills` extended into a personalized, continuo
 Deep research, screening, and trade planning on individual US equities and options using the existing 40+ skills. This is active from Day 1 and covers swing trades, earnings plays, options strategies, and long-term positions on the Robinhood account and beyond.
 
 **Goal B — Futures Trading via Prop Firm**
-CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accounts via Tradovate. This builds in parallel, with new futures-specific skills added in Phase 2. The two goals inform each other — macro context from futures work sharpens stock research; fundamentals from stock research informs index bias.
+CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accounts via Tradovate. **Futures-specific skills are deferred** until Phase 1B exits ([decisions.md](decisions.md)). Lucid eval continues manually. Macro context from futures work still informs stock research when you trade eval accounts.
 
 **Long-term vision:** An autonomous AI trading partner that learns from the user's trades, behavioral patterns, and outcomes across both workflows — compounding edge over time.
 
@@ -35,7 +35,7 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 ## Non-Negotiables (read every session)
 
 1. **Audit before building.** Use existing skills before extending them.
-2. **Both goals matter equally.** Do not optimize purely for futures and neglect the stock/options research workflow, or vice versa.
+2. **Stock/options pipeline first in Phase 1B.** Futures skill build is deferred; Lucid eval continues manually. Do not neglect the Robinhood research → co-pilot loop.
 3. **Lucid rules are sacred.** Hard-coded constraints. Never overridable by the agent.
 4. **No HFT, no latency arbitrage.** Lucid prohibits these.
 5. **4:45 PM ET hard cutoff.** Lucid auto-flattens. Agent closes earlier on its own.
@@ -59,7 +59,7 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 ## Current Status
 
-**Current status:** See `project-docs/STATUS.md`
+**Active phase:** Phase 1B — Robinhood research + co-pilot trading. See `project-docs/STATUS.md` and `project-docs/phase-1b-robinhood-research.md`.
 
 ---
 
@@ -80,8 +80,9 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 | Phase | Doc | Status |
 |---|---|---|
-| Phase 1 | `project-docs/phase-1-audit.md` | Active |
-| Phase 2 | `project-docs/phase-2-futures-skills.md` | Locked (week 5) |
+| Phase 1 | `project-docs/phase-1-audit.md` | Winding down (audit done) |
+| **Phase 1B** | `project-docs/phase-1b-robinhood-research.md` | **Active** |
+| Phase 2 | `project-docs/phase-2-futures-skills.md` | **Deferred** (futures skills) |
 | Phase 3 | `project-docs/phase-3-learning-loop.md` | Locked (week 11) |
 | Phase 4 | `project-docs/phase-4-backtesting.md` | Locked (week 19) |
 | Phase 5 | `project-docs/phase-5-live-execution.md` | Locked (week 27) |

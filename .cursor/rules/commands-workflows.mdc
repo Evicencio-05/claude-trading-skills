@@ -15,7 +15,8 @@ When the user requests one of these workflows, read the linked file and follow i
 | Log positions (sync or MCP) | [commands/log-positions.md](commands/log-positions.md) or skill `log-positions` |
 | Robinhood portfolio review | Skill `robinhood-portfolio-review` → `reports/portfolio_review_*.md` |
 | Intraday options plan | [commands/intraday-options.md](commands/intraday-options.md) |
-| Portfolio review | [commands/review-portfolio.md](commands/review-portfolio.md) |
+| Options strategy plan for TICKER | [commands/options-strategy-planner.md](commands/options-strategy-planner.md) |
+| Research watchlist batch | [commands/review-portfolio.md](commands/review-portfolio.md) |
 | Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
 
 **Deep research rule:** Two-pass only — complete ALL Pass 1 data collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.

@@ -13,6 +13,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/log-positions` | [log-positions.md](log-positions.md) |
 | `/intraday-options` | [intraday-options.md](intraday-options.md) |
 | `/review-portfolio` | [review-portfolio.md](review-portfolio.md) |
+| `/options-strategy-planner TICKER` | [options-strategy-planner.md](options-strategy-planner.md) |
 | `/scenario-analyzer` | [scenario-analyzer.md](scenario-analyzer.md) |
 
 ## Cursor
@@ -22,7 +23,8 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Deep research | Skill: `.cursor/skills/deep-research` — or ask "deep research on AAPL" (`.cursor/rules/commands-workflows.mdc` links here) |
 | Update research | Ask to follow [update-research.md](update-research.md) |
 | Log positions | Skill `log-positions` — after sync and/or Robinhood MCP fetch |
-| Portfolio review | Skill `robinhood-portfolio-review` (requires Robinhood MCP) |
+| Broker snapshot (MCP) | Skill `robinhood-portfolio-review` — live balances/positions; weekly before Agentic trades |
+| Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 
 **Rule:** For deep research, always use the two-pass flow in [deep-research.md](deep-research.md) — collect everything in Pass 1 before writing the report in Pass 2.
