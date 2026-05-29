@@ -1,24 +1,58 @@
 ---
-description: "Read state/pending_ingest.json and log each position to trader-memory-core by asking only for thesis, confidence, stop, and target. All other data is pre-filled from Robinhood sync."
+description: "Log positions to trader-memory-core via pending_ingest.json (sync) or Robinhood MCP snapshot. Asks only thesis, confidence, stop, and target."
 ---
 
 # /log-positions
 
-Reads `state/pending_ingest.json` written by `scripts/robinhood_sync.py` (Portfolio A taxable).
-For each position with status PENDING_THESIS, asks only for the four things
-that require human judgment. Everything else is already filled in.
+Log open positions to **trader-memory-core** with minimal human input (four questions per position).
 
-**Portfolio B (IRA):** Not populated by `robinhood_sync.py`. Use [tools/thesis-manager/](../tools/thesis-manager/)
-Add Thesis page, or paste positions from Robinhood Agentic MCP if Claude Code lists the IRA account.
+## Two ingestion sources
 
-**Portfolio C (Agentic):** Prefer Robinhood Agentic MCP in Claude Code when connected; fall back to thesis-manager.
+| Source | When to use | Data origin |
+|--------|-------------|-------------|
+| **A — Sync** | Portfolio A taxable; scheduled daily | `scripts/robinhood_sync.py` → `state/pending_ingest.json` |
+| **B — MCP CLI** | IRA, Agentic, all taxable accounts | `scripts/robinhood_mcp.py ingest-pending` |
+
+**Portfolio B (IRA):** Not in `robinhood_sync.py`. Use **Source B** (MCP) or [tools/thesis-manager/](../tools/thesis-manager/) Add Thesis.
+
+**Portfolio C (Agentic):** Prefer **Source B** when MCP is connected in Cursor.
+
+Setup: [project-docs/reference/robinhood-mcp-integration.md](../project-docs/reference/robinhood-mcp-integration.md)
 
 ---
 
-## The Prompt
+## Source A — Sync file (default)
+
+```bash
+uv run python3 scripts/robinhood_sync.py
+```
+
+Then run the prompt below against `state/pending_ingest.json`.
+
+---
+
+## Source B — MCP CLI
+
+```bash
+bash scripts/setup_robinhood_mcp.sh   # once
+uv run python3 scripts/robinhood_mcp.py ingest-pending
+# or --dry-run to preview
+```
+
+Account mapping: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml) and [decisions.md](../decisions.md).
+
+Equity positions only via MCP today; options on IRA may need thesis-manager until options MCP ingest exists.
+
+Then run the shared prompt below.
+
+---
+
+## The Prompt (both sources)
 
 ```
-Read state/pending_ingest.json.
+Determine source:
+  - If state/pending_ingest.json has PENDING_THESIS rows, use them.
+  - Else if user asked for MCP log-positions, fetch via Robinhood MCP (Source B) first, then continue.
 
 Find all positions where "status" is "PENDING_THESIS".
 If there are none, report: "No positions pending thesis input." and stop.
@@ -46,48 +80,33 @@ Then ask ONLY these four questions in sequence:
   3. "Stop level — price or condition that invalidates the thesis?"
   4. "Target — exit condition or price?"
 
-After receiving all four answers, run thesis_ingest.py:
+After receiving all four answers, register the thesis:
 
-  python3 skills/trader-memory-core/scripts/thesis_ingest.py \
-    --ticker {ticker} \
-    --asset-type {asset_type} \
-    --direction {direction} \
-    --account {account} \
-    --size {contracts_or_size} \
-    --avg-cost {avg_cost} \
-    --entry-date {synced_at[:10]} \
-    --confidence {confidence} \
-    --thesis "{thesis}" \
-    --stop "{stop}" \
-    --target "{target}" \
-    --tags "{comma_separated_tags}" \
-    --status ACTIVE
+  Preferred: tools/thesis-manager/ Add Thesis page (writes via thesis_store API).
 
-If thesis_ingest.py succeeds, update state/pending_ingest.json:
+  Or: build thesis_data dict per trader-memory-core schema and call
+  thesis_store.register(state_dir, thesis_data) from Python (see tools/thesis-manager/utils.py).
+
+  Do NOT use thesis_ingest.py for manual/MCP positions — it only accepts screener JSON sources.
+
+  Transition to ACTIVE if this is an existing open position with known entry:
+  use thesis_store.open_position() after register when appropriate.
+
+If registration succeeds and position came from pending_ingest.json:
   - Set position status from "PENDING_THESIS" to "INGESTED"
   - Add "ingested_at": current timestamp
-
-After ALL positions are processed, update state/synced_positions.json:
-  - Move all newly ingested keys from "pending_keys" to "ingested_keys"
+  - Update state/synced_positions.json pending_keys / ingested_keys (Source A only)
 
 Report at the end:
   "Logged N positions to trader-memory-core.
-   Run thesis_store.py list to verify."
+   Run: uv run python3 skills/trader-memory-core/scripts/thesis_store.py --state-dir state/theses/ list"
+```
 
 ---
 
 ## Notes
 
-- If thesis_ingest.py arguments differ from above, check SKILL.md and adapt.
-  The fields above are based on audit findings — the script may use different
-  argument names. Read the actual script if a call fails.
-
-- For IRA positions, add tag "ira" automatically if not already present.
-  All options in ira_robinhood account are long calls/puts (IRA-eligible).
-
+- For IRA positions, add tag `ira` if not present. Flag IRA-eligible on every options line.
 - Skip any position where the user types "skip" — leave status as PENDING_THESIS.
-  It will appear again next time /log-positions runs.
-
-- Do not ask for any data that's already in the JSON. The whole point is that
-  the human only answers four questions per position, nothing more.
-```
+- Do not ask for fields already in the JSON or MCP snapshot.
+- Never edit YAML files under `state/theses/` directly.

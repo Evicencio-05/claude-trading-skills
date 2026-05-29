@@ -1,0 +1,8 @@
+{
+  "name": "claude-trading-skills-mcp",
+  "private": true,
+  "description": "Local MCP bridge deps for Robinhood Cursor integration (not published)",
+  "dependencies": {
+    "mcp-remote": "^0.1.27"
+  }
+}

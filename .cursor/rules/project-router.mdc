@@ -37,7 +37,9 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 | Deep research on a ticker | `commands/deep-research.md` or `.cursor/skills/deep-research` |
 | Futures work | `project-docs/reference/lucid-rules.md` |
 | API costs | `project-docs/reference/cost-discipline.md` |
-| Cursor setup / MCP | `project-docs/reference/cursor-integration.md` |
+| Cursor setup | `project-docs/reference/cursor-integration.md` |
+| Robinhood MCP | `project-docs/reference/robinhood-mcp-integration.md` |
+| MCP Cursor errors (-32600) | `project-docs/reference/mcp-cursor-compat.md` |
 | Code architecture | `project-docs/reference/tech-stack.md` |
 
 ## Never load routinely

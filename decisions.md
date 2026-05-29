@@ -89,12 +89,27 @@ Revisit: After MCP lists all linked accounts.
 ## MCP & Brokerage
 
 **[2026-05-28] Robinhood Agentic MCP vs local sync.**
-Official Robinhood Agentic MCP is connected in Claude Code (see `.mcp.json`, gitignored).
-Use MCP for Portfolio C and any accounts it exposes; use `scripts/robinhood_sync.py` for
-Portfolio A taxable when MCP does not cover it or for `pending_ingest.json` → `/log-positions`.
-IRA (Portfolio B): manual thesis entry unless MCP discovery shows IRA read access.
-**Human step:** In Claude Code, list MCP accounts and append results to this file.
-Revisit: When MCP account list is confirmed.
+Official Robinhood Agentic MCP URL: `https://agent.robinhood.com/mcp/trading`
+Cursor: copy [.cursor/mcp.json.example](.cursor/mcp.json.example) → `.cursor/mcp.json` (gitignored).
+Use MCP for portfolio read + log-positions Source B; use `robinhood_sync.py` for scheduled Portfolio A.
+IRA (Portfolio B): MCP read expected per Robinhood; no MCP trades on IRA.
+Revisit: When account discovery table below is filled.
+
+**[2026-05-29] Robinhood hybrid: Cursor URL + CLI data plane.**
+Cursor `.cursor/mcp.json` uses direct `url` only (avoids -32001 spawn timeout). Agent workflows use [`scripts/robinhood_mcp.py`](scripts/robinhood_mcp.py) (local mcp-remote + structuredContent proxy in subprocess). Account map: [`config/robinhood_accounts.yaml`](config/robinhood_accounts.yaml).
+Revisit: In-chat MCP tool calls when Robinhood returns valid `structuredContent` upstream.
+
+### Robinhood MCP account discovery (fill after Cursor OAuth)
+
+Run prompts in [project-docs/reference/robinhood-mcp-integration.md](project-docs/reference/robinhood-mcp-integration.md) Phase 1.
+
+| Robinhood account (name / number) | Maps to | Read MCP | Trade MCP | Notes |
+|-----------------------------------|---------|----------|-----------|-------|
+| ••••7016 (Agentic) | `robinhood_agentic` | Yes | Yes | individual, agentic_allowed |
+| ••••9309 (default) | `robinhood_taxable` | Yes | No | individual cash |
+| ••••3854 | `ira_robinhood` | Yes | No | ira_roth |
+
+**Discovery completed:** [x] Date: 2026-05-29 — see [config/robinhood_accounts.yaml](config/robinhood_accounts.yaml)
 
 ## Scheduler
 

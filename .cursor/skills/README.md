@@ -12,6 +12,9 @@ Symlinks point at the canonical skill tree in [`skills/`](../../skills/). **Edit
 ## Workflow skills (repo-local)
 
 - `deep-research` — wraps [commands/deep-research.md](../../commands/deep-research.md)
+- `log-positions` — [commands/log-positions.md](../../commands/log-positions.md) (sync + MCP)
+- `robinhood-portfolio-review` — MCP read-only portfolio report
+- `update-research` — [commands/update-research.md](../../commands/update-research.md)
 
 ## Add another skill
 

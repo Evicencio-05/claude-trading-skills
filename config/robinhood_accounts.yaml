@@ -1,0 +1,19 @@
+# Robinhood account_number → thesis_store key (discovered 2026-05-29 via MCP)
+accounts:
+  "487509309":
+    thesis_store: robinhood_taxable
+    label: Portfolio A — taxable individual
+    brokerage_account_type: individual
+    agentic_allowed: false
+    robin_stocks_url: "https://api.robinhood.com/accounts/487509309/"
+  "888653854":
+    thesis_store: ira_robinhood
+    label: Portfolio B — Roth IRA
+    brokerage_account_type: ira_roth
+    agentic_allowed: false
+  "647977016":
+    thesis_store: robinhood_agentic
+    label: Portfolio C — Agentic
+    brokerage_account_type: individual
+    agentic_allowed: true
+    nickname: Agentic

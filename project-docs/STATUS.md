@@ -1,6 +1,6 @@
 # Project Status
 
-**Last updated:** 2026-05-28
+**Last updated:** 2026-05-29
 **Phase 1 housekeeping completed:** 2026-05-10
 
 ## Active Phase
@@ -13,7 +13,7 @@ Target exit: ~2026-06-04 (4 weeks)
 
 - [ ] Upgrade FMP to Starter tier (approved, not activated)
 - [ ] Log IRA positions via thesis-manager (human input)
-- [ ] Robinhood MCP account discovery in Claude Code (paste results to decisions.md)
+- [ ] Robinhood MCP: `bash scripts/setup_robinhood_mcp.sh`, restart Cursor, verify CLI `robinhood_mcp.py accounts`
 - [ ] Refresh ACCOUNT_MAP if taxable login changed
 
 ## Open Blockers
@@ -37,6 +37,7 @@ Current: $0 | Cap: $30/mo
 
 ## Infrastructure (2026-05-28)
 
+- [x] Robinhood hybrid MCP: direct URL for Cursor, `robinhood_mcp.py` CLI, `config/robinhood_accounts.yaml`, setup script
 - [x] Cursor harness: `.cursor/rules/`, `.cursor/skills/`, AGENTS.md
 - [x] PENDING_WORK.md task queue at repo root
 - [x] pre_market systemd timer installed (`~/.config/systemd/user/`)

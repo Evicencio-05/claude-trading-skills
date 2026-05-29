@@ -1,7 +1,7 @@
 # PENDING_WORK.md
 
 > Persistent task queue across Cursor, Claude Code, and terminal sessions.
-> **Last updated:** 2026-05-28
+> **Last updated:** 2026-05-29
 > **Active phase:** Phase 1 — Audit & Activate
 > **Session load order:** [PROJECT.md](PROJECT.md) → [LOAD_GUIDE.md](LOAD_GUIDE.md) → [project-docs/STATUS.md](project-docs/STATUS.md)
 
@@ -14,25 +14,31 @@
 ## Done (do not redo)
 
 - [x] Cursor harness: `.cursor/rules/`, `.cursor/skills/` symlinks, [AGENTS.md](AGENTS.md)
+- [x] Robinhood MCP integration docs: [robinhood-mcp-integration.md](project-docs/reference/robinhood-mcp-integration.md), `.cursor/mcp.json.example`, `robinhood-mcp.mdc`, `robinhood-portfolio-review` skill
+- [x] MCP hybrid: `robinhood_mcp.py` CLI, `config/robinhood_accounts.yaml`, setup script, direct URL for Cursor
+- [x] MCP structuredContent proxy (CLI-only): `scripts/mcp_stdio_structured_content_proxy.py`
+- [x] log-positions Source B (MCP snapshot path) in command + skill
 - [x] `/deep-research` Phase 1 exit (3+ tickers) — no new runs in current batch
-- [x] **P2 verified 2026-05-28:** breadth=42, uptrend=54 from nested JSON; LOW confidence expected without regime/top_risk
-- [x] **pre_market:** 13+ days in `posture_history.log`; timer units in `~/.config/systemd/user/`; dry-run OK
-- [x] **robinhood-sync systemd:** `launchd/robinhood-sync.*` created; timer enabled in user systemd
-- [x] **thesis-manager:** `py_compile` + Streamlit headless start OK; 16 theses load from store
-- [x] **MCP docs:** decisions.md + playbook + log-positions updated (human account discovery still needed)
+- [x] P2, pre_market, robinhood-sync systemd, thesis-manager (see prior session)
 
 ---
 
 ## Auto-execute
 
-- [ ] **Robinhood MCP account discovery** (human in Claude Code)
-      List accounts via Agentic MCP → append to [decisions.md](decisions.md)
-      Confirm whether Portfolio B IRA is visible
+- [ ] **Robinhood MCP — connect in Cursor (you)**
+      1. `bash scripts/setup_robinhood_mcp.sh` (from repo root)
+      2. Restart Cursor; confirm `robinhood-trading` green
+      3. Run discovery prompts in [robinhood-mcp-integration.md](project-docs/reference/robinhood-mcp-integration.md)
+      4. Fill account table in [decisions.md](decisions.md)
 
-- [ ] **ACCOUNT_MAP refresh** after login change
-      `uv run python3 scripts/robinhood_sync.py --dry-run`
+- [ ] **First MCP portfolio review**
+      Invoke skill `robinhood-portfolio-review` after MCP connected
 
-- [ ] **scenario-analyzer Japanese output** — DEFERRED (upstream SKILL.md policy)
+- [ ] **ACCOUNT_MAP refresh** — `uv run python3 scripts/robinhood_sync.py --dry-run`
+
+- [ ] **scenario-analyzer Japanese output** — DEFERRED
+
+- [x] **MCP ingest bridge** — `robinhood_mcp.py ingest-pending` (replaces separate script)
 
 ---
 
@@ -44,7 +50,7 @@
 
 ## Needs data (human input only)
 
-- [ ] **Log open IRA positions** — thesis-manager Add Thesis
+- [ ] **Log open IRA positions** — MCP Source B + `log-positions` or thesis-manager
 - [ ] **Log expired as CLOSED** — POWL, TSLA, PENG $55C x3
 - [ ] **Verify HOOD/ICHR June expiries** before logging
 

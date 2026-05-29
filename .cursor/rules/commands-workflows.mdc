@@ -12,7 +12,8 @@ When the user requests one of these workflows, read the linked file and follow i
 |-------------|---------------|
 | Deep research on TICKER | [commands/deep-research.md](commands/deep-research.md) |
 | Update existing research | [commands/update-research.md](commands/update-research.md) |
-| Log positions after Robinhood sync | [commands/log-positions.md](commands/log-positions.md) |
+| Log positions (sync or MCP) | [commands/log-positions.md](commands/log-positions.md) or skill `log-positions` |
+| Robinhood portfolio review | Skill `robinhood-portfolio-review` → `reports/portfolio_review_*.md` |
 | Intraday options plan | [commands/intraday-options.md](commands/intraday-options.md) |
 | Portfolio review | [commands/review-portfolio.md](commands/review-portfolio.md) |
 | Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |

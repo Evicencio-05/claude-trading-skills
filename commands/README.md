@@ -21,7 +21,8 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 |----------|----------------|
 | Deep research | Skill: `.cursor/skills/deep-research` — or ask "deep research on AAPL" (`.cursor/rules/commands-workflows.mdc` links here) |
 | Update research | Ask to follow [update-research.md](update-research.md) |
-| Log positions | Ask to follow [log-positions.md](log-positions.md) after `scripts/robinhood_sync.py` |
+| Log positions | Skill `log-positions` — after sync and/or Robinhood MCP fetch |
+| Portfolio review | Skill `robinhood-portfolio-review` (requires Robinhood MCP) |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 
 **Rule:** For deep research, always use the two-pass flow in [deep-research.md](deep-research.md) — collect everything in Pass 1 before writing the report in Pass 2.

@@ -40,6 +40,8 @@
 | commands/update-research.md | Update research workflow |
 | AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
 | project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
+| project-docs/reference/robinhood-mcp-integration.md | Robinhood Agentic MCP in Cursor, portfolio review, log-positions |
+| project-docs/reference/mcp-cursor-compat.md | Cursor MCP structuredContent wrapper (Robinhood, future servers) |
 | .cursor/rules/ | Cursor auto-loads project-router; read on-demand if debugging rules |
 | CLAUDE.md (specific section) | Working on a specific skill's internals only |
 | commands/log-positions.md | After running robinhood_sync.py to log new positions to trader-memory-core |
@@ -80,7 +82,7 @@ Same load order as above. Cursor applies `.cursor/rules/project-router.mdc` auto
 4. Invoke skills by name (`market-breadth-analyzer`, `deep-research on AAPL`, etc.) — see `.cursor/skills/README.md`.
 5. For workflows: use `.cursor/skills/deep-research`, `update-research`, `log-positions`, or `commands/*.md` directly.
 
-**Portfolio:** Alpaca MCP is configured in Claude Code by default. In Cursor, use Robinhood sync + `log-positions`, or add Alpaca MCP in Cursor settings (see AGENTS.md).
+**Portfolio:** In Cursor, connect Robinhood MCP (see `project-docs/reference/robinhood-mcp-integration.md`). Use skills `robinhood-portfolio-review` and `log-positions`. Scheduled taxable sync still uses `robinhood_sync.py`.
 
 ## Claude Code sessions
 

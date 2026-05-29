@@ -21,13 +21,22 @@
 5. Run `uv run python3 scripts/pre_market.py --dry-run` to verify daily stack.
 6. Optional: install `robinhood-sync.timer` — see [launchd/README.md](../../launchd/README.md).
 
-## Portfolio MCP in Cursor
+## Robinhood MCP in Cursor (primary for this fork)
 
-**Default:** Use Claude Code for `portfolio-manager` with Alpaca MCP ([alpaca-mcp-setup.md](../../skills/portfolio-manager/references/alpaca-mcp-setup.md)).
+1. `bash scripts/setup_robinhood_mcp.sh` (writes `.cursor/mcp.json`)
+2. Requires Node.js + `npm` on PATH
+3. Restart Cursor; OAuth via `mcp-remote-client` on first run if prompted by setup
+4. Full guide: [robinhood-mcp-integration.md](robinhood-mcp-integration.md)
+5. MCP errors in Cursor: [mcp-cursor-compat.md](mcp-cursor-compat.md)
 
-**Cursor option:** Add the same MCP server in Cursor → Settings → MCP (project or user config). Tool names must match what `portfolio-manager` expects (`get_account_info`, `get_positions`, …). Use paper trading keys until validated.
+Skills: `robinhood-portfolio-review`, `log-positions`. Rule: `.cursor/rules/robinhood-mcp.mdc`.
 
-**Without MCP:** Robinhood path — `scripts/robinhood_sync.py` then `commands/log-positions.md`.
+**Hybrid:** Keep `robinhood_sync.py` timer for Portfolio A; use MCP for live reads and IRA/Agentic logging.
+
+## Alpaca MCP (optional)
+
+`portfolio-manager` uses Alpaca MCP — optional in Claude Code, not required for Robinhood workflows.
+See [alpaca-mcp-setup.md](../../skills/portfolio-manager/references/alpaca-mcp-setup.md).
 
 ## Do not
 

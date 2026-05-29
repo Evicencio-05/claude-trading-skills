@@ -51,9 +51,19 @@ from pathlib import Path
 # Run: python3 scripts/robinhood_sync.py --dry-run
 # Look for the "Found these account IDs" line in the output.
 
-ACCOUNT_MAP = {
-    "https://api.robinhood.com/accounts/487509309/": "robinhood_taxable",  # Portfolio A (~$500)
-}
+
+def _load_account_map() -> dict[str, str]:
+    try:
+        from robinhood_accounts import build_robin_stocks_account_map
+
+        return build_robin_stocks_account_map()
+    except Exception:
+        return {
+            "https://api.robinhood.com/accounts/487509309/": "robinhood_taxable",
+        }
+
+
+ACCOUNT_MAP = _load_account_map()
 
 # NOTE: Only Portfolio A (taxable individual account) is synced here.
 # Portfolio B (IRA) positions are logged manually via /log-positions.

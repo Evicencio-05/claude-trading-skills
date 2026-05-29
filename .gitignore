@@ -15,12 +15,16 @@ __pycache__/
 venv/
 env/
 
+# Node (Robinhood MCP setup — mcp-remote)
+node_modules/
+
 # Tool configurations
 .idea/
 .vscode/
 .env
 .envrc
 .mcp.json
+.cursor/mcp.json
 
 # Logs & temp
 logs/
