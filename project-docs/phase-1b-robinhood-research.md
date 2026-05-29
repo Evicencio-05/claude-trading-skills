@@ -28,7 +28,18 @@ Lucid eval continues **manually**; no `lucid-rules-engine`, `tradovate-integrati
 | Watchlist cadence | Weekly `commands/review-portfolio.md` — batch staleness + summary table |
 | Macro calendar | `scripts/fred_calendar.py` (canonical; economic-calendar-fetcher remains blocked on free FMP) |
 
-**Watchlist (reports/research/):** MRAM, MU, P, FPS, INO, VECO — maintain via review-portfolio.
+**Watchlist (`reports/research/`, latest report per ticker):**
+
+| Ticker | Latest report | Stale (&gt;14d)? |
+|--------|---------------|----------------|
+| MRAM | 2026-05-27 | No |
+| MU | 2026-05-27 | No |
+| P | 2026-05-27 | No |
+| FPS | 2026-05-13 | Yes |
+| INO | 2026-05-10 | Yes |
+| VECO | 2026-05-08 | Yes |
+
+Maintain via weekly `commands/review-portfolio.md`. Counts toward 5+ exit include Phase 1 reports; **3 current**, 3 need update-research.
 
 ### 2. Thesis discipline
 
@@ -74,9 +85,11 @@ Lucid eval continues **manually**; no `lucid-rules-engine`, `tradovate-integrati
 
 ## Exit criteria (Phase 1B → revisit futures Phase 2)
 
+Progress detail: [docs_sync_2026-05-28.md](../reports/docs_sync_2026-05-28.md).
+
 - [ ] FMP Starter active; `vcp-screener` run on watchlist universe at least once
-- [ ] 14 consecutive trading days: `pre_market.py` + posture log
-- [ ] 5+ deep-research or update-research reports on active watchlist (count includes Phase 1)
+- [ ] 14 consecutive trading days: `pre_market.py` + posture log (**11/14** unique days as of 2026-05-28)
+- [ ] 5+ deep-research or update-research reports on active watchlist (6 tickers; 3 stale — count includes Phase 1)
 - [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
 - [ ] 3+ co-pilot trades on Agentic via MCP (user-confirmed each)
 - [ ] IRA positions logged (MCP read + four questions)

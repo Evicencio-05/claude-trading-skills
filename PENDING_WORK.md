@@ -13,19 +13,21 @@
 
 ## Research pipeline (Phase 1B P0–P2)
 
+**Watchlist (`reports/research/`, latest only):** MRAM/MU/P @ 2026-05-27 | FPS @ 2026-05-13 (stale) | INO @ 2026-05-10 (stale) | VECO @ 2026-05-08 (stale)
+
 ### P0 — Unblock screeners
 
 - [ ] **Activate FMP Starter ($29/mo)** — needs approval / billing
 - [x] vcp-screener smoke: `--universe MRAM` (2026-05-28, 3 API calls)
 - [ ] Full watchlist vcp/canslim pass after Starter active
-- [ ] **Deep research — FPS** (stale 2026-05-13; MRAM/MU/P current 2026-05-27)
+- [ ] **Update research — stale watchlist** (FPS, INO, VECO; MRAM/MU/P current 2026-05-27)
 
 ### P1 — Daily stack
 
 - [x] `pre-market.timer` active (systemd user)
 - [x] `pre_market.py` run 2026-05-28
 - [ ] **Weekly `review-portfolio`** — Mondays or before sizing new risk
-  - Staleness rule: flag tickers with report &gt;14 days (currently **FPS**)
+  - Staleness rule: flag tickers with report &gt;14 days (currently **FPS, INO, VECO**)
   - Save summary: `reports/logs/portfolio_summary_YYYY-MM-DD.md`
 
 ### P2 — Audit gaps (wrappers only; no upstream skill edits)
@@ -56,6 +58,8 @@
 - [x] Robinhood MCP hybrid, account discovery table in decisions.md
 - [x] Deep research Phase 1 minimum (MRAM, MU, P, VECO, INO, FPS)
 - [x] Phase 1B roadmap docs + decisions [2026-05-28]
+- [x] `reports/portfolio_review_2026-05-28.md` (2026-05-28)
+- [x] `reports/vcp_screener_2026-05-28_204543.md` — MRAM smoke (2026-05-28)
 
 ---
 

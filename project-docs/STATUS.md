@@ -8,8 +8,8 @@
 ## This Week's Focus
 
 - [ ] **Activate FMP Starter ($29/mo)** — approved verbally; enables batch vcp/canslim/earnings screeners
-- [ ] **Weekly research cadence** — `commands/review-portfolio.md` (FPS stale &gt;14d); next full deep-research candidate: FPS
-- [ ] **Robinhood co-pilot** — portfolio review + `ingest-pending` + `log-positions` for TE (taxable); first Agentic trade after user confirm
+- [ ] **Update research — stale watchlist** — FPS, INO, VECO (&gt;14d); `commands/review-portfolio.md` weekly
+- [ ] **Robinhood co-pilot** — `ingest-pending` + `log-positions` for TE (taxable); first Agentic trade after user confirm
 - [ ] **IRA thesis logging** — MCP read + four questions for open IRA positions
 - [ ] **Close expired theses** — POWL, TSLA, PENG per PENDING_WORK
 
@@ -38,7 +38,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 ## Infrastructure
 
 - [x] `pre-market.timer` active (next trigger weekdays 8 AM ET)
-- [x] `robinhood-sync.timer` enabled
+- [ ] `robinhood-sync.timer` — **inactive** (not enabled in user systemd; install per [launchd/README.md](../launchd/README.md))
 - [x] MCP hybrid CLI + Cursor URL
 - [x] Phase 1 audit complete (Tier 1–2)
 
@@ -47,12 +47,12 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 | Criterion | Status |
 |-----------|--------|
 | FMP Starter + vcp on watchlist | Partial — vcp ran on MRAM; Starter not billed yet |
-| 14 days pre_market + posture log | In progress (13+ days in posture_history) |
-| 5+ deep/update on watchlist | In progress (MRAM/MU/P May 27; FPS stale May 13) |
-| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; many theses pre-1B |
+| 14 days pre_market + posture log | **11/14** unique days (`reports/logs/posture_history.log`) |
+| 5+ deep/update on watchlist | 6 tickers total; **3 current** (MRAM/MU/P 2026-05-27); **3 stale** (FPS, INO, VECO) |
+| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; 16 theses pre-1B legacy |
 | 3+ Agentic co-pilot MCP trades | ❌ 0 — awaiting user confirm |
 | IRA logged via MCP | ❌ |
-| 2+ portfolio_review reports | 1 started 2026-05-28 |
+| 2+ portfolio_review reports | **1/2** — `portfolio_review_2026-05-28.md` |
 | Phase 1: Anthropic &lt;$20, pre-commit | Open |
 
 ## Phase 1 Exit (carryover)
@@ -68,6 +68,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 
 ## Recent Changes
 
+- Docs synced to evidence 2026-05-28 ([docs_sync report](../reports/docs_sync_2026-05-28.md))
 - Phase 1B kickoff: roadmap reprioritized; futures Phase 2 deferred
 - `phase-1b-robinhood-research.md` created
 - Pre-market run 2026-05-28: breadth 42.4, posture CAUTIOUS 50%

@@ -7,6 +7,7 @@ Reusable, copy-paste prompts for Cursor Agent in this repo. Unlike `commands/` (
 | [prompt-engine.md](prompt-engine.md) | Meta-prompt: generate new task prompts for this repo |
 | [codebase-cleanup.md](codebase-cleanup.md) | Audit overlap, dead code, and doc duplication; safe cleanup plan |
 | [phase-1b-robinhood-focus.md](phase-1b-robinhood-focus.md) | Defer futures Phase 2; improve research pipeline; start Robinhood MCP co-pilot trading |
+| [sync-phase-docs.md](sync-phase-docs.md) | Reconcile PENDING_WORK + STATUS + phase docs to completed work on disk |
 
 ## When to use what
 
