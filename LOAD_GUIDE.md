@@ -16,12 +16,9 @@
 
 | Phase | Load | Skip |
 |-------|------|------|
-| Phase 1 | project-docs/phase-1-audit.md | Other phase docs (unless closing exit items) |
-| **Phase 1B** | project-docs/phase-1b-robinhood-research.md | All other phase docs |
-| Phase 2 | project-docs/phase-2-futures-skills.md | **Deferred** — banner only until 1B exit |
-| Phase 3 | project-docs/phase-3-learning-loop.md | All other phase docs |
-| Phase 4 | project-docs/phase-4-backtesting.md | All other phase docs |
-| Phase 5 | project-docs/phase-5-live-execution.md | All other phase docs |
+| **Phase 1** | project-docs/phase-1-research-copilot.md | All other phase docs |
+| Phase 2 | project-docs/phase-2-learning-loop.md | All other phase docs |
+| Phase 3 | project-docs/phase-3-agentic-execution.md | All other phase docs |
 
 ## Load When Relevant (on-demand only)
 
@@ -30,7 +27,6 @@
 | project-docs/playbook.md | Planning a trade, reviewing a position, running a command |
 | project-docs/audit/skills_audit.md | Checking skill status, ratings, or operational notes |
 | project-docs/audit/skills_audit_detail.md | Investigating a specific skill in detail |
-| project-docs/reference/lucid-rules.md | Any futures-related work |
 | project-docs/reference/cost-discipline.md | Evaluating API costs or model routing |
 | project-docs/reference/existing-skills-map.md | Considering building something new |
 | project-docs/reference/tech-stack.md | Architecture decisions |
@@ -39,6 +35,7 @@
 | commands/deep-research.md | Deep research workflow (Claude `/deep-research` or Cursor `deep-research` skill) |
 | commands/intraday-options.md | Running /intraday-options |
 | commands/update-research.md | Update research workflow |
+| scripts/update_stale_research.py | Zero-LLM staleness scan; queue at state/research_update_queue.json |
 | AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
 | project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
 | project-docs/reference/robinhood-mcp-integration.md | Robinhood Agentic MCP in Cursor, portfolio review, log-positions |
@@ -52,9 +49,10 @@
 | File/Directory | Why |
 |----------------|-----|
 | CLAUDE.md (full file) | 933 lines, upstream reference — load sections only |
+| project-docs/archive/ | Superseded futures/Lucid docs — historical only |
 | project-docs/audit/skills_audit_detail.md | 1200+ lines, load per-skill only |
 | docs/ (any) | Jekyll site docs, not session context |
-| examples/ | Reference only, Phase 3 Streamlit study |
+| examples/ | Reference only, Phase 2 Streamlit study |
 | README.md | Upstream project README, not session context |
 | skills/[name]/ (full dir) | Load specific SKILL.md only when working on that skill |
 | reports/research/*.md | Load specific report only when needed |
@@ -64,13 +62,12 @@
 
 ## Key Operational Facts (do not look these up elsewhere)
 
-- Active phase: **Phase 1B** (check STATUS.md; futures Phase 2 deferred per decisions.md)
+- Active phase: **Phase 1** (check STATUS.md)
 - economic-calendar-fetcher: BLOCKED — use scripts/fred_calendar.py
 - exposure-coach: Schema mismatch FIXED 2026-05-10 — check STATUS.md for current state
 - vcp-screener: BLOCKED on free FMP — FMP Starter upgrade pending
 - market-top-detector: use --static-basket flag
 - Portfolio B is a Robinhood IRA — IRA options rules apply
-- AutoLiq = daily profit target hit ($625), not a rule violation
 - Full operational rules: project-docs/playbook.md
 
 ## Cursor sessions

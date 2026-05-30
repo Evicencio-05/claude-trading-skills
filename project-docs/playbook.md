@@ -3,36 +3,7 @@
 > Canonical home for rules derived from live trading, audit,
 > and system operation. Load when planning trades or reviewing
 > positions. Updated at the end of each phase.
-> Last updated: 2026-05-28
-
----
-
-## Lucid Trading Rules (Operational)
-
-**AutoLiq = Daily Profit Target Hit — NOT a rule violation.**
-When Lucid auto-liquidates a position, check the P&L first.
-If the session P&L equals or exceeds the daily profit target
-($625 for current LucidFlex account), AutoLiq was triggered
-by hitting the target — a qualifying day event, not a risk event.
-AutoLiq as a risk event would occur at a loss — different scenario.
-Source: Session D reconstruction (5/5-5/6 overnight long at
-28303 -> AutoLiq at 28487.5, +$625 net).
-
-**4:45 PM ET hard auto-flatten.**
-Lucid flattens all positions daily. Agent closes earlier.
-Never hold into the 4:45 window expecting a manual exit.
-
-**Qualifying day threshold:** $625 minimum daily profit for
-current $50K LucidFlex account. Required: 5 qualifying days
-per payout cycle. Resets after each payout.
-
-**Overnight holds are valid — but size accordingly.**
-Session D (overnight long to profit target) was the only
-significantly profitable session in the first week.
-Overnight shorts in Session I (concurrent 3-way short) were
-all stopped out. Lesson: overnight holds work when the macro
-direction is confirmed. Three concurrent overnight shorts in
-a trending market is aggressive — size down or use fewer legs.
+> Last updated: 2026-05-29
 
 ---
 
@@ -94,8 +65,7 @@ Only intermediate skill run artifacts (loose `.json` files) are gitignored.
 |-------|---------|------|-----------|
 | A | Robinhood taxable | ~$250 | `robinhood_sync.py` → `pending_ingest.json` |
 | B | Robinhood Roth IRA | ~$10K | Manual — thesis-manager or `/log-positions` |
-| C | Robinhood Agentic | ~$50 | Official Robinhood Agentic MCP (Claude Code) |
-| Lucid | Tradovate eval | — | Manual / Phase 2 |
+| C | Robinhood Agentic | ~$50 | Official Robinhood Agentic MCP (Cursor) |
 
 **Robinhood sync workflow (Portfolio A):**
 1. `uv run python3 scripts/robinhood_sync.py` (2FA on first run only)
@@ -161,18 +131,11 @@ Portfolio C: ~$50 Robinhood Agentic (equities; options later).
 
 [To be populated after 10+ logged trades]
 
-### Futures Setups (ES/NQ/MES/MNQ)
-
-[To be populated after Phase 2 build]
-
 ---
 
 ## Lessons Log (most recent first)
 
 **2026-05-09 — First live run**
-The week of 5/4-5/8 was profitable overall (~+$258) despite
-losing on most individual scalp sessions. The single overnight
-long (Session D) generated +$625 and carried the entire week.
-Scalping alone (Sessions A, B, C, G, H) was net -$370.
-Pattern: overnight momentum trades > intraday scalping for MNQ.
-Without Session D, the week would have been deeply negative.
+The week of 5/4-5/8 established that overnight momentum setups can carry
+a week when intraday scalps are net negative. Pattern worth tracking in
+stock/options swing workflow as playbook matures.

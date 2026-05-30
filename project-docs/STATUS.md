@@ -1,9 +1,9 @@
 # Project Status
 
-**Last updated:** 2026-05-28
-**Active phase:** Phase 1B — Robinhood Research + Co-Pilot Trading
-**Phase doc:** [phase-1b-robinhood-research.md](phase-1b-robinhood-research.md)
-**Reprioritization:** [decisions.md](../decisions.md) [2026-05-28] — futures Phase 2 deferred
+**Last updated:** 2026-05-29
+**Active phase:** Phase 1 — Research + Co-Pilot Trading
+**Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md)
+**Roadmap:** Equity-only — [decisions.md](../decisions.md) [2026-05-29]
 
 ## This Week's Focus
 
@@ -40,35 +40,24 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 - [x] `pre-market.timer` active (next trigger weekdays 8 AM ET)
 - [ ] `robinhood-sync.timer` — **inactive** (not enabled in user systemd; install per [launchd/README.md](../launchd/README.md))
 - [x] MCP hybrid CLI + Cursor URL
-- [x] Phase 1 audit complete (Tier 1–2)
+- [x] Phase 1 audit complete (Tier 1–2) — see [archive/phase-1-audit.md](archive/phase-1-audit.md)
 
-## Phase 1B Exit Criteria Progress
+## Phase 1 Exit Criteria Progress
 
 | Criterion | Status |
 |-----------|--------|
 | FMP Starter + vcp on watchlist | Partial — vcp ran on MRAM; Starter not billed yet |
 | 14 days pre_market + posture log | **11/14** unique days (`reports/logs/posture_history.log`) |
 | 5+ deep/update on watchlist | 6 tickers total; **3 current** (MRAM/MU/P 2026-05-27); **3 stale** (FPS, INO, VECO) |
-| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; 16 theses pre-1B legacy |
+| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; 16 theses pre-Phase 1 legacy |
 | 3+ Agentic co-pilot MCP trades | ❌ 0 — awaiting user confirm |
 | IRA logged via MCP | ❌ |
 | 2+ portfolio_review reports | **1/2** — `portfolio_review_2026-05-28.md` |
-| Phase 1: Anthropic &lt;$20, pre-commit | Open |
-
-## Phase 1 Exit (carryover)
-
-- [x] skills_audit.md Tier 1–2
-- [x] 8+ Tier 1 skills rated
-- [ ] 10+ trades logged (≥2 types)
-- [x] 10+ days market context
-- [x] 3+ deep-research tickers
-- [x] Lucid eval + one trade
-- [ ] Anthropic spend &lt; $20
-- [ ] Pre-commit clean
+| Anthropic &lt;$20, pre-commit | Open |
 
 ## Recent Changes
 
-- Docs synced to evidence 2026-05-28 ([docs_sync report](../reports/docs_sync_2026-05-28.md))
-- Phase 1B kickoff: roadmap reprioritized; futures Phase 2 deferred
-- `phase-1b-robinhood-research.md` created
+- Futures scope removed; 3-phase equity roadmap ([decisions.md](../decisions.md) 2026-05-29)
+- `phase-1-research-copilot.md`, `phase-2-learning-loop.md`, `phase-3-agentic-execution.md` created
+- Superseded docs archived under `project-docs/archive/`
 - Pre-market run 2026-05-28: breadth 42.4, posture CAUTIOUS 50%

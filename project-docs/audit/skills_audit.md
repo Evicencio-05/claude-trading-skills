@@ -29,7 +29,7 @@ that feeds the learning loop without human intervention at every step.
 **Future autonomous potential (F):** Ceiling once screenshot automation, outcome
 tracking, reliability validation, and capital growth are in place.
 
-Format per skill: Stock H/A(F) | Futures H/A(F)
+Format per skill: Stock H/A(F)
 F is only shown when it differs meaningfully from A.
 
 **A skill earns its tokens if it either:**
@@ -133,15 +133,14 @@ ftd-detector in Tier 2.
 **FMP paid tier upgrade decision gate:**
 FMP Starter ($29/mo) unlocks a meaningful skill cluster simultaneously:
 
-- macro-regime-detector — H:4/A:3, cross-asset regime detection for futures bias
+- macro-regime-detector — H:4/A:3, cross-asset regime detection for market posture
 - ibd-distribution-day-monitor — QQQ unblocked, partial fix
 - market-top-detector — likely fixes sector ETF fetches (retest required)
 - ftd-detector — likely fixes QQQ component (retest required)
 - economic-calendar-fetcher — native skill restored, FRED workaround retired
-Upgrade condition: when Lucid prop firm account is live and generating consistent
-P&L. At that point regime context directly improves futures positioning decisions
-and $29/mo has a clear ROI case. Do not upgrade before Phase 5 unless conditions
-create urgent need. Document decision in decisions.md when made.
+Upgrade condition: when swing research pipeline needs batch screeners and regime context
+at scale. FMP Starter approved per decisions.md — activate when billing confirmed.
+Document activation in decisions.md when made.
 
 **scenario-analyzer rewrite — open action item:**
 Japanese output is hardcoded throughout — not a config change, a ~30 min SKILL.md
@@ -174,12 +173,6 @@ earnings-calendar (weekly, Monday AM)
 market-top-detector (defensive — when to reduce exposure)
 ↔ ftd-detector (offensive — when to re-enter after correction)
 These two are only meaningful as a pair. Neither is useful in isolation.
-
-**Futures pre-session stack (Phase 2+):**
-market-news-analyst + economic-calendar-fetcher + earnings-calendar
-→ futures-pre-market-scan (Phase 2 build)
-→ lucid-rules-engine check
-→ futures-position-sizer
 
 ---
 
@@ -269,7 +262,7 @@ Both loops need to run eventually. Loop A starts now with every trade you log. L
 
 **edge-pipeline-orchestrator and signal-postmortem have zero Day 1 value.** Their inputs don't exist yet. Reading SKILL.md was worth the time to understand the Phase 3 architecture; running them now would be wasted effort.
 
-**economic-calendar workaround needed.** FRED API (federal reserve, free, no API key) provides FOMC, CPI, NFP dates. Consider a FRED-based alternative to economic-calendar-fetcher before Phase 2 futures pre-session stack is built.
+**economic-calendar workaround needed.** FRED API (federal reserve, free, no API key) provides FOMC, CPI, NFP dates. `scripts/fred_calendar.py` is the canonical replacement per decisions.md.
 
 ---
 
@@ -288,7 +281,7 @@ shorting. The methodology is sound, but execution is impossible until broker and
 capital constraints change.
 
 **us-market-bubble-detector is the sleeper.**
-No API required. Quarterly cadence. Directly relevant to futures index bias. The
+No API required. Quarterly cadence. Directly relevant to market risk assessment. The
 confirmation bias checklist in the workflow is unusually rigorous for a stock market
 skill. Run this before every major position sizing decision.
 
@@ -313,10 +306,9 @@ These should be retested before relying on them in the daily workflow stack.
 **macro-regime-detector: highest ceiling, highest unlock cost.**
 H=4/A=3 for both workflows when working. The six-component cross-asset regime
 framework (concentration, yield curve, credit, size, equity-bond, sector rotation)
-is exactly the kind of structural context that improves futures index positioning.
+is exactly the kind of structural context that improves market posture and stock selection.
 One FMP paid plan ($29/mo Starter) unlocks this AND fixes ibd-distribution-day-monitor
-AND probably fixes market-top-detector. Budget decision: not now, but the ROI case
-is clear once the prop firm account is live.
+AND probably fixes market-top-detector. Budget decision: FMP Starter approved per decisions.md.
 
 **scenario-analyzer is a rewrite, not a config change.**
 Japanese is architectural, not a flag. The agent prompts, Important Notes section,
@@ -416,7 +408,7 @@ uptrending is a concrete, memorable number for the daily posture decision.
 
 **sector-analyst** — Third pillar confirmed. Together, the three free tools gave a more
 complete picture than a typical pre-market briefing. Tech overbought + late-cycle flag from
-commodity leadership is genuinely useful context for both stock selection and index futures bias.
+commodity leadership is genuinely useful context for stock selection and sector rotation.
 
 **ftd-detector** — Surprise find. SPY-only degradation is graceful and meaningful. FTD_CONFIRMED
 with quality 95/100 and Power Trend YES is a real signal even without QQQ. The conflict between
@@ -518,8 +510,7 @@ REQUIRED" flag from both — replace with "PARTIALLY WORKING — see notes."
 | At least 8 Tier 1 skills audited and rated | ✅ Complete (11/11) |
 | 10+ trades logged across 2+ trade types | ❌ 1/10 (NVDA WATCH today) |
 | 10+ days of daily market context saved | ❌ 1/10 (today) |
-| /deep-research on 3+ real tickers | ❌ 0/3 |
-| Lucid eval account + 1 trade | ❌ Not started |
+| /deep-research on 3+ real tickers | ✅ (Phase 1 minimum met) |
 | Total Anthropic spend < $20 | ✅ (monitoring) |
 | Pre-commit hooks pass | ✅ |
 

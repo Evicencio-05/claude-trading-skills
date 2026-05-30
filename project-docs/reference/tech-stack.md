@@ -49,8 +49,7 @@ These are not up for debate. Keep them.
 | Economic calendar | FMP | Trading Economics RSS | Free (with FMP key) |
 | Reddit sentiment | PRAW (Reddit API) | Manual scraping | Free |
 | Market breadth | TraderMonty's GitHub CSV | — | Free |
-| Futures real-time | Tradovate (via Lucid) | — | Free with Lucid account |
-| Futures historical | Firstrate Data | CME data shop | $25/symbol one-time |
+| Equity historical (backtest) | yfinance / FMP | Alpaca | Free–$29/mo |
 
 ### Deferred (don't add until proven need)
 
@@ -72,14 +71,12 @@ trading-agent/                       # Your fork
 ├── PROJECT.md                       # Main router (always read first)
 ├── CLAUDE.md                        # Upstream-provided
 ├── README.md                        # Upstream-provided
-├── project-docs/                    # NEW — your phase docs
-│   ├── phase-1-audit.md
-│   ├── phase-2-futures-skills.md
-│   ├── phase-3-learning-loop.md
-│   ├── phase-4-backtesting.md
-│   ├── phase-5-live-execution.md
+├── project-docs/                    # Phase docs + reference
+│   ├── phase-1-research-copilot.md
+│   ├── phase-2-learning-loop.md
+│   ├── phase-3-agentic-execution.md
+│   ├── archive/                     # Superseded futures/Lucid docs
 │   └── reference/
-│       ├── lucid-rules.md
 │       ├── cost-discipline.md
 │       ├── tech-stack.md
 │       ├── risk-register.md
@@ -88,23 +85,17 @@ trading-agent/                       # Your fork
 ├── decisions.md                     # NEW — log every meaningful decision
 ├── skills_audit.md                  # NEW — Phase 1 audit ratings
 │
-├── skills/                          # Existing + your new skills
-│   ├── ... (existing 40+)
-│   ├── lucid-rules-engine/          # NEW (Phase 2)
-│   ├── futures-position-sizer/      # NEW (Phase 2)
-│   ├── tradovate-integration/       # NEW (Phase 2)
-│   ├── futures-pre-market-scan/     # NEW (Phase 2)
-│   ├── futures-session-monitor/     # NEW (Phase 2)
-│   ├── behavioral-pattern-detector/ # NEW (Phase 3)
-│   └── futures-executor/            # NEW (Phase 5 only)
+├── skills/                          # Existing 40+ skills
+│   ├── ... (existing)
+│   ├── behavioral-pattern-detector/ # NEW (Phase 2)
+│   └── agentic-executor/            # NEW (Phase 3B, or scripts wrapper)
 │
 ├── playbook/                        # NEW — your living rulebook
 │   ├── playbook.md
 │   └── changelog.md
 │
-├── state/                           # NEW — runtime state
+├── state/                           # Runtime state
 │   ├── theses/                      # trader-memory-core data
-│   ├── lucid_accounts/              # account state for rules engine
 │   └── prompt_performance.json
 │
 ├── data/
@@ -119,7 +110,7 @@ trading-agent/                       # Your fork
 │
 ├── scripts/
 │   ├── ... (existing)
-│   ├── dashboard.py                 # NEW — Streamlit dashboard (Phase 3)
+│   ├── dashboard.py                 # Streamlit dashboard (Phase 2)
 │   └── cost_report.py               # NEW — daily Anthropic spend report
 │
 ├── tests/                           # Repo-wide test conventions
@@ -168,8 +159,8 @@ trading-agent/                       # Your fork
 - Single laptop or desktop
 - macOS or Linux (Windows untested for the launchd jobs)
 - 16GB RAM recommended (Ollama needs 8GB free for qwen2.5:7b)
-- ~50GB disk space (most goes to historical futures data in Phase 4)
-- Always-on internet during market hours (Phase 5+)
+- ~10GB disk space for reports and state
+- Always-on internet during market hours (Phase 3+)
 
 ---
 
@@ -177,5 +168,5 @@ trading-agent/                       # Your fork
 
 - **Code:** Git remote (private GitHub fork)
 - **Trade journal (`state/theses/`):** Daily backup to encrypted cloud storage
-- **Lucid account credentials:** Password manager only, never in `.env`
+- **Robinhood credentials:** Password manager + gitignored `.env` / MCP OAuth; never commit
 - **Historical data:** Backup once after acquisition, treat as immutable

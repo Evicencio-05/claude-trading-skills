@@ -7,17 +7,15 @@
 
 ## What This Project Is
 
-A private fork of `claude-trading-skills` extended into a personalized, continuously learning AI trading agent with two concurrent goals:
+A private fork of `claude-trading-skills` extended into a personalized, continuously learning AI trading agent focused on:
 
-**Goal A — Individual Stock & Options Research**
-Deep research, screening, and trade planning on individual US equities and options using the existing 40+ skills. This is active from Day 1 and covers swing trades, earnings plays, options strategies, and long-term positions on the Robinhood account and beyond.
+**US equities & options — research, market analysis, portfolio management, and Robinhood Agentic execution**
 
-**Goal B — Futures Trading via Prop Firm**
-CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accounts via Tradovate. **Futures-specific skills are deferred** until Phase 1B exits ([decisions.md](decisions.md)). Lucid eval continues manually. Macro context from futures work still informs stock research when you trade eval accounts.
+Deep research, screening, and trade planning using the existing 40+ skills. Covers swing trades, earnings plays, options strategies, and long-term positions across Robinhood accounts (taxable, IRA, Agentic).
 
-**Long-term vision:** An autonomous AI trading partner that learns from the user's trades, behavioral patterns, and outcomes across both workflows — compounding edge over time.
+**Long-term vision:** An autonomous AI trading partner that learns from your trades, behavioral patterns, and outcomes — compounding edge over time.
 
-**Project posture:** Extend what exists. The stock research infrastructure is largely built. The futures infrastructure is the gap.
+**Project posture:** Extend what exists. The stock research infrastructure is largely built. The gap is production-ready pipeline → thesis → co-pilot → learning loop → Agentic execution.
 
 ---
 
@@ -25,8 +23,8 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 - **Budget:** $30–50/mo target, $100/mo ceiling
 - **Time:** Limited weekly hours (college student)
-- **Stock/options capital:** ~$500 Robinhood account (grows over time)
-- **Futures execution:** Lucid Trading (LucidFlex initially) via Tradovate
+- **Capital:** ~$500 Robinhood across accounts (grows over time)
+- **Execution:** Robinhood Agentic MCP (Portfolio C); read all accounts, trade Agentic only
 - **Hardware:** Local laptop/desktop only
 - **Repo:** Private fork; no upstream contributions yet
 
@@ -35,31 +33,27 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 ## Non-Negotiables (read every session)
 
 1. **Audit before building.** Use existing skills before extending them.
-2. **Stock/options pipeline first in Phase 1B.** Futures skill build is deferred; Lucid eval continues manually. Do not neglect the Robinhood research → co-pilot loop.
-3. **Lucid rules are sacred.** Hard-coded constraints. Never overridable by the agent.
-4. **No HFT, no latency arbitrage.** Lucid prohibits these.
-5. **4:45 PM ET hard cutoff.** Lucid auto-flattens. Agent closes earlier on its own.
-6. **No autonomous execution before Phase 5.** Co-pilot mode only.
-7. **Risk controls are immutable from the agent.**
-8. **Every trade is logged** to `trader-memory-core` — stocks, options, and futures.
-9. **Cost discipline.** Default to free/local. Justify every paid subscription.
-10. **Human-in-the-loop for skill changes.** Auto-generated PRs require review.
+2. **Robinhood MCP gates.** Read all accounts; trade Agentic account only; flag IRA-ineligible options before actionable advice.
+3. **No autonomous MCP execution before Phase 3B.** Co-pilot mode until Phase 3 sub-phase criteria met.
+4. **Risk controls are immutable from the agent.** Limits live in user-editable config, not agent-writable files.
+5. **Every trade is logged** to `trader-memory-core` — stocks and options.
+6. **Cost discipline.** Default to free/local. Justify every paid subscription.
+7. **Human-in-the-loop for skill changes.** Auto-generated PRs require review.
 
 ---
 
 ## Out of Scope
 
-- Skylit ($99/mo) until Phase 3+ with hard ROI criteria
-- Multi-day futures holds (Lucid auto-flattens daily)
+- CME futures / prop firm trading (Lucid, Tradovate) — archived 2026-05-29
+- Skylit ($99/mo) until Phase 2 exit with hard ROI criteria
 - Crypto, forex, mobile apps
-- HFT, latency arbitrage
 - Upstream contributions for now
 
 ---
 
 ## Current Status
 
-**Active phase:** Phase 1B — Robinhood research + co-pilot trading. See `project-docs/STATUS.md` and `project-docs/phase-1b-robinhood-research.md`.
+**Active phase:** Phase 1 — Research + Co-pilot. See `project-docs/STATUS.md` and `project-docs/phase-1-research-copilot.md`.
 
 ---
 
@@ -78,24 +72,21 @@ CME futures execution (ES, NQ, MES, MNQ) targeting Lucid Trading prop firm accou
 
 ### Phase docs
 
-| Phase | Doc | Status |
+| Phase | Doc | Focus |
 |---|---|---|
-| Phase 1 | `project-docs/phase-1-audit.md` | Winding down (audit done) |
-| **Phase 1B** | `project-docs/phase-1b-robinhood-research.md` | **Active** |
-| Phase 2 | `project-docs/phase-2-futures-skills.md` | **Deferred** (futures skills) |
-| Phase 3 | `project-docs/phase-3-learning-loop.md` | Locked (week 11) |
-| Phase 4 | `project-docs/phase-4-backtesting.md` | Locked (week 19) |
-| Phase 5 | `project-docs/phase-5-live-execution.md` | Locked (week 27) |
+| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — Research pipeline + Robinhood co-pilot |
+| Phase 2 | `project-docs/phase-2-learning-loop.md` | Behavioral patterns, playbook, skill improvement |
+| Phase 3 | `project-docs/phase-3-agentic-execution.md` | Agentic MCP autonomous execution |
 
 ### Reference docs (load only when topic comes up)
 
 | Topic | Doc |
 |---|---|
-| Lucid Trading rules | `project-docs/reference/lucid-rules.md` |
 | Cost discipline & model routing | `project-docs/reference/cost-discipline.md` |
 | Tech stack decisions | `project-docs/reference/tech-stack.md` |
 | Risk register | `project-docs/reference/risk-register.md` |
 | Existing skills inventory + gaps | `project-docs/reference/existing-skills-map.md` |
+| Robinhood MCP | `project-docs/reference/robinhood-mcp-integration.md` |
 
 ---
 
@@ -105,15 +96,14 @@ You cannot start Phase N until Phase N-1 exit criteria are met. When advancing:
 
 1. Verify all exit criteria of current phase (checkbox audit)
 2. Update **Active Phase** in this file
-3. Update **This week's focus**
+3. Update **This week's focus** in STATUS.md
 4. Read the new phase doc
 
 ---
 
-## Working with Claude Code
+## Working with Claude Code / Cursor
 
-- Reference both goals when relevant: *"We're in Phase 1 auditing stock research skills AND setting up the futures foundation."*
-- Don't let sessions drift to purely futures or purely stocks — both get attention.
+- Stay focused on the active phase doc — don't scope-creep into Phase 2/3 builds early.
 - Cost-check before any new API integration.
 - Commit format: `[Phase X] component: what changed`
 
@@ -123,21 +113,18 @@ You cannot start Phase N until Phase N-1 exit criteria are met. When advancing:
 - `/compact` when context exceeds ~60%
 - Plan mode for any task touching code
 - `/context` if responses feel unfocused
-- Ultrathink for high-stakes decisions (rules engine, post-trade reviews on losses)
-- Edit permissions: rules engine and risk control files are read-only after Phase 2
+- Ultrathink for high-stakes decisions (post-trade reviews on losses, risk config changes)
+- Risk control config files are user-editable only — agent reads, never writes
 
 ---
 
 ## Glossary
 
-- **Playbook:** The agent's evolving rulebook — covers both stock setups and futures setups
-- **Co-pilot mode:** Agent surfaces alerts and recommendations; user executes
-- **Autonomous mode:** Agent executes within risk limits (Phase 5+, futures only initially)
+- **Playbook:** The agent's evolving rulebook for stock/options setups
+- **Co-pilot mode:** Agent surfaces alerts and recommendations; user confirms and executes
+- **Autonomous mode:** Agent executes within hard limits (Phase 3B+, Agentic account only)
 - **Kill switch:** User-triggered halt of all autonomous activity
-- **Lucid rules engine:** Hard-coded constraints module
-- **Qualifying day:** Lucid's per-account minimum profit day
-- **EOD trailing drawdown:** Lucid's max loss limit, calculated at session close
 
 ---
 
-*Last updated: [2026-05-28] | Owner: [Ethan]*
+*Last updated: 2026-05-29 | Owner: Ethan*

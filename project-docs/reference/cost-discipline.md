@@ -10,8 +10,7 @@
 |---|---|---|
 | Cursor subscription | (user plan) | Use for code/tests/refactors — not synthesis |
 | Anthropic API | $20 | $40 |
-| Data sources | $0 | $30 |
-| Prop firm evaluations | $0 (avg) | ~$30 (one eval every 2-3 months) |
+| Data sources | $0–30 | $30 |
 | Reserve | $30 | — |
 | **Total** | **$50** | **$100** |
 
@@ -67,7 +66,7 @@ Wire this into every skill that makes API calls. Set up a cron to email/notify i
 
 **Use Sonnet for:**
 - Default for most existing skills (they're tuned for Sonnet)
-- `/futures-setup`, `/intraday-options`
+- `/intraday-options`
 - Daily research and screening workflows
 - Earnings transcript parsing
 - Most everyday analysis
@@ -131,12 +130,12 @@ If you can't answer all five clearly, don't subscribe.
 ### FINVIZ Elite ($40/mo)
 - **Verdict:** Defer indefinitely.
 - Public FINVIZ screener works for most skills.
-- Only subscribe if a specific futures-relevant strategy needs Elite features (rare).
+- Only subscribe if a specific equity/options strategy needs Elite features (rare).
 
 ### Skylit ($99/mo)
-- **Verdict:** Defer until Phase 3 decision gate.
-- Specifically: GEX/dark pool data has marginal value for futures trading vs. equity options.
-- The decision gate is in `phase-3-learning-loop.md` section 3.6.
+- **Verdict:** Defer until Phase 2 decision gate.
+- GEX/dark pool data most useful for equity options strategies.
+- The decision gate is in `phase-2-learning-loop.md` section 2.8.
 
 ### Polygon.io ($30+/mo)
 - **Verdict:** Defer until Phase 4+ if at all.
@@ -145,18 +144,13 @@ If you can't answer all five clearly, don't subscribe.
 
 ### Unusual Whales ($50+/mo)
 - **Verdict:** Defer indefinitely.
-- Equity options flow has questionable value for futures trading.
+- Equity options flow value unproven at current scale.
 - Don't subscribe based on YouTube hype.
 
 ### Alpaca Markets
 - **Verdict:** Free tier indefinitely.
 - Paper trading API is free.
-- Live trading (stocks) is commission-free, but you're not focused on stocks.
-
-### Tradovate (via Lucid)
-- **Verdict:** Free with Lucid account.
-- Real-time CME data included in Lucid eval/funded accounts.
-- This is your primary data source for futures.
+- Optional for portfolio-manager skill; Robinhood MCP is primary for this fork.
 
 ---
 

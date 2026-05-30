@@ -21,27 +21,31 @@ replacement for macro event calendar.
 Revisit: If FMP Starter restores this — test and consider reverting.
 
 **[2026-05-09] Skylit ($99/mo) deferred.**
-Decision: No Skylit until Phase 3+ AND strategy specifically needs GEX/dark pool
+Decision: No Skylit until Phase 2 exit AND strategy specifically needs GEX/dark pool
 data AND can afford 3 months ($297) AND strategy could pay for it within 2 months
 at current portfolio size.
-Revisit: Phase 3 exit criteria review.
+Revisit: Phase 2 exit criteria review (Skylit decision gate).
 
-**[Deferred] Tradovate API/MCP deferred to Phase 2.**
-Prop firm demo account API credentials not straightforwardly available.
-No blocking need during Phase 1 audit.
-Decision: Defer Tradovate API integration to Phase 2 week 6-7.
-Revisit: Phase 2 start.
+**[Deferred] Tradovate API/MCP — out of scope.**
+Prop firm futures integration removed from roadmap 2026-05-29.
+Decision: Do not build Tradovate integration unless user reopens futures via decisions.md.
+Revisit: User explicit request only.
 
 **[Deferred] GitHub MCP deferred.**
 Correct URL and OAuth setup unclear. No Phase 1 need.
-Decision: Defer to Phase 3 when skill-improvement PRs need review.
+Decision: Defer to Phase 2 when skill-improvement PRs need review.
 Revisit: Phase 3 start.
 
 ## Phase roadmap
 
-**[2026-05-28] Futures Phase 2 deferred; Robinhood research + co-pilot trading prioritized.**
+**[2026-05-29] Futures scope removed permanently; equity-only roadmap.**
+Project focus = US equity/options research, market analysis, Robinhood portfolio management, Agentic MCP trading, and skill learning loop. Lucid eval and futures skill build are out of scope.
+Decision: Archive futures phase/reference docs under `project-docs/archive/`. Collapse roadmap to 3 phases: [phase-1-research-copilot.md](project-docs/phase-1-research-copilot.md) → [phase-2-learning-loop.md](project-docs/phase-2-learning-loop.md) → [phase-3-agentic-execution.md](project-docs/phase-3-agentic-execution.md). Supersedes [2026-05-28] defer entry.
+Revisit: Never — unless user explicitly reopens futures in a new decision entry.
+
+**[2026-05-28] Futures Phase 2 deferred; Robinhood research + co-pilot trading prioritized.** *(Superseded by 2026-05-29 removal.)*
 Phase 1 audit and MCP hybrid are largely done; swing pipeline (FMP screeners, thesis count, Agentic co-pilot) is not production-ready. Lucid eval continues manually without new futures skills.
-Decision: Active work = **Phase 1B** ([phase-1b-robinhood-research.md](project-docs/phase-1b-robinhood-research.md)). Old Phase 2 futures skills ([phase-2-futures-skills.md](project-docs/phase-2-futures-skills.md)) stay in repo with DEFERRED banner — do not start `lucid-rules-engine`, `tradovate-integration`, or futures-setup until Phase 1B exit.
+Decision: Active work = **Phase 1B** ([phase-1b-robinhood-research.md](project-docs/archive/phase-1b-robinhood-research.md)). Old Phase 2 futures skills ([phase-2-futures-skills.md](project-docs/archive/phase-2-futures-skills.md)) stay in repo with DEFERRED banner — do not start `lucid-rules-engine`, `tradovate-integration`, or futures-setup until Phase 1B exit.
 Revisit futures when: Phase 1B exit criteria met **and** 20+ logged stock/options trades in `trader-memory-core` (user may override trigger).
 
 ## Architecture
@@ -50,15 +54,14 @@ Revisit futures when: Phase 1B exit criteria met **and** 20+ logged stock/option
 trayd-mcp passes credentials through third-party AWS servers.
 For Portfolio B (IRA), keeping credentials local is preferred.
 Decision: Build scripts/robinhood_sync.py using robin_stocks.
-This pattern becomes the template for Tradovate sync in Phase 2.
 Revisit: Never for Portfolio B. Could revisit Trayd for Portfolio A
 if robin_stocks auth becomes a persistent friction point.
 
-**[2026-05-09] launchd jobs disabled until Phase 3.**
+**[2026-05-09] launchd jobs disabled until Phase 2.**
 Skill-improvement loop and skill-generation pipeline disabled.
-Decision: Do not enable until Phase 3 exit criteria are met and enough session
+Decision: Do not enable until Phase 2 exit criteria are met and enough session
 data exists to evaluate improvement suggestions.
-Revisit: phase-3-learning-loop.md section 3.6.
+Revisit: phase-2-learning-loop.md section 2.7.
 
 **[2026-05-09] Alpaca paper account identified as quick win.**
 portfolio-manager skill requires Alpaca MCP. Free paper account activates it

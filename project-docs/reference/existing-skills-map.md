@@ -19,13 +19,13 @@ Use these from Day 1. They work as-is for equity research and options planning.
 **Stock research:**
 
 - us-stock-analysis — comprehensive fundamental + technical research
-- technical-analyst — chart analysis (works on stocks, indices, futures, FX)
+- technical-analyst — chart analysis (stocks, indices, FX)
 - institutional-flow-tracker — 13F filings, smart money positioning (FMP)
 - earnings-calendar — upcoming earnings by date (FMP)
 
 **Trade planning:**
 
-- position-sizer — risk-based sizing (extend for futures in Phase 2)
+- position-sizer — risk-based sizing for equities
 - options-strategy-advisor — Black-Scholes, 17 strategies, Greeks
 - breakout-trade-planner — breakout setup planning
 
@@ -63,19 +63,6 @@ Use these from Day 1. They work as-is for equity research and options planning.
 
 ---
 
-## Immediately Useful — Futures Workflow (partial)
-
-These existing skills translate directly to futures with minimal adaptation.
-
-- technical-analyst — works on ES/NQ charts, just provide futures data as input
-- exposure-coach — market posture applies to all instruments
-- market-breadth-analyzer, uptrend-analyzer — index context for ES/NQ
-- economic-calendar-fetcher — critical for futures (macro events move ES/NQ hard)
-- market-news-analyst — overnight catalyst awareness
-- position-sizer — extend with futures contract math in Phase 2
-
----
-
 ## Learning Loop Infrastructure
 
 Use throughout all phases once populated with data.
@@ -88,15 +75,13 @@ Use throughout all phases once populated with data.
 - edge-candidate-agent — converts research tickets to strategy specs
 - trade-hypothesis-ideator — falsifiable hypothesis generation
 - strategy-pivot-designer — detects backtest stagnation, proposes pivots
-- exposure-coach — synthesizes market posture from multiple breadth signals
-- signal-postmortem — tracks signal quality over time
-- trader-memory-core — persistent thesis store
+- backtest-expert — methodology framework for equity strategy validation
 
 ---
 
 ## Quality & Self-Improvement Infrastructure
 
-Enable in Phase 3 with branch protection.
+Enable in Phase 2 with branch protection.
 
 - dual-axis-skill-reviewer — deterministic + optional LLM scoring (0-100)
 - skill-idea-miner — mines session logs for new skill ideas
@@ -107,28 +92,23 @@ Enable in Phase 3 with branch protection.
 
 ---
 
-## Study These As Templates (before building in Phase 2)
+## Study These As Templates
 
 - parabolic-short-trade-planner — most production-mature skill, 3-phase FSM pattern
 - position-sizer — clean offline calculation pattern
-- portfolio-manager — broker integration pattern (Alpaca → adapt to Tradovate)
+- portfolio-manager — broker integration pattern (Alpaca; Robinhood MCP is primary here)
 - edge-pipeline-orchestrator — orchestration pattern
 - trader-memory-core — state management pattern
 - ibd-distribution-day-monitor — daily monitoring pattern
 
 ---
 
-## Gaps You Will Build
+## Gaps You Will Build (Phase 2+)
 
-| Phase | Skill | Why Needed |
+| Phase | Skill / component | Why Needed |
 |---|---|---|
-| 2 | lucid-rules-engine | No prop firm rules engine exists |
-| 2 | futures-position-sizer | position-sizer doesn't know contract math |
-| 2 | tradovate-integration | Repo uses Alpaca for stocks, not Tradovate |
-| 2 | futures-pre-market-scan | No CME futures pre-market scanner |
-| 2 | futures-session-monitor | No intraday session structure monitoring |
-| 3 | behavioral-pattern-detector | No personal behavioral detection (stocks or futures) |
-| 5 | futures-executor | No autonomous executor (don't build before Phase 5) |
+| 2 | behavioral-pattern-detector | Personal behavioral detection for stocks/options |
+| 3 | agentic-executor (or scripts wrapper) | Autonomous Robinhood Agentic MCP execution |
 
 ---
 
