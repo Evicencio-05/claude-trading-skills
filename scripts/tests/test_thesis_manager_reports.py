@@ -23,6 +23,7 @@ def research_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     (reports / "MRAM_2026-05-10.md").write_text("# MRAM May 10\n")
     (reports / "MRAM_2026-05-27.md").write_text("# MRAM May 27\nLatest content\n")
     monkeypatch.setattr(research_utils, "_research_dir", lambda: reports)
+    monkeypatch.setattr(research_utils, "excluded_ticker_set", lambda: set())
     return reports
 
 
@@ -34,6 +35,7 @@ def test_list_report_tickers_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     empty = tmp_path / "reports" / "research"
     empty.mkdir(parents=True)
     monkeypatch.setattr(research_utils, "_research_dir", lambda: empty)
+    monkeypatch.setattr(research_utils, "excluded_ticker_set", lambda: set())
     assert research_utils.list_report_tickers() == []
 
 
