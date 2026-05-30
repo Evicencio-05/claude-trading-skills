@@ -6,6 +6,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,6 +14,13 @@ TM_DIR = ROOT / "tools" / "thesis-manager"
 sys.path.insert(0, str(TM_DIR))
 
 import utils  # noqa: E402
+
+
+def test_arrow_safe_df_casts_mixed_types_to_str() -> None:
+    df = pd.DataFrame({"Confidence": [4, "—"], "Days Left": ["7", "—"]})
+    out = utils.arrow_safe_df(df, ["Confidence", "Days Left"])
+    assert out["Confidence"].tolist() == ["4", "—"]
+
 
 # ── fmt_account ───────────────────────────────────────────────────────────────
 

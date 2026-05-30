@@ -8,10 +8,12 @@ from pathlib import Path
 import pytest
 import yaml
 from research_watchlist import (
+    apply_exclude,
     build_staleness_rows,
     days_stale,
     eligible_tickers,
     latest_report_date,
+    load_exclude_config,
     load_watchlist_config,
     tickers_from_theses,
 )
@@ -139,3 +141,34 @@ def test_build_staleness_rows_current(tmp_env):
     )
     assert rows[0]["needs_update"] is False
     assert rows[0]["status"] == "current"
+
+
+def test_load_exclude_config(tmp_env):
+    exclude_path = tmp_env["root"] / "config" / "research_exclude.yaml"
+    exclude_path.parent.mkdir(parents=True, exist_ok=True)
+    exclude_path.write_text("INO:\n  reason: not interested\n")
+    cfg = load_exclude_config(exclude_path)
+    assert cfg["INO"] == {"reason": "not interested"}
+
+
+def test_apply_exclude(tmp_env):
+    exclude_path = tmp_env["root"] / "config" / "research_exclude.yaml"
+    exclude_path.parent.mkdir(parents=True, exist_ok=True)
+    exclude_path.write_text("INO:\n  reason: x\n")
+    assert apply_exclude(["MRAM", "INO", "MU"], exclude_path) == ["MRAM", "MU"]
+
+
+def test_eligible_tickers_respects_exclude(tmp_env, monkeypatch):
+    _write_thesis(tmp_env["state_dir"] / "a.yaml", "MRAM", "ACTIVE")
+    _write_thesis(tmp_env["state_dir"] / "b.yaml", "INO", "ACTIVE")
+    tmp_env["watchlist_path"].write_text("FPS:\n  watching: true\n")
+    exclude_path = tmp_env["root"] / "config" / "research_exclude.yaml"
+    exclude_path.parent.mkdir(parents=True, exist_ok=True)
+    exclude_path.write_text("INO:\n  reason: dropped\n")
+
+    import research_watchlist as rw
+
+    monkeypatch.setattr(rw, "resolve_exclude_path_for_filter", lambda repo_root=None: exclude_path)
+
+    tickers = eligible_tickers(tmp_env["state_dir"], tmp_env["watchlist_path"])
+    assert tickers == ["FPS", "MRAM"]

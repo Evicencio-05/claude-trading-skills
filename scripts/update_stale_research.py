@@ -38,6 +38,7 @@ from research_watchlist import (  # noqa: E402
     eligibility_for_tickers,
     eligible_tickers,
     get_repo_root,
+    resolve_exclude_path_for_filter,
 )
 
 REPO = get_repo_root()
@@ -245,9 +246,10 @@ def main() -> int:
 
     as_of = date.fromisoformat(args.as_of) if args.as_of else date.today()
     watchlist_path = resolve_watchlist_path()
+    exclude_path = resolve_exclude_path_for_filter()
 
-    eligibility_map = eligibility_for_tickers(STATE_DIR, watchlist_path)
-    tickers = eligible_tickers(STATE_DIR, watchlist_path)
+    eligibility_map = eligibility_for_tickers(STATE_DIR, watchlist_path, exclude_path=exclude_path)
+    tickers = eligible_tickers(STATE_DIR, watchlist_path, exclude_path=exclude_path)
     if args.ticker:
         ticker = args.ticker.upper()
         if ticker not in eligibility_map:

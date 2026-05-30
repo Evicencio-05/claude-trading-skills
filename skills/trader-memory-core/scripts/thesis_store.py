@@ -1037,6 +1037,40 @@ def list_review_due(state_dir: Path, as_of: str) -> list[dict]:
     return results
 
 
+def delete(state_dir: Path, thesis_id: str, *, force: bool = False) -> str:
+    """Permanently remove a thesis YAML file and its index entry.
+
+    By default only CLOSED or INVALIDATED theses may be deleted.
+    Set force=True to delete ACTIVE, ENTRY_READY, or IDEA theses.
+
+    Returns:
+        The deleted thesis_id.
+
+    Raises:
+        FileNotFoundError: If thesis file does not exist.
+        ValueError: If status is non-terminal and force is False.
+    """
+    thesis = _load_thesis(state_dir, thesis_id)
+    status = thesis.get("status", "")
+    if status not in _TERMINAL_STATUSES and not force:
+        raise ValueError(
+            f"Can only delete terminal thesis (CLOSED/INVALIDATED), got {status}. "
+            "Use force=True to override."
+        )
+
+    path = state_dir / f"{thesis_id}.yaml"
+    if path.exists():
+        path.unlink()
+
+    index = _load_index(state_dir)
+    if thesis_id in index.get("theses", {}):
+        del index["theses"][thesis_id]
+        _save_index(state_dir, index)
+
+    logger.info("Deleted thesis %s (force=%s)", thesis_id, force)
+    return thesis_id
+
+
 # -- Recovery tools -----------------------------------------------------------
 
 

@@ -273,7 +273,7 @@ def show_dashboard() -> None:
                     cs = thesis.get("confidence_score") or 0
                     st.write("**Confidence:**", f"{int(cs * 5)}/5" if cs else "—")
 
-                b1, b2 = st.columns(2)
+                b1, b2, b3 = st.columns(3)
                 with b1:
                     if st.button("Mark for Review", key=f"rev_{row_id}"):
                         _, err = _run_safe(utils.mark_reviewed, row_id)
@@ -286,6 +286,62 @@ def show_dashboard() -> None:
                 with b2:
                     if st.button("Close Position", key=f"close_{row_id}"):
                         st.session_state[f"closing_{row_id}"] = True
+                with b3:
+                    if st.button("Stop tracking", key=f"stop_track_{row_id}"):
+                        _, err = _run_safe(
+                            utils.stop_tracking_thesis,
+                            row_id,
+                            "stopped tracking via dashboard",
+                        )
+                        if err:
+                            st.error(f"Stop tracking failed:\n{err}")
+                        else:
+                            try:
+                                research_utils.add_exclude_ticker(
+                                    row["Ticker"],
+                                    "stopped tracking",
+                                )
+                            except (ValueError, OSError) as exc:
+                                st.warning(f"Excluded list not updated: {exc}")
+                            st.success(f"Stopped tracking {row['Ticker']}.")
+                            st.cache_data.clear()
+                            st.rerun()
+
+                with st.expander("Advanced removal", expanded=False):
+                    st.caption(
+                        "Permanent delete removes the thesis file. "
+                        "Use after Stop tracking or Close for mistakes."
+                    )
+                    confirm_del = st.checkbox(
+                        "I understand this cannot be undone",
+                        key=f"confirm_del_{row_id}",
+                    )
+                    force_del = st.checkbox(
+                        "Force delete (non-terminal thesis)",
+                        key=f"force_del_{row_id}",
+                    )
+                    if st.button("Delete thesis permanently", key=f"del_{row_id}"):
+                        if not confirm_del:
+                            st.warning("Check the confirmation box first.")
+                        else:
+                            _, err = _run_safe(
+                                utils.delete_thesis,
+                                row_id,
+                                force=force_del,
+                            )
+                            if err:
+                                st.error(f"Delete failed:\n{err}")
+                            else:
+                                try:
+                                    research_utils.add_exclude_ticker(
+                                        row["Ticker"],
+                                        "deleted thesis",
+                                    )
+                                except (ValueError, OSError) as exc:
+                                    st.warning(f"Exclude list not updated: {exc}")
+                                st.success(f"Deleted thesis for {row['Ticker']}.")
+                                st.cache_data.clear()
+                                st.rerun()
 
                 if st.session_state.get(f"closing_{row_id}"):
                     with st.form(key=f"close_form_{row_id}"):
@@ -359,8 +415,25 @@ def _pending_position_form(pos: dict, key_prefix: str) -> None:
         if badge:
             st.markdown(badge, unsafe_allow_html=True)
     with hdr_cols[1]:
-        if st.button("Skip", key=f"skip_{key_prefix}"):
+        dismiss_exclude = st.checkbox(
+            "Add to exclude list",
+            value=True,
+            key=f"dismiss_excl_{key_prefix}",
+        )
+        if st.button("Dismiss", key=f"dismiss_{key_prefix}"):
+            pos_key = pos.get("key", "")
+            all_positions = utils.load_pending_ingest()
+            utils.save_pending_ingest(utils.mark_pending_skipped(all_positions, pos_key))
+            if pos_key:
+                utils.block_sync_key(pos_key)
+            if dismiss_exclude and ticker:
+                try:
+                    research_utils.add_exclude_ticker(ticker, "dismissed pending position")
+                except (ValueError, OSError) as exc:
+                    st.warning(f"Exclude list not updated: {exc}")
+            st.success(f"Dismissed {ticker} — will not re-sync.")
             st.session_state[f"collapsed_{key_prefix}"] = True
+            st.cache_data.clear()
             st.rerun()
 
     meta = st.columns(4)
@@ -708,11 +781,17 @@ def show_review() -> None:
     st.subheader("B — Needs Post-Trade Review")
 
     closed_theses = utils.load_theses(["CLOSED"])
+    excluded_closed = sum(
+        1 for t in closed_theses if utils.is_ticker_excluded(str(t.get("ticker", "")))
+    )
+    if excluded_closed:
+        st.caption(f"{excluded_closed} excluded closed position(s) hidden below.")
     thirty_ago = (date.today() - timedelta(days=30)).isoformat()
     needs_review = [
         t
         for t in closed_theses
-        if ((t.get("exit") or {}).get("actual_date") or "") >= thirty_ago
+        if not utils.is_ticker_excluded(str(t.get("ticker", "")))
+        and ((t.get("exit") or {}).get("actual_date") or "") >= thirty_ago
         and not ((t.get("outcome") or {}).get("lessons_learned"))
     ]
 
@@ -763,7 +842,10 @@ def show_review() -> None:
 
     seven_ago = (date.today() - timedelta(days=7)).isoformat()
     week_closed = [
-        t for t in closed_theses if ((t.get("exit") or {}).get("actual_date") or "") >= seven_ago
+        t
+        for t in closed_theses
+        if not utils.is_ticker_excluded(str(t.get("ticker", "")))
+        and ((t.get("exit") or {}).get("actual_date") or "") >= seven_ago
     ]
 
     if not week_closed:
@@ -935,6 +1017,55 @@ def show_research() -> None:
                     key=f"deep_prompt_{ticker}",
                 )
 
+            if st.button("Exclude from research", key=f"excl_{ticker}"):
+                try:
+                    research_utils.add_exclude_ticker(ticker, "excluded via research page")
+                    st.success(f"{ticker} added to exclude list.")
+                    st.cache_data.clear()
+                    st.rerun()
+                except (ValueError, OSError) as exc:
+                    st.error(str(exc))
+
+    st.divider()
+
+    with st.container(border=True):
+        st.subheader("Excluded tickers")
+        st.caption(
+            f"File: {research_utils.resolve_exclude_path().relative_to(utils.get_repo_root())}"
+        )
+        exclude = research_utils.load_exclude_for_editor()
+        excl_rows = [
+            {"Ticker": t, "Reason": cfg.get("reason", "")} for t, cfg in sorted(exclude.items())
+        ]
+        if not excl_rows:
+            excl_rows = [{"Ticker": "", "Reason": ""}]
+        excl_edited = st.data_editor(
+            pd.DataFrame(excl_rows),
+            num_rows="dynamic",
+            column_config={
+                "Ticker": st.column_config.TextColumn("Ticker", required=True),
+                "Reason": st.column_config.TextColumn("Reason"),
+            },
+            hide_index=True,
+            key="exclude_editor",
+        )
+        if st.button("Save exclude list", key="save_exclude"):
+            entries: dict[str, dict] = {}
+            for _, row in excl_edited.iterrows():
+                t = str(row.get("Ticker", "")).strip().upper()
+                if not t:
+                    continue
+                entries[t] = {"reason": str(row.get("Reason", "") or "")}
+            try:
+                research_utils.save_exclude(entries)
+                st.success("Exclude list saved.")
+                st.cache_data.clear()
+                st.rerun()
+            except ValueError as exc:
+                st.error(str(exc))
+            except OSError as exc:
+                st.error(f"Save failed: {exc}")
+
     st.divider()
 
     with st.container(border=True):
@@ -1098,6 +1229,24 @@ def show_reports() -> None:
 
     if days_old > research_utils.STALE_THRESHOLD_DAYS:
         st.caption(f"Report is stale (>{research_utils.STALE_THRESHOLD_DAYS} days).")
+
+    st.divider()
+    archive_exclude = st.checkbox(
+        "Also add ticker to exclude list",
+        value=True,
+        key="reports_archive_exclude",
+    )
+    if st.button("Archive this report", key="reports_archive_btn"):
+        try:
+            research_utils.archive_report(report_path)
+            if archive_exclude:
+                research_utils.add_exclude_ticker(ticker, "archived report")
+            st.success(f"Archived {report_path.name}.")
+            st.cache_data.clear()
+            st.rerun()
+        except (FileNotFoundError, FileExistsError, OSError) as exc:
+            st.error(str(exc))
+
     if st.button("Go to Research", key="reports_go_research"):
         st.session_state["nav_page"] = "Research"
         st.rerun()

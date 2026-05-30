@@ -19,7 +19,9 @@ from research_watchlist import (  # noqa: E402
     eligibility_for_tickers,
     eligible_tickers,
     get_repo_root,
+    load_exclude_config,
     load_watchlist_config,
+    resolve_exclude_path_for_filter,
 )
 
 STALE_THRESHOLD_DAYS = 14
@@ -55,6 +57,25 @@ def resolve_watchlist_path() -> Path:
     return _repo() / "config" / "research_watchlist.yaml.example"
 
 
+def resolve_exclude_path() -> Path:
+    """Path for exclude editor (user file or example template)."""
+    path = _repo() / "config" / "research_exclude.yaml"
+    if path.exists():
+        return path
+    return _repo() / "config" / "research_exclude.yaml.example"
+
+
+def _archive_research_dir() -> Path:
+    return _repo() / "reports" / "archive" / "research"
+
+
+def excluded_ticker_set() -> set[str]:
+    exclude_path = resolve_exclude_path_for_filter()
+    if not exclude_path:
+        return set()
+    return set(load_exclude_config(exclude_path).keys())
+
+
 def staleness_badge(days: int | None) -> str:
     if days is None:
         return "MISSING"
@@ -88,12 +109,26 @@ def list_report_tickers() -> list[str]:
     research_dir = _research_dir()
     if not research_dir.exists():
         return []
+    excluded = excluded_ticker_set()
     tickers: set[str] = set()
     for path in research_dir.glob("*.md"):
         parsed = _parse_report_file(path)
-        if parsed:
+        if parsed and parsed[0] not in excluded:
             tickers.add(parsed[0])
     return sorted(tickers)
+
+
+def archive_report(path: Path) -> Path:
+    """Move a research report into reports/archive/research/."""
+    if not path.is_file():
+        raise FileNotFoundError(f"Report not found: {path}")
+    dest_dir = _archive_research_dir()
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / path.name
+    if dest.exists():
+        raise FileExistsError(f"Archive already exists: {dest}")
+    path.rename(dest)
+    return dest
 
 
 def list_reports_for_ticker(ticker: str) -> list[dict]:
@@ -203,11 +238,12 @@ def _derive_ui_status(
 def get_research_dashboard_rows(as_of: date | None = None) -> list[dict]:
     as_of = as_of or date.today()
     watchlist_path = resolve_watchlist_path()
+    exclude_path = resolve_exclude_path_for_filter()
     state_dir = _state_dir()
     research_dir = _research_dir()
 
-    eligibility_map = eligibility_for_tickers(state_dir, watchlist_path)
-    tickers = eligible_tickers(state_dir, watchlist_path)
+    eligibility_map = eligibility_for_tickers(state_dir, watchlist_path, exclude_path=exclude_path)
+    tickers = eligible_tickers(state_dir, watchlist_path, exclude_path=exclude_path)
     stale_rows = build_staleness_rows(
         tickers=tickers,
         research_dir=research_dir,
@@ -320,3 +356,46 @@ def save_watchlist(entries: dict[str, dict]) -> None:
         if os.path.exists(tmp):
             os.unlink(tmp)
         raise
+
+
+def load_exclude_for_editor() -> dict[str, dict]:
+    return load_exclude_config(resolve_exclude_path())
+
+
+def save_exclude(entries: dict[str, dict]) -> None:
+    """Validate and atomically write config/research_exclude.yaml."""
+    path = _repo() / "config" / "research_exclude.yaml"
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    normalized: dict[str, dict] = {}
+    for ticker, entry in entries.items():
+        t = str(ticker).strip().upper()
+        if not t:
+            continue
+        if t in normalized:
+            raise ValueError(f"Duplicate ticker: {t}")
+        normalized[t] = {"reason": str(entry.get("reason", "") or "")}
+
+    payload: dict = {}
+    for ticker in sorted(normalized):
+        payload[ticker] = normalized[ticker]
+
+    fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".yaml")
+    try:
+        with os.fdopen(fd, "w") as fh:
+            fh.write("# Excluded tickers — hidden from Research, Reports, staleness\n")
+            yaml.safe_dump(payload, fh, default_flow_style=False, sort_keys=False)
+        os.replace(tmp, path)
+    except Exception:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
+
+
+def add_exclude_ticker(ticker: str, reason: str = "") -> None:
+    """Merge one ticker into research_exclude.yaml."""
+    user_path = _repo() / "config" / "research_exclude.yaml"
+    entries = load_exclude_config(user_path) if user_path.exists() else {}
+    t = ticker.strip().upper()
+    entries[t] = {"reason": reason.strip()}
+    save_exclude(entries)

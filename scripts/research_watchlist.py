@@ -38,6 +38,37 @@ def load_watchlist_config(path: Path) -> dict[str, dict]:
     return result
 
 
+def load_exclude_config(path: Path) -> dict[str, dict]:
+    """Load exclude YAML; return ticker -> {reason}."""
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text()) or {}
+    if not isinstance(data, dict):
+        return {}
+    result: dict[str, dict] = {}
+    for ticker, entry in data.items():
+        if isinstance(entry, dict):
+            result[str(ticker).upper()] = {"reason": str(entry.get("reason", ""))}
+        elif entry is not None:
+            result[str(ticker).upper()] = {"reason": str(entry)}
+    return result
+
+
+def resolve_exclude_path_for_filter(repo_root: Path | None = None) -> Path | None:
+    """Return user exclude config path if it exists (not the example file)."""
+    root = repo_root or get_repo_root()
+    path = root / "config" / "research_exclude.yaml"
+    return path if path.exists() else None
+
+
+def apply_exclude(tickers: list[str] | set[str], exclude_path: Path | None) -> list[str]:
+    """Drop tickers present in the exclude config."""
+    if not exclude_path or not exclude_path.exists():
+        return sorted(tickers)
+    excluded = set(load_exclude_config(exclude_path).keys())
+    return sorted(t for t in tickers if str(t).upper() not in excluded)
+
+
 def tickers_from_theses(state_dir: Path, statuses: tuple[str, ...]) -> set[str]:
     """Return tickers from thesis YAML files matching any of the given statuses."""
     if not state_dir.exists():
@@ -63,7 +94,11 @@ def _watching_tickers(watchlist_path: Path) -> set[str]:
     return {t for t, cfg in load_watchlist_config(watchlist_path).items() if cfg.get("watching")}
 
 
-def eligibility_for_tickers(state_dir: Path, watchlist_path: Path) -> dict[str, list[str]]:
+def eligibility_for_tickers(
+    state_dir: Path,
+    watchlist_path: Path,
+    exclude_path: Path | None = None,
+) -> dict[str, list[str]]:
     """Map each eligible ticker to its eligibility reasons."""
     reasons: dict[str, list[str]] = {}
 
@@ -80,12 +115,22 @@ def eligibility_for_tickers(state_dir: Path, watchlist_path: Path) -> dict[str, 
         if ticker in watching and "idea" not in reasons.get(ticker, []):
             reasons.setdefault(ticker, []).append("idea")
 
+    if exclude_path is None:
+        exclude_path = resolve_exclude_path_for_filter()
+    if exclude_path and exclude_path.exists():
+        excluded = set(load_exclude_config(exclude_path).keys())
+        reasons = {k: v for k, v in reasons.items() if k not in excluded}
+
     return reasons
 
 
-def eligible_tickers(state_dir: Path, watchlist_path: Path) -> list[str]:
+def eligible_tickers(
+    state_dir: Path,
+    watchlist_path: Path,
+    exclude_path: Path | None = None,
+) -> list[str]:
     """Union of position tickers and watchlist; IDEA only when also on watchlist."""
-    return sorted(eligibility_for_tickers(state_dir, watchlist_path))
+    return sorted(eligibility_for_tickers(state_dir, watchlist_path, exclude_path=exclude_path))
 
 
 def latest_report_date(research_dir: Path, ticker: str) -> date | None:

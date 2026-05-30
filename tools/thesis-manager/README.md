@@ -44,6 +44,19 @@ for eligible tickers, and provides copy-paste Cursor prompts for
 
 Watchlist config: `config/research_watchlist.yaml` (editable in-app).
 
+Exclude config: `config/research_exclude.yaml` (copy from `config/research_exclude.yaml.example`).
+Excluded tickers are hidden from Research staleness, Reports ticker list, and
+`update_stale_research.py` scans. Edit in-app under **Research → Excluded tickers**.
+
+## Removing tickers
+
+| Goal | UI action |
+|------|-----------|
+| Drop from research tracking (e.g. INO) | Research → **Exclude from research** or Excluded tickers editor; Reports → **Archive this report** |
+| Stop tracking a position (e.g. XSP) | Dashboard → **Stop tracking** (invalidates thesis + adds exclude) |
+| Never ingest from sync again | Add Thesis → **Dismiss** on pending row (SKIPPED + sync block) |
+| Remove thesis file entirely | Dashboard → Advanced → **Delete thesis permanently** (confirm; terminal only unless Force) |
+
 ## Tests
 
 ```bash

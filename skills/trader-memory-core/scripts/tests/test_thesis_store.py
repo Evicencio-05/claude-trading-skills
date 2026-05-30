@@ -608,6 +608,44 @@ def test_mark_reviewed_next_based_on_review_date(tmp_path: Path):
     assert thesis["monitoring"]["next_review_date"] == "2026-02-14"
 
 
+# -- Tests: delete -------------------------------------------------------------
+
+
+def test_delete_closed_thesis(tmp_path: Path):
+    tid, _ = _register_and_get(tmp_path)
+    thesis_store.transition(tmp_path, tid, "ENTRY_READY", "ok")
+    thesis_store.open_position(tmp_path, tid, 100.0, "2026-03-01T10:00:00+00:00")
+    thesis_store.close(tmp_path, tid, "manual", 110.0, "2026-04-01T10:00:00+00:00")
+    deleted = thesis_store.delete(tmp_path, tid)
+    assert deleted == tid
+    assert not (tmp_path / f"{tid}.yaml").exists()
+    index = thesis_store._load_index(tmp_path)
+    assert tid not in index["theses"]
+
+
+def test_delete_active_without_force_raises(tmp_path: Path):
+    tid, _ = _register_and_get(tmp_path)
+    thesis_store.transition(tmp_path, tid, "ENTRY_READY", "ok")
+    thesis_store.open_position(tmp_path, tid, 100.0, "2026-03-01T10:00:00+00:00")
+    with pytest.raises(ValueError, match="terminal"):
+        thesis_store.delete(tmp_path, tid)
+
+
+def test_delete_active_with_force(tmp_path: Path):
+    tid, _ = _register_and_get(tmp_path)
+    thesis_store.transition(tmp_path, tid, "ENTRY_READY", "ok")
+    thesis_store.open_position(tmp_path, tid, 100.0, "2026-03-01T10:00:00+00:00")
+    thesis_store.delete(tmp_path, tid, force=True)
+    assert not (tmp_path / f"{tid}.yaml").exists()
+
+
+def test_delete_invalidated(tmp_path: Path):
+    tid = thesis_store.register(tmp_path, _make_thesis_data())
+    thesis_store.terminate(tmp_path, tid, "INVALIDATED", "mistake")
+    thesis_store.delete(tmp_path, tid)
+    assert not (tmp_path / f"{tid}.yaml").exists()
+
+
 # -- Tests: rebuild_index / validate_state ------------------------------------
 
 

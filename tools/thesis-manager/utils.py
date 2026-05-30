@@ -280,13 +280,17 @@ def load_pending_ingest() -> list[dict]:
 
 def save_pending_ingest(positions: list[dict]) -> None:
     """Overwrite positions list in state/pending_ingest.json."""
-    path = get_repo_root() / "state" / "pending_ingest.json"
+    path = get_pending_ingest_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
     try:
         existing = json.loads(path.read_text()) if path.exists() else {}
     except (json.JSONDecodeError, OSError):
         existing = {}
+    if not isinstance(existing, dict):
+        existing = {}
     existing["positions"] = positions
-    path.write_text(json.dumps(existing, indent=2, default=str))
+    existing["last_updated"] = datetime.now().isoformat()
+    path.write_text(json.dumps(existing, indent=2, default=str) + "\n")
 
 
 # ── write wrappers ─────────────────────────────────────────────────────────────
@@ -415,6 +419,91 @@ def transition_thesis(thesis_id: str, new_status: str, reason: str) -> dict:
 def update_thesis(thesis_id: str, fields: dict) -> dict:
     store = import_store()
     return store.update(get_state_dir(), thesis_id, fields)
+
+
+def delete_thesis(thesis_id: str, *, force: bool = False) -> str:
+    store = import_store()
+    return store.delete(get_state_dir(), thesis_id, force=force)
+
+
+def stop_tracking_thesis(thesis_id: str, reason: str = "stopped tracking") -> dict:
+    """Invalidate non-terminal theses without recording P&L."""
+    store = import_store()
+    state_dir = get_state_dir()
+    thesis = store.get(state_dir, thesis_id)
+    status = thesis.get("status", "")
+    if status in ("CLOSED", "INVALIDATED"):
+        return thesis
+    return store.terminate(
+        state_dir,
+        thesis_id,
+        "INVALIDATED",
+        reason,
+        actual_price=None,
+        actual_date=None,
+    )
+
+
+def get_synced_positions_path() -> Path:
+    return get_repo_root() / "state" / "synced_positions.json"
+
+
+def get_pending_ingest_path() -> Path:
+    return get_repo_root() / "state" / "pending_ingest.json"
+
+
+def _load_synced_state() -> dict:
+    path = get_synced_positions_path()
+    if not path.exists():
+        return {"ingested_keys": [], "pending_keys": []}
+    try:
+        data = json.loads(path.read_text())
+    except json.JSONDecodeError:
+        return {"ingested_keys": [], "pending_keys": []}
+    if not isinstance(data, dict):
+        return {"ingested_keys": [], "pending_keys": []}
+    data.setdefault("ingested_keys", [])
+    data.setdefault("pending_keys", [])
+    return data
+
+
+def block_sync_key(key: str) -> None:
+    """Prevent robinhood_sync from re-adding this position key."""
+    path = get_synced_positions_path()
+    state = _load_synced_state()
+    ingested = list(state.get("ingested_keys") or [])
+    if key not in ingested:
+        ingested.append(key)
+    state["ingested_keys"] = ingested
+    pending = [k for k in (state.get("pending_keys") or []) if k != key]
+    state["pending_keys"] = pending
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state, indent=2) + "\n")
+
+
+def mark_pending_skipped(positions: list[dict], key: str) -> list[dict]:
+    """Return updated positions list with one row marked SKIPPED."""
+    updated: list[dict] = []
+    for row in positions:
+        copy = dict(row)
+        if copy.get("key") == key:
+            copy["status"] = "SKIPPED"
+            copy["skipped_at"] = datetime.now().isoformat()
+        updated.append(copy)
+    return updated
+
+
+def is_ticker_excluded(ticker: str) -> bool:
+    sys.path.insert(0, str(get_repo_root() / "scripts"))
+    from research_watchlist import (  # noqa: PLC0415
+        load_exclude_config,
+        resolve_exclude_path_for_filter,
+    )
+
+    exclude_path = resolve_exclude_path_for_filter()
+    if not exclude_path:
+        return False
+    return ticker.upper() in load_exclude_config(exclude_path)
 
 
 # ── derived metrics ───────────────────────────────────────────────────────────
