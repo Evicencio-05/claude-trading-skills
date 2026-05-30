@@ -1,0 +1,15 @@
+[Unit]
+Description=Scan stale deep-research reports and prefetch scriptable data
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repos/claude-trading-skills
+ExecStart=/usr/bin/uv run python3 scripts/update_stale_research.py --prefetch
+StandardOutput=append:/tmp/research_staleness.log
+StandardError=append:/tmp/research_staleness_error.log
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+SuccessExitStatus=2
+
+[Install]
+WantedBy=default.target

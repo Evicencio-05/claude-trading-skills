@@ -1,0 +1,12 @@
+# Tickers to track even without an open position.
+# Copy to config/research_watchlist.yaml and edit locally.
+MRAM:
+  watching: true
+  notes: "swing candidate"
+FPS:
+  watching: true
+  notes: "stale — update-research candidate"
+INO:
+  watching: true
+VECO:
+  watching: true

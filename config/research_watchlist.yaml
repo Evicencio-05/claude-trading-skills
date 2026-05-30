@@ -1,0 +1,22 @@
+# Research watchlist — tickers tracked without a position
+DELL:
+  watching: true
+  notes: ''
+FPS:
+  watching: false
+  notes: "stale \u2014 update-research candidate"
+HPE:
+  watching: true
+  notes: ''
+INO:
+  watching: false
+  notes: ''
+MRAM:
+  watching: false
+  notes: swing candidate
+PLTR:
+  watching: true
+  notes: ''
+VECO:
+  watching: true
+  notes: ''

@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly stale research scan (Sunday 6 PM local)
+
+[Timer]
+# Default: Sunday 18:00 in your local timezone.
+# Adjust OnCalendar for your preferred schedule.
+OnCalendar=Sun *-*-* 18:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from datetime import date, datetime, timedelta
@@ -11,18 +12,15 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent))
+import research_utils  # noqa: E402
 import utils  # noqa: E402
+
+PAGES = ["Dashboard", "Research", "Reports", "Add Thesis", "Review"]
 
 # ── constants ─────────────────────────────────────────────────────────────────
 
 # Must match thesis.schema.json enum exactly — flow_play/lottery are not valid
-THESIS_TYPES = [
-    "growth_momentum",
-    "pivot_breakout",
-    "earnings_drift",
-    "mean_reversion",
-    "dividend_income",
-]
+THESIS_TYPES = utils.THESIS_TYPES
 CONFIDENCE_LABELS: dict[int, str] = {
     1: "1 — Lottery",
     2: "2 — Speculative",
@@ -30,7 +28,14 @@ CONFIDENCE_LABELS: dict[int, str] = {
     4: "4 — Conviction",
     5: "5 — High Conviction",
 }
-EXIT_REASONS = ["stop_hit", "target_hit", "time_stop", "invalidated", "manual"]
+EXIT_REASONS = utils.EXIT_REASONS
+EXIT_REASON_LABELS: dict[str, str] = {
+    "stop_hit": "Stop hit",
+    "target_hit": "Target hit",
+    "time_stop": "Expired / time stop",
+    "invalidated": "Thesis invalidated",
+    "manual": "Manual exit",
+}
 ACCOUNTS = ["robinhood_taxable", "ira_robinhood", "robinhood_agentic", "lucid_eval"]
 
 
@@ -38,47 +43,19 @@ ACCOUNTS = ["robinhood_taxable", "ira_robinhood", "robinhood_agentic", "lucid_ev
 
 
 def _fmt_account(raw: str) -> str:
-    """Convert a raw Robinhood account URL to a short display string."""
-    if not raw:
-        return "—"
-    if raw.startswith("http"):
-        parts = [p for p in raw.rstrip("/").split("/") if p]
-        return f"rh:{parts[-1]}" if parts else raw
-    return raw
+    return utils.fmt_account(raw)
 
 
 def _ira_badge(account: str, strategy: str) -> str | None:
-    """Return badge HTML if account is IRA, else None."""
-    if "ira" not in account.lower():
-        return None
-    if strategy in ("long_call", "long_put", ""):
-        return (
-            '<span style="background:#2d6a4f;color:#fff;'
-            'padding:2px 8px;border-radius:4px;font-size:0.85em">'
-            "IRA Eligible</span>"
-        )
-    return (
-        '<span style="background:#b5192b;color:#fff;'
-        'padding:2px 8px;border-radius:4px;font-size:0.85em">'
-        "NOT IRA Eligible — check before submitting</span>"
-    )
+    return utils.ira_badge_html(account, strategy)
 
 
 def _days_to_expiry(expiry_str: str | None) -> int | None:
-    if not expiry_str:
-        return None
-    try:
-        return (date.fromisoformat(str(expiry_str)) - date.today()).days
-    except (ValueError, TypeError):
-        return None
+    return utils.days_to_expiry(expiry_str)
 
 
 def _parse_price(text: str) -> float | None:
-    """Try to parse a price string as float. Returns None if not numeric."""
-    try:
-        return float(text.strip().lstrip("$"))
-    except ValueError:
-        return None
+    return utils.parse_price(text)
 
 
 def _run_safe(fn, *args, **kwargs):
@@ -99,43 +76,16 @@ def _build_thesis_data(
     avg_cost: float,
     strategy: str = "",
 ) -> dict:
-    """Assemble a thesis_data dict that thesis_store.register() accepts."""
-    stop_price = _parse_price(stop_text)
-    target_price = _parse_price(target_text)
-    kill = []
-    if stop_text.strip() and stop_price is None:
-        kill = [stop_text.strip()]
-    return {
-        "ticker": ticker.upper(),
-        "thesis_type": thesis_type,
-        "thesis_statement": thesis_text.strip(),
-        "setup_type": strategy or "manual",
-        "catalyst": "",
-        "mechanism_tag": "uncertain",
-        "evidence": [],
-        "kill_criteria": kill,
-        "confidence": None,
-        "confidence_score": round(confidence * 0.2, 1),
-        "entry": {
-            "target_price": avg_cost if avg_cost else None,
-            "conditions": [],
-        },
-        "exit": {
-            "stop_loss": stop_price,
-            "stop_loss_pct": None,
-            "take_profit": target_price,
-            "take_profit_rr": None,
-            "time_stop_days": None,
-        },
-        "origin": {
-            "skill": "manual",
-            "output_file": "manual",
-            "screening_grade": None,
-            "screening_score": None,
-            "raw_provenance": {},
-        },
-        "monitoring": {"review_interval_days": 7},
-    }
+    return utils.build_thesis_data(
+        ticker=ticker,
+        thesis_type=thesis_type,
+        thesis_text=thesis_text,
+        confidence=confidence,
+        stop_text=stop_text,
+        target_text=target_text,
+        avg_cost=avg_cost,
+        strategy=strategy,
+    )
 
 
 # ── cached data loaders ────────────────────────────────────────────────────────
@@ -151,6 +101,11 @@ def _theses(statuses_key: str) -> list[dict]:
 @st.cache_data(ttl=60)
 def _pending() -> list[dict]:
     return utils.load_pending_ingest()
+
+
+@st.cache_data(ttl=60)
+def _research_rows() -> list[dict]:
+    return research_utils.get_research_dashboard_rows()
 
 
 # ── page 1: dashboard ─────────────────────────────────────────────────────────
@@ -203,7 +158,24 @@ def show_dashboard() -> None:
         if days_note:
             st.caption(days_note)
 
+    research_rows = _research_rows()
+    stale_n = sum(1 for r in research_rows if r["ui_status"] in ("stale", "missing"))
+    rc1, rc2 = st.columns([3, 1])
+    with rc1:
+        st.caption(f"Research stale: **{stale_n}** — open Research page for update prompts")
+    with rc2:
+        if st.button("Go to Research", key="dash_go_research"):
+            st.session_state["nav_page"] = "Research"
+            st.rerun()
+
     st.divider()
+
+    dupes = utils.pending_duplicate_tickers(open_theses, pending_all)
+    if dupes:
+        st.warning(
+            f"Duplicate tickers already logged as open theses: {', '.join(sorted(dupes))}. "
+            "Close or skip pending rows to avoid double-counting."
+        )
 
     # --- position table ---
     if not open_theses and not pending_thesis:
@@ -225,7 +197,7 @@ def show_dashboard() -> None:
                 "Type": t.get("thesis_type", ""),
                 "Account": _fmt_account(pos.get("account_type") or ""),
                 "Expiry": expiry or "—",
-                "Confidence": int(cs * 5) if cs else "—",
+                "Confidence": str(int(cs * 5)) if cs else "—",
                 "Days Left": str(dte) if dte is not None else "—",
                 "Status": t.get("status", ""),
             }
@@ -318,14 +290,16 @@ def show_dashboard() -> None:
                     with st.form(key=f"close_form_{row_id}"):
                         ep = st.number_input("Exit price", min_value=0.0, format="%.4f")
                         ed = st.date_input("Exit date", value=date.today())
-                        reason = st.selectbox("Exit reason", EXIT_REASONS)
+                        reason = st.selectbox(
+                            "Exit reason",
+                            EXIT_REASONS,
+                            format_func=lambda x: EXIT_REASON_LABELS.get(x, x),
+                        )
                         if st.form_submit_button("Confirm Close"):
-                            _, err = _run_safe(
-                                utils.close_thesis, row_id, reason, ep, ed.isoformat()
-                            )
+                            _, err = _run_safe(utils.finalize_thesis, row_id, reason, ep, ed)
                             if err:
                                 st.error(
-                                    f"Close failed (command: close_thesis {row_id!r} {reason!r} {ep} {ed.isoformat()!r}):\n{err}"
+                                    f"Close failed (finalize_thesis {row_id!r} {reason!r} {ep} {ed.isoformat()!r}):\n{err}"
                                 )
                             else:
                                 st.success(f"Closed {row['Ticker']}.")
@@ -439,7 +413,7 @@ def _pending_position_form(pos: dict, key_prefix: str) -> None:
             key=f"tgt_{key_prefix}",
         )
 
-    if st.button("Submit", key=f"sub_{key_prefix}", type="primary"):
+    if st.button("Submit", key=f"sub_{key_prefix}"):
         if not thesis_text.strip():
             st.warning("Thesis text is required.")
             return
@@ -453,18 +427,21 @@ def _pending_position_form(pos: dict, key_prefix: str) -> None:
             avg_cost=float(avg_cost) if avg_cost else 0.0,
             strategy=strategy,
         )
-        thesis_id, err = _run_safe(utils.register_thesis, td)
+        val_errors = utils.validate_thesis_submit(
+            td, account=account, strategy=strategy, confidence=confidence
+        )
+        if val_errors:
+            st.error("\n".join(val_errors))
+            return
+        thesis_id, err = _run_safe(utils.register_pending_position, td, pos)
         if err:
-            st.error(f"Register failed (register_thesis for {ticker}):\n{err}")
+            st.error(f"Register failed (register_pending_position for {ticker}):\n{err}")
             return
         all_positions = utils.load_pending_ingest()
-        for p2 in all_positions:
-            if p2.get("key") == pos.get("key"):
-                p2["status"] = "INGESTED"
-                p2["thesis_id"] = thesis_id
-                break
-        utils.save_pending_ingest(all_positions)
-        st.success(f"Registered {ticker} → {thesis_id}")
+        utils.save_pending_ingest(
+            utils.mark_pending_ingested(all_positions, pos.get("key", ""), thesis_id)
+        )
+        st.success(f"Registered {ticker} → {thesis_id} (ACTIVE)")
         st.session_state[f"collapsed_{key_prefix}"] = True
         st.cache_data.clear()
         st.rerun()
@@ -484,6 +461,12 @@ def show_add_thesis() -> None:
     if not pending_thesis:
         st.info("No pending sync data. Run **Robinhood sync** from the Dashboard.")
     else:
+        open_theses = utils.load_theses(["ACTIVE", "ENTRY_READY"])
+        dupes = utils.pending_duplicate_tickers(open_theses, pending)
+        if dupes:
+            st.warning(
+                f"These pending tickers already have open theses: {', '.join(sorted(dupes))}"
+            )
         for i, pos in enumerate(pending_thesis):
             ticker = pos.get("ticker", "?")
             key_prefix = f"pend_{i}_{ticker}"
@@ -557,7 +540,7 @@ def show_add_thesis() -> None:
                 key="man_target",
             )
 
-        if st.button("Submit", key="man_submit", type="primary"):
+        if st.button("Submit", key="man_submit"):
             if not m_ticker:
                 st.warning("Ticker is required.")
             elif not m_thesis.strip():
@@ -573,12 +556,18 @@ def show_add_thesis() -> None:
                     avg_cost=float(m_cost),
                     strategy=m_strategy,
                 )
-                thesis_id, err = _run_safe(utils.register_thesis, td)
-                if err:
-                    st.error(f"Register failed (register_thesis for {m_ticker}):\n{err}")
+                val_errors = utils.validate_thesis_submit(
+                    td, account=m_account, strategy=m_strategy, confidence=m_conf
+                )
+                if val_errors:
+                    st.error("\n".join(val_errors))
                 else:
-                    st.success(f"Registered {m_ticker} → {thesis_id}")
-                    st.cache_data.clear()
+                    thesis_id, err = _run_safe(utils.register_thesis, td)
+                    if err:
+                        st.error(f"Register failed (register_thesis for {m_ticker}):\n{err}")
+                    else:
+                        st.success(f"Registered {m_ticker} → {thesis_id}")
+                        st.cache_data.clear()
 
 
 # ── page 3: review ─────────────────────────────────────────────────────────────
@@ -655,12 +644,17 @@ def show_review() -> None:
                         "Exit price", min_value=0.0, format="%.4f", key=f"uc_ep_{tid}"
                     )
                     ed = st.date_input("Exit date", value=date.today(), key=f"uc_ed_{tid}")
-                    reason = st.selectbox("Exit reason", EXIT_REASONS, key=f"uc_r_{tid}")
+                    reason = st.selectbox(
+                        "Exit reason",
+                        EXIT_REASONS,
+                        format_func=lambda x: EXIT_REASON_LABELS.get(x, x),
+                        key=f"uc_r_{tid}",
+                    )
                     if st.form_submit_button("Confirm Close"):
-                        _, err = _run_safe(utils.close_thesis, tid, reason, ep, ed.isoformat())
+                        _, err = _run_safe(utils.finalize_thesis, tid, reason, ep, ed)
                         if err:
                             st.error(
-                                f"Close failed (close_thesis {tid!r} {reason!r} {ep} {ed.isoformat()!r}):\n{err}"
+                                f"Close failed (finalize_thesis {tid!r} {reason!r} {ep} {ed.isoformat()!r}):\n{err}"
                             )
                         else:
                             st.success(f"Closed {ticker}.")
@@ -680,7 +674,7 @@ def show_review() -> None:
                     r_note = st.text_input("Roll rationale", key=f"rr_n_{tid}")
                     if st.form_submit_button("Confirm Roll"):
                         _, close_err = _run_safe(
-                            utils.close_thesis, tid, "manual", 0.0, date.today().isoformat()
+                            utils.finalize_thesis, tid, "manual", 0.0, date.today()
                         )
                         if close_err:
                             st.error(f"Close original failed:\n{close_err}")
@@ -799,21 +793,325 @@ def show_review() -> None:
         st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
+# ── page 4: research ───────────────────────────────────────────────────────────
+
+
+def _research_row_style(row: pd.Series, meta: dict) -> list[str]:
+    ticker = row.get("Ticker", "")
+    info = meta.get(ticker, {})
+    ui_status = info.get("ui_status", "")
+    badge = info.get("badge", "")
+    thesis_status = info.get("thesis_status", "")
+    bg = ""
+    if ui_status == "stale" or (
+        ui_status == "missing" and thesis_status in ("ACTIVE", "ENTRY_READY")
+    ):
+        bg = "background-color: #3d0000"
+    elif badge == "WARN":
+        bg = "background-color: #3d2000"
+    elif badge == "OK":
+        bg = "background-color: #0a2e1a"
+    return [bg] * len(row)
+
+
+def _run_stale_research_scan(dry_run: bool) -> tuple[str, int]:
+    script = utils.get_repo_root() / "scripts" / "update_stale_research.py"
+    cmd = [sys.executable, str(script)]
+    if dry_run:
+        cmd.append("--dry-run")
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        cwd=utils.get_repo_root(),
+        timeout=120,
+    )
+    output = (result.stdout or "") + (result.stderr or "")
+    return output.strip(), result.returncode
+
+
+def show_research() -> None:
+    st.header("Research")
+
+    rows = _research_rows()
+    if not rows:
+        st.info("No eligible tickers — add positions or edit research_watchlist.yaml")
+        _show_research_refresh()
+        return
+
+    stale_count = sum(1 for r in rows if r["ui_status"] == "stale" or r["badge"] == "STALE")
+    missing_count = sum(1 for r in rows if r["ui_status"] in ("missing", "needs_deep_research"))
+    queued_count = research_utils.queue_recent_count()
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Tracked tickers", len(rows))
+    m2.metric(
+        "Stale (>14d)",
+        stale_count,
+        delta=f"⚠ {stale_count}" if stale_count else None,
+        delta_color="inverse" if stale_count else "off",
+    )
+    m3.metric(
+        "Missing report",
+        missing_count,
+        delta=f"⚠ {missing_count}" if missing_count else None,
+        delta_color="inverse" if missing_count else "off",
+    )
+    m4.metric("Queued updates", queued_count)
+
+    st.divider()
+
+    meta = {r["ticker"]: r for r in rows}
+    table_rows = []
+    for r in rows:
+        table_rows.append(
+            {
+                "_ticker": r["ticker"],
+                "Ticker": r["ticker"],
+                "Last Report": r["last_report_date"] or "—",
+                "Days": str(r["days_stale"]) if r["days_stale"] is not None else "—",
+                "Thesis": r["thesis_status"],
+                "Watching": "yes" if r["watching"] else "—",
+                "Status": r["ui_status"],
+                "Badge": r["badge"],
+            }
+        )
+
+    df = pd.DataFrame(table_rows)
+    display_cols = ["Ticker", "Last Report", "Days", "Thesis", "Watching", "Status", "Badge"]
+    styled = df[display_cols].style.apply(
+        lambda row: _research_row_style(row, meta),
+        axis=1,
+    )
+
+    event = st.dataframe(
+        styled,
+        width="stretch",
+        on_select="rerun",
+        selection_mode="single-row",
+        key="research_table",
+        hide_index=True,
+    )
+
+    sel = (event.selection.rows if hasattr(event, "selection") else []) or []
+    if sel:
+        selected = table_rows[sel[0]]
+        ticker = selected["_ticker"]
+        info = meta[ticker]
+
+        with st.container(border=True):
+            st.subheader(f"{ticker} — {info['ui_status']}")
+            if info.get("notes"):
+                st.caption(info["notes"])
+            st.caption(f"Eligibility: {', '.join(info['eligibility']) or '—'}")
+
+            if info.get("prefetch_available") and info.get("prefetch_path"):
+                with st.expander("Open prefetch", expanded=False):
+                    try:
+                        prefetch_data = json.loads(Path(info["prefetch_path"]).read_text())
+                        st.json(prefetch_data)
+                    except (json.JSONDecodeError, OSError) as exc:
+                        st.error(f"Could not read prefetch: {exc}")
+
+            if info["ui_status"] != "missing":
+                st.text_area(
+                    "Copy update prompt",
+                    value=research_utils.build_update_prompt(ticker),
+                    height=120,
+                    key=f"upd_prompt_{ticker}",
+                )
+            if info["ui_status"] == "missing":
+                st.text_area(
+                    "Copy deep-research prompt",
+                    value=research_utils.build_deep_research_prompt(ticker),
+                    height=80,
+                    key=f"deep_prompt_{ticker}",
+                )
+
+    st.divider()
+
+    with st.container(border=True):
+        st.subheader("Watchlist")
+        st.caption(
+            f"File: {research_utils.resolve_watchlist_path().relative_to(utils.get_repo_root())}"
+        )
+        watchlist = research_utils.load_watchlist_for_editor()
+        editor_rows = [
+            {
+                "Ticker": t,
+                "Watching": cfg.get("watching", False),
+                "Notes": cfg.get("notes", ""),
+            }
+            for t, cfg in sorted(watchlist.items())
+        ]
+        if not editor_rows:
+            editor_rows = [{"Ticker": "", "Watching": True, "Notes": ""}]
+
+        edited = st.data_editor(
+            pd.DataFrame(editor_rows),
+            num_rows="dynamic",
+            column_config={
+                "Ticker": st.column_config.TextColumn("Ticker", required=True),
+                "Watching": st.column_config.CheckboxColumn("Watching"),
+                "Notes": st.column_config.TextColumn("Notes"),
+            },
+            hide_index=True,
+            key="watchlist_editor",
+        )
+
+        if st.button("Save watchlist", key="save_watchlist"):
+            entries: dict[str, dict] = {}
+            for _, row in edited.iterrows():
+                t = str(row.get("Ticker", "")).strip().upper()
+                if not t:
+                    continue
+                entries[t] = {
+                    "watching": bool(row.get("Watching", False)),
+                    "notes": str(row.get("Notes", "") or ""),
+                }
+            try:
+                research_utils.save_watchlist(entries)
+                st.success("Watchlist saved.")
+                st.cache_data.clear()
+                st.rerun()
+            except ValueError as exc:
+                st.error(str(exc))
+            except OSError as exc:
+                st.error(f"Save failed: {exc}")
+
+    st.divider()
+
+    queue = research_utils.load_update_queue()
+    with st.container(border=True):
+        st.subheader("Update queue")
+        if queue:
+            st.caption(
+                f"Generated: {queue.get('generated_at', '—')} | "
+                f"Threshold: {queue.get('threshold_days', research_utils.STALE_THRESHOLD_DAYS)}d"
+            )
+            q_rows = []
+            for entry in queue.get("tickers") or []:
+                if not isinstance(entry, dict):
+                    continue
+                q_rows.append(
+                    {
+                        "Ticker": entry.get("ticker", ""),
+                        "Status": entry.get("status", ""),
+                        "Days stale": entry.get("days_stale", "—"),
+                        "Last report": entry.get("last_report") or "—",
+                    }
+                )
+            if q_rows:
+                st.dataframe(pd.DataFrame(q_rows), width="stretch", hide_index=True)
+        else:
+            st.info("No queue file yet. Regenerate to create state/research_update_queue.json.")
+
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button("Refresh queue now", key="research_dry_run"):
+                with st.spinner("Running dry-run scan..."):
+                    output, code = _run_stale_research_scan(dry_run=True)
+                st.code(output or "(no output)")
+                st.caption(f"Exit code: {code}")
+        with b2:
+            if st.button("Regenerate queue", key="research_regen_queue"):
+                with st.spinner("Regenerating queue..."):
+                    output, code = _run_stale_research_scan(dry_run=False)
+                if code in (0, 2):
+                    st.success("Queue regenerated.")
+                    if output:
+                        st.code(output[:2000])
+                    st.cache_data.clear()
+                    st.rerun()
+                else:
+                    st.error(f"Scan failed (exit {code}):\n{output[:2000]}")
+
+    st.divider()
+    _show_research_refresh()
+
+
+# ── page: reports ──────────────────────────────────────────────────────────────
+
+
+def show_reports() -> None:
+    st.header("Reports")
+
+    tickers = research_utils.list_report_tickers()
+    if not tickers:
+        st.info(
+            "No research reports in reports/research/. "
+            "Run deep-research or update-research, then return here."
+        )
+        if st.button("Go to Research", key="reports_empty_go_research"):
+            st.session_state["nav_page"] = "Research"
+            st.rerun()
+        return
+
+    ticker = st.selectbox("Ticker", tickers, key="reports_ticker")
+    entries = research_utils.list_reports_for_ticker(ticker)
+    if not entries:
+        st.warning(f"No report files found for {ticker}.")
+        return
+
+    if len(entries) > 1:
+        date_options = [e["date"].isoformat() for e in entries]
+        selected_date = st.selectbox("Report date", date_options, key="reports_date")
+        selected = next(e for e in entries if e["date"].isoformat() == selected_date)
+    else:
+        selected = entries[0]
+
+    report_path: Path = selected["path"]
+    report_date: date = selected["date"]
+    days_old = (date.today() - report_date).days
+    try:
+        rel_path = report_path.relative_to(utils.get_repo_root())
+    except ValueError:
+        rel_path = report_path
+    st.caption(f"{rel_path} · {days_old} days old")
+
+    content = research_utils.load_report_markdown(report_path)
+    if content:
+        with st.container(height=500):
+            st.markdown(content)
+    else:
+        st.warning("Could not read report file.")
+
+    if days_old > research_utils.STALE_THRESHOLD_DAYS:
+        st.caption(f"Report is stale (>{research_utils.STALE_THRESHOLD_DAYS} days).")
+    if st.button("Go to Research", key="reports_go_research"):
+        st.session_state["nav_page"] = "Research"
+        st.rerun()
+
+
+def _show_research_refresh() -> None:
+    if st.button("Refresh data", key="research_refresh_data"):
+        st.cache_data.clear()
+        st.rerun()
+
+
 # ── entry point ────────────────────────────────────────────────────────────────
 
 
 def main() -> None:
     st.set_page_config(page_title="Thesis Manager", page_icon="📊", layout="wide")
+
+    if "nav_page" in st.session_state:
+        st.session_state["sidebar_page"] = st.session_state.pop("nav_page")
+
     page = st.sidebar.radio(
         "Page",
-        ["Dashboard", "Add Thesis", "Review"],
+        PAGES,
         label_visibility="collapsed",
+        key="sidebar_page",
     )
-    st.sidebar.divider()
     st.sidebar.caption("trader-memory-core UI")
 
     if page == "Dashboard":
         show_dashboard()
+    elif page == "Research":
+        show_research()
+    elif page == "Reports":
+        show_reports()
     elif page == "Add Thesis":
         show_add_thesis()
     else:
