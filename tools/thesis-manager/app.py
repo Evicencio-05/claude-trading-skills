@@ -236,7 +236,8 @@ def show_dashboard() -> None:
         return [bg] * len(row)
 
     display_cols = ["Ticker", "Type", "Account", "Expiry", "Confidence", "Days Left", "Status"]
-    styled = df_display[display_cols].style.apply(_style_row, axis=1)
+    display_df = utils.arrow_safe_df(df_display, display_cols)
+    styled = display_df.style.apply(_style_row, axis=1)
 
     event = st.dataframe(
         styled,
@@ -790,7 +791,12 @@ def show_review() -> None:
                     "Outcome": exit_d.get("exit_reason") or "—",
                 }
             )
-        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+        closed_cols = ["Ticker", "Account", "Entry", "Exit", "P&L", "Confidence", "Outcome"]
+        st.dataframe(
+            utils.arrow_safe_df(pd.DataFrame(rows), closed_cols),
+            width="stretch",
+            hide_index=True,
+        )
 
 
 # ── page 4: research ───────────────────────────────────────────────────────────
@@ -879,7 +885,8 @@ def show_research() -> None:
 
     df = pd.DataFrame(table_rows)
     display_cols = ["Ticker", "Last Report", "Days", "Thesis", "Watching", "Status", "Badge"]
-    styled = df[display_cols].style.apply(
+    display_df = utils.arrow_safe_df(df, display_cols)
+    styled = display_df.style.apply(
         lambda row: _research_row_style(row, meta),
         axis=1,
     )
@@ -997,12 +1004,19 @@ def show_research() -> None:
                     {
                         "Ticker": entry.get("ticker", ""),
                         "Status": entry.get("status", ""),
-                        "Days stale": entry.get("days_stale", "—"),
+                        "Days stale": (
+                            str(entry["days_stale"]) if entry.get("days_stale") is not None else "—"
+                        ),
                         "Last report": entry.get("last_report") or "—",
                     }
                 )
             if q_rows:
-                st.dataframe(pd.DataFrame(q_rows), width="stretch", hide_index=True)
+                queue_cols = ["Ticker", "Status", "Days stale", "Last report"]
+                st.dataframe(
+                    utils.arrow_safe_df(pd.DataFrame(q_rows), queue_cols),
+                    width="stretch",
+                    hide_index=True,
+                )
         else:
             st.info("No queue file yet. Regenerate to create state/research_update_queue.json.")
 
@@ -1048,6 +1062,10 @@ def show_reports() -> None:
         return
 
     ticker = st.selectbox("Ticker", tickers, key="reports_ticker")
+    if st.session_state.get("_reports_ticker_prev") != ticker:
+        st.session_state.pop("reports_date", None)
+    st.session_state["_reports_ticker_prev"] = ticker
+
     entries = research_utils.list_reports_for_ticker(ticker)
     if not entries:
         st.warning(f"No report files found for {ticker}.")
@@ -1055,6 +1073,8 @@ def show_reports() -> None:
 
     if len(entries) > 1:
         date_options = [e["date"].isoformat() for e in entries]
+        if st.session_state.get("reports_date") not in date_options:
+            st.session_state.pop("reports_date", None)
         selected_date = st.selectbox("Report date", date_options, key="reports_date")
         selected = next(e for e in entries if e["date"].isoformat() == selected_date)
     else:
