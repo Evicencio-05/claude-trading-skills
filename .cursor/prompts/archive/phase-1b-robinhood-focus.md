@@ -159,3 +159,6 @@ Write session summary to `reports/phase_1b_kickoff_YYYY-MM-DD.md`:
 - Rewrite upstream `skills/` except fixes listed in `decisions.md`
 - Commit doc updates unless user explicitly asks
 - Delete or archive `phase-2-futures-skills.md` — defer with banner only
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `phase-1b-robinhood-focus.md`.

@@ -133,3 +133,12 @@ System runs Arch Linux. launchd is macOS-only.
 Decision: All scheduled jobs use systemd user services.
 .plist files kept in launchd/ for reference only.
 Revisit: Never unless OS changes.
+
+## Prompt learning loop
+
+**[2026-05-30] Prompt library replaced by prompt learning loop.**
+One-shot prompts default to Tier 1 ephemeral (chat only). Durable knowledge lives in
+`state/prompt_learnings.yaml`, maintained by `scripts/distill_prompt_learnings.py`
+(weekly systemd: `prompt-learning.timer`). Tier 2 durable prompts require explicit save
+or 2+ runs of same task family. LLM-based prompt-engine edits deferred to Phase 2.
+Revisit: Phase 2 learning loop start for optional LLM distill.

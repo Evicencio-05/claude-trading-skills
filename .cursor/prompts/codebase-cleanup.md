@@ -126,3 +126,6 @@ uv run python3 -m pytest scripts/tests/ -v
 - Remove Robinhood hybrid stack (`sync` + `mcp` serve different portfolios per `decisions.md`)
 - Commit cleanup changes unless user explicitly asks
 - Refactor working code for style during cleanup
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `codebase-cleanup.md`.

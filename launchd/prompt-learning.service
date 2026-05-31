@@ -1,0 +1,14 @@
+[Unit]
+Description=Distill prompt run retros into prompt_learnings.yaml
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repos/claude-trading-skills
+ExecStart=/usr/bin/uv run python3 scripts/distill_prompt_learnings.py
+StandardOutput=append:/tmp/prompt_learning.log
+StandardError=append:/tmp/prompt_learning_error.log
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=default.target

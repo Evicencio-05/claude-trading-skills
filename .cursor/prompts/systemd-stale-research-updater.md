@@ -3,7 +3,7 @@
 ## Goal
 Build a **zero-LLM systemd job** that finds stale deep-research reports for tickers you still care about (open positions or explicit watchlist), refreshes **scriptable** data, queues synthesis work, and writes a dated status report — following the `pre_market.py` + `launchd/` timer pattern on Arch Linux.
 
-**Adjacent work:** Web UI for viewing/updating research → [.cursor/prompts/thesis-manager-research-ui.md](thesis-manager-research-ui.md)
+**Adjacent work:** Web UI for viewing/updating research → `task_family: thesis_manager_dev` via [prompt-engine.md](prompt-engine.md) (archived spec: [archive/thesis-manager-research-ui.md](archive/thesis-manager-research-ui.md))
 
 ## Inputs
 - **Staleness threshold:** 14 calendar days (match `commands/review-portfolio.md` and Phase 1B)
@@ -157,3 +157,6 @@ Fixtures: tmp `reports/research/`, tmp theses, tmp watchlist YAML.
 - [ ] `launchd/research-staleness.service` + `.timer`
 - [ ] `launchd/README.md` section
 - [ ] Sample `reports/logs/research_staleness_YYYY-MM-DD.md` from dry-run
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `systemd-stale-research-updater.md`.

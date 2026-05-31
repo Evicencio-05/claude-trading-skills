@@ -177,3 +177,6 @@ ruff check tools/thesis-manager/
 2. Implement Research page consuming shared module (this prompt)
 3. Install systemd timer
 4. Use webapp Queue panel + copy-paste prompts to run weekly updates in Cursor
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-research-ui.md`.

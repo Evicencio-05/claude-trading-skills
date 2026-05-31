@@ -10,6 +10,7 @@
 | `.cursor/skills/` | Symlinks + workflow wrappers (`deep-research`, `log-positions`) |
 | `.cursor/rules/` | Auto-loaded session router, Python conventions, command map |
 | `commands/` | Workflow specs (shared by Claude slash commands and Cursor) |
+| `.cursor/prompts/` | Prompt learning loop — meta prompts + Tier 2 durable invocations; see [README](../../.cursor/prompts/README.md) |
 | [AGENTS.md](../../AGENTS.md) | Hybrid routing table |
 
 ## Setup checklist
@@ -51,3 +52,7 @@ ln -sfn ../../skills/<skill-name> .cursor/skills/<skill-name>
 ```
 
 Document new symlinks in `.cursor/skills/README.md` if part of the daily stack.
+
+## Prompt learning loop
+
+Task prompts are ephemeral by default. Author with [.cursor/prompts/prompt-engine.md](../../.cursor/prompts/prompt-engine.md) (reads `state/prompt_learnings.yaml`); verify with [prompt-complete.md](../../.cursor/prompts/prompt-complete.md); weekly distiller `scripts/distill_prompt_learnings.py` (optional `prompt-learning.timer`). See [.cursor/prompts/README.md](../../.cursor/prompts/README.md).

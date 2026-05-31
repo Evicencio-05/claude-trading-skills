@@ -100,3 +100,6 @@ EXPANDED                    COLLAPSED
 └──────────────────┘
      ↑ primary/ghost buttons, not radio dots
 ```
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-modern-ui.md`.

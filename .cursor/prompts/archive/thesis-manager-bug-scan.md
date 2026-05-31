@@ -29,3 +29,6 @@ Scan `tools/thesis-manager/` for bugs and runtime errors; fix confirmed issues a
 - Execute trades or call Robinhood MCP
 - Add dependencies
 - Refactor UI for aesthetics
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-bug-scan.md`.

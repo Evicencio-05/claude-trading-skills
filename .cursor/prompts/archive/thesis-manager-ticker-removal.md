@@ -64,3 +64,6 @@ Wire watchlist, research, reports, and position removal into Thesis Manager so t
 - Commit unless user asks
 - Change Robinhood sync ingestion logic beyond `ingested_keys` block helper
 - Add new Python dependencies
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-ticker-removal.md`.

@@ -44,3 +44,6 @@ Simplify Thesis Manager UI to stock Streamlit (readable, no custom chrome) and a
 - Rebuild mockup-driven sidebar or custom CSS theme
 - Add charts, hero blocks, or non-Streamlit frontend
 - Call LLMs from Streamlit to generate reports
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-functional-simplify.md`.

@@ -182,3 +182,6 @@ Uniform spacing, labeled page titles in each quadrant, presentation slide qualit
 - Treat generated images as implementation specs (Streamlit widgets differ).
 - Show live brokerage logos or real account numbers.
 - Depict trade execution buttons (app is co-pilot / journal only).
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-dashboard-mockup-image.md`.

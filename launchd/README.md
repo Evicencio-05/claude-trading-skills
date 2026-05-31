@@ -52,6 +52,31 @@ Logs: tail /tmp/research_staleness.log
 Disable:
   systemctl --user disable research-staleness.timer
 
+## Prompt Learning Distill (systemd — Linux/Arch)
+Runs scripts/distill_prompt_learnings.py weekly (default Sunday 6:30 PM local, after stale-research scan).
+Zero LLM — processes prompt_run_retro reports into state/prompt_learnings.yaml and writes a digest.
+Files: prompt-learning.service + prompt-learning.timer (install to ~/.config/systemd/user/)
+
+**Prerequisite:** Run [prompt-complete.md](../.cursor/prompts/prompt-complete.md) at least once so retro reports exist.
+
+Install (replace repo path if not ~/repos/claude-trading-skills):
+  sed 's|%h/repos/claude-trading-skills|'"$HOME"'/repos/claude-trading-skills|' \
+    launchd/prompt-learning.service > ~/.config/systemd/user/prompt-learning.service
+  cp launchd/prompt-learning.timer ~/.config/systemd/user/
+  systemctl --user daemon-reload
+  systemctl --user enable prompt-learning.timer
+  systemctl --user start prompt-learning.timer
+
+Test:
+  uv run python3 scripts/distill_prompt_learnings.py --dry-run
+  systemctl --user start prompt-learning.service
+
+Logs: tail /tmp/prompt_learning.log
+Digest: reports/prompt_learning_digest_YYYY-MM-DD.md
+
+Disable:
+  systemctl --user disable prompt-learning.timer
+
 ## Note on .plist files
 The .plist files in this directory are macOS launchd format.
 This system runs Arch Linux — use systemd instead.

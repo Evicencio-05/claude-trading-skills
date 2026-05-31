@@ -50,7 +50,8 @@ robinhood.pickle
 
 # Per-symbol runtime state (e.g. parabolic-short SSR carryover files).
 # Kept out of commits so production state never leaks into the repo.
-state/
+state/*
+!state/prompt_learnings.yaml
 # Sync state (contains position data — keep local)
 state/pending_ingest.json
 state/synced_positions.json

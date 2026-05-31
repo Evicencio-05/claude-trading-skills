@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly prompt learning distill (Sunday 6:30 PM local)
+
+[Timer]
+# Runs after research-staleness.timer (Sunday 18:00).
+OnCalendar=Sun *-*-* 18:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -92,3 +92,6 @@ ruff check tools/thesis-manager/
 - Commit secrets, API keys, or absolute paths with usernames
 - Build a second webapp or replace Streamlit without user approval
 - Run paid APIs or LLM calls from the Streamlit process
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `thesis-manager-improvements.md`.

@@ -150,3 +150,6 @@ Write `reports/futures_removal_YYYY-MM-DD.md`:
 - Rewrite upstream `skills/` except fixes already in `decisions.md`
 - Commit unless user explicitly asks
 - Remove generic "works on futures charts" notes inside skill methodology references
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `remove-futures-equity-focus.md`.
