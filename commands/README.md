@@ -11,6 +11,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/deep-research AAPL` | [deep-research.md](deep-research.md) |
 | `/update-research AAPL` | [update-research.md](update-research.md) |
 | `/log-positions` | [log-positions.md](log-positions.md) |
+| `/log-trade-screenshot` | [log-trade-screenshot.md](log-trade-screenshot.md) |
 | `/intraday-options` | [intraday-options.md](intraday-options.md) |
 | `/review-portfolio` | [review-portfolio.md](review-portfolio.md) |
 | `/options-strategy-planner TICKER` | [options-strategy-planner.md](options-strategy-planner.md) |
@@ -23,6 +24,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Deep research | Skill: `.cursor/skills/deep-research` — or ask "deep research on AAPL" (`.cursor/rules/commands-workflows.mdc` links here) |
 | Update research | Ask to follow [update-research.md](update-research.md) |
 | Log positions | Skill `log-positions` — after sync and/or Robinhood MCP fetch |
+| Trade screenshot backfill | Skill `log-trade-screenshot` — paste Robinhood confirmation images |
 | Broker snapshot (MCP) | Skill `robinhood-portfolio-review` — live balances/positions; weekly before Agentic trades |
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
