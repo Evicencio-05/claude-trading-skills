@@ -1,19 +1,40 @@
 # Research watchlist — tickers tracked without a position
+ARM:
+  watching: true
+  notes: nan
 DELL:
   watching: true
   notes: ''
+DIS:
+  watching: true
+  notes: nan
+DRAM:
+  watching: true
+  notes: nan
 FPS:
   watching: false
   notes: "stale \u2014 update-research candidate"
 HPE:
   watching: true
   notes: ''
+IBM:
+  watching: true
+  notes: nan
 MRAM:
   watching: false
   notes: swing candidate
+NOK:
+  watching: true
+  notes: nan
 PLTR:
   watching: true
   notes: ''
+RBLX:
+  watching: true
+  notes: nan
+TSM:
+  watching: true
+  notes: nan
 VECO:
   watching: true
   notes: ''

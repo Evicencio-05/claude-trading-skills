@@ -314,10 +314,13 @@ class FMPClient:
         if cache_key in self.cache:
             return self.cache[cache_key]
 
-        url = f"{self.BASE_URL}/income-statement/{symbol}"
-        params = {"period": period, "limit": limit}
-
-        data = self._rate_limited_get(url, params)
+        stable_url = "https://financialmodelingprep.com/stable/income-statement"
+        stable_params = {"symbol": symbol, "period": period, "limit": limit}
+        data = self._rate_limited_get(stable_url, stable_params, quiet=True)
+        if not data:
+            url = f"{self.BASE_URL}/income-statement/{symbol}"
+            params = {"period": period, "limit": limit}
+            data = self._rate_limited_get(url, params)
 
         if data:
             self.cache[cache_key] = data
@@ -345,6 +348,16 @@ class FMPClient:
 
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        if "," in symbols:
+            merged: list[dict] = []
+            for part in (s.strip() for s in symbols.split(",") if s.strip()):
+                single = self.get_quote(part)
+                if single:
+                    merged.extend(single)
+            if merged:
+                self.cache[cache_key] = merged
+            return merged if merged else None
 
         data = self._request_with_fallback("quote", symbols)
 
@@ -400,9 +413,11 @@ class FMPClient:
         if cache_key in self.cache:
             return self.cache[cache_key]
 
-        url = f"{self.BASE_URL}/profile/{symbol}"
-
-        data = self._rate_limited_get(url)
+        stable_url = "https://financialmodelingprep.com/stable/profile"
+        data = self._rate_limited_get(stable_url, {"symbol": symbol}, quiet=True)
+        if not data:
+            url = f"{self.BASE_URL}/profile/{symbol}"
+            data = self._rate_limited_get(url)
 
         if data:
             self.cache[cache_key] = data

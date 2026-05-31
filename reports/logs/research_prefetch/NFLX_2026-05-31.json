@@ -1,0 +1,22 @@
+{
+  "ticker": "NFLX",
+  "fetched_at": "2026-05-31T15:00:00-07:00",
+  "market_context": "reports/exposure_posture_2026-05-31_144530.md",
+  "fred_calendar": "reports/logs/fred_calendar_2026-05-31.json",
+  "quote": {
+    "symbol": "NFLX",
+    "name": "Netflix, Inc.",
+    "price": 86.02,
+    "previousClose": 86.36,
+    "yearHigh": 134.12,
+    "yearLow": 75.01,
+    "marketCap": 362213000000,
+    "priceAvg50": 91.16,
+    "priceAvg200": 97.64,
+    "peRatio": 27.75,
+    "eps": 3.10,
+    "analystTarget": 114.56,
+    "earningsDate": "2026-07-16",
+    "source": "Yahoo Finance / web search (FMP legacy endpoint unavailable)"
+  }
+}

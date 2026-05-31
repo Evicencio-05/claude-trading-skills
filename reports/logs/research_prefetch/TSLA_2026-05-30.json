@@ -1,0 +1,25 @@
+{
+  "ticker": "TSLA",
+  "fetched_at": "2026-05-30T22:14:36.695883-07:00",
+  "market_context": null,
+  "fred_calendar": "ERROR: usage: fred_calendar.py [-h] [--from FROM_DATE] [--to TO_DATE]\n                        [--api-key API_KEY] [--format {json,text}]\n                        [--output OUTPUT]\nfred_calendar.py: error: unrecognized arguments: --days 7",
+  "quote": {
+    "symbol": "TSLA",
+    "name": "Tesla, Inc.",
+    "price": 435.79,
+    "changePercentage": -1.42728,
+    "change": -6.31,
+    "volume": 44967971,
+    "dayLow": 428.2,
+    "dayHigh": 441.07,
+    "yearHigh": 498.83,
+    "yearLow": 273.21,
+    "marketCap": 1636705218800,
+    "priceAvg50": 391.795,
+    "priceAvg200": 412.12796,
+    "exchange": "NASDAQ",
+    "open": 439.845,
+    "previousClose": 442.1,
+    "timestamp": 1780084800
+  }
+}

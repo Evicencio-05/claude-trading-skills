@@ -21,7 +21,7 @@
 - **Hard cap:** $40/month via Anthropic console budget alert
 - **Soft cap:** $20/month — review usage if exceeded
 - **Daily monitoring:** every API call logged with token count + estimated cost
-- **Cache aggressively:** same ticker, same day, same workflow = use cached report
+- **Cache aggressively:** same ticker, same day, same workflow = use cached report. Deep/update research: run [`scripts/research_preflight.py`](../../scripts/research_preflight.py) (PASS 0) and obey manifest `action=reuse` before re-running batch skills — see [`commands/deep-research.md`](../../commands/deep-research.md).
 - **Batch overnight:** queue Sonnet jobs for off-peak processing where applicable
 
 ### Cost tracking pattern
@@ -124,8 +124,9 @@ If you can't answer all five clearly, don't subscribe.
 ## Specific Tools: Subscribe vs. Defer
 
 ### FMP API
-- **Verdict:** Subscribe to free tier immediately. 250 calls/day is plenty for Phase 1-3.
-- Upgrade to Starter ($30/mo) only if you hit rate limits regularly in Phase 4+.
+- **Verdict:** **Starter ($29/mo) active** as of 2026-05-31 — 750 calls/day; watchlist screening via `--universe`.
+- **Professional ($79/mo):** Defer until full S&P 500 universe screening is justified and budget approved ([decisions.md](../../decisions.md) [2026-05-31]).
+- Free tier is insufficient for this fork (legacy v3 blocked; stable API required).
 
 ### FINVIZ Elite ($40/mo)
 - **Verdict:** Defer indefinitely.

@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import research_utils  # noqa: E402
 import utils  # noqa: E402
 
-PAGES = ["Dashboard", "Research", "Reports", "Add Thesis", "Review"]
+PAGES = ["Dashboard", "Research", "Reports", "Theses", "Review"]
 
 # ── constants ─────────────────────────────────────────────────────────────────
 
@@ -36,7 +36,6 @@ EXIT_REASON_LABELS: dict[str, str] = {
     "invalidated": "Thesis invalidated",
     "manual": "Manual exit",
 }
-ACCOUNTS = ["robinhood_taxable", "ira_robinhood", "robinhood_agentic", "lucid_eval"]
 
 
 # ── shared helpers ─────────────────────────────────────────────────────────────
@@ -179,7 +178,7 @@ def show_dashboard() -> None:
 
     # --- position table ---
     if not open_theses and not pending_thesis:
-        st.info("No positions logged yet. Use **Add Thesis** to get started.")
+        st.info("No positions logged yet. Sync from Dashboard or add a thesis on **Theses**.")
         _show_refresh_button()
         return
 
@@ -273,99 +272,17 @@ def show_dashboard() -> None:
                     cs = thesis.get("confidence_score") or 0
                     st.write("**Confidence:**", f"{int(cs * 5)}/5" if cs else "—")
 
-                b1, b2, b3 = st.columns(3)
-                with b1:
-                    if st.button("Mark for Review", key=f"rev_{row_id}"):
-                        _, err = _run_safe(utils.mark_reviewed, row_id)
-                        if err:
-                            st.error(f"Failed: {err}")
-                        else:
-                            st.success("Marked reviewed.")
-                            st.cache_data.clear()
-                            st.rerun()
-                with b2:
-                    if st.button("Close Position", key=f"close_{row_id}"):
-                        st.session_state[f"closing_{row_id}"] = True
-                with b3:
-                    if st.button("Stop tracking", key=f"stop_track_{row_id}"):
-                        _, err = _run_safe(
-                            utils.stop_tracking_thesis,
-                            row_id,
-                            "stopped tracking via dashboard",
-                        )
-                        if err:
-                            st.error(f"Stop tracking failed:\n{err}")
-                        else:
-                            try:
-                                research_utils.add_exclude_ticker(
-                                    row["Ticker"],
-                                    "stopped tracking",
-                                )
-                            except (ValueError, OSError) as exc:
-                                st.warning(f"Excluded list not updated: {exc}")
-                            st.success(f"Stopped tracking {row['Ticker']}.")
-                            st.cache_data.clear()
-                            st.rerun()
-
-                with st.expander("Advanced removal", expanded=False):
-                    st.caption(
-                        "Permanent delete removes the thesis file. "
-                        "Use after Stop tracking or Close for mistakes."
-                    )
-                    confirm_del = st.checkbox(
-                        "I understand this cannot be undone",
-                        key=f"confirm_del_{row_id}",
-                    )
-                    force_del = st.checkbox(
-                        "Force delete (non-terminal thesis)",
-                        key=f"force_del_{row_id}",
-                    )
-                    if st.button("Delete thesis permanently", key=f"del_{row_id}"):
-                        if not confirm_del:
-                            st.warning("Check the confirmation box first.")
-                        else:
-                            _, err = _run_safe(
-                                utils.delete_thesis,
-                                row_id,
-                                force=force_del,
-                            )
-                            if err:
-                                st.error(f"Delete failed:\n{err}")
-                            else:
-                                try:
-                                    research_utils.add_exclude_ticker(
-                                        row["Ticker"],
-                                        "deleted thesis",
-                                    )
-                                except (ValueError, OSError) as exc:
-                                    st.warning(f"Exclude list not updated: {exc}")
-                                st.success(f"Deleted thesis for {row['Ticker']}.")
-                                st.cache_data.clear()
-                                st.rerun()
-
-                if st.session_state.get(f"closing_{row_id}"):
-                    with st.form(key=f"close_form_{row_id}"):
-                        ep = st.number_input("Exit price", min_value=0.0, format="%.4f")
-                        ed = st.date_input("Exit date", value=date.today())
-                        reason = st.selectbox(
-                            "Exit reason",
-                            EXIT_REASONS,
-                            format_func=lambda x: EXIT_REASON_LABELS.get(x, x),
-                        )
-                        if st.form_submit_button("Confirm Close"):
-                            _, err = _run_safe(utils.finalize_thesis, row_id, reason, ep, ed)
-                            if err:
-                                st.error(
-                                    f"Close failed (finalize_thesis {row_id!r} {reason!r} {ep} {ed.isoformat()!r}):\n{err}"
-                                )
-                            else:
-                                st.success(f"Closed {row['Ticker']}.")
-                                st.session_state.pop(f"closing_{row_id}", None)
-                                st.cache_data.clear()
-                                st.rerun()
+                if st.button("Manage in Theses", key=f"manage_{row_id}"):
+                    st.session_state["nav_page"] = "Theses"
+                    st.rerun()
             elif ppos:
                 st.subheader(f"{row['Ticker']} — PENDING_THESIS")
-                st.write("Go to **Add Thesis** to fill in the thesis for this position.")
+                st.caption(
+                    "Robinhood sync found this position — add your thesis on the Theses page."
+                )
+                if st.button("Go to Theses", key=f"pending_{row_id}"):
+                    st.session_state["nav_page"] = "Theses"
+                    st.rerun()
 
     st.divider()
     _show_refresh_button()
@@ -394,7 +311,35 @@ def _show_refresh_button() -> None:
         st.rerun()
 
 
-# ── page 2: add thesis ─────────────────────────────────────────────────────────
+# ── pending sync ingest (Theses page) ─────────────────────────────────────────
+
+
+def _show_pending_positions_section() -> None:
+    """Robinhood sync rows awaiting thesis text — promoted to ACTIVE on submit."""
+    pending = utils.load_pending_ingest()
+    pending_thesis = sorted(
+        [p for p in pending if p.get("status") == "PENDING_THESIS"],
+        key=lambda p: p.get("expiry") or "9999",
+    )
+
+    if not pending_thesis:
+        return
+
+    st.subheader("Pending from sync")
+    st.caption("Positions from Robinhood sync that need a thesis before they appear as ACTIVE.")
+
+    open_theses = utils.load_theses(["ACTIVE", "ENTRY_READY"])
+    dupes = utils.pending_duplicate_tickers(open_theses, pending)
+    if dupes:
+        st.warning(f"These pending tickers already have open theses: {', '.join(sorted(dupes))}")
+
+    for i, pos in enumerate(pending_thesis):
+        ticker = pos.get("ticker", "?")
+        key_prefix = f"pend_{i}_{ticker}"
+        if st.session_state.get(f"collapsed_{key_prefix}"):
+            continue
+        with st.container(border=True):
+            _pending_position_form(pos, key_prefix)
 
 
 def _pending_position_form(pos: dict, key_prefix: str) -> None:
@@ -521,127 +466,339 @@ def _pending_position_form(pos: dict, key_prefix: str) -> None:
         st.rerun()
 
 
-def show_add_thesis() -> None:
-    st.header("Add Thesis")
+# ── page: theses (CRUD) ───────────────────────────────────────────────────────
 
-    # ── Section A: pending positions ──────────────────────────────────────────
-    st.subheader("A — Pending Positions")
-    pending = utils.load_pending_ingest()
-    pending_thesis = sorted(
-        [p for p in pending if p.get("status") == "PENDING_THESIS"],
-        key=lambda p: p.get("expiry") or "9999",
+
+def _thesis_summary_row(t: dict) -> dict:
+    pos = t.get("position") or {}
+    cs = t.get("confidence_score") or 0
+    created = str(t.get("created_at") or "")[:10] or "—"
+    return {
+        "_id": t.get("thesis_id", ""),
+        "Ticker": t.get("ticker", ""),
+        "Type": t.get("thesis_type", ""),
+        "Status": t.get("status", ""),
+        "Account": _fmt_account(pos.get("account_type") or ""),
+        "Confidence": str(int(cs * 5)) if cs else "—",
+        "Created": created,
+    }
+
+
+def _render_thesis_edit_form(thesis: dict) -> None:
+    """Editable fields + lifecycle actions for one thesis."""
+    tid = thesis.get("thesis_id", "")
+    ticker = thesis.get("ticker", "")
+    status = thesis.get("status", "")
+    cs = thesis.get("confidence_score") or 0
+    mon = thesis.get("monitoring") or {}
+    outcome = thesis.get("outcome") or {}
+    exit_d = thesis.get("exit") or {}
+    entry_d = thesis.get("entry") or {}
+    pos = thesis.get("position") or {}
+
+    st.caption(f"ID: `{tid}` · Status: **{status}** · Ticker/type are fixed after creation")
+
+    meta1, meta2, meta3 = st.columns(3)
+    meta1.write("**Type:**", thesis.get("thesis_type") or "—")
+    meta2.write("**Account:**", _fmt_account(pos.get("account_type") or ""))
+    meta3.write(
+        "**Entry:**",
+        entry_d.get("actual_price") or entry_d.get("target_price") or "—",
     )
 
-    if not pending_thesis:
-        st.info("No pending sync data. Run **Robinhood sync** from the Dashboard.")
-    else:
-        open_theses = utils.load_theses(["ACTIVE", "ENTRY_READY"])
-        dupes = utils.pending_duplicate_tickers(open_theses, pending)
-        if dupes:
-            st.warning(
-                f"These pending tickers already have open theses: {', '.join(sorted(dupes))}"
+    with st.form(key=f"edit_form_{tid}"):
+        thesis_text = st.text_area(
+            "Thesis *",
+            value=thesis.get("thesis_statement") or "",
+            height=100,
+        )
+        catalyst = st.text_input(
+            "Catalyst",
+            value=str(thesis.get("catalyst") or ""),
+        )
+        setup_type = st.text_input(
+            "Setup type",
+            value=str(thesis.get("setup_type") or ""),
+        )
+        fc1, fc2, fc3, fc4 = st.columns(4)
+        with fc1:
+            confidence = st.select_slider(
+                "Confidence",
+                options=[1, 2, 3, 4, 5],
+                value=utils.confidence_level_from_score(cs),
+                format_func=lambda x: CONFIDENCE_LABELS[x],
             )
-        for i, pos in enumerate(pending_thesis):
-            ticker = pos.get("ticker", "?")
-            key_prefix = f"pend_{i}_{ticker}"
-            if st.session_state.get(f"collapsed_{key_prefix}"):
-                continue
-            with st.container(border=True):
-                _pending_position_form(pos, key_prefix)
+        with fc2:
+            stop_val = st.text_input("Stop", value=utils.stop_display(thesis))
+        with fc3:
+            target_val = st.text_input("Target", value=utils.target_display(thesis))
+        with fc4:
+            review_days = st.number_input(
+                "Review every (days)",
+                min_value=1,
+                value=int(mon.get("review_interval_days") or 7),
+            )
+
+        if status in ("CLOSED", "INVALIDATED"):
+            st.markdown("**Post-trade review**")
+            what = st.text_area(
+                "What happened?",
+                value=str(outcome.get("what_happened") or ""),
+                height=60,
+            )
+            lesson = st.text_input(
+                "Lessons learned",
+                value=str(outcome.get("lessons_learned") or ""),
+            )
+        else:
+            what = None
+            lesson = None
+
+        submitted = st.form_submit_button("Save changes")
+
+    if submitted:
+        if not thesis_text.strip():
+            st.warning("Thesis text is required.")
+            return
+        fields = utils.build_update_fields(
+            thesis_text=thesis_text,
+            confidence=confidence,
+            stop_text=stop_val,
+            target_text=target_val,
+            catalyst=catalyst,
+            setup_type=setup_type,
+            review_interval_days=int(review_days),
+            lessons_learned=lesson,
+            what_happened=what,
+        )
+        val_errors = utils.validate_thesis_update(fields, confidence=confidence)
+        if val_errors:
+            st.error("\n".join(val_errors))
+            return
+        _, err = _run_safe(utils.update_thesis, tid, fields)
+        if err:
+            st.error(f"Update failed:\n{err}")
+        else:
+            st.success(f"Saved {ticker}.")
+            st.cache_data.clear()
+            st.rerun()
 
     st.divider()
+    st.subheader("Actions")
 
-    # ── Section B: manual entry ───────────────────────────────────────────────
-    with st.expander("Add position manually", expanded=False):
-        mc1, mc2 = st.columns(2)
-        with mc1:
-            m_ticker = (
-                st.text_input("Ticker *", placeholder="AAPL", key="man_ticker").strip().upper()
+    a1, a2, a3, a4 = st.columns(4)
+    with a1:
+        if status in ("ACTIVE", "ENTRY_READY") and st.button(
+            "Mark reviewed", key=f"crud_rev_{tid}"
+        ):
+            _, err = _run_safe(utils.mark_reviewed, tid)
+            if err:
+                st.error(err)
+            else:
+                st.success("Marked reviewed.")
+                st.cache_data.clear()
+                st.rerun()
+    with a2:
+        if status == "IDEA" and st.button("Promote to ENTRY_READY", key=f"crud_promote_{tid}"):
+            _, err = _run_safe(
+                utils.transition_thesis,
+                tid,
+                "ENTRY_READY",
+                "promoted via Theses page",
             )
-            m_asset = st.selectbox("Asset type", ["stock", "options", "futures"], key="man_asset")
-            m_dir = st.selectbox("Direction", ["long", "short"], key="man_dir")
-            m_account = st.selectbox("Account", ACCOUNTS, key="man_account")
-        with mc2:
-            st.number_input("Size (shares/contracts)", min_value=0.0, key="man_size")
-            m_cost = st.number_input("Avg cost", min_value=0.0, format="%.4f", key="man_cost")
-            st.date_input("Entry date", value=date.today(), key="man_entry_date")
+            if err:
+                st.error(err)
+            else:
+                st.success("Promoted to ENTRY_READY.")
+                st.cache_data.clear()
+                st.rerun()
+    with a3:
+        if status in ("ACTIVE", "ENTRY_READY", "IDEA") and st.button(
+            "Stop tracking", key=f"crud_stop_{tid}"
+        ):
+            _, err = _run_safe(utils.stop_tracking_thesis, tid, "stopped via Theses page")
+            if err:
+                st.error(err)
+            else:
+                try:
+                    research_utils.add_exclude_ticker(ticker, "stopped tracking")
+                except (ValueError, OSError) as exc:
+                    st.warning(f"Exclude list not updated: {exc}")
+                st.success(f"Stopped tracking {ticker}.")
+                st.cache_data.clear()
+                st.rerun()
+    with a4:
+        if status in ("ACTIVE", "ENTRY_READY", "IDEA") and st.button(
+            "Close position", key=f"crud_close_{tid}"
+        ):
+            st.session_state[f"crud_closing_{tid}"] = True
 
-        m_strategy = ""
-        if m_asset == "options":
-            oc1, oc2, oc3 = st.columns(3)
-            with oc1:
-                st.number_input("Strike", min_value=0.0, format="%.2f", key="man_strike")
-            with oc2:
-                st.date_input("Expiry", key="man_expiry")
-            with oc3:
-                m_opt_type = st.selectbox("Option type", ["call", "put"], key="man_opt_type")
-            m_strategy = f"{m_dir}_{m_opt_type}"
-            st.text_input("Strategy (auto)", value=m_strategy, disabled=True, key="man_strat_disp")
-            badge = _ira_badge(m_account, m_strategy)
-            if badge:
-                st.markdown(badge, unsafe_allow_html=True)
-        elif "ira" in m_account.lower():
-            st.markdown(
-                _ira_badge(m_account, "long_call") or "",
-                unsafe_allow_html=True,
+    if st.session_state.get(f"crud_closing_{tid}"):
+        with st.form(key=f"crud_close_form_{tid}"):
+            ep = st.number_input("Exit price", min_value=0.0, format="%.4f")
+            ed = st.date_input("Exit date", value=date.today())
+            reason = st.selectbox(
+                "Exit reason",
+                EXIT_REASONS,
+                format_func=lambda x: EXIT_REASON_LABELS.get(x, x),
             )
+            if st.form_submit_button("Confirm close"):
+                _, err = _run_safe(utils.finalize_thesis, tid, reason, ep, ed)
+                if err:
+                    st.error(f"Close failed:\n{err}")
+                else:
+                    st.success(f"Closed {ticker}.")
+                    st.session_state.pop(f"crud_closing_{tid}", None)
+                    st.cache_data.clear()
+                    st.rerun()
 
-        m_thesis_type = st.selectbox("Thesis type *", THESIS_TYPES, key="man_tt")
-        m_thesis = st.text_area(
-            "Thesis *",
-            placeholder="Why did you enter? What's the catalyst? What would make this wrong?",
-            height=100,
-            key="man_thesis",
+    with st.expander("Delete permanently", expanded=False):
+        st.caption("Removes the thesis YAML file. Terminal theses only unless Force is checked.")
+        confirm_del = st.checkbox("I understand this cannot be undone", key=f"crud_confirm_{tid}")
+        force_del = st.checkbox("Force delete (non-terminal)", key=f"crud_force_{tid}")
+        if st.button("Delete thesis", key=f"crud_del_{tid}"):
+            if not confirm_del:
+                st.warning("Check the confirmation box first.")
+            else:
+                _, err = _run_safe(utils.delete_thesis, tid, force=force_del)
+                if err:
+                    st.error(f"Delete failed:\n{err}")
+                else:
+                    try:
+                        research_utils.add_exclude_ticker(ticker, "deleted thesis")
+                    except (ValueError, OSError) as exc:
+                        st.warning(f"Exclude list not updated: {exc}")
+                    st.success(f"Deleted {ticker}.")
+                    st.cache_data.clear()
+                    st.rerun()
+
+    if status in ("CLOSED", "INVALIDATED"):
+        st.caption(
+            f"Exit: {exit_d.get('actual_price') or '—'} · "
+            f"Reason: {exit_d.get('exit_reason') or '—'}"
         )
-        bf1, bf2, bf3 = st.columns(3)
-        with bf1:
-            m_conf = st.select_slider(
+
+
+def show_theses() -> None:
+    st.header("Theses")
+    st.caption("Create, browse, edit, and delete theses via thesis_store (no raw YAML edits).")
+
+    _show_pending_positions_section()
+
+    pending_count = sum(
+        1 for p in utils.load_pending_ingest() if p.get("status") == "PENDING_THESIS"
+    )
+    if pending_count == 0:
+        st.caption(
+            "No pending sync rows — run **Refresh Positions** on Dashboard after Robinhood sync."
+        )
+
+    if pending_count:
+        st.divider()
+
+    with st.expander("Create new thesis (IDEA)", expanded=False):
+        cc1, cc2 = st.columns(2)
+        with cc1:
+            c_ticker = (
+                st.text_input("Ticker *", placeholder="AAPL", key="crud_new_ticker").strip().upper()
+            )
+            c_type = st.selectbox("Thesis type *", THESIS_TYPES, key="crud_new_type")
+        with cc2:
+            c_conf = st.select_slider(
                 "Confidence",
                 options=[1, 2, 3, 4, 5],
                 format_func=lambda x: CONFIDENCE_LABELS[x],
-                key="man_conf",
+                key="crud_new_conf",
             )
-        with bf2:
-            m_stop = st.text_input(
-                "Stop",
-                placeholder="Price or condition that invalidates the thesis",
-                key="man_stop",
-            )
-        with bf3:
-            m_target = st.text_input(
-                "Target",
-                placeholder="Exit condition or price target",
-                key="man_target",
-            )
-
-        if st.button("Submit", key="man_submit"):
-            if not m_ticker:
+        c_text = st.text_area("Thesis *", height=80, key="crud_new_text")
+        cc3, cc4 = st.columns(2)
+        with cc3:
+            c_stop = st.text_input("Stop", key="crud_new_stop")
+        with cc4:
+            c_target = st.text_input("Target", key="crud_new_target")
+        if st.button("Register thesis", key="crud_register"):
+            if not c_ticker:
                 st.warning("Ticker is required.")
-            elif not m_thesis.strip():
+            elif not c_text.strip():
                 st.warning("Thesis text is required.")
             else:
                 td = _build_thesis_data(
-                    ticker=m_ticker,
-                    thesis_type=m_thesis_type,
-                    thesis_text=m_thesis,
-                    confidence=m_conf,
-                    stop_text=m_stop,
-                    target_text=m_target,
-                    avg_cost=float(m_cost),
-                    strategy=m_strategy,
+                    ticker=c_ticker,
+                    thesis_type=c_type,
+                    thesis_text=c_text,
+                    confidence=c_conf,
+                    stop_text=c_stop,
+                    target_text=c_target,
+                    avg_cost=0.0,
                 )
-                val_errors = utils.validate_thesis_submit(
-                    td, account=m_account, strategy=m_strategy, confidence=m_conf
-                )
+                val_errors = utils.validate_thesis_submit(td, confidence=c_conf)
                 if val_errors:
                     st.error("\n".join(val_errors))
                 else:
                     thesis_id, err = _run_safe(utils.register_thesis, td)
                     if err:
-                        st.error(f"Register failed (register_thesis for {m_ticker}):\n{err}")
+                        st.error(f"Register failed:\n{err}")
                     else:
-                        st.success(f"Registered {m_ticker} → {thesis_id}")
+                        st.success(f"Created {c_ticker} → {thesis_id} (IDEA)")
                         st.cache_data.clear()
+                        st.rerun()
+
+    st.divider()
+
+    filter_cols = st.columns([2, 2, 1])
+    with filter_cols[0]:
+        status_filter = st.multiselect(
+            "Status filter",
+            utils.THESIS_STATUSES,
+            default=utils.THESIS_STATUSES,
+            key="crud_status_filter",
+        )
+    with filter_cols[1]:
+        ticker_filter = (
+            st.text_input(
+                "Ticker search",
+                placeholder="Filter by ticker",
+                key="crud_ticker_filter",
+            )
+            .strip()
+            .upper()
+        )
+    with filter_cols[2]:
+        if st.button("Refresh", key="crud_refresh"):
+            st.cache_data.clear()
+            st.rerun()
+
+    if not status_filter:
+        st.info("Select at least one status to list theses.")
+        return
+
+    all_theses = utils.sort_theses_for_display(utils.load_theses(status_filter))
+    if ticker_filter:
+        all_theses = [t for t in all_theses if ticker_filter in str(t.get("ticker", "")).upper()]
+
+    if not all_theses:
+        st.info("No theses match the current filters.")
+        return
+
+    rows = [_thesis_summary_row(t) for t in all_theses]
+    display_cols = ["Ticker", "Type", "Status", "Account", "Confidence", "Created"]
+    display_df = utils.arrow_safe_df(pd.DataFrame(rows), display_cols)
+
+    event = st.dataframe(
+        display_df,
+        width="stretch",
+        on_select="rerun",
+        selection_mode="single-row",
+        key="crud_table",
+        hide_index=True,
+    )
+
+    sel = (event.selection.rows if hasattr(event, "selection") else []) or []
+    if sel:
+        thesis = all_theses[sel[0]]
+        with st.container(border=True):
+            st.subheader(f"{thesis.get('ticker')} — edit")
+            _render_thesis_edit_form(thesis)
 
 
 # ── page 3: review ─────────────────────────────────────────────────────────────
@@ -689,7 +846,7 @@ def show_review() -> None:
 
             with st.container(border=True):
                 st.markdown(f"**{ticker}** — {', '.join(reasons)}")
-                st.caption(f"Thesis: {summary}")
+                st.caption(f"Thesis: {summary}", width="content")
                 st.caption(
                     f"Stop: {exit_d.get('stop_loss') or '—'} | "
                     f"Target: {exit_d.get('take_profit') or '—'}"
@@ -1222,8 +1379,8 @@ def show_reports() -> None:
 
     content = research_utils.load_report_markdown(report_path)
     if content:
-        with st.container(height=500):
-            st.markdown(content)
+        with st.container(height=3000):
+            st.markdown(research_utils.escape_dollar_signs_for_streamlit(content))
     else:
         st.warning("Could not read report file.")
 
@@ -1281,8 +1438,8 @@ def main() -> None:
         show_research()
     elif page == "Reports":
         show_reports()
-    elif page == "Add Thesis":
-        show_add_thesis()
+    elif page == "Theses":
+        show_theses()
     else:
         show_review()
 

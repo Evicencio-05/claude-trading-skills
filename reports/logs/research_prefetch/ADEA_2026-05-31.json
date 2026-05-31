@@ -1,0 +1,8 @@
+{
+  "ticker": "ADEA",
+  "fetched_at": "2026-05-31T16:05:00-07:00",
+  "quote": {"price": 26.72, "yearHigh": 34.34, "yearLow": 11.61, "marketCap": 2947055680},
+  "next_earnings": "2026-08-04 (est.)",
+  "fy26_guide": {"revenue": "395-435M", "adjEbitda": "213-245M"},
+  "institutional_flow": "FMP v3 blocked (403); not collected"
+}

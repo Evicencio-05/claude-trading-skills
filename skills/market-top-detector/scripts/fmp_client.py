@@ -280,6 +280,16 @@ class FMPClient:
         if cache_key in self.cache:
             return self.cache[cache_key]
 
+        if "," in symbols:
+            merged: list[dict] = []
+            for part in (s.strip() for s in symbols.split(",") if s.strip()):
+                single = self.get_quote(part)
+                if single:
+                    merged.extend(single)
+            if merged:
+                self.cache[cache_key] = merged
+            return merged if merged else None
+
         data = self._request_with_fallback("quote", symbols)
         if data:
             self.cache[cache_key] = data
@@ -297,14 +307,10 @@ class FMPClient:
         return data
 
     def get_batch_quotes(self, symbols: list[str]) -> dict[str, dict]:
-        """Fetch quotes for a list of symbols, batching up to 5 per request"""
+        """Fetch quotes for a list of symbols (one stable request per symbol)."""
         results = {}
-        # FMP supports comma-separated symbols in quote endpoint
-        batch_size = 5
-        for i in range(0, len(symbols), batch_size):
-            batch = symbols[i : i + batch_size]
-            batch_str = ",".join(batch)
-            quotes = self.get_quote(batch_str)
+        for symbol in symbols:
+            quotes = self.get_quote(symbol)
             if quotes:
                 for q in quotes:
                     results[q["symbol"]] = q

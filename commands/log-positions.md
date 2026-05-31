@@ -13,7 +13,7 @@ Log open positions to **trader-memory-core** with minimal human input (four ques
 | **A — Sync** | Portfolio A taxable; scheduled daily | `scripts/robinhood_sync.py` → `state/pending_ingest.json` |
 | **B — MCP CLI** | IRA, Agentic, all taxable accounts | `scripts/robinhood_mcp.py ingest-pending` |
 
-**Portfolio B (IRA):** Not in `robinhood_sync.py`. Use **Source B** (MCP) or [tools/thesis-manager/](../tools/thesis-manager/) Add Thesis.
+**Portfolio B (IRA):** Not in `robinhood_sync.py`. Use **Source B** (MCP) or [tools/thesis-manager/](../tools/thesis-manager/) **Theses** page.
 
 **Portfolio C (Agentic):** Prefer **Source B** when MCP is connected in Cursor.
 
@@ -82,7 +82,7 @@ Then ask ONLY these four questions in sequence:
 
 After receiving all four answers, register the thesis:
 
-  Preferred: tools/thesis-manager/ Add Thesis page (writes via thesis_store API).
+  Preferred: tools/thesis-manager/ **Theses** page (writes via thesis_store API).
 
   Or: build thesis_data dict per trader-memory-core schema and call
   thesis_store.register(state_dir, thesis_data) from Python (see tools/thesis-manager/utils.py).

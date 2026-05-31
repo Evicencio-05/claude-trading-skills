@@ -20,6 +20,6 @@ When the user requests one of these workflows, read the linked file and follow i
 | Research watchlist batch | [commands/review-portfolio.md](commands/review-portfolio.md) |
 | Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
 
-**Deep research rule:** Two-pass only — complete ALL Pass 1 data collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
+**Deep research rule:** Pass 0 preflight (`scripts/research_preflight.py`) reuse-first — then complete ALL Pass 1 collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
 
 See [commands/README.md](commands/README.md) for Claude vs Cursor invocation.

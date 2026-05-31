@@ -10,4 +10,14 @@ description: >-
 
 Follow [commands/update-research.md](../../../commands/update-research.md).
 
-Replace `{TICKER}` with the user's symbol. Read the latest `reports/research/{TICKER}_*.md` before collecting new data.
+Replace `{TICKER}` with the user's symbol.
+
+## Pre-flight (zero LLM cost)
+
+```bash
+uv run python3 scripts/research_preflight.py --ticker {TICKER}
+```
+
+Read `reports/logs/research_preflight_{TICKER}_{YYYY-MM-DD}.json` before Step 2. If `market_context` action is `run`, run `uv run python3 scripts/pre_market.py` and re-run preflight.
+
+Read the latest `reports/research/{TICKER}_*.md` in Step 1 before collecting new data.

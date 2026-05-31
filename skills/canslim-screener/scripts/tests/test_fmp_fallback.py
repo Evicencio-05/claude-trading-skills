@@ -253,16 +253,50 @@ class TestSymbolMismatch:
         assert result["symbol"] == "^GSPC"
         assert client.session.get.call_count == 2
 
-    def test_batch_quote_skips_symbol_check(self):
-        """Multi-symbol (batch) quote does not apply symbol mismatch check."""
+    def test_batch_quote_fetches_per_symbol_on_stable(self):
+        """Comma-separated symbols use one stable request per symbol."""
         client = _make_client()
-        batch_data = [{"symbol": "^GSPC", "price": 5000}, {"symbol": "^VIX", "price": 20}]
-        resp = _mock_response(200, batch_data)
-        client.session.get = MagicMock(return_value=resp)
 
+        def fake_get(url, params=None, timeout=30):
+            sym = (params or {}).get("symbol", "")
+            if sym == "^GSPC":
+                return _mock_response(200, [{"symbol": "^GSPC", "price": 5000}])
+            if sym == "^VIX":
+                return _mock_response(200, [{"symbol": "^VIX", "price": 20}])
+            return _mock_response(403, None, "Forbidden")
+
+        client.session.get = MagicMock(side_effect=fake_get)
         result = client.get_quote("^GSPC,^VIX")
-        assert result == batch_data
-        assert client.session.get.call_count == 1
+        assert len(result) == 2
+        assert client.session.get.call_count == 2
+
+    def test_profile_stable_fallback(self):
+        """Profile uses stable endpoint before v3."""
+        client = _make_client()
+        stable_resp = _mock_response(200, [{"symbol": "AAPL", "sector": "Technology"}])
+
+        def fake_get(url, params=None, timeout=30):
+            if "stable/profile" in url:
+                return stable_resp
+            pytest.fail("v3 profile should not be called when stable succeeds")
+
+        client.session.get = fake_get
+        result = client.get_profile("AAPL")
+        assert result[0]["sector"] == "Technology"
+
+    def test_income_statement_stable_fallback(self):
+        """Income statement uses stable endpoint before v3."""
+        client = _make_client()
+        stable_resp = _mock_response(200, [{"date": "2026-03-31", "eps": 1.5}])
+
+        def fake_get(url, params=None, timeout=30):
+            if "stable/income-statement" in url:
+                return stable_resp
+            pytest.fail("v3 income-statement should not be called when stable succeeds")
+
+        client.session.get = fake_get
+        result = client.get_income_statement("AAPL", period="quarter", limit=4)
+        assert result[0]["eps"] == 1.5
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,8 @@
+{
+  "ticker": "RBLX",
+  "fetched_at": "2026-05-31T16:05:00-07:00",
+  "quote": {"price": 47.13, "yearHigh": 150.59, "yearLow": 40.15, "marketCap": 33744079854},
+  "next_earnings": "2026-08-12 (est.)",
+  "q1_reported": "2026-04-30",
+  "institutional_flow": "FMP v3 blocked (403); not collected"
+}

@@ -29,7 +29,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 
-**Rule:** For deep research, always use the two-pass flow in [deep-research.md](deep-research.md) — collect everything in Pass 1 before writing the report in Pass 2.
+**Rule:** For deep research, use Pass 0 preflight (`scripts/research_preflight.py`) reuse-first, then complete Pass 1 collection before writing the report in Pass 2. See [deep-research.md](deep-research.md).
 
 ## Editing workflows
 

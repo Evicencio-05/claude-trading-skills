@@ -5,8 +5,11 @@ argument-hint: "<TICKER>"
 
 # Deep Research — {TICKER}
 
+> **Cost discipline:** Batch market context and watchlist screeners once per day; per-ticker research reuses same-day artifacts. See [project-docs/reference/cost-discipline.md](../project-docs/reference/cost-discipline.md).
+>
 > **Two-pass architecture:**
-> **Pass 1 — Collect:** Run all applicable skills and scripts. Save all outputs.
+> **Pass 0 — Reuse check:** Resolve same-day batch artifacts via preflight manifest (zero LLM).
+> **Pass 1 — Collect:** Gather all applicable data — reuse cached outputs when manifest says `reuse`; run skills only when manifest says `run`.
 > **Pass 2 — Synthesize:** Read collected outputs and write the report.
 >
 > Complete ALL data collection before writing a single line of the report.
@@ -15,18 +18,40 @@ argument-hint: "<TICKER>"
 
 ---
 
+## PASS 0 — REUSE CHECK (zero LLM cost)
+
+Run before Pass 1 on every deep-research invocation:
+
+```bash
+uv run python3 scripts/research_preflight.py --ticker {TICKER}
+```
+
+Add `--force-refresh` only when the user explicitly requests a full batch re-run.
+
+1. Read `reports/logs/research_preflight_{TICKER}_{YYYY-MM-DD}.json`.
+2. For each artifact with `"action": "reuse"`, read the cited `path` — do **not** re-run that skill.
+3. For each artifact with `"action": "run"`, execute using the manifest `run_hint` when present.
+4. If `market_context` action is `run`, run `uv run python3 scripts/pre_market.py`, then re-run preflight and read the updated manifest.
+
+---
+
 ## PASS 1 — DATA COLLECTION
 
-Run every applicable item below. Do not analyze yet.
+Collect every applicable item below — **reuse-first per PASS 0 manifest**; run only when `action=run`. Do not analyze yet.
 
-**Market context (always run):**
+**Market context (reuse-first):**
 
-- `market-breadth-analyzer` → composite score + 6-component breakdown
-- `uptrend-analyzer` → composite score + warning overlays
-- `exposure-coach` → exposure ceiling + posture recommendation
-- `market-top-detector` → distribution day count + topping probability
-- `python3 scripts/fred_calendar.py` → upcoming FOMC, CPI, NFP dates
-- `earnings-calendar` → next earnings date for {TICKER} + consensus
+| Artifact | When to run |
+|----------|-------------|
+| `market_context` | Only if manifest action=run → `pre_market.py` |
+| `market-breadth-analyzer` | Only if manifest `market_breadth` action=run |
+| `uptrend-analyzer` | Only if manifest `uptrend_analysis` action=run |
+| `exposure-coach` | Only if manifest `exposure_posture` action=run |
+| `market-top-detector` | Only if manifest `market_top` action=run |
+| `fred_calendar` | Only if manifest `fred_calendar` action=run |
+| `earnings-calendar` | **Always run** for {TICKER} → next earnings date + consensus |
+
+When reusing `market_context`, extract breadth/uptrend/sector/macro from that file for Phase 1.
 
 **Company intelligence (always run via WebSearch/WebFetch):**
 
@@ -38,19 +63,19 @@ Run every applicable item below. Do not analyze yet.
 - Search: "{TICKER} analyst price targets consensus rating"
 - Search: "{TICKER} news last 14 days"
 
-**Fundamental data (always run):**
+**Fundamental data (always run — ticker-specific):**
 
 - `us-stock-analysis` via FMP API → financials, valuation, fundamentals
 - `technical-analyst` → trend, key levels, momentum, stage (requires chart screenshot)
 - `institutional-flow-tracker` → ownership %, QoQ change, smart money
 
-**Conditional — run only if applicable:**
+**Conditional — reuse-first, then applicability gate:**
 
 - `earnings-trade-analyzer` → only if {TICKER} reported earnings in last 21 days
 - `pead-screener` → only if earnings-trade-analyzer score is B or higher
-- `vcp-screener` + `breakout-trade-planner` → only if stock appears Stage 2
-- `canslim-screener` → only if revenue growth > 15% YoY
-- `theme-detector` → always run; include in report only if confidence is Medium+
+- `vcp-screener` + `breakout-trade-planner` → only if stock appears Stage 2; reuse manifest `vcp_screener` / `breakout_trade_planner` when action=reuse (extract `{TICKER}` row from cited JSON); run watchlist `--universe` from [config/research_watchlist.yaml](../config/research_watchlist.yaml) only when action=run; single-ticker `--universe {TICKER}` only when ticker is off-watchlist and Stage 2 applies
+- `canslim-screener` → only if revenue growth > 15% YoY; same reuse-first rules as VCP
+- `theme-detector` → reuse when manifest action=reuse; run only when action=run; include in report only if confidence is Medium+
 - `options-strategy-advisor` → only if Phase 11 produces an actionable trade plan
 - `us-market-bubble-detector` → only if market-top-detector shows elevated risk
 
@@ -462,6 +487,7 @@ DATA SOURCES & GAPS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 List every skill, script, and web search used.
+Include `reports/logs/research_preflight_{TICKER}_{YYYY-MM-DD}.json` and cite reused artifact paths (action=reuse) vs freshly run items (action=run).
 Note failures, rate limits, unavailable data, and skipped sections.
 
 ---

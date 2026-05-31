@@ -24,6 +24,7 @@
 
 | File | Load when |
 |------|-----------|
+| project-docs/trading-pipeline-checklist.md | Daily/weekly/trade operator cadence |
 | project-docs/playbook.md | Planning a trade, reviewing a position, running a command |
 | project-docs/audit/skills_audit.md | Checking skill status, ratings, or operational notes |
 | project-docs/audit/skills_audit_detail.md | Investigating a specific skill in detail |
@@ -33,8 +34,9 @@
 | project-docs/reference/risk-register.md | Risk assessment or safety review |
 | decisions.md | A prior decision is being questioned or revisited |
 | commands/deep-research.md | Deep research workflow (Claude `/deep-research` or Cursor `deep-research` skill) |
-| commands/intraday-options.md | Running /intraday-options |
 | commands/update-research.md | Update research workflow |
+| commands/intraday-options.md | Running /intraday-options |
+| scripts/research_preflight.py | PASS 0 manifest before deep/update research — reuse same-day batch artifacts |
 | scripts/update_stale_research.py | Zero-LLM staleness scan; queue at state/research_update_queue.json |
 | AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
 | project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
@@ -63,10 +65,10 @@
 ## Key Operational Facts (do not look these up elsewhere)
 
 - Active phase: **Phase 1** (check STATUS.md)
-- economic-calendar-fetcher: BLOCKED — use scripts/fred_calendar.py
+- economic-calendar-fetcher: BLOCKED on v3 — use scripts/fred_calendar.py (stable calendar available but FRED is primary)
 - exposure-coach: Schema mismatch FIXED 2026-05-10 — check STATUS.md for current state
-- vcp-screener: BLOCKED on free FMP — FMP Starter upgrade pending
-- market-top-detector: use --static-basket flag
+- vcp-screener / canslim / earnings-trade-analyzer: **Starter active** — use `--universe` for watchlist; full S&P 500 needs FMP Professional ($79/mo)
+- market-top-detector: works on Starter stable API (no `--static-basket` required)
 - Portfolio B is a Robinhood IRA — IRA options rules apply
 - Full operational rules: project-docs/playbook.md
 
@@ -76,7 +78,7 @@ Same load order as above. Cursor applies `.cursor/rules/project-router.mdc` auto
 
 1. Open repo in Cursor — rules load PROJECT charter constraints without pasting them each chat.
 2. Read `project-docs/STATUS.md` for this week's focus (or ask the agent to read it).
-3. For market context before research: `uv run python3 scripts/pre_market.py` (zero LLM cost).
+3. Operator cadence (daily pre-market, weekly research, per-trade co-pilot): [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md).
 4. Invoke skills by name (`market-breadth-analyzer`, `deep-research on AAPL`, etc.) — see `.cursor/skills/README.md`.
 5. For workflows: use `.cursor/skills/deep-research`, `update-research`, `log-positions`, or `commands/*.md` directly.
 

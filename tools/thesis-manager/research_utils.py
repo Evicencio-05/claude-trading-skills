@@ -162,6 +162,22 @@ def load_report_markdown(path: Path) -> str | None:
     return None
 
 
+_FENCED_CODE_RE = re.compile(r"(```[\s\S]*?```)", re.DOTALL)
+_UNESCAPED_DOLLAR_RE = re.compile(r"(?<!\\)\$")
+
+
+def escape_dollar_signs_for_streamlit(text: str) -> str:
+    """Escape ``$`` for Streamlit markdown so currency is not parsed as LaTeX."""
+    parts = _FENCED_CODE_RE.split(text)
+    escaped: list[str] = []
+    for part in parts:
+        if part.startswith("```"):
+            escaped.append(part)
+        else:
+            escaped.append(_UNESCAPED_DOLLAR_RE.sub(r"\\$", part))
+    return "".join(escaped)
+
+
 def latest_prefetch_path(ticker: str) -> Path | None:
     prefetch_dir = _prefetch_dir()
     if not prefetch_dir.exists():
@@ -309,7 +325,17 @@ def queue_recent_count(days: int = 7) -> int:
 def build_update_prompt(ticker: str, as_of: date | None = None) -> str:
     as_of = as_of or date.today()
     prefetch = latest_prefetch_path(ticker)
-    lines = [f"Follow commands/update-research.md for {ticker}."]
+    manifest = (
+        _repo()
+        / "reports"
+        / "logs"
+        / f"research_preflight_{ticker.upper()}_{as_of.isoformat()}.json"
+    )
+    lines = [
+        f"Follow commands/update-research.md for {ticker}.",
+        f"Preflight: uv run python3 scripts/research_preflight.py --ticker {ticker.upper()}",
+        f"Manifest: {manifest.relative_to(_repo())}",
+    ]
     if prefetch:
         rel = prefetch.relative_to(_repo())
         lines.append(f"Prefetch data: {rel}")
@@ -317,8 +343,19 @@ def build_update_prompt(ticker: str, as_of: date | None = None) -> str:
     return "\n".join(lines)
 
 
-def build_deep_research_prompt(ticker: str) -> str:
-    return f"Follow commands/deep-research.md for {ticker}"
+def build_deep_research_prompt(ticker: str, as_of: date | None = None) -> str:
+    as_of = as_of or date.today()
+    symbol = ticker.upper()
+    manifest = (
+        _repo() / "reports" / "logs" / f"research_preflight_{symbol}_{as_of.isoformat()}.json"
+    )
+    return "\n".join(
+        [
+            f"Follow commands/deep-research.md for {symbol}.",
+            f"Preflight: uv run python3 scripts/research_preflight.py --ticker {symbol}",
+            f"Manifest: {manifest.relative_to(_repo())}",
+        ]
+    )
 
 
 def load_watchlist_for_editor() -> dict[str, dict]:

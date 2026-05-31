@@ -286,10 +286,22 @@ class FMPClient:
         if cache_key in self.cache:
             return self.cache[cache_key]
 
-        url = f"{self.BASE_URL}/sp500_constituent"
-        data = self._rate_limited_get(url)
-        if data:
-            self.cache[cache_key] = data
+        stable_url = "https://financialmodelingprep.com/stable/sp500-constituent"
+        data = self._rate_limited_get(stable_url, quiet=True)
+        if not data:
+            legacy_url = f"{self.BASE_URL}/sp500_constituent"
+            data = self._rate_limited_get(legacy_url, quiet=True)
+        if not data:
+            print(
+                "ERROR: S&P 500 constituents unavailable on Starter tier.",
+                file=sys.stderr,
+            )
+            print(
+                "  Use --universe with watchlist tickers, or upgrade to FMP Professional ($79/mo).",
+                file=sys.stderr,
+            )
+            return None
+        self.cache[cache_key] = data
         return data
 
     def get_quote(self, symbols: str) -> Optional[list[dict]]:
@@ -297,6 +309,16 @@ class FMPClient:
         cache_key = f"quote_{symbols}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        if "," in symbols:
+            merged: list[dict] = []
+            for part in (s.strip() for s in symbols.split(",") if s.strip()):
+                single = self.get_quote(part)
+                if single:
+                    merged.extend(single)
+            if merged:
+                self.cache[cache_key] = merged
+            return merged if merged else None
 
         data = self._request_with_fallback("quote", symbols)
         if data:
@@ -315,13 +337,10 @@ class FMPClient:
         return data
 
     def get_batch_quotes(self, symbols: list[str]) -> dict[str, dict]:
-        """Fetch quotes for a list of symbols, batching up to 5 per request"""
+        """Fetch quotes for a list of symbols (one stable request per symbol)."""
         results = {}
-        batch_size = 5
-        for i in range(0, len(symbols), batch_size):
-            batch = symbols[i : i + batch_size]
-            batch_str = ",".join(batch)
-            quotes = self.get_quote(batch_str)
+        for symbol in symbols:
+            quotes = self.get_quote(symbol)
             if quotes:
                 for q in quotes:
                     results[q["symbol"]] = q

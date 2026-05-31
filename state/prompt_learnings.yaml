@@ -1,7 +1,8 @@
 meta:
-  last_distilled: '2026-05-30T22:14:37'
+  last_distilled: '2026-05-31T10:54:32'
   retro_files_processed:
   - prompt_run_retro_2026-05-30.md
+  - prompt_run_retro_2026-05-31.md
 patterns:
 - id: thesis_store_gate
   seen: 0
@@ -35,15 +36,21 @@ patterns:
   in_prompt_engine: true
   promote_candidate: false
 - id: incomplete_context
-  seen: 1
+  seen: 2
   root_cause: incomplete_context
   fix: 'Avoid: incomplete_context'
   in_prompt_engine: false
   promote_candidate: false
+- id: skipped_optional_preflight
+  seen: 1
+  root_cause: skipped_optional_preflight
+  fix: 'Avoid: skipped optional preflight'
+  in_prompt_engine: false
+  promote_candidate: false
 task_families:
   thesis_manager_dev:
-    runs: 0
-    last_run: null
+    runs: 1
+    last_run: '2026-05-31'
     preflight:
     - project-docs/STATUS.md
     - skills/trader-memory-core/scripts/tests/test_thesis_store.py

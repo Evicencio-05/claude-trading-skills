@@ -14,6 +14,15 @@ All ETFs except SPY blocked.
 Decision: Upgrade to FMP Starter ($29/mo) before next live session.
 Revisit: Never — free tier confirmed broken for core workflow.
 
+**[2026-05-31] FMP Starter activated; stable API migration fixes in fork.**
+Starter ($29/mo) active. New FMP accounts use `/stable/*` endpoints; legacy `/api/v3/*`
+returns 403. Fork fixes: per-symbol stable quotes, stable profile/income/earnings-calendar
+in `skills/*/scripts/fmp_client.py`. Verification: `scripts/fmp_verify_starter.py`,
+`reports/fmp_starter_verification_2026-05-31.md`.
+Full S&P 500 universe (`stable/sp500-constituent`) returns 402 on Starter —
+requires **FMP Professional ($79/mo)**; use `--universe` with watchlist until approved.
+Revisit: Professional only if full-universe screening justified and budget approved.
+
 **[2026-05-09] FRED API as economic-calendar-fetcher replacement.**
 economic-calendar-fetcher permanently blocked on free FMP tier.
 Decision: Use scripts/fred_calendar.py (built 2026-05-09) as permanent

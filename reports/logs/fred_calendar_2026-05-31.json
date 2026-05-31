@@ -1,0 +1,35 @@
+[
+  {
+    "date": "2026-06-05",
+    "event": "Employment Situation (NFP)",
+    "country": "US",
+    "currency": "USD",
+    "impact": "High",
+    "source": "FRED release 50",
+    "previous": null,
+    "estimate": null,
+    "actual": null
+  },
+  {
+    "date": "2026-06-10",
+    "event": "CPI (Consumer Price Index)",
+    "country": "US",
+    "currency": "USD",
+    "impact": "High",
+    "source": "FRED release 10",
+    "previous": null,
+    "estimate": null,
+    "actual": null
+  },
+  {
+    "date": "2026-06-17",
+    "event": "FOMC Rate Decision",
+    "country": "US",
+    "currency": "USD",
+    "impact": "High",
+    "source": "Federal Reserve (hard-coded)",
+    "previous": null,
+    "estimate": null,
+    "actual": null
+  }
+]

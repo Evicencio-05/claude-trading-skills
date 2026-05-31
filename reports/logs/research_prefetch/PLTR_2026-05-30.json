@@ -1,0 +1,25 @@
+{
+  "ticker": "PLTR",
+  "fetched_at": "2026-05-30T22:14:35.851289-07:00",
+  "market_context": null,
+  "fred_calendar": "ERROR: usage: fred_calendar.py [-h] [--from FROM_DATE] [--to TO_DATE]\n                        [--api-key API_KEY] [--format {json,text}]\n                        [--output OUTPUT]\nfred_calendar.py: error: unrecognized arguments: --days 7",
+  "quote": {
+    "symbol": "PLTR",
+    "name": "Palantir Technologies Inc.",
+    "price": 156.54,
+    "changePercentage": 9.20887,
+    "change": 13.2,
+    "volume": 91550284,
+    "dayLow": 145.79,
+    "dayHigh": 157.7794,
+    "yearHigh": 207.52,
+    "yearLow": 118.93,
+    "marketCap": 359426797800,
+    "priceAvg50": 141.7933,
+    "priceAvg200": 161.7841,
+    "exchange": "NASDAQ",
+    "open": 147.835,
+    "previousClose": 143.34,
+    "timestamp": 1780084800
+  }
+}

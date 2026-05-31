@@ -8,8 +8,9 @@ This repo supports **two AI harnesses** over one portable core (`skills/`, `scri
 |------|------|-------|
 | Edit skill Python, tests, refactors | **Cursor** | Included in Cursor subscription; use `.cursor/rules/` |
 | Daily pre-market (breadth, uptrend, sector) | **Terminal** | `uv run python3 scripts/pre_market.py` — zero LLM cost |
+| Research preflight (reuse same-day artifacts) | **Terminal** | `uv run python3 scripts/research_preflight.py --ticker TICKER` — zero LLM cost |
 | Screeners, thesis CLI, FRED calendar | **Terminal** | Run `skills/*/scripts/*.py` directly |
-| Deep research, multi-skill synthesis | **Cursor or Claude Code** | `commands/deep-research.md` or `.cursor/skills/deep-research` |
+| Deep research, multi-skill synthesis | **Cursor or Claude Code** | Pass 0 preflight first; then `commands/deep-research.md` or `.cursor/skills/deep-research` |
 | Chart image analysis (technical/sector/breadth) | **Cursor or Claude Code** | Invoke skill by name; provide images |
 | Robinhood portfolio read / log positions | **Cursor** + Robinhood MCP | Skills: `robinhood-portfolio-review`, `log-positions`; see [Robinhood MCP](#robinhood-mcp) |
 | Robinhood scheduled sync (Portfolio A) | **Terminal** | `robinhood_sync.py` + `robinhood-sync.timer` |

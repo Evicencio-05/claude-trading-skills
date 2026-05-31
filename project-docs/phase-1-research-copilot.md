@@ -3,6 +3,8 @@
 **Duration:** 4–6 weeks (active from 2026-05-29)
 **Goal:** Reliable daily research → thesis → co-pilot execution on Robinhood Agentic; production-ready swing pipeline and thesis logging.
 
+**Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md) — daily, weekly, research, and per-trade steps.
+
 **Prerequisites:** Phase 1 audit complete ([STATUS.md](STATUS.md), [skills_audit.md](audit/skills_audit.md)).
 
 ---
@@ -19,26 +21,11 @@ The fork's stock/options skills and Robinhood MCP hybrid are built. The **swing 
 
 | Item | Target |
 |------|--------|
-| FMP Starter | Activate when budget approved; unblocks vcp/canslim/earnings batch screeners |
-| Daily stack | `uv run python3 scripts/pre_market.py` every trading day (systemd `pre-market.timer`) |
-| Exposure | Run `exposure-coach` weekly when upstream JSON saved |
-| Deep / update | `/deep-research` or Cursor `deep-research` on watchlist; `/update-research` when report &gt;14d stale |
-| Watchlist cadence | Weekly `scripts/update_stale_research.py` (systemd `research-staleness.timer`) → queue + summary; LLM via `update-research` |
-| Macro calendar | `scripts/fred_calendar.py` (canonical; economic-calendar-fetcher remains blocked on free FMP) |
+| FMP Starter | **Active** 2026-05-31 — watchlist vcp/canslim/earnings via `--universe`; full S&P 500 needs Professional ($79/mo) |
+| Daily batch → PASS 0 | Run watchlist screeners once/day; per-ticker deep/update research reuses via [`scripts/research_preflight.py`](../../scripts/research_preflight.py) ([`commands/deep-research.md`](../../commands/deep-research.md) PASS 0) |
+| Operator cadence | See checklist § [Daily](trading-pipeline-checklist.md#daily-trading-days), § [Weekly](trading-pipeline-checklist.md#weekly), § [Research](trading-pipeline-checklist.md#research-on-demand) |
 
-**Watchlist (`reports/research/`, latest report per ticker):**
-
-| Ticker | Latest report | Stale (&gt;14d)? |
-|--------|---------------|----------------|
-| MRAM | 2026-05-27 | No |
-| MU | 2026-05-27 | No |
-| P | 2026-05-27 | No |
-| FPS | 2026-05-13 | Yes |
-| VECO | 2026-05-08 | Yes |
-
-Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md). Excluded tickers: `config/research_exclude.yaml` (AAPL dismissed pending position).
-
-Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist YAML: `config/research_watchlist.yaml`.
+**Watchlist state:** [config/research_watchlist.yaml](../config/research_watchlist.yaml) · [config/research_exclude.yaml](../config/research_exclude.yaml) · staleness in [STATUS.md](STATUS.md) or latest `reports/logs/research_staleness_*.md`
 
 ### 2. Thesis discipline
 
@@ -51,14 +38,7 @@ Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist
 
 ### 3. Robinhood co-pilot (Agentic only)
 
-| Step | Action |
-|------|--------|
-| Read | All accounts: `robinhood_mcp.py` or skill `robinhood-portfolio-review` |
-| Context | Same session: today's `pre_market` + `exposure-coach` when sizing new risk |
-| Size | `position-sizer` on Agentic buying power |
-| Confirm | Present plan → **wait for user "confirm"** before any MCP order |
-| Execute | MCP orders on **Portfolio C (Agentic) only** |
-| Log | `log-positions` / thesis transition in same session |
+See checklist § [Per-trade co-pilot](trading-pipeline-checklist.md#per-trade-co-pilot-agentic-only).
 
 **Never MCP trade:** IRA (`ira_robinhood`), taxable (`robinhood_taxable`). Taxable sync stays on `robinhood_sync.py`.
 
@@ -70,23 +50,11 @@ Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist
 
 ---
 
-## Per-trade checklist (co-pilot)
-
-1. `robinhood-portfolio-review` (or CLI) — buying power, exposure
-2. Today's `pre_market` + exposure posture — new entry allowed?
-3. `position-sizer` for Agentic account
-4. Present: entry, stop, target, risk $, IRA N/A on Agentic
-5. **Stop — user confirms**
-6. MCP order on Agentic only
-7. Log thesis + position same session
-
----
-
 ## Exit criteria (Phase 1 → Phase 2)
 
 Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md).
 
-- [ ] FMP Starter active; `vcp-screener` run on watchlist universe at least once
+- [x] FMP Starter active; `vcp-screener` run on watchlist universe at least once (11 quotes, 2026-05-31)
 - [ ] 14 consecutive trading days: `pre_market.py` + posture log (**12/14** unique days as of 2026-05-30)
 - [x] 5+ deep-research or update-research reports on active watchlist (5 tickers on disk; 2 stale need update)
 - [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
@@ -107,6 +75,7 @@ Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md).
 
 ## References
 
+- [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
 - [robinhood-mcp-integration.md](reference/robinhood-mcp-integration.md)
 - [playbook.md](playbook.md)
 - [PENDING_WORK.md](../PENDING_WORK.md)

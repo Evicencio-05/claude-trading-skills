@@ -30,9 +30,11 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 
 | When | Read |
 |------|------|
+| Daily/weekly/trade cadence | `project-docs/trading-pipeline-checklist.md` |
 | Planning/reviewing trades | `project-docs/playbook.md` |
 | Skill status | `project-docs/audit/skills_audit.md` |
 | Deep research on a ticker | `commands/deep-research.md` or `.cursor/skills/deep-research` |
+| Update research on a ticker | `commands/update-research.md` — run `scripts/research_preflight.py` first |
 | API costs | `project-docs/reference/cost-discipline.md` |
 | Cursor setup | `project-docs/reference/cursor-integration.md` |
 | Robinhood MCP | `project-docs/reference/robinhood-mcp-integration.md` |
@@ -50,11 +52,11 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 ## Key operational facts
 
 - Active phase: **Phase 1** — [phase-1-research-copilot.md](../../project-docs/phase-1-research-copilot.md)
-- economic-calendar-fetcher: **BLOCKED** — use `scripts/fred_calendar.py`
-- vcp-screener: may need FMP Starter tier
-- market-top-detector: use `--static-basket` when needed
+- economic-calendar-fetcher: v3 **BLOCKED** — use `scripts/fred_calendar.py`
+- vcp-screener / canslim: **Starter active** — `--universe` watchlist OK; full S&P 500 needs FMP Professional ($79/mo)
+- market-top-detector: works on Starter stable API
 - Portfolio B = Robinhood Roth IRA — flag IRA-ineligible options before actionable advice
-- Daily breadth stack (zero API cost): `uv run python3 scripts/pre_market.py`
+- Operator cadence: [trading-pipeline-checklist.md](../../project-docs/trading-pipeline-checklist.md)
 
 ## Output conventions
 

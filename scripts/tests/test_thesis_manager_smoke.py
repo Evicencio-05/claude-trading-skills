@@ -15,7 +15,7 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[2]
 APP = ROOT / "tools" / "thesis-manager" / "app.py"
-PAGES = ["Dashboard", "Research", "Reports", "Add Thesis", "Review"]
+PAGES = ["Dashboard", "Research", "Reports", "Theses", "Review"]
 
 
 @pytest.mark.skipif(not _HAS_STREAMLIT, reason="streamlit not installed")

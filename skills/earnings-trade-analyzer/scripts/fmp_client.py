@@ -283,9 +283,13 @@ class FMPClient:
         if cache_key in self.cache:
             return self.cache[cache_key]
 
-        url = f"{self.BASE_URL}/earning_calendar"
-        params = {"from": from_date, "to": to_date}
-        data = self._rate_limited_get(url, params)
+        stable_url = "https://financialmodelingprep.com/stable/earnings-calendar"
+        stable_params = {"from": from_date, "to": to_date}
+        data = self._rate_limited_get(stable_url, stable_params, quiet=True)
+        if not data:
+            url = f"{self.BASE_URL}/earning_calendar"
+            params = {"from": from_date, "to": to_date}
+            data = self._rate_limited_get(url, params)
         if data:
             self.cache[cache_key] = data
         return data
@@ -300,26 +304,22 @@ class FMPClient:
             Dictionary mapping symbol to profile data.
         """
         profiles = {}
-        batch_size = 100
-
-        for i in range(0, len(symbols), batch_size):
-            batch = symbols[i : i + batch_size]
-            symbols_str = ",".join(batch)
-
-            cache_key = f"profiles_{symbols_str}"
+        for symbol in symbols:
+            cache_key = f"profile_{symbol}"
             if cache_key in self.cache:
-                for profile in self.cache[cache_key]:
-                    if isinstance(profile, dict):
-                        profiles[profile.get("symbol")] = profile
-                continue
-
-            url = f"{self.BASE_URL}/profile/{symbols_str}"
-            data = self._rate_limited_get(url)
-            if data:
-                self.cache[cache_key] = data
+                data = self.cache[cache_key]
+            else:
+                stable_url = "https://financialmodelingprep.com/stable/profile"
+                data = self._rate_limited_get(stable_url, {"symbol": symbol}, quiet=True)
+                if not data:
+                    url = f"{self.BASE_URL}/profile/{symbol}"
+                    data = self._rate_limited_get(url)
+                if data:
+                    self.cache[cache_key] = data
+            if data and isinstance(data, list):
                 for profile in data:
-                    if isinstance(profile, dict):
-                        profiles[profile.get("symbol")] = profile
+                    if isinstance(profile, dict) and profile.get("symbol"):
+                        profiles[profile["symbol"]] = profile
 
         return profiles
 

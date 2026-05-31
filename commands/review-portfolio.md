@@ -16,7 +16,7 @@ Run a batch update across all tracked tickers.
 
 4. Ask which tickers to update, or offer to update all.
 
-5. For each selected ticker, run the equivalent of /update-research {TICKER}.
+5. For each selected ticker, run the equivalent of /update-research {TICKER} (includes STEP 0 preflight via `scripts/research_preflight.py` before fetching data).
 
 6. After all updates complete, generate a portfolio summary table:
 

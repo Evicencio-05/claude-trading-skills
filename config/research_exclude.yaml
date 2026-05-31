@@ -1,3 +1,5 @@
 # Excluded tickers — hidden from Research, Reports, staleness
-AAPL:
+FCEL:
   reason: dismissed pending position
+MRAM:
+  reason: Revisit after a month.

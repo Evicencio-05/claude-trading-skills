@@ -59,3 +59,33 @@ def test_load_report_markdown(research_dir: Path) -> None:
 
 def test_load_report_markdown_missing() -> None:
     assert research_utils.load_report_markdown(Path("/nonexistent/report.md")) is None
+
+
+def test_escape_dollar_signs_fps_regression() -> None:
+    line = (
+        "- Large intangible base ($829M) generating heavy non-cash amortization — "
+        "the gap between GAAP EPS ($0.06 TTM) and adjusted results is very wide"
+    )
+    escaped = research_utils.escape_dollar_signs_for_streamlit(line)
+    assert escaped == (
+        "- Large intangible base (\\$829M) generating heavy non-cash amortization — "
+        "the gap between GAAP EPS (\\$0.06 TTM) and adjusted results is very wide"
+    )
+
+
+def test_escape_dollar_signs_pair_on_one_line() -> None:
+    assert (
+        research_utils.escape_dollar_signs_for_streamlit("Interest expense of $61M on $709M debt")
+        == "Interest expense of \\$61M on \\$709M debt"
+    )
+
+
+def test_escape_dollar_signs_preserves_pre_escaped() -> None:
+    assert research_utils.escape_dollar_signs_for_streamlit("\\$100") == "\\$100"
+
+
+def test_escape_dollar_signs_skips_fenced_code_blocks() -> None:
+    md = "Price $50\n```\n$foo$\n```\nDebt $709M"
+    assert research_utils.escape_dollar_signs_for_streamlit(md) == (
+        "Price \\$50\n```\n$foo$\n```\nDebt \\$709M"
+    )

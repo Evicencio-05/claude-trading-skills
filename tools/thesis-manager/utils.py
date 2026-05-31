@@ -18,6 +18,8 @@ THESIS_TYPES = [
     "dividend_income",
 ]
 
+THESIS_STATUSES = ["IDEA", "ENTRY_READY", "ACTIVE", "CLOSED", "INVALIDATED"]
+
 EXIT_REASONS = ["stop_hit", "target_hit", "time_stop", "invalidated", "manual"]
 
 IRA_ELIGIBLE_STRATEGIES = frozenset({"long_call", "long_put", ""})
@@ -183,6 +185,91 @@ def validate_thesis_submit(
     return errors
 
 
+def confidence_level_from_score(score: float | None) -> int:
+    """Map confidence_score (0–1) to 1–5 slider level."""
+    if not score:
+        return 3
+    return max(1, min(5, round(float(score) / 0.2)))
+
+
+def stop_display(thesis: dict) -> str:
+    """Format stop for edit forms: numeric stop_loss or first kill criterion."""
+    exit_d = thesis.get("exit") or {}
+    stop_loss = exit_d.get("stop_loss")
+    if stop_loss is not None:
+        return str(stop_loss)
+    kill = thesis.get("kill_criteria") or []
+    return str(kill[0]) if kill else ""
+
+
+def target_display(thesis: dict) -> str:
+    """Format take-profit for edit forms."""
+    exit_d = thesis.get("exit") or {}
+    take_profit = exit_d.get("take_profit")
+    return str(take_profit) if take_profit is not None else ""
+
+
+def build_update_fields(
+    *,
+    thesis_text: str,
+    confidence: int,
+    stop_text: str,
+    target_text: str,
+    catalyst: str = "",
+    setup_type: str | None = None,
+    review_interval_days: int | None = None,
+    lessons_learned: str | None = None,
+    what_happened: str | None = None,
+) -> dict:
+    """Build fields dict for thesis_store.update() from form values."""
+    stop_price = parse_price(stop_text)
+    target_price = parse_price(target_text)
+    kill: list[str] = []
+    if stop_text.strip() and stop_price is None:
+        kill = [stop_text.strip()]
+
+    fields: dict[str, Any] = {
+        "thesis_statement": thesis_text.strip(),
+        "confidence_score": round(confidence * 0.2, 1),
+        "exit": {
+            "stop_loss": stop_price if stop_text.strip() else None,
+            "take_profit": target_price if target_text.strip() else None,
+        },
+        "kill_criteria": kill,
+    }
+    fields["catalyst"] = catalyst.strip() or None
+    if setup_type is not None:
+        fields["setup_type"] = setup_type.strip() or None
+    if review_interval_days is not None:
+        fields["monitoring"] = {"review_interval_days": review_interval_days}
+    if lessons_learned is not None or what_happened is not None:
+        outcome: dict[str, Any] = {}
+        if lessons_learned is not None:
+            outcome["lessons_learned"] = lessons_learned.strip() or None
+        if what_happened is not None:
+            outcome["what_happened"] = what_happened.strip() or None
+        fields["outcome"] = outcome
+    return fields
+
+
+def validate_thesis_update(
+    fields: dict,
+    *,
+    confidence: int | None = None,
+) -> list[str]:
+    """Return human-readable validation errors for update payloads."""
+    errors: list[str] = []
+    if not str(fields.get("thesis_statement", "")).strip():
+        errors.append("thesis_statement is required")
+    if confidence is not None and confidence not in (1, 2, 3, 4, 5):
+        errors.append("confidence must be 1–5")
+    mon = fields.get("monitoring") or {}
+    interval = mon.get("review_interval_days")
+    if interval is not None and int(interval) < 1:
+        errors.append("review_interval_days must be at least 1")
+    return errors
+
+
 def pending_duplicate_tickers(open_theses: list[dict], pending: list[dict]) -> set[str]:
     """Tickers present in both open theses and PENDING_THESIS rows."""
     open_tickers = {str(t.get("ticker", "")).upper() for t in open_theses}
@@ -264,6 +351,21 @@ def load_theses(statuses: list[str] | None = None) -> list[dict]:
             except Exception:  # noqa: BLE001
                 full_theses.append(entry)
     return full_theses
+
+
+def get_thesis(thesis_id: str) -> dict:
+    """Load one thesis by ID."""
+    store = import_store()
+    return store.get(get_state_dir(), thesis_id)
+
+
+def sort_theses_for_display(theses: list[dict]) -> list[dict]:
+    """Newest created first, then ticker."""
+
+    def sort_key(t: dict) -> tuple[str, str]:
+        return (str(t.get("created_at") or ""), str(t.get("ticker") or ""))
+
+    return sorted(theses, key=sort_key, reverse=True)
 
 
 def load_pending_ingest() -> list[dict]:
