@@ -9,7 +9,7 @@ Reconcile **PENDING_WORK.md**, **STATUS.md**, and active phase docs with **evide
 - **Mode:** `sync-only` (default) — update docs; do not run new research or trades
 
 ## Pre-flight
-- [ ] Read `PENDING_WORK.md`, `project-docs/STATUS.md`, `project-docs/phase-1b-robinhood-research.md`, `project-docs/phase-1-audit.md`
+- [ ] Read `PENDING_WORK.md`, `project-docs/STATUS.md`, `project-docs/phase-1-research-copilot.md` (active; replaces archived `phase-1b-robinhood-research.md`), `project-docs/archive/phase-1-audit.md`
 - [ ] Read latest `reports/phase_1b_kickoff_*.md` if present
 - [ ] Read `decisions.md` — do not contradict binding decisions
 
@@ -76,9 +76,9 @@ Compare evidence to these files. Flag every mismatch:
 | Doc | What to reconcile |
 |-----|-------------------|
 | `PENDING_WORK.md` | Unchecked items already done; Done section missing new work; duplicate todos; wrong "Last updated" |
-| `project-docs/STATUS.md` | This week's focus, Phase 1B exit table, Phase 1 carryover, Recent Changes |
-| `project-docs/phase-1b-robinhood-research.md` | Watchlist table, exit criteria checkboxes, workstream status |
-| `project-docs/phase-1-audit.md` | Exit criteria checkboxes (only if evidence clearly satisfies) |
+| `project-docs/STATUS.md` | This week's focus, Phase 1 exit table, Phase 1 carryover, Recent Changes |
+| `project-docs/phase-1-research-copilot.md` | Watchlist table, exit criteria checkboxes, workstream status (active phase doc) |
+| `project-docs/archive/phase-1-audit.md` | Exit criteria checkboxes (only if evidence clearly satisfies) |
 
 Common fixes this repo needs (check all):
 
@@ -104,16 +104,16 @@ Edit in this order (single consistent snapshot):
 ### 2. `project-docs/STATUS.md`
 - Update **Last updated**
 - Rewrite **This week's focus** — max 5 bullets, **open work only**
-- Refresh **Phase 1B Exit Criteria Progress** table from evidence
+- Refresh **Phase 1 Exit Criteria Progress** table from evidence
 - Update **Phase 1 Exit (carryover)** checkboxes
 - Add **Recent Changes** bullet: "Docs synced to evidence YYYY-MM-DD"
 
-### 3. `project-docs/phase-1b-robinhood-research.md`
+### 3. `project-docs/phase-1-research-copilot.md`
 - Sync watchlist table with `reports/research/` (ticker, latest date, stale Y/N)
 - Update exit criteria checkboxes where evidence is unambiguous
 - Do not mark futures defer items as started
 
-### 4. `project-docs/phase-1-audit.md` (optional)
+### 4. `project-docs/archive/phase-1-audit.md` (optional)
 - Only update exit criteria if evidence clearly satisfies (e.g. 3+ deep-research tickers already `[x]` — don't uncheck)
 
 ### 5. Write sync report
@@ -160,3 +160,6 @@ Save `reports/docs_sync_YYYY-MM-DD.md`:
 [Optional: list work you know is done but may not be on disk yet, e.g.
  "Completed deep research on XYZ 2026-05-29", "Logged TE thesis", etc.]
 ```
+
+## After run
+Paste [prompt-complete.md](prompt-complete.md) with `sync-phase-docs.md`.

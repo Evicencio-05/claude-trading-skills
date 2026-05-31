@@ -1,6 +1,6 @@
 # Project Status
 
-**Last updated:** 2026-05-29
+**Last updated:** 2026-05-30
 **Active phase:** Phase 1 — Research + Co-Pilot Trading
 **Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md)
 **Roadmap:** Equity-only — [decisions.md](../decisions.md) [2026-05-29]
@@ -8,10 +8,10 @@
 ## This Week's Focus
 
 - [ ] **Activate FMP Starter ($29/mo)** — approved verbally; enables batch vcp/canslim/earnings screeners
-- [ ] **Update research — stale watchlist** — FPS, INO, VECO (&gt;14d); `commands/review-portfolio.md` weekly
-- [ ] **Robinhood co-pilot** — `ingest-pending` + `log-positions` for TE (taxable); first Agentic trade after user confirm
+- [ ] **Update research — stale watchlist** — FPS, VECO (&gt;14d); `commands/review-portfolio.md` weekly
+- [ ] **First Agentic trade** — user must reply **confirm** on presented plan
 - [ ] **IRA thesis logging** — MCP read + four questions for open IRA positions
-- [ ] **Close expired theses** — POWL, TSLA, PENG per PENDING_WORK
+- [ ] **Close expired theses** — TSLA, PENG per PENDING_WORK
 
 ## Open Blockers
 
@@ -26,11 +26,11 @@
 
 Current: $0 | Cap: $30/mo | FMP Starter pending activation
 
-## Robinhood MCP (verified 2026-05-28)
+## Robinhood MCP (verified 2026-05-30)
 
 ```bash
-uv run python3 scripts/robinhood_mcp.py accounts      # OK
-uv run python3 scripts/robinhood_mcp.py positions --all  # OK (TE taxable)
+uv run python3 scripts/robinhood_mcp.py accounts      # OK (3 accounts)
+uv run python3 scripts/robinhood_mcp.py positions --all  # OK
 ```
 
 Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml) | [decisions.md](../decisions.md)
@@ -47,9 +47,9 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 | Criterion | Status |
 |-----------|--------|
 | FMP Starter + vcp on watchlist | Partial — vcp ran on MRAM; Starter not billed yet |
-| 14 days pre_market + posture log | **11/14** unique days (`reports/logs/posture_history.log`) |
-| 5+ deep/update on watchlist | 6 tickers total; **3 current** (MRAM/MU/P 2026-05-27); **3 stale** (FPS, INO, VECO) |
-| 10+ trades logged, ≥2 types | ❌ ~1–2 effective; 16 theses pre-Phase 1 legacy |
+| 14 days pre_market + posture log | **12/14** unique days (`reports/logs/posture_history.log`) |
+| 5+ deep/update on watchlist | 5 tickers on disk; **3 current** (MRAM/MU/P 2026-05-27); **2 stale** (FPS, VECO) |
+| 10+ trades logged, ≥2 types | ❌ 17 theses total (10 ACTIVE legacy + TE); not 10+ effective Phase 1 trades |
 | 3+ Agentic co-pilot MCP trades | ❌ 0 — awaiting user confirm |
 | IRA logged via MCP | ❌ |
 | 2+ portfolio_review reports | **1/2** — `portfolio_review_2026-05-28.md` |
@@ -57,7 +57,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 
 ## Recent Changes
 
+- Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md))
+- TE thesis logged (`th_te_grw_20260529_034d`); POWL closed 2026-05-29
+- Pre-market run 2026-05-29: breadth 42.4, posture CAUTIOUS 50%
 - Futures scope removed; 3-phase equity roadmap ([decisions.md](../decisions.md) 2026-05-29)
-- `phase-1-research-copilot.md`, `phase-2-learning-loop.md`, `phase-3-agentic-execution.md` created
-- Superseded docs archived under `project-docs/archive/`
-- Pre-market run 2026-05-28: breadth 42.4, posture CAUTIOUS 50%

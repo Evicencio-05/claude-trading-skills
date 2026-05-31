@@ -1,0 +1,3 @@
+# Excluded tickers — hidden from Research, Reports, staleness
+AAPL:
+  reason: dismissed pending position

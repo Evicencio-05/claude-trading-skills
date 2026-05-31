@@ -34,8 +34,9 @@ The fork's stock/options skills and Robinhood MCP hybrid are built. The **swing 
 | MU | 2026-05-27 | No |
 | P | 2026-05-27 | No |
 | FPS | 2026-05-13 | Yes |
-| INO | 2026-05-10 | Yes |
 | VECO | 2026-05-08 | Yes |
+
+Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md). Excluded tickers: `config/research_exclude.yaml` (AAPL dismissed pending position).
 
 Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist YAML: `config/research_watchlist.yaml`.
 
@@ -45,7 +46,7 @@ Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist
 |------|--------|
 | Trade count | 10+ logged across ≥2 types (stock, option; paper OK) |
 | IRA | All open IRA positions in `trader-memory-core` via MCP `ingest-pending` + `log-positions` |
-| Pending | Close/log expired: POWL, TSLA, PENG per PENDING_WORK |
+| Pending | Close/log expired: TSLA, PENG (POWL closed 2026-05-29) |
 | Rules | Never write `state/theses/` directly — `thesis_store.py` / thesis-manager only |
 
 ### 3. Robinhood co-pilot (Agentic only)
@@ -83,9 +84,11 @@ Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Watchlist
 
 ## Exit criteria (Phase 1 → Phase 2)
 
+Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md).
+
 - [ ] FMP Starter active; `vcp-screener` run on watchlist universe at least once
-- [ ] 14 consecutive trading days: `pre_market.py` + posture log
-- [ ] 5+ deep-research or update-research reports on active watchlist
+- [ ] 14 consecutive trading days: `pre_market.py` + posture log (**12/14** unique days as of 2026-05-30)
+- [x] 5+ deep-research or update-research reports on active watchlist (5 tickers on disk; 2 stale need update)
 - [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
 - [ ] 3+ co-pilot trades on Agentic via MCP (user-confirmed each)
 - [ ] IRA positions logged (MCP read + four questions)

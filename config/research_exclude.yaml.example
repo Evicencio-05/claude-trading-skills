@@ -1,6 +1,4 @@
 # Tickers hidden from Research, Reports picker, and staleness scans.
 # Copy to config/research_exclude.yaml and edit locally.
-INO:
-  reason: "not interested"
-XSP:
-  reason: "hedge contract — exclude from research tracking"
+AAPL:
+  reason: "dismissed pending position"

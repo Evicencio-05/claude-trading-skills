@@ -8,9 +8,6 @@ FPS:
 HPE:
   watching: true
   notes: ''
-INO:
-  watching: false
-  notes: ''
 MRAM:
   watching: false
   notes: swing candidate
