@@ -138,24 +138,60 @@ def write_queue(
 
 
 def _parse_market_posture(markdown: str) -> dict[str, str]:
-    block_match = re.search(r"## Market Posture\s+```(.*?)```", markdown, re.DOTALL)
-    if not block_match:
-        return {}
-    fields: dict[str, str] = {}
-    for line in block_match.group(1).splitlines():
-        if ":" not in line:
-            continue
-        key, value = line.split(":", 1)
-        fields[key.strip()] = value.strip()
-    return fields
+    for heading in ("## Executive Summary", "## Market Posture"):
+        block_match = re.search(rf"{re.escape(heading)}\s+```(.*?)```", markdown, re.DOTALL)
+        if block_match:
+            fields: dict[str, str] = {}
+            for line in block_match.group(1).splitlines():
+                if ":" not in line:
+                    continue
+                key, value = line.split(":", 1)
+                fields[key.strip()] = value.strip()
+            return fields
+    return {}
+
+
+def _posture_from_summary(summary: dict) -> dict[str, str]:
+    syn = summary.get("synthesis") or {}
+    b = summary.get("breadth") or {}
+    u = summary.get("uptrend") or {}
+    s = summary.get("sector") or {}
+    flags = summary.get("position_flags") or {}
+    all_flags = (flags.get("urgent") or []) + (flags.get("watch") or [])
+    macro = summary.get("macro_events") or "none"
+    return {
+        "Posture": syn.get("posture", ""),
+        "Ceiling": syn.get("ceiling", ""),
+        "Headline": syn.get("headline", ""),
+        "Breadth": f"{b.get('score', 'N/A')}/100 ({b.get('zone', 'N/A')})",
+        "Uptrend": f"{u.get('score', 'N/A')}/100",
+        "Uptrend warning": u.get("warning_summary", "none"),
+        "Leading sector": s.get("leading_sector") or "N/A",
+        "Cycle phase": s.get("cycle_phase") or "N/A",
+        "Macro events": macro if macro != "none" else "none",
+        "Flags": "\n".join(all_flags) if all_flags else "none",
+    }
 
 
 def load_market_context(as_of: date) -> dict | None:
-    path = LOGS_DIR / f"market_context_{as_of.isoformat()}.md"
-    if not path.exists():
+    json_path = LOGS_DIR / f"market_context_{as_of.isoformat()}.json"
+    if json_path.exists():
+        try:
+            summary = json.loads(json_path.read_text())
+            if isinstance(summary, dict):
+                return {
+                    "path": str(json_path.relative_to(REPO)),
+                    "posture": _posture_from_summary(summary),
+                    "summary": summary,
+                }
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    md_path = LOGS_DIR / f"market_context_{as_of.isoformat()}.md"
+    if not md_path.exists():
         return None
-    text = path.read_text()
-    return {"path": str(path.relative_to(REPO)), "posture": _parse_market_posture(text)}
+    text = md_path.read_text()
+    return {"path": str(md_path.relative_to(REPO)), "posture": _parse_market_posture(text)}
 
 
 def run_fred_calendar(days: int = 7) -> str:

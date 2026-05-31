@@ -7,35 +7,25 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+from report_paths import (
+    ARTIFACT_PREFIXES,
+    breakout_planner_run_hint,
+    find_latest_same_day,
+    find_screener_for_ticker,
+    logs_dir,
+    screener_run_hint,
+)
 from research_watchlist import get_repo_root, load_watchlist_config
 
-BATCH_PREFIXES = {
-    "market_breadth": "market_breadth_",
-    "uptrend_analysis": "uptrend_analysis_",
-    "market_top": "market_top_",
-    "exposure_posture": "exposure_posture_",
-    "vcp_screener": "vcp_screener_",
-    "canslim_screener": "canslim_screener_",
-    "theme_detector": "theme_detector_",
-    "breakout_trade_planner": "breakout_trade_plan_",
-}
+BATCH_PREFIXES = ARTIFACT_PREFIXES
 
 
 def _rel(path: Path, repo_root: Path) -> str:
     return str(path.relative_to(repo_root))
 
 
-def find_latest_same_day(reports_dir: Path, prefix: str, as_of: date) -> Path | None:
-    """Return the newest JSON report for *prefix* on calendar day *as_of*."""
-    if not reports_dir.exists():
-        return None
-    date_str = as_of.isoformat()
-    matches = sorted(reports_dir.glob(f"{prefix}{date_str}_*.json"))
-    return matches[-1] if matches else None
-
-
-def market_context_path(logs_dir: Path, as_of: date) -> Path | None:
-    path = logs_dir / f"market_context_{as_of.isoformat()}.md"
+def market_context_path(repo_root: Path, as_of: date) -> Path | None:
+    path = logs_dir(repo_root) / f"market_context_{as_of.isoformat()}.md"
     return path if path.exists() else None
 
 
@@ -47,56 +37,6 @@ def load_watchlist_symbols(watchlist_path: Path | None = None) -> list[str]:
     return sorted(t for t, cfg in config.items() if cfg.get("watching"))
 
 
-def _result_rows(data: dict) -> list[dict]:
-    rows: list[dict] = []
-    for key in ("results", "all_results"):
-        chunk = data.get(key)
-        if isinstance(chunk, list):
-            rows.extend(chunk)
-    return rows
-
-
-def screener_covers_ticker(
-    json_path: Path,
-    ticker: str,
-    watchlist_symbols: list[str],
-) -> bool:
-    """True when screener JSON already screened *ticker* (directly or via watchlist batch)."""
-    try:
-        data = json.loads(json_path.read_text())
-    except (json.JSONDecodeError, OSError):
-        return False
-
-    symbol = ticker.upper()
-    for row in _result_rows(data):
-        if str(row.get("symbol", "")).upper() == symbol:
-            return True
-
-    funnel = (data.get("metadata") or {}).get("funnel") or {}
-    universe = funnel.get("universe", 0)
-    if watchlist_symbols and universe >= len(watchlist_symbols):
-        return True
-    return False
-
-
-def find_screener_for_ticker(
-    reports_dir: Path,
-    prefix: str,
-    ticker: str,
-    as_of: date,
-    watchlist_symbols: list[str],
-) -> Path | None:
-    """Pick the newest same-day screener file that covers *ticker*."""
-    if not reports_dir.exists():
-        return None
-    date_str = as_of.isoformat()
-    matches = sorted(reports_dir.glob(f"{prefix}{date_str}_*.json"))
-    for path in reversed(matches):
-        if screener_covers_ticker(path, ticker, watchlist_symbols):
-            return path
-    return None
-
-
 def extract_ticker_row(json_path: Path, ticker: str) -> dict | None:
     """Return the screener result row for *ticker*, if present."""
     try:
@@ -104,7 +44,12 @@ def extract_ticker_row(json_path: Path, ticker: str) -> dict | None:
     except (json.JSONDecodeError, OSError):
         return None
     symbol = ticker.upper()
-    for row in _result_rows(data):
+    rows: list[dict] = []
+    for key in ("results", "all_results"):
+        chunk = data.get(key)
+        if isinstance(chunk, list):
+            rows.extend(chunk)
+    for row in rows:
         if str(row.get("symbol", "")).upper() == symbol:
             return row
     return None
@@ -136,13 +81,11 @@ def build_preflight_manifest(
 ) -> dict[str, Any]:
     """Build PASS 0 manifest describing reuse vs run for batch artifacts."""
     root = repo_root or get_repo_root()
-    reports_dir = root / "reports"
-    logs_dir = reports_dir / "logs"
     watchlist_symbols = load_watchlist_symbols(root / "config" / "research_watchlist.yaml")
     watchlist_arg = " ".join(watchlist_symbols) if watchlist_symbols else ticker.upper()
 
-    ctx_path = market_context_path(logs_dir, as_of)
-    fred_path = logs_dir / f"fred_calendar_{as_of.isoformat()}.json"
+    ctx_path = market_context_path(root, as_of)
+    fred_path = logs_dir(root) / f"fred_calendar_{as_of.isoformat()}.json"
 
     artifacts: dict[str, dict[str, Any]] = {}
 
@@ -150,23 +93,15 @@ def build_preflight_manifest(
         artifacts["market_context"] = _artifact_run(
             run_hint="uv run python3 scripts/pre_market.py",
         )
-        for key, prefix in BATCH_PREFIXES.items():
+        for key in BATCH_PREFIXES:
             if key in ("vcp_screener", "canslim_screener"):
-                skill_dir = "vcp-screener" if key == "vcp_screener" else "canslim-screener"
-                script = "screen_vcp.py" if key == "vcp_screener" else "screen_canslim.py"
-                artifacts[key] = _artifact_run(
-                    run_hint=(
-                        f"python3 skills/{skill_dir}/scripts/{script} "
-                        f"--universe {watchlist_arg} --output-dir reports/"
-                    ),
-                )
-            elif key != "breakout_trade_planner":
+                artifacts[key] = _artifact_run(run_hint=screener_run_hint(key, watchlist_arg))
+            elif key == "breakout_trade_planner":
+                continue
+            else:
                 artifacts[key] = _artifact_run()
         artifacts["breakout_trade_planner"] = _artifact_run(
-            run_hint=(
-                "python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py "
-                "--input reports/vcp_screener_YYYY-MM-DD.json --output-dir reports/"
-            ),
+            run_hint=breakout_planner_run_hint(),
         )
         artifacts["fred_calendar"] = _artifact_run(
             run_hint=(
@@ -183,8 +118,8 @@ def build_preflight_manifest(
                 run_hint="uv run python3 scripts/pre_market.py",
             )
 
-        breadth_path = find_latest_same_day(reports_dir, BATCH_PREFIXES["market_breadth"], as_of)
-        uptrend_path = find_latest_same_day(reports_dir, BATCH_PREFIXES["uptrend_analysis"], as_of)
+        breadth_path = find_latest_same_day(root, "market_breadth", as_of)
+        uptrend_path = find_latest_same_day(root, "uptrend_analysis", as_of)
         if ctx_path and breadth_path is None:
             breadth_path = ctx_path  # embedded in market_context markdown
         if ctx_path and uptrend_path is None:
@@ -193,11 +128,11 @@ def build_preflight_manifest(
         artifacts["market_breadth"] = _artifact_reuse(breadth_path, root)
         artifacts["uptrend_analysis"] = _artifact_reuse(uptrend_path, root)
         artifacts["market_top"] = _artifact_reuse(
-            find_latest_same_day(reports_dir, BATCH_PREFIXES["market_top"], as_of),
+            find_latest_same_day(root, "market_top", as_of),
             root,
         )
         artifacts["exposure_posture"] = _artifact_reuse(
-            find_latest_same_day(reports_dir, BATCH_PREFIXES["exposure_posture"], as_of),
+            find_latest_same_day(root, "exposure_posture", as_of),
             root,
         )
 
@@ -215,11 +150,8 @@ def build_preflight_manifest(
             )
 
         for screener_key in ("vcp_screener", "canslim_screener"):
-            prefix = BATCH_PREFIXES[screener_key]
-            skill_dir = screener_key.replace("_", "-")
-            script = "screen_vcp.py" if screener_key == "vcp_screener" else "screen_canslim.py"
             screener_path = find_screener_for_ticker(
-                reports_dir, prefix, ticker, as_of, watchlist_symbols
+                root, screener_key, ticker, as_of, watchlist_symbols
             )
             if screener_path:
                 row = extract_ticker_row(screener_path, ticker)
@@ -231,18 +163,15 @@ def build_preflight_manifest(
             else:
                 artifacts[screener_key] = _artifact_run(
                     reason="no same-day screener covering ticker",
-                    run_hint=(
-                        f"python3 skills/{skill_dir}/scripts/{script} "
-                        f"--universe {watchlist_arg} --output-dir reports/"
-                    ),
+                    run_hint=screener_run_hint(screener_key, watchlist_arg),
                 )
 
         artifacts["theme_detector"] = _artifact_reuse(
-            find_latest_same_day(reports_dir, BATCH_PREFIXES["theme_detector"], as_of),
+            find_latest_same_day(root, "theme_detector", as_of),
             root,
         )
         artifacts["breakout_trade_planner"] = _artifact_reuse(
-            find_latest_same_day(reports_dir, BATCH_PREFIXES["breakout_trade_planner"], as_of),
+            find_latest_same_day(root, "breakout_trade_planner", as_of),
             root,
         )
 

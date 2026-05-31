@@ -48,7 +48,7 @@ python3 scripts/analyze_sector_rotation.py
 python3 scripts/analyze_sector_rotation.py --json
 
 # Save to file
-python3 scripts/analyze_sector_rotation.py --save --output-dir reports/
+python3 scripts/analyze_sector_rotation.py --save --output-dir reports/market/sector
 ```
 
 ## Analysis Workflow

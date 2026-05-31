@@ -301,9 +301,10 @@ export ALPACA_PAPER="true"  # or "false" for live trading
 
 **Financial Modeling Prep (FMP):**
 
-- **Free Tier:** 250 API calls/day (sufficient for occasional use)
-- **Starter Tier:** $29.99/month - 750 calls/day
-- **Professional Tier:** $79.99/month - 2,000 calls/day
+- **Basic (free):** 250 API calls/day (sufficient for occasional use)
+- **Starter:** $29/month — 300 API calls/minute
+- **Premium:** $69/month — 750 API calls/minute (restricted endpoints such as `sp500-constituent`)
+- Annual billing is lower ($22/$59 mo equivalent); see FMP pricing page
 - **Sign up:** <https://site.financialmodelingprep.com/developer/docs>
 
 **FINVIZ Elite:**
@@ -418,12 +419,12 @@ python3 pair-trade-screener/scripts/find_pairs.py \
 ```bash
 # Default: 2-day lookback, top 20 results
 python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py \
-  --output-dir reports/
+  --output-dir reports/screeners/earnings/
 
 # Custom parameters with entry quality filter
 python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py \
   --lookback-days 3 --top 10 --max-api-calls 200 \
-  --apply-entry-filter --output-dir reports/
+  --apply-entry-filter --output-dir reports/screeners/earnings/
 ```
 
 **PEAD Screener:** ⚠️ Requires FMP API key
@@ -432,12 +433,12 @@ python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py \
 # Mode A: FMP earnings calendar (standalone)
 python3 skills/pead-screener/scripts/screen_pead.py \
   --lookback-days 14 --min-gap 3.0 --max-api-calls 200 \
-  --output-dir reports/
+  --output-dir reports/screeners/pead/
 
 # Mode B: Pipeline from earnings-trade-analyzer output
 python3 skills/pead-screener/scripts/screen_pead.py \
-  --candidates-json reports/earnings_trade_*.json \
-  --min-grade B --output-dir reports/
+  --candidates-json reports/screeners/earnings/earnings_trade_*.json \
+  --min-grade B --output-dir reports/screeners/pead/
 ```
 
 **Options Strategy Advisor:** 🟡 FMP API optional

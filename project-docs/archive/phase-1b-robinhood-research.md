@@ -85,7 +85,7 @@ Maintain via weekly `update_stale_research.py` (timer or `--dry-run`). Counts to
 
 ## Exit criteria (Phase 1B → revisit futures Phase 2)
 
-Progress detail: [docs_sync_2026-05-28.md](../reports/docs_sync_2026-05-28.md).
+Progress detail: [docs_sync_2026-05-28.md](../reports/meta/docs_sync_2026-05-28.md).
 
 - [ ] FMP Starter active; `vcp-screener` run on watchlist universe at least once
 - [ ] 14 consecutive trading days: `pre_market.py` + posture log (**11/14** unique days as of 2026-05-28)
@@ -93,7 +93,7 @@ Progress detail: [docs_sync_2026-05-28.md](../reports/docs_sync_2026-05-28.md).
 - [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
 - [ ] 3+ co-pilot trades on Agentic via MCP (user-confirmed each)
 - [ ] IRA positions logged (MCP read + four questions)
-- [ ] `reports/portfolio_review_*.md` for 2+ dates
+- [ ] `reports/portfolio/portfolio_review_*.md` for 2+ dates
 - [ ] Phase 1 remaining exit items: spend cap, pre-commit clean
 
 **Futures Phase 2 revisit (default):** Phase 1B exit **and** 20+ logged stock/options trades (user may override).

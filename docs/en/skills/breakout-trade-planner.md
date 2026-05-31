@@ -72,14 +72,14 @@ VCP Screener --> Breakout Trade Planner --> [breakout-monitor (future)]
 
 ```bash
 # Step 1: Run VCP screener first (if not already done)
-python3 skills/vcp-screener/scripts/screen_vcp.py --output-dir reports/
+python3 skills/vcp-screener/scripts/screen_vcp.py --output-dir reports/screeners/vcp/
 
 # Step 2: Generate trade plans from screener output
 python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py \
-  --input reports/vcp_screener_2026-04-12_200418.json \
+  --input reports/screeners/vcp/vcp_screener_2026-04-12_200418.json \
   --account-size 100000 \
   --risk-pct 0.5 \
-  --output-dir reports/
+  --output-dir reports/screeners/breakout/
 
 # Or tell Claude:
 # "Generate breakout trade plans from the latest VCP screener results
@@ -172,10 +172,10 @@ Create an exposure file:
 
 ```bash
 python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py \
-  --input reports/vcp_screener_2026-04-12.json \
+  --input reports/screeners/vcp/vcp_screener_2026-04-12.json \
   --account-size 100000 --risk-pct 0.5 \
   --current-exposure-json exposure.json \
-  --output-dir reports/
+  --output-dir reports/screeners/breakout/
 ```
 
 **Why useful:** Prevents over-concentration. If Technology is already at 22%, adding another Tech stock would be constrained by the 30% sector cap.
@@ -186,12 +186,12 @@ python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py \
 
 ```bash
 python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py \
-  --input reports/vcp_screener_2026-04-12.json \
+  --input reports/screeners/vcp/vcp_screener_2026-04-12.json \
   --account-size 50000 \
   --risk-pct 0.25 \
   --max-portfolio-heat-pct 3.0 \
   --max-chase-pct 1.0 \
-  --output-dir reports/
+  --output-dir reports/screeners/breakout/
 ```
 
 **Effect:** Smaller positions (0.25% risk), tighter heat ceiling (3%), and only 1% chase tolerance above pivot. Good for volatile markets or smaller accounts.
@@ -334,7 +334,7 @@ Human-readable summary with tables for actionable orders, revalidation candidate
 Your VCP screener JSON was generated before the `schema_version` field was added. Re-run the VCP screener to generate a new report:
 
 ```bash
-python3 skills/vcp-screener/scripts/screen_vcp.py --output-dir reports/
+python3 skills/vcp-screener/scripts/screen_vcp.py --output-dir reports/screeners/vcp/
 ```
 
 ### All candidates rejected

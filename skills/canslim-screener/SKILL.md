@@ -76,7 +76,7 @@ override with `--rs-benchmark SPY/QQQ/IWM/...`.
 ## Prerequisites
 
 **API Requirements:**
-- **FMP API key** (free tier: 250 calls/day, sufficient for 35 stocks; Starter tier $29.99/mo for 40+ stocks)
+- **FMP API key** (Basic/free: 250 calls/day, sufficient for 35 stocks; Starter $29/mo: 300 calls/minute for 40+ stocks)
   - Sign up: https://site.financialmodelingprep.com/developer/docs
   - Set via environment variable: `export FMP_API_KEY=your_key_here`
 
@@ -95,7 +95,7 @@ pip install requests beautifulsoup4 lxml
 
 ## Output
 
-**Output Directory:** `reports/` (default) or custom via `--output-dir`
+**Output Directory:** `reports/screeners/canslim/` (default) or custom via `--output-dir`
 
 **Generated Files:**
 - `canslim_screener_YYYY-MM-DD_HHMMSS.json` - Structured data for programmatic use
@@ -173,7 +173,7 @@ User can provide sector-focused list (Technology, Healthcare, etc.)
   - Finviz: ~1.8 calls/stock (institutional ownership fallback, 2s rate limit, not counted in FMP budget)
 - Market data (^GSPC quote, ^VIX quote, ^GSPC 52-week history): 3 FMP calls
 - Total: ~283 FMP calls per screening run (exceeds 250 free tier)
-- **Recommendation**: Use `--max-candidates 35` for free tier (35 × 7 + 3 = 248 calls), or upgrade to FMP Starter tier ($29.99/mo, 750 calls/day) for full 40-stock screening
+- **Recommendation**: Use `--max-candidates 35` for Basic/free tier (35 × 7 + 3 = 248 calls), or FMP Starter ($29/mo, 300 calls/minute) for full 40-stock screening
 
 ### Step 3: Execute CANSLIM Screening Script
 
@@ -492,7 +492,7 @@ Retrying in 60 seconds...
 1. **Wait and Retry**: Script auto-retries after 60s
 2. **Reduce Universe**: Use `--max-candidates 30` to lower API usage
 3. **Check Daily Usage**: Free tier resets at midnight UTC
-4. **Upgrade Plan**: FMP Starter ($29.99/month) provides 750 calls/day
+4. **Upgrade Plan**: FMP Starter ($29/month, 300 calls/minute) or Premium ($69/month) for restricted endpoints
 
 ### Issue 2: Missing Required Libraries
 

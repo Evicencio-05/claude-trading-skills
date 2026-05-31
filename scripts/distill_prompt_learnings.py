@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Distill prompt run retros into state/prompt_learnings.yaml (zero LLM).
 
-Processes reports/prompt_run_retro_*.md, aggregates defect patterns,
+Processes reports/prompts/prompt_run_retro_*.md, aggregates defect patterns,
 updates task_family run counts, archives stale one-shot prompts, and
 writes a one-page digest.
 
-Phase 2 extension (not implemented): optional LLM distill via claude -p
-with --enable-llm and budget cap to propose prompt-engine.md edits.
+Optional local LLM distill via Ollama (--enable-llm) to propose pattern
+entries for human review (digest section only; does not auto-write YAML).
 
 Usage:
     uv run python3 scripts/distill_prompt_learnings.py --dry-run
@@ -307,6 +307,17 @@ def write_digest(
             lines.append(f"- **{fam}**: runs={entry.get('runs', 0)}, last={entry.get('last_run')}")
         lines.append("")
 
+    llm_suggestions = summary.get("llm_suggestions")
+    if llm_suggestions:
+        lines.append("## LLM suggestions (review before merge)")
+        lines.append("")
+        lines.append("Review only — not auto-applied to `state/prompt_learnings.yaml`.")
+        lines.append("")
+        lines.append("```yaml")
+        lines.append(llm_suggestions.strip())
+        lines.append("```")
+        lines.append("")
+
     detail = summary.get("detail_lines", [])
     if detail:
         lines.append("## Detail")
@@ -325,10 +336,11 @@ def run_distill(
     dry_run: bool = False,
     since: date | None = None,
     output_dir: Path | None = None,
+    enable_llm: bool = False,
 ) -> dict:
     """Run full distill pipeline."""
     learnings_path = repo_root / LEARNINGS_PATH
-    reports_dir = output_dir or (repo_root / "reports")
+    reports_dir = output_dir or (repo_root / "reports" / "prompts")
     prompts_dir = repo_root / ".cursor" / "prompts"
     archive_dir = prompts_dir / "archive"
 
@@ -344,10 +356,13 @@ def run_distill(
         "task_families_updated": [],
         "detail_lines": [],
         "action_required": "none",
+        "llm_suggestions": None,
     }
+    retro_texts_for_llm: list[str] = []
 
     for retro_path in unprocessed:
         content = retro_path.read_text(encoding="utf-8")
+        retro_texts_for_llm.append(content)
         parsed = parse_retro(content)
         retro_date = retro_date_from_name(retro_path.name) or date.today()
         changes = apply_retro(learnings, parsed, retro_date)
@@ -377,6 +392,22 @@ def run_distill(
     if summary["promoted_patterns"]:
         summary["action_required"] = "optional — review promoted patterns in digest"
 
+    if enable_llm and retro_texts_for_llm:
+        try:
+            from local_llm import LocalLLMError, distill_suggest
+
+            summary["llm_suggestions"] = distill_suggest(
+                retro_texts_for_llm, learnings, repo_root=repo_root
+            )
+            if summary["action_required"] == "none":
+                summary["action_required"] = "optional — review LLM suggestions in digest"
+            else:
+                summary["action_required"] += "; review LLM suggestions in digest"
+        except LocalLLMError as exc:
+            summary["detail_lines"].append(f"LLM distill skipped: {exc}")
+        except (OSError, TimeoutError) as exc:
+            summary["detail_lines"].append(f"LLM distill failed: {exc}")
+
     if not dry_run:
         learnings["meta"]["last_distilled"] = datetime.now().isoformat(timespec="seconds")
         save_learnings(learnings_path, learnings)
@@ -393,14 +424,25 @@ def main(argv: list[str] | None = None) -> int:
         "--since", type=str, default=None, help="Only process retros on/after YYYY-MM-DD"
     )
     parser.add_argument("--output-dir", type=str, default=None, help="Reports output directory")
+    parser.add_argument(
+        "--enable-llm",
+        action="store_true",
+        help="Optional Ollama pass: append review-only pattern suggestions to digest",
+    )
     args = parser.parse_args(argv)
 
     repo_root = get_repo_root()
     since = date.fromisoformat(args.since) if args.since else None
-    output_dir = Path(args.output_dir) if args.output_dir else repo_root / "reports"
+    output_dir = Path(args.output_dir) if args.output_dir else repo_root / "reports" / "prompts"
 
     try:
-        summary = run_distill(repo_root, dry_run=args.dry_run, since=since, output_dir=output_dir)
+        summary = run_distill(
+            repo_root,
+            dry_run=args.dry_run,
+            since=since,
+            output_dir=output_dir,
+            enable_llm=args.enable_llm,
+        )
     except (FileNotFoundError, ValueError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1

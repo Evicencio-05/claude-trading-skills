@@ -18,10 +18,10 @@ Revisit: Never — free tier confirmed broken for core workflow.
 Starter ($29/mo) active. New FMP accounts use `/stable/*` endpoints; legacy `/api/v3/*`
 returns 403. Fork fixes: per-symbol stable quotes, stable profile/income/earnings-calendar
 in `skills/*/scripts/fmp_client.py`. Verification: `scripts/fmp_verify_starter.py`,
-`reports/fmp_starter_verification_2026-05-31.md`.
+`reports/meta/fmp_starter_verification_2026-05-31.md`.
 Full S&P 500 universe (`stable/sp500-constituent`) returns 402 on Starter —
-requires **FMP Professional ($79/mo)**; use `--universe` with watchlist until approved.
-Revisit: Professional only if full-universe screening justified and budget approved.
+requires **FMP Premium ($69/mo)**; use `--universe` with watchlist until approved.
+Revisit: Premium only if full-universe screening justified and budget approved.
 
 **[2026-05-09] FRED API as economic-calendar-fetcher replacement.**
 economic-calendar-fetcher permanently blocked on free FMP tier.
@@ -149,5 +149,13 @@ Revisit: Never unless OS changes.
 One-shot prompts default to Tier 1 ephemeral (chat only). Durable knowledge lives in
 `state/prompt_learnings.yaml`, maintained by `scripts/distill_prompt_learnings.py`
 (weekly systemd: `prompt-learning.timer`). Tier 2 durable prompts require explicit save
-or 2+ runs of same task family. LLM-based prompt-engine edits deferred to Phase 2.
-Revisit: Phase 2 learning loop start for optional LLM distill.
+or 2+ runs of same task family. Optional Ollama distill via `--enable-llm` (review-only digest section).
+Revisit: Phase 2 learning loop for auto-merge of LLM pattern suggestions after quality gate.
+
+**[2026-05-31] Ollama local model integration active.**
+Decision: Use Ollama (`qwen2.5:7b` default) via `scripts/local_llm.py` / `local_llm_cli.py` for bulk,
+low-stakes text (edge hints, retro drafts, distill suggestions, skill-idea abstraction with
+`--llm-provider local`). Cursor agents delegate per `.cursor/rules/local-model-routing.mdc`.
+Spot-check ~10% of outputs (risk M1). Never route trading, MCP, research synthesis, or git execution.
+Canonical doc: [local-model-integration.md](project-docs/reference/local-model-integration.md).
+Revisit: If local quality insufficient, restrict to edge-hints only or upgrade model tag in `OLLAMA_MODEL`.

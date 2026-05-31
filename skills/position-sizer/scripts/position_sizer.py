@@ -393,7 +393,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="reports/",
+        default="reports/portfolio",
         help="Output directory for reports",
     )
     return parser

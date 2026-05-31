@@ -26,7 +26,7 @@ patterns:
 - id: wrong_output_path
   seen: 0
   root_cause: wrong_output_path
-  fix: Outputs must use reports/ with dated naming convention from repo patterns
+  fix: Outputs must use category dirs from scripts/report_paths.py; see project-docs/trading-pipeline-checklist.md
   in_prompt_engine: true
   promote_candidate: false
 - id: workflow_fork
@@ -56,7 +56,7 @@ task_families:
     - skills/trader-memory-core/scripts/tests/test_thesis_store.py
     - uv run streamlit run tools/thesis-manager/app.py
     outputs:
-    - reports/thesis_manager_*_YYYY-MM-DD.md
+    - reports/meta/thesis_manager_*_YYYY-MM-DD.md
     anti_patterns:
     - raw YAML edits to state/theses/
     - duplicate research_utils logic
@@ -89,8 +89,23 @@ task_families:
     - project-docs/audit/skills_audit.md
     - AGENTS.md
     outputs:
-    - reports/codebase_cleanup_audit_YYYY-MM-DD.md
+    - reports/meta/codebase_cleanup_audit_YYYY-MM-DD.md
     durable_prompt: codebase-cleanup.md
+  reports_layout:
+    runs: 1
+    last_run: '2026-05-31'
+    preflight:
+    - scripts/report_paths.py
+    - project-docs/trading-pipeline-checklist.md
+    outputs:
+    - reports/market/
+    - reports/screeners/
+    - reports/portfolio/
+    - reports/meta/
+    - reports/prompts/
+    anti_patterns:
+    - flat files at reports/ root
+    - reports/pre_market/ mixed container
 promoted_durable:
 - sync-phase-docs.md
 - codebase-cleanup.md

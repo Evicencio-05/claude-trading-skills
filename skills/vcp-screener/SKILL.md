@@ -42,7 +42,7 @@ python3 skills/vcp-screener/scripts/screen_vcp.py --full-sp500 --output-dir skil
 Only return stocks with `valid_vcp=True` AND `execution_state` in `(Pre-breakout, Breakout)`:
 
 ```bash
-python3 skills/vcp-screener/scripts/screen_vcp.py --strict --output-dir reports/
+python3 skills/vcp-screener/scripts/screen_vcp.py --strict --output-dir reports/screeners/vcp
 ```
 
 ### Advanced Tuning (for backtesting)
@@ -56,7 +56,7 @@ python3 skills/vcp-screener/scripts/screen_vcp.py \
   --breakout-volume-ratio 2.0 \
   --trend-min-score 90 \
   --atr-multiplier 1.5 \
-  --output-dir reports/
+  --output-dir reports/screeners/vcp/
 ```
 
 | Parameter | Default | Range | Effect |

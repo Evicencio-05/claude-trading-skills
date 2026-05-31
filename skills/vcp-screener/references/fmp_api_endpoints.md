@@ -33,8 +33,9 @@
 
 ## Rate Limits
 
-- **Free tier:** 250 API calls/day - Default screening fits within this limit
-- **Starter tier ($29.99/mo):** 750 calls/day
+- **Basic (free):** 250 API calls/day — default screening fits within this limit with `--universe` or reduced candidates
+- **Starter ($29/mo):** 300 API calls/minute — stable endpoints; full S&P 500 constituent list still requires Premium
+- **Premium ($69/mo):** 750 API calls/minute — unlocks restricted endpoints (e.g. `sp500-constituent`)
 - **Rate limiting:** 0.3s delay between requests, automatic retry on 429
 - **Caching:** In-memory session cache prevents duplicate requests
 

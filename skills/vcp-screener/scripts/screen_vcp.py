@@ -61,7 +61,9 @@ def parse_arguments():
     parser.add_argument(
         "--top", type=int, default=20, help="Top results to include in report (default: 20)"
     )
-    parser.add_argument("--output-dir", default="reports/", help="Output directory for reports")
+    parser.add_argument(
+        "--output-dir", default="reports/screeners/vcp", help="Output directory for reports"
+    )
     parser.add_argument(
         "--universe", nargs="+", help="Custom symbols to screen (overrides S&P 500)"
     )

@@ -106,7 +106,16 @@ trading-agent/                       # Your fork
 │   ├── current/
 │   └── archive/
 │
-├── reports/                         # Generated reports (existing convention)
+├── reports/                         # Generated reports (category-grouped layout)
+│   ├── logs/                        # market_context, preflight, prefetch, staleness
+│   ├── research/                    # deep-research markdown
+│   ├── archives/                    # superseded research
+│   ├── market/                      # breadth, uptrend, sector, top, exposure
+│   ├── screeners/                   # vcp, canslim, earnings, pead, …
+│   ├── portfolio/                   # portfolio_review, position_sizer
+│   ├── options/                     # options strategy plans
+│   ├── meta/                        # docs_sync, thesis_manager audits
+│   └── prompts/                     # prompt_run_retro, learning digest
 │
 ├── scripts/
 │   ├── ... (existing)
@@ -133,7 +142,7 @@ trading-agent/                       # Your fork
 - **Reference docs:** Knowledge bases in `references/` loaded conditionally
 - **Scripts:** I/O and execution in `scripts/`, never auto-loaded into context
 - **Tests:** Live in `skills/<name>/tests/` or `skills/<name>/scripts/tests/`
-- **Output:** Reports saved to `reports/` with `<skill>_<analysis>_<date>.md` naming
+- **Output:** Reports saved under category dirs in `reports/` — see `scripts/report_paths.py` and `project-docs/trading-pipeline-checklist.md`
 
 ### Conventions you're adding
 

@@ -86,7 +86,7 @@ def main() -> int:
         ok = status == 200 and not (label == "quote_batch" and detail == "0 items")
         if label == "sp500_constituent" and status == 402:
             ok = True  # expected on Starter
-            detail = "402 expected on Starter (Professional required)"
+            detail = "402 expected on Starter (Premium required)"
         if label == "quote_batch" and status == 200 and detail == "0 items":
             ok = True
             detail = "0 items expected — clients fetch per-symbol on stable API"

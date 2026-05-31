@@ -38,6 +38,10 @@ logs/
 
 # Keep structured reports and logs tracked
 # Ignore intermediate skill run artifacts only
+reports/market/**/*.json
+reports/screeners/**/*.json
+reports/portfolio/*.json
+reports/prompts/*.json
 reports/*.json
 reports/archives/*.json
 reports/skill-generation-log/*.json

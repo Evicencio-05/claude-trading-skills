@@ -16,10 +16,10 @@ DRAM     -            -      needs_deep_research  watchlist
 HOOD     2026-05-31   0      current              position
 HPE      -            -      needs_deep_research  watchlist
 IBM      2026-05-31   0      current              watchlist
+MSFW     -            -      needs_deep_research  position
 NOK      -            -      needs_deep_research  watchlist
 PLTR     -            -      needs_deep_research  watchlist
 RBLX     2026-05-31   0      current              watchlist
-TE       -            -      needs_deep_research  position
 TSM      2026-05-31   0      current              watchlist
 VECO     2026-05-31   0      current              position, watchlist
 ```
@@ -30,9 +30,9 @@ VECO     2026-05-31   0      current              position, watchlist
 - **DIS** — needs_deep_research (watchlist)
 - **DRAM** — needs_deep_research (watchlist)
 - **HPE** — needs_deep_research (watchlist)
+- **MSFW** — needs_deep_research (position)
 - **NOK** — needs_deep_research (watchlist)
 - **PLTR** — needs_deep_research (watchlist)
-- **TE** — needs_deep_research (position)
 
 ## Cursor / Agent Commands
 
@@ -40,6 +40,6 @@ VECO     2026-05-31   0      current              position, watchlist
 - `Follow commands/deep-research.md for DIS`
 - `Follow commands/deep-research.md for DRAM`
 - `Follow commands/deep-research.md for HPE`
+- `Follow commands/deep-research.md for MSFW`
 - `Follow commands/deep-research.md for NOK`
 - `Follow commands/deep-research.md for PLTR`
-- `Follow commands/deep-research.md for TE`

@@ -50,7 +50,7 @@ uv run python3 scripts/distill_prompt_learnings.py
 
 Systemd: [launchd/prompt-learning.timer](../../launchd/prompt-learning.timer) — Sunday 6:30 PM local.
 
-Output: `reports/prompt_learning_digest_YYYY-MM-DD.md` (≤15-line header; optional detail).
+Output: `reports/prompts/prompt_learning_digest_YYYY-MM-DD.md` (≤15-line header; optional detail).
 
 ## Archive
 

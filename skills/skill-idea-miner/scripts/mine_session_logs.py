@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -457,20 +458,45 @@ def _parse_timestamp(ts: str) -> datetime | None:
 # ── LLM abstraction ──
 
 
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[3]
+
+
+def _import_local_llm():
+    scripts_dir = _repo_root() / "scripts"
+    if str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
+    from local_llm import LocalLLMError, chat_or_raise, extract_json_from_text
+
+    return chat_or_raise, extract_json_from_text, LocalLLMError
+
+
 def abstract_with_llm(
     signals: dict,
     user_samples: list[str],
     project_name: str,
     dry_run: bool = False,
     trading_focus: bool = True,
+    llm_provider: str = "claude",
+) -> list[dict] | None:
+    """Abstract skill idea candidates via Claude CLI or local Ollama."""
+    if dry_run:
+        return None
+    if llm_provider == "local":
+        return _abstract_with_local_llm(signals, user_samples, project_name, trading_focus)
+    return _abstract_with_claude(signals, user_samples, project_name, trading_focus)
+
+
+def _abstract_with_claude(
+    signals: dict,
+    user_samples: list[str],
+    project_name: str,
+    trading_focus: bool = True,
 ) -> list[dict] | None:
     """Use claude CLI to abstract skill idea candidates from signals.
 
-    Returns list of candidate dicts, or None if dry_run or on failure.
+    Returns list of candidate dicts, or None on failure.
     """
-    if dry_run:
-        return None
-
     if not shutil.which("claude"):
         logger.warning("claude CLI not found; skipping LLM abstraction.")
         return None
@@ -523,6 +549,36 @@ def abstract_with_llm(
     except FileNotFoundError:
         logger.warning("claude CLI not found.")
         return None
+
+
+def _abstract_with_local_llm(
+    signals: dict,
+    user_samples: list[str],
+    project_name: str,
+    trading_focus: bool = True,
+) -> list[dict] | None:
+    """Use Ollama via scripts/local_llm.py for skill idea abstraction."""
+    try:
+        chat_or_raise, extract_json, LocalLLMError = _import_local_llm()
+    except ImportError:
+        logger.warning("local_llm module not found; skipping local abstraction.")
+        return None
+
+    prompt = _build_llm_prompt(signals, user_samples, project_name, trading_focus)
+    try:
+        raw = chat_or_raise(prompt, repo_root=_repo_root(), task="skill_idea_mine")
+    except LocalLLMError as exc:
+        logger.warning("Local LLM unavailable: %s", exc)
+        return None
+    except (OSError, TimeoutError) as exc:
+        logger.warning("Local LLM call failed: %s", exc)
+        return None
+
+    response = extract_json(raw, ["candidates"])
+    if response and "candidates" in response:
+        return response["candidates"]
+    logger.warning("Could not parse local LLM candidates JSON.")
+    return None
 
 
 def _build_llm_prompt(
@@ -748,6 +804,7 @@ def run(args: argparse.Namespace) -> int:
         project_name=", ".join(set(p for p, _ in project_dirs)),
         dry_run=args.dry_run,
         trading_focus=trading_focus,
+        llm_provider=args.llm_provider,
     )
 
     # Normalize candidates before filtering: name -> title, assign ids
@@ -840,6 +897,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--dry-run",
         action="store_true",
         help="Skip LLM abstraction step",
+    )
+    parser.add_argument(
+        "--llm-provider",
+        choices=["claude", "local"],
+        default="claude",
+        help="LLM backend for abstraction: claude CLI (default) or local Ollama",
     )
     return parser.parse_args(argv)
 

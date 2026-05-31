@@ -72,7 +72,7 @@ Before proposing changes under `skills/<name>/`:
 
 ## Phase 2 — Deliverable
 
-Write audit report to `reports/codebase_cleanup_audit_YYYY-MM-DD.md`:
+Write audit report to `reports/meta/codebase_cleanup_audit_YYYY-MM-DD.md`:
 
 ```markdown
 # Codebase Cleanup Audit — YYYY-MM-DD

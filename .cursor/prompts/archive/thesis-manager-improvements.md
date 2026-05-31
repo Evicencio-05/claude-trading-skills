@@ -18,7 +18,7 @@ Audit `tools/thesis-manager/`, propose prioritized UX/UI, service-layer, and pos
 
 ## Phase 1 — Discovery & improvement backlog
 
-Produce a short proposal (chat or `reports/thesis_manager_improvements_YYYY-MM-DD.md`) with:
+Produce a short proposal (chat or `reports/meta/thesis_manager_improvements_YYYY-MM-DD.md`) with:
 
 | Category | Examples to evaluate |
 |----------|---------------------|
@@ -60,7 +60,7 @@ ruff check tools/thesis-manager/
 
 | Output | Path / format |
 |--------|----------------|
-| Improvement backlog + what shipped | `reports/thesis_manager_improvements_YYYY-MM-DD.md` (English) |
+| Improvement backlog + what shipped | `reports/meta/thesis_manager_improvements_YYYY-MM-DD.md` (English) |
 | New/updated tests | `scripts/tests/test_thesis_manager_*.py` |
 | Code | `tools/thesis-manager/` only (+ shared `scripts/` if logic belongs there) |
 | README | Update `tools/thesis-manager/README.md` for behavior changes |

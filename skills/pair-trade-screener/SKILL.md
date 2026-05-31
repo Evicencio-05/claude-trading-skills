@@ -606,7 +606,7 @@ Solutions:
 - **Required**: FMP API key (free tier sufficient)
 - **Rate Limits**: ~250 requests/day on free tier
 - **Data Usage**: ~2 requests per symbol for 2-year history
-- **Upgrade**: Professional plan ($29/mo) recommended for frequent screening
+- **Upgrade**: FMP Starter ($29/mo, 300 calls/minute) recommended for frequent screening
 
 ## Resources
 

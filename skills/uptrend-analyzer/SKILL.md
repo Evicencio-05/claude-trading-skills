@@ -131,6 +131,8 @@ Confidence levels: High, Medium, Low.
 
 ## Output Files
 
+Directory: `reports/market/uptrend/`
+
 - JSON: `uptrend_analysis_YYYY-MM-DD_HHMMSS.json`
 - Markdown: `uptrend_analysis_YYYY-MM-DD_HHMMSS.md`
 

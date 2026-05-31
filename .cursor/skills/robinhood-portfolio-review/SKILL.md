@@ -44,7 +44,7 @@ Note positions in MCP but **not** in thesis store (untracked).
 
 ### 3. Write report
 
-Save to `reports/portfolio_review_YYYY-MM-DD.md` with:
+Save to `reports/portfolio/portfolio_review_YYYY-MM-DD.md` with:
 
 ```markdown
 # Portfolio Review — YYYY-MM-DD

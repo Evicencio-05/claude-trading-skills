@@ -47,15 +47,15 @@ Execute the exposure scoring script with paths to upstream outputs:
 
 ```bash
 python3 skills/exposure-coach/scripts/calculate_exposure.py \
-  --breadth reports/breadth_latest.json \
-  --uptrend reports/uptrend_latest.json \
+  --breadth reports/market/breadth/market_breadth_YYYY-MM-DD_HHMMSS.json \
+  --uptrend reports/market/uptrend/uptrend_analysis_YYYY-MM-DD_HHMMSS.json \
   --regime reports/regime_latest.json \
-  --top-risk reports/top_risk_latest.json \
+  --top-risk reports/market/top/market_top_YYYY-MM-DD_HHMMSS.json \
   --ftd reports/ftd_latest.json \
   --theme reports/theme_latest.json \
-  --sector reports/sector_latest.json \
+  --sector reports/market/sector/sector_rotation_YYYY-MM-DD.json \
   --institutional reports/institutional_latest.json \
-  --output-dir reports/
+  --output-dir reports/market/exposure
 ```
 
 The script accepts partial inputs; missing files reduce confidence but do not block execution.
@@ -136,7 +136,7 @@ Broad participation with low distribution day count supports elevated equity exp
 New positions allowed within the 70% ceiling.
 ```
 
-Reports are saved to `reports/` with filenames `exposure_posture_YYYY-MM-DD_HHMMSS.{json,md}`.
+Reports are saved to `reports/market/exposure/` with filenames `exposure_posture_YYYY-MM-DD_HHMMSS.{json,md}`.
 
 ## Resources
 

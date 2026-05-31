@@ -194,11 +194,12 @@ eu_events = [e for e in events if e["country"] == "EU"]
 
 Rate limits depend on your FMP subscription tier:
 
-| Tier | Requests/Day | Requests/Second |
-|------|--------------|-----------------|
-| Free | 250 | 5 |
-| Starter | 500 | 10 |
-| Professional | 1,000+ | 20+ |
+| Tier | Rate limit |
+|------|------------|
+| Basic (free) | 250 calls/day |
+| Starter | 300 API calls/minute |
+| Premium | 750 API calls/minute |
+| Ultimate | 3,000 API calls/minute |
 
 If you exceed rate limits, the API returns HTTP 429 (Too Many Requests).
 

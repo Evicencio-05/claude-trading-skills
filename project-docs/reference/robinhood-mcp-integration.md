@@ -67,7 +67,7 @@ Full config: [config/robinhood_accounts.yaml](../../config/robinhood_accounts.ya
 
 ### Portfolio review
 
-Skill: **robinhood-portfolio-review** — run CLI commands above, write `reports/portfolio_review_YYYY-MM-DD.md`.
+Skill: **robinhood-portfolio-review** — run CLI commands above, write `reports/portfolio/portfolio_review_YYYY-MM-DD.md`.
 
 ### Log positions
 

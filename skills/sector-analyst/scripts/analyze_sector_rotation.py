@@ -680,7 +680,9 @@ def main() -> None:
     )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     parser.add_argument(
-        "--output-dir", default="reports/", help="Output directory (default: reports/)"
+        "--output-dir",
+        default="reports/market/sector",
+        help="Output directory (default: reports/market/sector)",
     )
     parser.add_argument("--save", action="store_true", help="Save output to file")
     parser.add_argument("--url", default=SECTOR_CSV_URL, help="Custom sector CSV URL")

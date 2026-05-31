@@ -37,14 +37,14 @@
 |-----|-------------------|
 | vcp → breakout pipeline | [x] Documented in phase-1 + deep-research PASS 0 preflight (2026-05-31) |
 | Manual thesis / non-screener sources | Use `log-positions` + `thesis_store.py register` with `source: manual` via CLI |
-| Full S&P 500 vcp/canslim | FMP Professional ($79/mo) for `sp500-constituent`; watchlist `--universe` works on Starter |
+| Full S&P 500 vcp/canslim | FMP Premium ($69/mo) for `sp500-constituent`; watchlist `--universe` works on Starter |
 
 ---
 
 ## Robinhood co-pilot (Phase 1)
 
 - [x] MCP CLI: `accounts`, `positions --all` verified (2026-05-30 smoke OK)
-- [x] First `portfolio_review_2026-05-28.md`
+- [x] First `reports/portfolio/portfolio_review_2026-05-28.md`
 - [x] **`ingest-pending`** + **`log-positions`** for TE — `th_te_grw_20260529_034d` ACTIVE (2026-05-29)
 - [ ] **IRA positions** — MCP read + four questions each
 - [ ] **First Agentic trade** — user must reply **confirm** on presented plan
@@ -59,8 +59,8 @@
 - [x] Robinhood MCP hybrid, account discovery table in decisions.md
 - [x] Deep research Phase 1 minimum (MRAM, MU, P, VECO, FPS on disk)
 - [x] Equity-only roadmap docs + decisions [2026-05-29]
-- [x] `reports/portfolio_review_2026-05-28.md` (2026-05-28)
-- [x] `reports/vcp_screener_2026-05-28_204543.md` — MRAM smoke (2026-05-28)
+- [x] `reports/portfolio/portfolio_review_2026-05-28.md` (2026-05-28)
+- [x] `reports/screeners/vcp/vcp_screener_2026-05-28_204543.md` — MRAM smoke (2026-05-28)
 - [x] TE thesis logged — `th_te_grw_20260529_034d` (2026-05-29)
 - [x] POWL thesis closed — `th_powl_pvt_20260509_db36` CLOSED (2026-05-29)
 - [x] FMP Starter + stable API fixes — verification 2026-05-31
@@ -70,7 +70,7 @@
 
 ## Needs approval
 
-- [ ] **FMP Professional ($79/mo)** — full S&P 500 universe only; Starter sufficient for watchlist screening
+- [ ] **FMP Premium ($69/mo)** — full S&P 500 universe only; Starter sufficient for watchlist screening
 
 ---
 

@@ -21,6 +21,16 @@ Verify that a **finished** Cursor Agent run met the task prompt's Goal and Outpu
 
 From the **conversation and repo**, collect evidence only — do not assume success.
 
+**Optional (save tokens):** write evidence to a temp file, then draft the retro skeleton locally:
+
+```bash
+uv run python3 scripts/local_llm_cli.py retro-draft \
+  --evidence /tmp/retro_evidence.txt \
+  --task-family <task_family_slug>
+```
+
+Review and edit CLI output before Phase 2 — do not trust unverified local model prose.
+
 ```bash
 ls -la reports/ 2>/dev/null | tail -20
 ```
@@ -71,7 +81,7 @@ If defects match existing patterns in learnings YAML, note which pattern id — 
 
 ## Phase 4 — Write retro report
 
-Save `reports/prompt_run_retro_YYYY-MM-DD.md` (required — feeds weekly distiller):
+Save `reports/prompts/prompt_run_retro_YYYY-MM-DD.md` (required — feeds weekly distiller):
 
 ```markdown
 # Prompt Run Retro — YYYY-MM-DD

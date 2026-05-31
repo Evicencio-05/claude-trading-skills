@@ -20,7 +20,8 @@
 3. Optional: `ln -sfn "$(pwd)/skills/<name>" ~/.claude/skills/<name>` for Claude Code parity.
 4. Ensure `.env` exists at repo root with `FMP_API_KEY` etc. (gitignored).
 5. Run `uv run python3 scripts/pre_market.py --dry-run` to verify daily stack.
-6. Optional: install `robinhood-sync.timer` — see [launchd/README.md](../../launchd/README.md).
+6. Optional: Ollama for bulk tasks — `ollama pull qwen2.5:7b` then `uv run python3 scripts/local_llm_cli.py health`. See [local-model-integration.md](local-model-integration.md).
+7. Optional: install `robinhood-sync.timer` — see [launchd/README.md](../../launchd/README.md).
 
 ## Robinhood MCP in Cursor (primary for this fork)
 

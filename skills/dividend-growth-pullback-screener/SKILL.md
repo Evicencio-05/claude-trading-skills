@@ -276,8 +276,8 @@ python3 skills/dividend-growth-pullback-screener/scripts/screen_dividend_growth_
 - FMP resets at UTC midnight
 
 **4. Upgrade to FMP Paid Plan**
-- Starter ($14/month): 500 requests/day
-- Professional ($29/month): 1,000 requests/day
+- Starter ($29/month): 300 API calls/minute
+- Premium ($69/month): 750 API calls/minute
 
 **Note:** FINVIZ Elite subscription ($40/month) + FMP free tier is more cost-effective than FMP paid plans for this use case.
 

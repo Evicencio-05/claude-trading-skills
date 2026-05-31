@@ -72,7 +72,7 @@ Test:
   systemctl --user start prompt-learning.service
 
 Logs: tail /tmp/prompt_learning.log
-Digest: reports/prompt_learning_digest_YYYY-MM-DD.md
+Digest: reports/prompts/prompt_learning_digest_YYYY-MM-DD.md
 
 Disable:
   systemctl --user disable prompt-learning.timer

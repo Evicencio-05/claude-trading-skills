@@ -12,10 +12,11 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent))
+import market_utils  # noqa: E402
 import research_utils  # noqa: E402
 import utils  # noqa: E402
 
-PAGES = ["Dashboard", "Research", "Reports", "Theses", "Review"]
+PAGES = ["Dashboard", "Market", "Research", "Reports", "Theses", "Review"]
 
 # ── constants ─────────────────────────────────────────────────────────────────
 
@@ -165,6 +166,22 @@ def show_dashboard() -> None:
     with rc2:
         if st.button("Go to Research", key="dash_go_research"):
             st.session_state["nav_page"] = "Research"
+            st.rerun()
+
+    market_ctx = market_utils.load_market_context()
+    mc1, mc2 = st.columns([3, 1])
+    with mc1:
+        if market_ctx:
+            syn = market_ctx.get("synthesis") or {}
+            st.caption(
+                f"Market: **{syn.get('posture', 'UNKNOWN')}** "
+                f"({syn.get('ceiling', 'N/A')}) — {market_ctx.get('as_of', '')}"
+            )
+        else:
+            st.caption("Market: no pre-market report — run `scripts/pre_market.py`")
+    with mc2:
+        if st.button("Go to Market", key="dash_go_market"):
+            st.session_state["nav_page"] = "Market"
             st.rerun()
 
     st.divider()
@@ -1332,6 +1349,122 @@ def show_research() -> None:
     _show_research_refresh()
 
 
+# ── page: market ───────────────────────────────────────────────────────────────
+
+
+def show_market() -> None:
+    st.header("Market")
+
+    dates = market_utils.list_market_context_dates()
+    if not dates:
+        st.info(
+            "No pre-market reports in reports/logs/. "
+            "Run `uv run python3 scripts/pre_market.py` on a trading day."
+        )
+        return
+
+    date_options = [d.isoformat() for d in dates]
+    if st.session_state.get("market_date") not in date_options:
+        st.session_state.pop("market_date", None)
+    selected = st.selectbox("Report date", date_options, key="market_date")
+    as_of = date.fromisoformat(selected)
+    ctx = market_utils.load_market_context(as_of)
+    if not ctx:
+        st.warning(f"No market context found for {selected}.")
+        return
+
+    syn = ctx.get("synthesis") or {}
+    b = ctx.get("breadth") or {}
+    u = ctx.get("uptrend") or {}
+    s = ctx.get("sector") or {}
+    flags = ctx.get("position_flags") or {}
+
+    c1, c2, c3, c4, c5 = st.columns(5)
+    c1.metric("Posture", syn.get("posture", "UNKNOWN"))
+    c2.metric("Ceiling", syn.get("ceiling", "N/A"))
+    c3.metric("Breadth", f"{b.get('score', '—')}/100", help=str(b.get("zone") or ""))
+    c4.metric("Uptrend", f"{u.get('score', '—')}/100", help=str(u.get("zone") or ""))
+    c5.metric("Leading Sector", s.get("leading_sector") or "—")
+
+    st.subheader("Synthesis")
+    if syn.get("headline"):
+        st.write(syn["headline"])
+
+    risk_flags = syn.get("risk_flags") or []
+    if risk_flags:
+        st.markdown("**Risk flags**")
+        for rf in risk_flags:
+            st.markdown(f"- {rf}")
+
+    actions = syn.get("actions") or []
+    if actions:
+        st.markdown("**Actions**")
+        for action in actions:
+            st.markdown(f"- {action}")
+
+    warnings = (u.get("active_warnings") or []) + (b.get("active_warnings") or [])
+    if warnings:
+        st.subheader("Warnings")
+        for w in warnings:
+            if isinstance(w, dict):
+                label = w.get("label") or w.get("flag") or "Warning"
+                desc = w.get("description") or ""
+                st.warning(f"**{label}** — {desc}")
+
+    st.subheader("Sector")
+    st.caption(
+        f"Cycle: **{s.get('cycle_phase') or 'N/A'}** · Regime: **{s.get('risk_regime') or 'N/A'}**"
+    )
+    top = s.get("top_sectors") or []
+    if top:
+        st.table(
+            pd.DataFrame(
+                [
+                    {
+                        "Rank": row.get("rank"),
+                        "Sector": row.get("sector"),
+                        "Ratio": row.get("ratio"),
+                    }
+                    for row in top
+                ]
+            )
+        )
+    overbought = s.get("overbought") or []
+    if overbought:
+        st.markdown("**Overbought:** " + ", ".join(overbought))
+
+    urgent = flags.get("urgent") or []
+    watch = flags.get("watch") or []
+    if urgent or watch:
+        st.subheader("Position Flags")
+        for flag in urgent:
+            st.error(flag)
+        for flag in watch:
+            st.warning(flag)
+
+    sources = ctx.get("sources") or {}
+    st.divider()
+    st.subheader("Detail Reports")
+    for label, key in (
+        ("Breadth", "breadth"),
+        ("Uptrend", "uptrend"),
+        ("Sector", "sector"),
+    ):
+        rel = sources.get(key)
+        content, display_path, is_json_summary = market_utils.load_artifact_display(rel, key)
+        with st.expander(f"{label} — {display_path or rel or 'not found'}"):
+            if content:
+                if is_json_summary:
+                    st.caption("Summary generated from JSON (full markdown report not found).")
+                st.markdown(research_utils.escape_dollar_signs_for_streamlit(content))
+            else:
+                st.caption("Report not available.")
+
+    ctx_path = ctx.get("_path")
+    if ctx_path:
+        st.caption(f"Context file: `{ctx_path}`")
+
+
 # ── page: reports ──────────────────────────────────────────────────────────────
 
 
@@ -1434,6 +1567,8 @@ def main() -> None:
 
     if page == "Dashboard":
         show_dashboard()
+    elif page == "Market":
+        show_market()
     elif page == "Research":
         show_research()
     elif page == "Reports":

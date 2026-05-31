@@ -142,7 +142,7 @@ python3 skills/market-top-detector/scripts/market_top_detector.py \
   --put-call [VALUE] --put-call-date [YYYY-MM-DD] \
   --vix-term [steep_contango|contango|flat|backwardation] \
   --margin-debt-yoy [VALUE] --margin-debt-date [YYYY-MM-DD] \
-  --output-dir reports/ \
+  --output-dir reports/market/top/ \
   --context "Consumer Confidence=[VALUE]" "Gold Price=[VALUE]"
 # 200DMA breadth is auto-fetched from TraderMonty CSV.
 # Override with --breadth-200dma [VALUE] if needed.

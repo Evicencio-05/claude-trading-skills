@@ -13,17 +13,21 @@ Usage:
     python3 scripts/pre_market.py --force      # run even on weekends
 
 Output:
-    reports/logs/market_context_YYYY-MM-DD.md  — full daily report
-    reports/logs/posture_history.log           — one-line running history
+    reports/logs/market_context_YYYY-MM-DD.json — structured summary
+    reports/logs/market_context_YYYY-MM-DD.md   — executive summary
+    reports/logs/posture_history.log            — one-line running history
 """
 
 import argparse
+import json
 import subprocess
 import sys
 from datetime import date, datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
+from market_context_extract import build_market_context_summary, write_market_context
+from report_paths import default_output_dir
 
 load_dotenv()
 
@@ -32,9 +36,11 @@ REPO = Path(__file__).parent.parent
 SKILLS = REPO / "skills"
 SCRIPTS = REPO / "scripts"
 STATE = REPO / "state" / "theses"
-REPORTS = REPO / "reports" / "pre_market"
+BREADTH_DIR = default_output_dir(REPO, "market_breadth")
+UPTREND_DIR = default_output_dir(REPO, "uptrend_analysis")
+SECTOR_DIR = default_output_dir(REPO, "sector_rotation")
 LOGS = REPO / "reports" / "logs"
-TODAY = date.today().isoformat()
+TODAY = date.today()
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H%M%S")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -62,7 +68,6 @@ def run_fred_calendar() -> str:
         cwd=REPO,
     )
     output = result.stdout
-    # Filter to HIGH impact lines only
     lines = [
         ln
         for ln in output.splitlines()
@@ -79,8 +84,6 @@ def check_position_flags() -> tuple[list[str], list[str]]:
     """
     Read state/theses/ YAML files for open positions.
     Returns (urgent_flags, watch_flags).
-    Urgent: expiry <= 7 days or stop breached.
-    Watch:  expiry <= 14 days or earnings within 5 days on held ticker.
     """
     urgent, watch = [], []
     if not STATE.exists():
@@ -110,7 +113,6 @@ def check_position_flags() -> tuple[list[str], list[str]]:
 
         ref = f"stop={stop} target={target}"
 
-        # Options expiry check
         if asset_type == "options" and expiry_str:
             try:
                 expiry = date.fromisoformat(str(expiry_str)[:10])
@@ -129,93 +131,20 @@ def check_position_flags() -> tuple[list[str], list[str]]:
     return urgent, watch
 
 
-def parse_breadth_score(output: str) -> tuple[str, str]:
-    """Extract composite score and zone from market-breadth-analyzer output."""
-    score, zone = "N/A", "N/A"
-    for line in output.splitlines():
-        ln = line.lower()
-        if "composite" in ln and ("score" in ln or "/100" in ln):
-            parts = line.split()
-            for i, p in enumerate(parts):
-                if "/" in p and "100" in p:
-                    score = p.split("/")[0].strip()
-                elif p.replace(".", "").isdigit():
-                    score = p.strip()
-        if any(
-            z in ln for z in ["bull", "bear", "neutral", "caution", "healthy", "weak", "strong"]
-        ):
-            for word in line.split():
-                if word.lower() in [
-                    "bullish",
-                    "bearish",
-                    "neutral",
-                    "caution",
-                    "healthy",
-                    "weak",
-                    "strong",
-                    "critical",
-                ]:
-                    zone = word.capitalize()
-    return score, zone
-
-
-def parse_uptrend_score(output: str) -> tuple[str, str]:
-    """Extract composite score and warnings from uptrend-analyzer output."""
-    score, warnings = "N/A", ""
-    for line in output.splitlines():
-        ln = line.lower()
-        # Match "Composite Score: 33.5/100"
-        if "composite score:" in ln:
-            try:
-                part = line.split(":")[-1].strip()
-                score = part.split("/")[0].strip()
-            except (IndexError, ValueError):
-                pass
-        if any(w in ln for w in ["warning", "late cycle", "divergence", "high spread", "penalty"]):
-            warnings = line.strip()
-    return score, warnings if warnings else "none"
-
-
-def parse_sector(output: str) -> tuple[str, str]:
-    """Extract #1 ranked sector and cycle phase from sector-analyst output."""
-    sector, phase = "N/A", "N/A"
-    in_ranking = False
-    for line in output.splitlines():
-        ln = line.lower()
-        # Detect sector ranking table and grab rank 1
-        if "rank" in ln and "sector" in ln and "ratio" in ln:
-            in_ranking = True
-            continue
-        if in_ranking and line.startswith("| 1 "):
-            parts = [p.strip() for p in line.split("|")]
-            if len(parts) >= 3:
-                sector = parts[2]  # sector name column
-            in_ranking = False
-        # Cycle phase — look for "Late" / "Mid" / "Early" / "Recession"
-        if "cycle phase" in ln or ("late" in ln and "confidence" in ln):
-            for word in ["Late", "Mid", "Early", "Recession"]:
-                if word.lower() in ln:
-                    phase = word
-                    break
-    return sector[:40], phase[:40]
-
-
-def determine_posture(breadth_score: str, macro_events: str, urgent_flags: list) -> tuple[str, str]:
-    """Simple rule-based posture from playbook.md."""
-    try:
-        b = float(breadth_score)
-    except (ValueError, TypeError):
-        return "UNKNOWN", "N/A"
-
-    has_macro_today = macro_events != "none" and TODAY in macro_events
-    has_urgent = len(urgent_flags) > 0
-
-    if has_urgent or b < 40:
-        return "REDUCE_ONLY", "30%"
-    elif b < 60 or has_macro_today:
-        return "CAUTIOUS", "50%"
-    else:
-        return "NEW_ENTRY_ALLOWED", "70%"
+def history_line(summary: dict) -> str:
+    b = summary.get("breadth") or {}
+    u = summary.get("uptrend") or {}
+    s = summary.get("sector") or {}
+    syn = summary.get("synthesis") or {}
+    flags = summary.get("position_flags") or {}
+    all_flags = (flags.get("urgent") or []) + (flags.get("watch") or [])
+    sector = (s.get("leading_sector") or "N/A")[:20]
+    return (
+        f"{summary.get('as_of')} | breadth={b.get('score', 'N/A')} | "
+        f"uptrend={u.get('score', 'N/A')} | sector={sector} | "
+        f"{syn.get('posture', 'UNKNOWN')} | {syn.get('ceiling', 'N/A')} | "
+        f"flags={'yes' if all_flags else 'none'}\n"
+    )
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -227,121 +156,83 @@ def main():
     parser.add_argument("--force", action="store_true", help="Run even on weekends")
     args = parser.parse_args()
 
-    # Weekend check
-    if not args.force and date.today().weekday() >= 5:
+    if not args.force and TODAY.weekday() >= 5:
         print(f"{TIMESTAMP} — Skipping: weekend")
         return
 
-    REPORTS.mkdir(parents=True, exist_ok=True)
+    BREADTH_DIR.mkdir(parents=True, exist_ok=True)
+    UPTREND_DIR.mkdir(parents=True, exist_ok=True)
+    SECTOR_DIR.mkdir(parents=True, exist_ok=True)
     LOGS.mkdir(parents=True, exist_ok=True)
-    report_path = LOGS / f"market_context_{TODAY}.md"
-    history_path = LOGS / "posture_history.log"
 
-    print(f"Running pre-market routine for {TODAY}...")
+    print(f"Running pre-market routine for {TODAY.isoformat()}...")
 
-    # ── Step 1: Run the three free skills ─────────────────────────────────────
     print("  [1/4] Market breadth...")
     breadth_out, _ = run_skill_script(
-        "market-breadth-analyzer", "market_breadth_analyzer.py", ["--output-dir", str(REPORTS)]
+        "market-breadth-analyzer",
+        "market_breadth_analyzer.py",
+        ["--output-dir", str(BREADTH_DIR)],
     )
-    breadth_score, breadth_zone = parse_breadth_score(breadth_out)
 
     print("  [2/4] Uptrend analysis...")
     uptrend_out, _ = run_skill_script(
-        "uptrend-analyzer", "uptrend_analyzer.py", ["--output-dir", str(REPORTS)]
+        "uptrend-analyzer",
+        "uptrend_analyzer.py",
+        ["--output-dir", str(UPTREND_DIR)],
     )
-    uptrend_score, uptrend_warnings = parse_uptrend_score(uptrend_out)
 
     print("  [3/4] Sector rotation...")
     sector_out, _ = run_skill_script(
-        "sector-analyst", "analyze_sector_rotation.py", ["--output-dir", str(REPORTS), "--save"]
+        "sector-analyst",
+        "analyze_sector_rotation.py",
+        ["--output-dir", str(SECTOR_DIR), "--save"],
     )
-    leading_sector, cycle_phase = parse_sector(sector_out)
 
-    # ── Step 2: FRED calendar ─────────────────────────────────────────────────
     print("  [4/4] Macro calendar + position flags...")
     macro_events = run_fred_calendar()
-
-    # ── Step 3: Position flags ────────────────────────────────────────────────
     urgent_flags, watch_flags = check_position_flags()
-    all_flags = urgent_flags + watch_flags
-    flags_str = "\n".join(all_flags) if all_flags else "none"
 
-    # ── Step 4: Posture ───────────────────────────────────────────────────────
-    posture, ceiling = determine_posture(breadth_score, macro_events, urgent_flags)
-
-    # ── Build report ──────────────────────────────────────────────────────────
-    report = f"""# Pre-Market Report — {TODAY}
-*Generated: {datetime.now().strftime("%H:%M:%S")}*
-
-## Market Posture
-
-```
-Date:            {TODAY}
-Breadth:         {breadth_score}/100 ({breadth_zone})
-Uptrend:         {uptrend_score}/100
-Uptrend warning: {uptrend_warnings}
-Leading sector:  {leading_sector}
-Cycle phase:     {cycle_phase}
-Macro events:    {macro_events if macro_events != "none" else "none"}
-Flags:           {flags_str if flags_str != "none" else "none"}
-Posture:         {posture}
-Ceiling:         {ceiling}
-```
-
-## Position Flags
-
-{flags_str if flags_str != "none" else "No urgent or watch flags."}
-
-## Breadth Detail
-
-```
-{breadth_out.strip()}
-```
-
-## Uptrend Detail
-
-```
-{uptrend_out.strip()}
-```
-
-## Sector Detail
-
-```
-{sector_out.strip()}
-```
-"""
-
-    # ── One-line history entry ────────────────────────────────────────────────
-    history_line = (
-        f"{TODAY} | breadth={breadth_score} | uptrend={uptrend_score} | "
-        f"sector={leading_sector[:20]} | {posture} | {ceiling} | "
-        f"flags={'yes' if all_flags else 'none'}\n"
+    summary = build_market_context_summary(
+        REPO,
+        as_of=TODAY,
+        macro_events=macro_events,
+        urgent_flags=urgent_flags,
+        watch_flags=watch_flags,
+        breadth_stdout=breadth_out,
+        uptrend_stdout=uptrend_out,
+        sector_stdout=sector_out,
     )
 
-    # ── Write or print ────────────────────────────────────────────────────────
+    line = history_line(summary)
+    syn = summary.get("synthesis") or {}
+    b = summary.get("breadth") or {}
+    u = summary.get("uptrend") or {}
+    s = summary.get("sector") or {}
+
     if args.dry_run:
         print("\n" + "=" * 60)
-        print(report)
+        print(json.dumps(summary, indent=2, default=str))
         print("=" * 60)
-        print(f"\nHistory line: {history_line.strip()}")
+        print(f"\nHistory line: {line.strip()}")
         print("\n[DRY RUN — nothing written]")
         return
 
-    report_path.write_text(report)
+    json_path, md_path = write_market_context(REPO, summary, as_of=TODAY)
+    history_path = LOGS / "posture_history.log"
     with open(history_path, "a") as f:
-        f.write(history_line)
+        f.write(line)
 
-    print(f"\n✓ Report saved: {report_path}")
+    print(f"\n✓ JSON saved: {json_path}")
+    print(f"✓ Report saved: {md_path}")
     print(f"✓ History updated: {history_path}")
-    print(f"\n  Breadth:  {breadth_score}/100 ({breadth_zone})")
-    print(f"  Uptrend:  {uptrend_score}/100")
-    print(f"  Sector:   {leading_sector}")
-    print(f"  Posture:  {posture} ({ceiling})")
-    if all_flags:
+    print(f"\n  Breadth:  {b.get('score', 'N/A')}/100 ({b.get('zone', 'N/A')})")
+    print(f"  Uptrend:  {u.get('score', 'N/A')}/100")
+    print(f"  Sector:   {s.get('leading_sector', 'N/A')}")
+    print(f"  Posture:  {syn.get('posture', 'UNKNOWN')} ({syn.get('ceiling', 'N/A')})")
+    if urgent_flags or watch_flags:
         print(f"\n  ⚠️  {len(urgent_flags)} urgent, {len(watch_flags)} watch flags")
-        for f in urgent_flags:
-            print(f"  {f}")
+        for flag in urgent_flags:
+            print(f"  {flag}")
 
 
 if __name__ == "__main__":

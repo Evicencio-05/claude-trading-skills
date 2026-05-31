@@ -28,19 +28,19 @@ Execute the analyzer script:
 
 ```bash
 # Default: last 2 days of earnings, top 20 results
-python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py --output-dir reports/
+python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py --output-dir reports/screeners/earnings/
 
 # Custom lookback and market cap filter
 python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py \
   --lookback-days 5 \
   --min-market-cap 1000000000 \
   --top 30 \
-  --output-dir reports/
+  --output-dir reports/screeners/earnings/
 
 # With entry quality filter
 python3 skills/earnings-trade-analyzer/scripts/analyze_earnings_trades.py \
   --apply-entry-filter \
-  --output-dir reports/
+  --output-dir reports/screeners/earnings/
 ```
 
 ### Step 2: Review Results

@@ -10,7 +10,7 @@ Reconcile **PENDING_WORK.md**, **STATUS.md**, and active phase docs with **evide
 
 ## Pre-flight
 - [ ] Read `PENDING_WORK.md`, `project-docs/STATUS.md`, `project-docs/phase-1-research-copilot.md` (active; replaces archived `phase-1b-robinhood-research.md`), `project-docs/archive/phase-1-audit.md`
-- [ ] Read latest `reports/phase_1b_kickoff_*.md` if present
+- [ ] Read latest `reports/meta/phase_1b_kickoff_*.md` if present
 - [ ] Read `decisions.md` — do not contradict binding decisions
 
 ## Phase 1 — Evidence harvest (read-only)
@@ -29,11 +29,11 @@ ls -1 reports/logs/market_context_*.md 2>/dev/null | wc -l
 wc -l reports/logs/posture_history.log 2>/dev/null
 
 # Portfolio reviews & batch summaries
-ls -1 reports/portfolio_review_*.md 2>/dev/null
+ls -1 reports/portfolio/portfolio_review_*.md 2>/dev/null
 ls -1 reports/logs/portfolio_summary_*.md 2>/dev/null
 
 # Phase kickoff / prior sync reports
-ls -1 reports/phase_1b_kickoff_*.md reports/docs_sync_*.md 2>/dev/null
+ls -1 reports/meta/phase_1b_kickoff_*.md reports/meta/docs_sync_*.md 2>/dev/null
 
 # Thesis store (do not edit theses in this task)
 uv run python3 skills/trader-memory-core/scripts/thesis_store.py \
@@ -57,7 +57,7 @@ Build an **evidence table** before editing any doc:
 | Deep research | `reports/research/TICKER_DATE.md` | latest date, stale? | mark done / keep open |
 | Update research | changelog in `reports/logs/*_changelog.md` | | |
 | pre_market | market_context + posture_history rows | count toward 14-day exit | |
-| Portfolio review | `portfolio_review_*.md` | count toward 2+ exit | |
+| Portfolio review | `reports/portfolio/portfolio_review_*.md` | count toward 2+ exit | |
 | review-portfolio | `portfolio_summary_*.md` | weekly cadence done? | |
 | MCP | kickoff / portfolio review | accounts verified | |
 | ingest | pending_ingest.json | TE logged? | |
@@ -118,7 +118,7 @@ Edit in this order (single consistent snapshot):
 
 ### 5. Write sync report
 
-Save `reports/docs_sync_YYYY-MM-DD.md`:
+Save `reports/meta/docs_sync_YYYY-MM-DD.md`:
 
 ```markdown
 # Docs Sync — YYYY-MM-DD

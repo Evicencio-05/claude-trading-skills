@@ -70,11 +70,13 @@ cp -r claude-trading-skills/skills/finviz-screener /path/to/skills-directory/
 
 The primary data API used by most screening skills for fundamentals, quotes, and historical prices.
 
-| Plan | Cost | API Calls/Day | Best For |
-|------|------|---------------|----------|
-| Free | $0 | 250 | Occasional screening, small universes |
-| Starter | $29.99/mo | 750 | Full CANSLIM screening (40 stocks) |
-| Professional | $79.99/mo | 2,000 | Large-scale screening, multiple skills |
+| Plan | Cost | Rate limit | Best For |
+|------|------|------------|----------|
+| Basic (free) | $0 | 250 calls/day | Occasional screening, small universes (`--max-candidates 35`) |
+| Starter | $29/mo | 300 calls/minute | Stable API, watchlist screening via `--universe` |
+| Premium | $69/mo | 750 calls/minute | Full S&P 500 universe, restricted endpoints |
+
+Annual billing: $22/mo (Starter) or $59/mo (Premium) equivalent on FMP's site.
 
 **Sign up:** [https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs)
 
@@ -197,4 +199,4 @@ ERROR: 429 Too Many Requests - Rate limit exceeded
 1. The script automatically retries after 60 seconds.
 2. If you hit the free tier limit (250 calls/day), it resets at midnight UTC.
 3. Reduce the analysis scope with `--max-candidates` to lower API usage.
-4. For frequent use, consider upgrading to FMP Starter ($29.99/mo, 750 calls/day).
+4. For frequent use, consider FMP Starter ($29/mo, 300 calls/minute) or Premium ($69/mo) for restricted endpoints.

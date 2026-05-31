@@ -18,9 +18,9 @@ prioritized backlog for downstream skill generation.
 ## Prerequisites
 
 - **Python 3.10+** with `pyyaml` package
-- **Claude CLI** installed and authenticated (`claude --version` to verify)
+- **Claude CLI** installed and authenticated (`claude --version` to verify) — or use `--llm-provider local` with Ollama
 - **Session logs** in `~/.claude/projects/<project>/` (created automatically by Claude Code)
-- No API keys required (uses Claude CLI for LLM calls)
+- No API keys required (uses Claude CLI or local Ollama for abstraction; scoring still uses Claude CLI)
 
 ## Workflow
 
@@ -32,6 +32,9 @@ python3 scripts/mine_session_logs.py --dry-run --output-dir reports/
 
 # Full mining with scoring (requires Claude CLI)
 python3 scripts/mine_session_logs.py --output-dir reports/
+
+# Local Ollama for abstraction (scoring still uses Claude CLI)
+python3 scripts/mine_session_logs.py --llm-provider local --output-dir reports/
 
 # Score existing candidates
 python3 scripts/score_ideas.py \

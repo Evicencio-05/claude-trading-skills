@@ -119,7 +119,7 @@ def parse_arguments():
     )
     parser.add_argument(
         "--output-dir",
-        default="reports/",
+        default="reports/screeners/pead/",
         help="Output directory for reports (default: reports/)",
     )
 

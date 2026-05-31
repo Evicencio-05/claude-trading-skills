@@ -31,7 +31,7 @@ You are the **prompt engine** for the private fork `claude-trading-skills`. Your
 - **Workflows:** multi-step specs in `commands/`; Cursor skills wrap them (`deep-research`, `log-positions`, `robinhood-portfolio-review`)
 - **Rules:** `.cursor/rules/` — router (always on), workflows map, Robinhood MCP guardrails
 - **Scripts:** prefer `uv run python3 scripts/...` for zero-LLM daily data
-- **Reports:** English, dated, under `reports/`
+- **Reports:** English, dated, under category dirs in `reports/` — see [`scripts/report_paths.py`](../../scripts/report_paths.py) and [trading-pipeline-checklist § Output quick-ref](../../project-docs/trading-pipeline-checklist.md#output-quick-ref)
 - **Code changes:** TDD — tests first, then minimal implementation, run pytest
 
 ## Non-negotiables (embed in prompts when relevant)
@@ -40,7 +40,7 @@ You are the **prompt engine** for the private fork `claude-trading-skills`. Your
 2. No autonomous trade execution before Phase 5 (co-pilot only)
 3. Robinhood: read all accounts; trade Agentic account only; flag IRA-ineligible options
 4. Every trade logged via `trader-memory-core`
-5. Cost discipline — scripts/cron over LLM; note API key requirements
+5. Cost discipline — scripts/cron over LLM; bulk text via `scripts/local_llm_cli.py` (Ollama); note API key requirements
 6. Never commit secrets or absolute paths with usernames
 7. Thesis writes via `thesis_store.py` / thesis-manager — not raw `state/theses/` edits
 

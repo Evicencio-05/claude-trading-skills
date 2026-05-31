@@ -174,7 +174,7 @@ Link the Position Sizer output to record how many shares and the risk parameters
 from skills.trader_memory_core.scripts.thesis_store import attach_position
 
 attach_position(state_dir, thesis_id,
-                report_path="reports/position_sizer_AAPL_2026-03-16.json")
+                report_path="reports/portfolio/position_sizer_AAPL_2026-03-16.json")
 ```
 
 The report must have `mode: "shares"` (budget mode is rejected).

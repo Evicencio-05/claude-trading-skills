@@ -1,0 +1,25 @@
+{
+  "as_of": "2026-05-09",
+  "source": "us-stock-analysis",
+  "candidates": [
+    {
+      "symbol": "NVDA",
+      "rating": "A",
+      "composite_score": 82,
+      "thesis": "NVDA AI infrastructure dominance. FY2026 revenue $215.94B (+65% YoY). Q1 beat EPS by 8%. Data center 89% of revenue. 55% net margins, 101% ROE. Near 52-week high ($215/$216.82 high). Watching for post-CPI (May 12) + post-earnings (May 20) entry. Current posture: WATCH ONLY — do not enter before earnings. Entry trigger: pullback to $195-200 support after earnings if guidance is strong.",
+      "confidence": 4,
+      "entry_price": 200.0,
+      "stop_loss": 188.0,
+      "target_price": 250.0,
+      "risk_pct": 6.0,
+      "tags": ["growth_momentum", "ai_infrastructure", "stock_swing", "watch_only"],
+      "sector": "Technology",
+      "market_cap": 4770000000000,
+      "pe_trailing": 40.1,
+      "pe_forward": 24.2,
+      "earnings_date": "2026-05-20",
+      "analyst_target": 270.73,
+      "invalidation": "Earnings guidance miss or CPI surprise >0.5% above estimate"
+    }
+  ]
+}

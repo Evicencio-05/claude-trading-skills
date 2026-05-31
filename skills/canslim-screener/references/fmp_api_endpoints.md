@@ -572,7 +572,7 @@ superinvestor_present = any(
 - L component: +1 call per stock (365-day historical prices, separate cache key from 90-day)
 - S&P 500 historical data: shared between M (EMA) and L (RS benchmark)
 
-**Free Tier Workaround**: Use `--max-candidates 35` (35 × 7 + 3 = 248 calls, within 250 limit). For full 40-stock screening, upgrade to FMP Starter tier ($29.99/mo, 750 calls/day).
+**Basic (free) workaround**: Use `--max-candidates 35` (35 × 7 + 3 = 248 calls, within 250/day limit). Starter ($29/mo, 300 calls/minute) removes the daily cap for typical 40-stock runs; full S&P 500 universe needs Premium ($69/mo).
 
 **Note on `mktCap` field**: FMP profile API returns `mktCap` (not `marketCap`). The screener handles both field names for compatibility.
 
@@ -720,12 +720,12 @@ curl "https://financialmodelingprep.com/api/v3/quote/%5EVIX&apikey=YOUR_KEY"
 - **Total: ~283 calls (exceeds 250 quota)** ⚠️
 - **Workaround**: Use `--max-candidates 35` (35 × 7 + 3 = 248 calls)
 
-### Paid Tiers
+### Paid tiers
 
-- **Starter ($29.99/month)**: 750 requests/day → ~106 stocks/run ((750 - 3) / 7)
-- **Professional ($79.99/month)**: 2000 requests/day → ~285 stocks/run ((2000 - 3) / 7)
+- **Starter ($29/month)**: 300 API calls/minute — sufficient for default 40-stock runs; use `--universe` for watchlists
+- **Premium ($69/month)**: 750 API calls/minute — restricted endpoints (e.g. full `sp500-constituent`)
 
-**Recommendation for Phase 3**: Free tier supports up to 35 stocks (`--max-candidates 35`). For the default 40-stock universe, upgrade to Starter tier ($29.99/mo).
+**Recommendation for Phase 3**: Basic (free) supports up to 35 stocks (`--max-candidates 35`). Starter covers default 40-stock screening under per-minute limits; Premium for full S&P 500 universe.
 
 ---
 

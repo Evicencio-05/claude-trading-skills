@@ -52,7 +52,7 @@ python3 skills/position-sizer/scripts/position_sizer.py \
   --entry 155 \
   --stop 148.50 \
   --risk-pct 1.0 \
-  --output-dir reports/
+  --output-dir reports/portfolio/
 
 # ATR-Based
 python3 skills/position-sizer/scripts/position_sizer.py \
@@ -61,7 +61,7 @@ python3 skills/position-sizer/scripts/position_sizer.py \
   --atr 3.20 \
   --atr-multiplier 2.0 \
   --risk-pct 1.0 \
-  --output-dir reports/
+  --output-dir reports/portfolio/
 
 # Kelly Criterion (budget mode - no entry)
 python3 skills/position-sizer/scripts/position_sizer.py \
@@ -69,7 +69,7 @@ python3 skills/position-sizer/scripts/position_sizer.py \
   --win-rate 0.55 \
   --avg-win 2.5 \
   --avg-loss 1.0 \
-  --output-dir reports/
+  --output-dir reports/portfolio/
 
 # Kelly Criterion (shares mode - with entry/stop)
 python3 skills/position-sizer/scripts/position_sizer.py \
@@ -79,7 +79,7 @@ python3 skills/position-sizer/scripts/position_sizer.py \
   --win-rate 0.55 \
   --avg-win 2.5 \
   --avg-loss 1.0 \
-  --output-dir reports/
+  --output-dir reports/portfolio/
 ```
 
 ### Step 3: Load Methodology Reference
@@ -106,7 +106,7 @@ python3 skills/position-sizer/scripts/position_sizer.py \
   --max-position-pct 10 \
   --max-sector-pct 30 \
   --current-sector-exposure 22 \
-  --output-dir reports/
+  --output-dir reports/portfolio/
 ```
 
 Explain which constraint is binding and why it limits the position.
@@ -163,7 +163,7 @@ Generated automatically alongside the JSON report. Contains:
 - Constraints analysis (if any)
 - Final recommendation with shares, value, and risk
 
-Reports are saved to `reports/` with filenames `position_sizer_YYYY-MM-DD_HHMMSS.json` and `.md`.
+Reports are saved to `reports/portfolio/` with filenames `position_sizer_YYYY-MM-DD_HHMMSS.json` and `.md`.
 
 ## Resources
 

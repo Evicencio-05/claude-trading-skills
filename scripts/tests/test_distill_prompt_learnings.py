@@ -35,7 +35,7 @@ SAMPLE_RETRO = """\
 
 | Area | Status | Evidence |
 |------|--------|----------|
-| Goal | partial | reports/thesis_manager_improvements_2026-05-30.md |
+| Goal | partial | reports/meta/thesis_manager_improvements_2026-05-30.md |
 
 ## Defect log
 
@@ -250,3 +250,37 @@ def test_run_distill_dry_run_no_writes(distill_module, tmp_path: Path):
     assert result["retros_processed"] == 1
     assert learnings_path.read_text(encoding="utf-8") == before
     assert not list(reports.glob("prompt_learning_digest_*.md"))
+
+
+def test_run_distill_enable_llm_dry_run(distill_module, tmp_path: Path, monkeypatch):
+    repo = tmp_path
+    reports = repo / "reports"
+    reports.mkdir()
+    state = repo / "state"
+    state.mkdir()
+    learnings_path = state / "prompt_learnings.yaml"
+    _write_learnings(learnings_path)
+    (reports / "prompt_run_retro_2026-05-30.md").write_text(SAMPLE_RETRO, encoding="utf-8")
+
+    scripts = Path(__file__).resolve().parents[1]
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    import local_llm as llm_mod
+
+    monkeypatch.setattr(
+        llm_mod,
+        "distill_suggest",
+        lambda texts, learnings, repo_root=None: "- id: test_pattern\n  fix: test",
+    )
+
+    before = learnings_path.read_text(encoding="utf-8")
+    result = distill_module.run_distill(
+        repo,
+        dry_run=True,
+        since=None,
+        output_dir=reports,
+        enable_llm=True,
+    )
+    assert result["retros_processed"] == 1
+    assert result.get("llm_suggestions") is not None
+    assert learnings_path.read_text(encoding="utf-8") == before

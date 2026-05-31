@@ -517,7 +517,7 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("reports"),
+        default=Path("reports/market/exposure"),
         help="Output directory for reports (default: reports/)",
     )
     parser.add_argument("--json-only", action="store_true", help="Output JSON only, skip markdown")

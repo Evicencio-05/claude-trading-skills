@@ -29,6 +29,7 @@
 | project-docs/audit/skills_audit.md | Checking skill status, ratings, or operational notes |
 | project-docs/audit/skills_audit_detail.md | Investigating a specific skill in detail |
 | project-docs/reference/cost-discipline.md | Evaluating API costs or model routing |
+| project-docs/reference/local-model-integration.md | Ollama setup, local LLM CLI, Cursor delegation |
 | project-docs/reference/existing-skills-map.md | Considering building something new |
 | project-docs/reference/tech-stack.md | Architecture decisions |
 | project-docs/reference/risk-register.md | Risk assessment or safety review |
@@ -59,6 +60,8 @@
 | skills/[name]/ (full dir) | Load specific SKILL.md only when working on that skill |
 | reports/research/*.md | Load specific report only when needed |
 | reports/logs/ | Load specific log only when needed |
+| scripts/report_paths.py | Resolving artifact output dirs under `reports/` |
+| project-docs/trading-pipeline-checklist.md § Output quick-ref | Full reports layout map |
 | launchd/ | macOS only — use systemd on this system |
 | tools/thesis-manager/ | Streamlit app — run directly, never load into context |
 
@@ -67,7 +70,7 @@
 - Active phase: **Phase 1** (check STATUS.md)
 - economic-calendar-fetcher: BLOCKED on v3 — use scripts/fred_calendar.py (stable calendar available but FRED is primary)
 - exposure-coach: Schema mismatch FIXED 2026-05-10 — check STATUS.md for current state
-- vcp-screener / canslim / earnings-trade-analyzer: **Starter active** — use `--universe` for watchlist; full S&P 500 needs FMP Professional ($79/mo)
+- vcp-screener / canslim / earnings-trade-analyzer: **Starter active** — use `--universe` for watchlist; full S&P 500 needs FMP Premium ($69/mo)
 - market-top-detector: works on Starter stable API (no `--static-basket` required)
 - Portfolio B is a Robinhood IRA — IRA options rules apply
 - Full operational rules: project-docs/playbook.md

@@ -66,7 +66,7 @@ def resolve_exclude_path() -> Path:
 
 
 def _archive_research_dir() -> Path:
-    return _repo() / "reports" / "archive" / "research"
+    return _repo() / "reports" / "archives"
 
 
 def excluded_ticker_set() -> set[str]:
@@ -119,7 +119,7 @@ def list_report_tickers() -> list[str]:
 
 
 def archive_report(path: Path) -> Path:
-    """Move a research report into reports/archive/research/."""
+    """Move a research report into reports/archives/."""
     if not path.is_file():
         raise FileNotFoundError(f"Report not found: {path}")
     dest_dir = _archive_research_dir()

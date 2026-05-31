@@ -70,7 +70,7 @@ Run: `ruff check tools/thesis-manager/`
 
 ## Outputs
 - Code: `tools/thesis-manager/` (+ README)
-- Optional: `reports/thesis_manager_ui_refresh_YYYY-MM-DD.md` — before/after screenshots checklist (English)
+- Optional: `reports/meta/thesis_manager_ui_refresh_YYYY-MM-DD.md` — before/after screenshots checklist (English)
 
 ## Rules
 - **No** changes to `thesis_store` writes, research staleness logic, or sync scripts

@@ -297,7 +297,7 @@ class FMPClient:
                 file=sys.stderr,
             )
             print(
-                "  Use --universe with watchlist tickers, or upgrade to FMP Professional ($79/mo).",
+                "  Use --universe with watchlist tickers, or upgrade to FMP Premium ($69/mo).",
                 file=sys.stderr,
             )
             return None

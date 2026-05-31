@@ -7,9 +7,9 @@ Writes:  Calls thesis_store API (never directly edits YAML files)
 
 ## Navigation
 
-Five pages via sidebar radio: **Dashboard**, **Research**, **Reports**, **Theses**, **Review**.
+Six pages via sidebar radio: **Dashboard**, **Market**, **Research**, **Reports**, **Theses**, **Review**.
 
-Cross-page links (e.g. Dashboard **Go to Research**, **Manage in Theses**) set `nav_page` and jump on the next rerun.
+Cross-page links (e.g. Dashboard **Go to Research** / **Go to Market**, **Manage in Theses**) set `nav_page` and jump on the next rerun.
 
 ## Theses page (CRUD)
 
@@ -31,7 +31,21 @@ Protected fields (read-only after creation): `ticker`, `thesis_type`, `status` (
 
 Read-only position overview with metrics. Select a row for a summary, then **Manage in Theses** for edits and lifecycle actions. **Refresh Positions** runs `scripts/robinhood_sync.py`.
 
+Shows today's market posture caption when `reports/logs/market_context_*.json` exists; **Go to Market** opens the full pre-market view.
+
 Pending sync rows link to **Theses** for thesis entry.
+
+## Market page
+
+Displays the latest daily pre-market synthesis from `reports/logs/market_context_YYYY-MM-DD.json` (written by `scripts/pre_market.py`).
+
+- Header metrics: posture, ceiling, breadth, uptrend, leading sector
+- Synthesis headline, risk flags, and action bullets
+- Sector ranking, cycle phase, overbought flags
+- Position flags (urgent/watch from open theses)
+- Expanders for linked breadth/uptrend/sector markdown artifacts
+
+Run pre-market: `uv run python3 scripts/pre_market.py`
 
 ## Pending ingest flow
 

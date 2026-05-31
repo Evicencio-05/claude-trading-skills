@@ -18,7 +18,7 @@ Scan `tools/thesis-manager/` for bugs and runtime errors; fix confirmed issues a
 4. **Logic audit** — Reports page ticker/date selectbox stale session keys; nav `nav_page` jumps; styled DataFrame + selection index alignment
 5. Fix bugs found (minimal diffs); add regression tests where practical
 6. Re-run full pytest + ruff
-7. Write `reports/thesis_manager_bug_scan_YYYY-MM-DD.md` — findings table (severity, page, fix status)
+7. Write `reports/meta/thesis_manager_bug_scan_YYYY-MM-DD.md` — findings table (severity, page, fix status)
 
 ## Rules
 - No thesis_store / sync / staleness logic changes unless bug is proven there

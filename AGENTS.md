@@ -16,6 +16,7 @@ This repo supports **two AI harnesses** over one portable core (`skills/`, `scri
 | Robinhood scheduled sync (Portfolio A) | **Terminal** | `robinhood_sync.py` + `robinhood-sync.timer` |
 | Alpaca portfolio-manager | **Claude Code** (optional) | See [Portfolio MCP](#portfolio-mcp) below |
 | Automated skill-improvement PRs | **Claude CLI** | `scripts/run_skill_improvement_loop.py` |
+| Bulk text / retro draft / edge hints | **Terminal + Ollama** | `scripts/local_llm_cli.py` — see [local-model-integration.md](project-docs/reference/local-model-integration.md) |
 | Scheduled automation | **systemd/cron** | IDE-independent |
 
 ## Session start (any agent)
@@ -68,7 +69,7 @@ Official **Robinhood Agentic Trading MCP** for this fork (primary in Cursor).
 | Guide | [project-docs/reference/robinhood-mcp-integration.md](project-docs/reference/robinhood-mcp-integration.md) |
 | Rules | [.cursor/rules/robinhood-mcp.mdc](.cursor/rules/robinhood-mcp.mdc) |
 
-**Workflows:** `robinhood-portfolio-review` → `reports/portfolio_review_*.md`; `log-positions` → trader-memory-core.
+**Workflows:** `robinhood-portfolio-review` → `reports/portfolio/portfolio_review_*.md`; `log-positions` → trader-memory-core.
 
 ## Portfolio MCP (Alpaca)
 

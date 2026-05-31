@@ -15,6 +15,8 @@ argument-hint: "<TICKER>"
 > Complete ALL data collection before writing a single line of the report.
 > If a skill or script fails, note the gap in one sentence and continue.
 > Do not stop for failures — partial data is better than no report.
+>
+> **Artifact paths:** Preflight manifest `path` values resolve under category dirs registered in [`scripts/report_paths.py`](../scripts/report_paths.py) (e.g. `reports/market/breadth/`, `reports/screeners/vcp/`). Full map: [trading-pipeline-checklist § Output quick-ref](../project-docs/trading-pipeline-checklist.md#output-quick-ref).
 
 ---
 

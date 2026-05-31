@@ -8,7 +8,7 @@
 
 ## This Week's Focus
 
-- [x] **FMP Starter ($29/mo)** — active 2026-05-31; stable API fixes applied ([verification report](../reports/fmp_starter_verification_2026-05-31.md))
+- [x] **FMP Starter ($29/mo)** — active 2026-05-31; stable API fixes applied ([verification report](../reports/meta/fmp_starter_verification_2026-05-31.md))
 - [ ] **Update research — stale watchlist** — FPS (&gt;14d); `commands/review-portfolio.md` weekly
 - [ ] **First Agentic trade** — user must reply **confirm** on presented plan
 - [ ] **IRA thesis logging** — MCP read + four questions for open IRA positions
@@ -20,12 +20,12 @@
 |----|-------|--------|
 | P1 | API keys in non-interactive shells | FIXED 2026-05-10 |
 | P2 | exposure-coach schema mismatch | FIXED 2026-05-10 |
-| P3 | vcp-screener watchlist universe | **Fixed** — use `--universe`; full S&P 500 needs FMP Professional ($79/mo) |
+| P3 | vcp-screener watchlist universe | **Fixed** — use `--universe`; full S&P 500 needs FMP Premium ($69/mo) |
 | P4 | economic-calendar-fetcher | Workaround: `scripts/fred_calendar.py` |
 
 ## Monthly Spend
 
-Current: ~$29/mo (FMP Starter) | Cap: $30/mo | Professional ($79/mo) not approved
+Current: ~$29/mo (FMP Starter) | Cap: $30/mo | Premium ($69/mo) not approved
 
 ## Robinhood MCP (verified 2026-05-30)
 
@@ -60,7 +60,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 ## Recent Changes
 
 - FMP Starter verified + stable API fmp_client fixes (2026-05-31)
-- Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md))
+- Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md))
 - TE thesis logged (`th_te_grw_20260529_034d`); POWL closed 2026-05-29
 - Pre-market run 2026-05-29: breadth 42.4, posture CAUTIOUS 50%
 - Trading pipeline checklist consolidated — [trading-pipeline-checklist.md](trading-pipeline-checklist.md)

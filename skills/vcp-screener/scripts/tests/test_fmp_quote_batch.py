@@ -75,19 +75,19 @@ class TestQuoteBatchPerSymbol:
 
 
 class TestSp500Constituents:
-    def test_sp500_402_prints_professional_hint(self, capsys):
+    def test_sp500_402_prints_premium_hint(self, capsys):
         client = _make_client()
 
         def fake_get(url, params=None, timeout=30, **kwargs):
             return _mock_response(
                 402,
                 None,
-                "Restricted Endpoint: upgrade to Professional",
+                "Restricted Endpoint: upgrade to Premium",
             )
 
         client.session.get = MagicMock(side_effect=fake_get)
         result = client.get_sp500_constituents()
         assert result is None
         err = capsys.readouterr().err
-        assert "Professional" in err
+        assert "Premium" in err
         assert "watchlist" in err.lower() or "--universe" in err

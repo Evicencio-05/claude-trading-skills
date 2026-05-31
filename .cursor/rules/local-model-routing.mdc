@@ -1,0 +1,34 @@
+---
+description: Route bulk text tasks to local Ollama CLI — save Cursor subscription tokens
+alwaysApply: true
+---
+
+# Local Model Routing (Ollama)
+
+Bulk, low-stakes text work runs via **local scripts**, not in-agent prose generation. Full guide: [local-model-integration.md](../../project-docs/reference/local-model-integration.md).
+
+## When to delegate (run terminal CLI)
+
+| Task | Command |
+|------|---------|
+| Check Ollama | `uv run python3 scripts/local_llm_cli.py health` |
+| Edge hints | `build_hints.py --llm-ideas-cmd "uv run python3 scripts/local_llm_cli.py edge-hints"` |
+| Prompt retro draft | `local_llm_cli.py retro-draft --evidence FILE --task-family SLUG` → review → save retro |
+| Commit message only | `local_llm_cli.py commit-message` → user runs `git commit` |
+| Weekly distill + LLM | `distill_prompt_learnings.py --enable-llm` → review digest section only |
+
+After local CLI output: **verify** before writing state files. Do not auto-commit.
+
+## Never use local model for
+
+- Multi-file code edits, MCP (Robinhood), pytest fix loops
+- Deep/update research synthesis
+- Trading, thesis writes, portfolio decisions
+- Autonomous git commit/push/PR
+- Skill improvement/generation PR pipelines
+
+Stay on Cursor subscription agent for those tasks.
+
+## Graceful skip
+
+If `health` exits 2, warn user and either skip the LLM step or ask before using Cursor tokens.

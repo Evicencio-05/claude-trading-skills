@@ -117,6 +117,8 @@ Both are publicly hosted on GitHub Pages - no authentication required.
 
 ## Output Files
 
+Directory: `reports/market/breadth/`
+
 - JSON: `market_breadth_YYYY-MM-DD_HHMMSS.json`
 - Markdown: `market_breadth_YYYY-MM-DD_HHMMSS.md`
 - History: `market_breadth_history.json` (persists across runs, max 20 entries)

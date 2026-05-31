@@ -79,7 +79,10 @@ Wire this into every skill that makes API calls. Set up a cron to email/notify i
 **Use Ollama (local) for:**
 - Log parsing and anomaly detection
 - Bulk embedding pre-processing (or use `sentence-transformers` directly)
+- Prompt retro drafts, edge hints, distill suggestions, commit message drafts
 - Anything where you can spot-check 10% of outputs and correct errors
+
+**Implementation:** [local-model-integration.md](local-model-integration.md) — `scripts/local_llm_cli.py`, Cursor rule `.cursor/rules/local-model-routing.mdc`.
 
 **NEVER use any LLM for:**
 - Web scraping (use traditional tools — `httpx`, `BeautifulSoup`, or APIs)
@@ -124,9 +127,9 @@ If you can't answer all five clearly, don't subscribe.
 ## Specific Tools: Subscribe vs. Defer
 
 ### FMP API
-- **Verdict:** **Starter ($29/mo) active** as of 2026-05-31 — 750 calls/day; watchlist screening via `--universe`.
-- **Professional ($79/mo):** Defer until full S&P 500 universe screening is justified and budget approved ([decisions.md](../../decisions.md) [2026-05-31]).
-- Free tier is insufficient for this fork (legacy v3 blocked; stable API required).
+- **Verdict:** **Starter ($29/mo) active** as of 2026-05-31 — 300 API calls/minute; watchlist screening via `--universe`.
+- **Premium ($69/mo):** Defer until full S&P 500 universe screening is justified and budget approved ([decisions.md](../../decisions.md) [2026-05-31]).
+- Basic (free) tier is insufficient for this fork (legacy v3 blocked; stable API required).
 
 ### FINVIZ Elite ($40/mo)
 - **Verdict:** Defer indefinitely.

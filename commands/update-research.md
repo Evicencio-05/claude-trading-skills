@@ -6,6 +6,8 @@ argument-hint: "<TICKER>"
 Perform a targeted update on an existing research report for {TICKER}.
 
 > **Cost discipline:** Reuse same-day batch artifacts via preflight manifest before re-running screeners or market context skills. See [project-docs/reference/cost-discipline.md](../project-docs/reference/cost-discipline.md).
+>
+> **Artifact paths:** Preflight manifest `path` values resolve under category dirs registered in [`scripts/report_paths.py`](../scripts/report_paths.py) (e.g. `reports/market/breadth/`, `reports/screeners/vcp/`). Full map: [trading-pipeline-checklist § Output quick-ref](../project-docs/trading-pipeline-checklist.md#output-quick-ref).
 
 STEP 0 — REUSE CHECK (zero LLM cost)
 

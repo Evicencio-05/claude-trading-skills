@@ -566,7 +566,7 @@ def main():
     parser.add_argument("--max-chase-pct", type=float, default=2.0)
     parser.add_argument("--pivot-buffer-pct", type=float, default=0.1)
     parser.add_argument("--current-exposure-json", default=None)
-    parser.add_argument("--output-dir", default="reports/")
+    parser.add_argument("--output-dir", default="reports/screeners/breakout")
     args = parser.parse_args()
 
     data = load_input(args.input)

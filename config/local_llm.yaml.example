@@ -1,0 +1,7 @@
+# Copy to config/local_llm.yaml to override defaults (optional).
+# Environment variables OLLAMA_HOST and OLLAMA_MODEL take precedence over this file.
+
+ollama:
+  host: http://127.0.0.1:11434
+  model: qwen2.5:7b
+  timeout_seconds: 120

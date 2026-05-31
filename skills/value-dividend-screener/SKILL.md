@@ -546,9 +546,9 @@ python3 scripts/screen_dividend_stocks.py --use-finviz --finviz-api-key your_key
 - Annual: $299.50 (~$24.96/month)
 
 **FMP API:**
-- Free tier: 250 calls/day (sufficient for two-stage screening)
-- Starter tier: $29.99/month for 750 calls/day
-- Professional tier: $79.99/month for 2000 calls/day
+- Basic (free): 250 calls/day (sufficient for two-stage screening)
+- Starter: $29/month — 300 API calls/minute
+- Premium: $69/month — 750 API calls/minute (restricted endpoints)
 
 **Recommendation:**
 - **For free FMP tier users**: Use two-stage screening (FINVIZ + FMP free tier)

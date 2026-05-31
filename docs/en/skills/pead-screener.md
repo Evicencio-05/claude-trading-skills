@@ -58,12 +58,12 @@ Screen post-earnings gap-up stocks for PEAD (Post-Earnings Announcement Drift) p
 # Mode A: FMP earnings calendar (standalone)
 python3 skills/pead-screener/scripts/screen_pead.py \
   --lookback-days 14 --min-gap 3.0 --max-api-calls 200 \
-  --output-dir reports/
+  --output-dir reports/screeners/pead/
 
 # Mode B: Pipeline from earnings-trade-analyzer output
 python3 skills/pead-screener/scripts/screen_pead.py \
-  --candidates-json reports/earnings_trade_*.json \
-  --min-grade B --output-dir reports/
+  --candidates-json reports/screeners/earnings/earnings_trade_*.json \
+  --min-grade B --output-dir reports/screeners/pead/
 ```
 
 ---
@@ -77,7 +77,7 @@ Run the PEAD screener script in one of two modes:
 **Mode A (FMP earnings calendar):**
 ```bash
 # Default: last 14 days of earnings, 5-week monitoring window
-python3 skills/pead-screener/scripts/screen_pead.py --output-dir reports/
+python3 skills/pead-screener/scripts/screen_pead.py --output-dir reports/screeners/pead/
 
 # Custom parameters
 python3 skills/pead-screener/scripts/screen_pead.py \
@@ -85,16 +85,16 @@ python3 skills/pead-screener/scripts/screen_pead.py \
   --watch-weeks 6 \
   --min-gap 5.0 \
   --min-market-cap 1000000000 \
-  --output-dir reports/
+  --output-dir reports/screeners/pead/
 ```
 
 **Mode B (earnings-trade-analyzer JSON input):**
 ```bash
 # From earnings-trade-analyzer output
 python3 skills/pead-screener/scripts/screen_pead.py \
-  --candidates-json reports/earnings_trade_analyzer_YYYY-MM-DD_HHMMSS.json \
+  --candidates-json reports/screeners/earnings/earnings_trade_analyzer_YYYY-MM-DD_HHMMSS.json \
   --min-grade B \
-  --output-dir reports/
+  --output-dir reports/screeners/pead/
 ```
 
 ### Step 2: Review Results

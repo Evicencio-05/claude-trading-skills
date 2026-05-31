@@ -108,8 +108,8 @@ def parse_arguments():
 
     parser.add_argument(
         "--output-dir",
-        default=".",
-        help="Output directory for reports (default: current directory)",
+        default="reports/screeners/canslim",
+        help="Output directory for reports (default: reports/screeners/canslim)",
     )
 
     parser.add_argument(

@@ -66,8 +66,8 @@ def parse_arguments():
     )
     parser.add_argument(
         "--output-dir",
-        default=".",
-        help="Output directory for reports (default: current directory)",
+        default="reports/market/breadth",
+        help="Output directory for reports (default: reports/market/breadth)",
     )
 
     return parser.parse_args()

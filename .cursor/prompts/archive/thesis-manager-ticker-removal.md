@@ -28,7 +28,7 @@ Wire watchlist, research, reports, and position removal into Thesis Manager so t
    - Update `eligible_tickers()` to subtract excluded tickers
    - Extend `scripts/tests/test_research_watchlist.py`
 3. **Wire staleness script** — `scripts/update_stale_research.py` resolves exclude path (same pattern as watchlist) so queue JSON omits excluded tickers
-4. **Report archive helper (TDD)** — `research_utils.archive_report(path) -> Path` moves file to `reports/archive/research/` (mkdir parents); `list_report_tickers()` skips tickers on exclude list
+4. **Report archive helper (TDD)** — `research_utils.archive_report(path) -> Path` moves file to `reports/archives/` (mkdir parents); `list_report_tickers()` skips tickers on exclude list
 5. **Thesis removal API (TDD)** — add `thesis_store.delete(state_dir, thesis_id)`:
    - Allowed only for `CLOSED` / `INVALIDATED` unless `force=True` (ACTIVE/IDEA/ENTRY_READY raise)
    - Deletes `th_*.yaml`, updates index via existing index helpers, returns deleted id
@@ -52,7 +52,7 @@ Wire watchlist, research, reports, and position removal into Thesis Manager so t
 ## Outputs
 - New prompt file (this doc)
 - Code + tests as above
-- Optional: `reports/thesis_manager_ticker_removal_YYYY-MM-DD.md` — what shipped + manual QA checklist
+- Optional: `reports/meta/thesis_manager_ticker_removal_YYYY-MM-DD.md` — what shipped + manual QA checklist
 
 ## Rules
 - Thesis writes/deletes via `thesis_store` / `utils` only — never hand-edit `state/theses/*.yaml`

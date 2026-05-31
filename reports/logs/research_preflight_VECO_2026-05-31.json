@@ -1,7 +1,7 @@
 {
   "ticker": "VECO",
   "as_of": "2026-05-31",
-  "generated_at": "2026-05-31T10:52:25.440050-07:00",
+  "generated_at": "2026-05-31T12:40:24.321520-07:00",
   "force_refresh": false,
   "watchlist_symbols": [
     "ARM",
@@ -17,8 +17,8 @@
     "VECO"
   ],
   "summary": {
-    "reuse": 5,
-    "run": 5
+    "reuse": 3,
+    "run": 7
   },
   "artifacts": {
     "market_context": {
@@ -28,19 +28,17 @@
     },
     "market_breadth": {
       "action": "reuse",
-      "path": "reports/market_breadth_2026-05-31_074516.json"
+      "path": "reports/market/breadth/market_breadth_2026-05-31_124017.json"
     },
     "uptrend_analysis": {
       "action": "reuse",
-      "path": "reports/uptrend_analysis_2026-05-31_074517.json"
+      "path": "reports/market/uptrend/uptrend_analysis_2026-05-31_124017.json"
     },
     "market_top": {
-      "action": "reuse",
-      "path": "reports/market_top_2026-05-31_080956.json"
+      "action": "run"
     },
     "exposure_posture": {
-      "action": "reuse",
-      "path": "reports/exposure_posture_2026-05-31_144530.json"
+      "action": "run"
     },
     "fred_calendar": {
       "action": "reuse",
@@ -49,12 +47,12 @@
     "vcp_screener": {
       "action": "run",
       "reason": "no same-day screener covering ticker",
-      "run_hint": "python3 skills/vcp-screener/scripts/screen_vcp.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/"
+      "run_hint": "python3 skills/vcp-screener/scripts/screen_vcp.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/screeners/vcp"
     },
     "canslim_screener": {
       "action": "run",
       "reason": "no same-day screener covering ticker",
-      "run_hint": "python3 skills/canslim-screener/scripts/screen_canslim.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/"
+      "run_hint": "python3 skills/canslim-screener/scripts/screen_canslim.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/screeners/canslim"
     },
     "theme_detector": {
       "action": "run"

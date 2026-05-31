@@ -692,7 +692,9 @@ Several skills require API keys for data access:
 ### API Setup
 
 **Financial Modeling Prep (FMP) API:**
-- Free tier: 250 requests/day (sufficient for most use cases)
+- Basic (free): 250 API calls/day
+- Starter: $29/month — 300 API calls/minute
+- Premium: $69/month — 750 API calls/minute (restricted endpoints e.g. full S&P 500 universe)
 - Sign up: https://financialmodelingprep.com/developer/docs
 - Set environment variable: `export FMP_API_KEY=your_key_here`
 - Or provide key via command-line argument when prompted

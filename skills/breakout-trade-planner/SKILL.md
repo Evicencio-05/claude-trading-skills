@@ -28,10 +28,10 @@ Run the planner with VCP screener output:
 
 ```bash
 python3 skills/breakout-trade-planner/scripts/plan_breakout_trades.py \
-  --input reports/vcp_screener_YYYY-MM-DD.json \
+  --input reports/screeners/vcp/vcp_screener_YYYY-MM-DD.json \
   --account-size 100000 \
   --risk-pct 0.5 \
-  --output-dir reports/
+  --output-dir reports/screeners/breakout/
 ```
 
 ### Step 2: Review Output
@@ -79,6 +79,8 @@ Candidates must pass ALL conditions:
 | --current-exposure-json | None | Existing portfolio exposure |
 
 ## Output
+
+Directory: `reports/screeners/breakout/`
 
 - `breakout_trade_plan_YYYY-MM-DD_HHMMSS.json` — Structured plans with order templates
 - `breakout_trade_plan_YYYY-MM-DD_HHMMSS.md` — Human-readable report

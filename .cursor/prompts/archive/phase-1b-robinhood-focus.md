@@ -59,7 +59,7 @@ Write `project-docs/phase-1b-robinhood-research.md` with:
 - [ ] 10+ trades logged (real or paper) across ≥2 types via `trader-memory-core`
 - [ ] 3+ co-pilot trades executed on Agentic via MCP (user-confirmed each)
 - [ ] IRA positions logged (MCP read + `log-positions` four questions)
-- [ ] `reports/portfolio_review_*.md` exists for 2+ dates
+- [ ] `reports/portfolio/portfolio_review_*.md` exists for 2+ dates
 - [ ] Phase 1 remaining exit items closed (spend, pre-commit)
 
 **Explicitly NOT in Phase 1B:**
@@ -122,7 +122,7 @@ Write `project-docs/phase-1b-robinhood-research.md` with:
 
 ## Phase D — Deliverable
 
-Write session summary to `reports/phase_1b_kickoff_YYYY-MM-DD.md`:
+Write session summary to `reports/meta/phase_1b_kickoff_YYYY-MM-DD.md`:
 
 ```markdown
 # Phase 1B Kickoff — YYYY-MM-DD

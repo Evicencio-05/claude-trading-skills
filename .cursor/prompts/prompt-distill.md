@@ -9,7 +9,7 @@ Run the deterministic prompt learning distiller, summarize the digest, and optio
 
 ## Pre-flight
 - [ ] Read [state/prompt_learnings.yaml](../../state/prompt_learnings.yaml)
-- [ ] Check for unprocessed retros: `ls -1 reports/prompt_run_retro_*.md 2>/dev/null | tail -5`
+- [ ] Check for unprocessed retros: `ls -1 reports/prompts/prompt_run_retro_*.md 2>/dev/null | tail -5`
 
 ## Steps
 
@@ -18,9 +18,12 @@ Run the deterministic prompt learning distiller, summarize the digest, and optio
 ```bash
 uv run python3 scripts/distill_prompt_learnings.py --dry-run   # preview
 uv run python3 scripts/distill_prompt_learnings.py             # apply
+uv run python3 scripts/distill_prompt_learnings.py --enable-llm  # + Ollama suggestions (review only)
 ```
 
-2. Read today's digest: `reports/prompt_learning_digest_YYYY-MM-DD.md`
+2. Read today's digest: `reports/prompts/prompt_learning_digest_YYYY-MM-DD.md`
+
+   If `--enable-llm` was used, review **LLM suggestions (review before merge)** — do not auto-edit YAML.
 
 3. If **distill-and-review**, summarize in chat (≤10 bullets):
    - Retros processed
@@ -33,11 +36,11 @@ uv run python3 scripts/distill_prompt_learnings.py             # apply
 
 ## Outputs
 - Updated [state/prompt_learnings.yaml](../../state/prompt_learnings.yaml)
-- [reports/prompt_learning_digest_YYYY-MM-DD.md](../../reports/prompt_learning_digest_YYYY-MM-DD.md)
+- [reports/prompts/prompt_learning_digest_YYYY-MM-DD.md](../../reports/prompts/prompt_learning_digest_YYYY-MM-DD.md)
 - Archived one-shots in `.cursor/prompts/archive/` (if any eligible)
 
 ## Rules
-- Deterministic only — no LLM calls (Phase 2 may add optional `--enable-llm`)
+- Deterministic distill always runs first; `--enable-llm` adds review-only Ollama suggestions to digest
 - Idempotent — safe to re-run; retros processed once
 - Weekly timer: `prompt-learning.timer` (Sunday 6:30 PM local, after research-staleness)
 

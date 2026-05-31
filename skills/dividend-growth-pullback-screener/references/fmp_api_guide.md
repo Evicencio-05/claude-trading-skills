@@ -39,8 +39,8 @@ This screener supports two screening modes:
 
 ### Paid Tiers (Optional)
 
-- **Starter ($14/month)**: 500 requests/day
-- **Professional ($29/month)**: 1,000 requests/day
+- **Starter ($29/month)**: 300 API calls/minute
+- **Premium ($69/month)**: 750 API calls/minute
 - **Enterprise ($99/month)**: 10,000 requests/day
 
 ## Setting API Key
@@ -389,7 +389,7 @@ When using FINVIZ pre-screening (`--use-finviz`):
 **Advantage**: FINVIZ's RSI filter typically returns 10-30 stocks (not 1000), making FMP analysis feasible within free tier limits.
 
 **Cost comparison:**
-- **FMP Starter Plan** ($14/month, 500 requests): ~80 stocks/day
+- **FMP Starter** ($29/month, 300 calls/minute): sufficient for typical daily screening volume
 - **FINVIZ Elite + FMP Free** ($40/month, 250 FMP requests): ~30 stocks/day with RSI pre-filtering
 - **Result**: FINVIZ approach provides higher-quality candidates (RSI pre-filtered) despite lower volume
 
@@ -400,7 +400,7 @@ When using FINVIZ pre-screening (`--use-finviz`):
 3. **Run during off-peak hours**: Lower chance of rate limits
 4. **Space out runs**: Once daily or weekly, not multiple times per hour
 5. **Cache results**: Save JSON output and analyze locally
-6. **Upgrade if needed**: If screening >30 stocks daily, consider FMP Starter ($14/month)
+6. **Upgrade if needed**: If screening >30 stocks daily on Basic (250/day), consider FMP Starter ($29/month)
 
 ## Error Handling
 
@@ -617,7 +617,7 @@ prices = ticker.history(period="1mo")
 **Solutions:**
 - Wait 24 hours for rate limit reset
 - Use `--max-candidates 30` to conserve requests
-- Upgrade to paid tier ($14/month for 500 requests/day)
+- Upgrade to FMP Starter ($29/month, 300 calls/minute) or reduce `--max-candidates`
 - Check current usage in FMP dashboard
 
 ### "RSI Calculation Errors"

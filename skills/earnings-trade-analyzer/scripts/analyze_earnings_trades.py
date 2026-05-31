@@ -147,7 +147,7 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="reports/",
+        default="reports/screeners/earnings/",
         help="Output directory (default: reports/)",
     )
 

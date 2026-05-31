@@ -21,7 +21,7 @@ The fork's stock/options skills and Robinhood MCP hybrid are built. The **swing 
 
 | Item | Target |
 |------|--------|
-| FMP Starter | **Active** 2026-05-31 — watchlist vcp/canslim/earnings via `--universe`; full S&P 500 needs Professional ($79/mo) |
+| FMP Starter | **Active** 2026-05-31 — watchlist vcp/canslim/earnings via `--universe`; full S&P 500 needs Premium ($69/mo) |
 | Daily batch → PASS 0 | Run watchlist screeners once/day; per-ticker deep/update research reuses via [`scripts/research_preflight.py`](../../scripts/research_preflight.py) ([`commands/deep-research.md`](../../commands/deep-research.md) PASS 0) |
 | Operator cadence | See checklist § [Daily](trading-pipeline-checklist.md#daily-trading-days), § [Weekly](trading-pipeline-checklist.md#weekly), § [Research](trading-pipeline-checklist.md#research-on-demand) |
 
@@ -52,7 +52,7 @@ See checklist § [Per-trade co-pilot](trading-pipeline-checklist.md#per-trade-co
 
 ## Exit criteria (Phase 1 → Phase 2)
 
-Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md).
+Progress detail: [docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md).
 
 - [x] FMP Starter active; `vcp-screener` run on watchlist universe at least once (11 quotes, 2026-05-31)
 - [ ] 14 consecutive trading days: `pre_market.py` + posture log (**12/14** unique days as of 2026-05-30)
@@ -60,7 +60,7 @@ Progress detail: [docs_sync_2026-05-30.md](../reports/docs_sync_2026-05-30.md).
 - [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
 - [ ] 3+ co-pilot trades on Agentic via MCP (user-confirmed each)
 - [ ] IRA positions logged (MCP read + four questions)
-- [ ] `reports/portfolio_review_*.md` for 2+ dates
+- [ ] `reports/portfolio/portfolio_review_*.md` for 2+ dates
 - [ ] Anthropic spend cap met; pre-commit clean
 
 ---
