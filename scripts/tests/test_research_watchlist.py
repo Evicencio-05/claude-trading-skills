@@ -42,6 +42,7 @@ def tmp_env(tmp_path: Path):
         "state_dir": state_dir,
         "research_dir": research_dir,
         "watchlist_path": watchlist_path,
+        "exclude_path": tmp_path / "config" / "no_exclude.yaml",
     }
 
 
@@ -72,14 +73,22 @@ def test_eligible_tickers_union_and_idea_rule(tmp_env):
     tmp_env["watchlist_path"].write_text(
         "FPS:\n  watching: true\nSCNR:\n  watching: true\nNOPE:\n  watching: true\n"
     )
-    tickers = eligible_tickers(tmp_env["state_dir"], tmp_env["watchlist_path"])
+    tickers = eligible_tickers(
+        tmp_env["state_dir"],
+        tmp_env["watchlist_path"],
+        exclude_path=tmp_env["exclude_path"],
+    )
     assert tickers == ["FPS", "MRAM", "NOPE", "SCNR"]
 
 
 def test_eligible_ignores_idea_not_on_watchlist(tmp_env):
     _write_thesis(tmp_env["state_dir"] / "a.yaml", "SCNR", "IDEA")
     tmp_env["watchlist_path"].write_text("FPS:\n  watching: true\n")
-    assert eligible_tickers(tmp_env["state_dir"], tmp_env["watchlist_path"]) == ["FPS"]
+    assert eligible_tickers(
+        tmp_env["state_dir"],
+        tmp_env["watchlist_path"],
+        exclude_path=tmp_env["exclude_path"],
+    ) == ["FPS"]
 
 
 def test_latest_report_date_picks_newest(tmp_env):

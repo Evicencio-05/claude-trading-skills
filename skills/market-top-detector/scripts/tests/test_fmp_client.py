@@ -294,15 +294,26 @@ class TestEndpointFallback:
         assert client.session.get.call_count == 2
 
     def test_batch_quote_skips_symbol_check(self):
-        """Multi-symbol (batch) quote does not apply symbol mismatch check."""
+        """Comma-separated symbols fetch each symbol separately and merge results."""
         client = self._make_client()
-        batch_data = [{"symbol": "^GSPC", "price": 5000}, {"symbol": "^VIX", "price": 20}]
-        resp = _mock_response(200, batch_data)
-        client.session.get = MagicMock(return_value=resp)
+        gspc_data = [{"symbol": "^GSPC", "price": 5000}]
+        vix_data = [{"symbol": "^VIX", "price": 20}]
+
+        def mock_get(url, params=None, timeout=None):
+            sym = (params or {}).get("symbol", "")
+            if not sym and "/quote/" in url:
+                sym = url.split("/quote/")[-1].split("?")[0]
+            if sym == "^GSPC":
+                return _mock_response(200, gspc_data)
+            if sym == "^VIX":
+                return _mock_response(200, vix_data)
+            return _mock_response(404, [])
+
+        client.session.get = MagicMock(side_effect=mock_get)
 
         result = client.get_quote("^GSPC,^VIX")
-        assert result == batch_data
-        assert client.session.get.call_count == 1
+        assert result == [{"symbol": "^GSPC", "price": 5000}, {"symbol": "^VIX", "price": 20}]
+        assert client.session.get.call_count == 2
 
     # ------------------------------------------------------------------
     # Skill-specific tests
