@@ -82,7 +82,7 @@ def test_archive_report(repo_env: Path) -> None:
     src = repo_env / "reports" / "research" / "INO_2026-05-10.md"
     src.write_text("# INO\n")
     dest = research_utils.archive_report(src)
-    assert dest.parent == repo_env / "reports" / "archive" / "research"
+    assert dest.parent == repo_env / "reports" / "archives"
     assert dest.exists()
     assert not src.exists()
 

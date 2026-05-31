@@ -679,6 +679,7 @@ def test_run_converts_name_to_title_and_adds_id(mine_module, tmp_path: Path):
         project=None,
         lookback_days=7,
         dry_run=False,
+        llm_provider="claude",
     )
 
     # Patch dependencies to isolate the enrichment logic
@@ -880,6 +881,7 @@ def test_run_normalizes_null_title_from_name_then_filters(mine_module, tmp_path:
         project=None,
         lookback_days=7,
         dry_run=False,
+        llm_provider="claude",
     )
 
     with (
