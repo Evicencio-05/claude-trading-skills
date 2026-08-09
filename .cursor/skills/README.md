@@ -1,6 +1,9 @@
 # Cursor Project Skills
 
-Symlinks point at the canonical skill tree in [`skills/`](../../skills/). **Edit files under `skills/`**, not here.
+Two kinds of entries live here:
+
+1. **Upstream / shared skills** — symlinks into [`skills/`](../../skills/). Edit under `skills/`, not the symlink.
+2. **Fork workflow skills** — real directories under `.cursor/skills/` (no `skills/` copy). Edit here; authoritative steps live in [`commands/`](../../commands/).
 
 ## Symlinked skills (daily + research stack)
 
@@ -9,18 +12,21 @@ Symlinks point at the canonical skill tree in [`skills/`](../../skills/). **Edit
 - `us-stock-analysis`, `technical-analyst`, `earnings-trade-analyzer`, `earnings-calendar`
 - `exposure-coach`, `position-sizer`, `trader-memory-core`
 
-## Workflow skills (repo-local)
+## Workflow skills (fork-local under `.cursor/skills/`)
 
-- `deep-research` — wraps [commands/deep-research.md](../../commands/deep-research.md)
-- `log-positions` — [commands/log-positions.md](../../commands/log-positions.md) (sync + MCP)
-- `robinhood-portfolio-review` — MCP read-only portfolio report
-- `update-research` — [commands/update-research.md](../../commands/update-research.md)
-- `tradewhisperer-charts` — [commands/tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md)
-- `gex-vex-maps` — [commands/gex-vex-maps.md](../../commands/gex-vex-maps.md)
-- `operator-charts` — [commands/operator-charts.md](../../commands/operator-charts.md)
-- `ta-confluence` — [commands/ta-confluence.md](../../commands/ta-confluence.md)
+| Skill | Status | Command |
+|-------|--------|---------|
+| `deep-research` | Active | [deep-research.md](../../commands/deep-research.md) |
+| `log-positions` | Active | [log-positions.md](../../commands/log-positions.md) |
+| `robinhood-portfolio-review` | Active | MCP portfolio report |
+| `update-research` | Active | [update-research.md](../../commands/update-research.md) |
+| `tradewhisperer-charts` | Contract active | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) |
+| `gex-vex-maps` | Contract active | [gex-vex-maps.md](../../commands/gex-vex-maps.md) |
+| `operator-charts` | Contract active | [operator-charts.md](../../commands/operator-charts.md) |
+| `ta-confluence` | Active (candle_first / map_first) | [ta-confluence.md](../../commands/ta-confluence.md) |
+| `agentic-copilot-trade` | Co-pilot gates (confirm before place) | [agentic-copilot-trade.md](../../commands/agentic-copilot-trade.md) |
 
-## Add another skill
+## Add a symlinked upstream skill
 
 From repo root:
 
@@ -32,4 +38,4 @@ Commit the symlink. Cursor discovers `SKILL.md` inside the linked directory.
 
 ## Claude Code parity
 
-Mirror the same symlink under `~/.claude/skills/` so both IDEs use one source tree. See [AGENTS.md](../../AGENTS.md).
+For symlinked skills, mirror under `~/.claude/skills/`. Fork workflow skills are invoked via `commands/*.md` in both harnesses. See [AGENTS.md](../../AGENTS.md).

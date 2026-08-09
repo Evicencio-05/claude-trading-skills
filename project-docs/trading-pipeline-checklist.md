@@ -27,10 +27,12 @@
 | Broker snapshot | `reports/portfolio/portfolio_review_YYYY-MM-DD.md` |
 | Position sizing | `reports/portfolio/position_sizer_{YYYY-MM-DD}_{HHMMSS}.{json,md}` |
 | Watchlist batch summary | `reports/logs/portfolio_summary_YYYY-MM-DD.md` |
-| TradeWhisperer chart/list intake | `reports/charts/tradewhisperer/` |
+| TradeWhisperer chart/list intake | `reports/charts/tradewhisperer/{TICKER}_tw_{1D\|1W\|1M}_DATE` · `list_tw_{daily\|weekly\|monthly}_DATE` |
 | GEX/VEX map intake | `reports/charts/gex_vex/{TICKER}_gex_DATE` · `{TICKER}_vex_DATE` |
 | Operator chart intake | `reports/charts/operator/{TICKER}_operator_DATE.{md,json}` |
 | TA confluence brief | `reports/charts/confluence/session_confluence_{period}_DATE` · `{TICKER}_confluence_DATE` |
+| Agentic co-pilot plan | `reports/logs/agentic_copilot_plan_{TICKER}_DATE.json` |
+| Entry watchlist (optional) | `reports/logs/entry_watchlist_DATE.{json,md}` |
 | Prompt retros / digests | `reports/prompts/prompt_run_retro_*.md`, `reports/prompts/prompt_learning_digest_*.md` |
 | Meta / audit session outputs | `reports/meta/` |
 | Theses | `state/theses/` (via `thesis_store.py` only) |
@@ -74,15 +76,15 @@ Path registry: [`scripts/report_paths.py`](../scripts/report_paths.py)
 
 ## Per-trade co-pilot (Agentic only)
 
-Before any new Agentic MCP order:
+Use [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md) (skill `agentic-copilot-trade`). Summary:
 
 - [ ] **Broker snapshot** — `robinhood-portfolio-review` (or `scripts/robinhood_mcp.py`) — buying power, exposure
 - [ ] Today's `pre_market` posture — new entry allowed?
-- [ ] **`position-sizer`** — Agentic buying power ([skills/position-sizer/SKILL.md](../skills/position-sizer/SKILL.md))
+- [ ] Research + size — Phase 11 plan + `position-sizer` within `config/agentic_copilot.yaml` caps
 - [ ] Present plan — entry, stop, target, risk $ (IRA N/A on Agentic)
-- [ ] **Stop — user confirms**
-- [ ] MCP order — **Portfolio C (Agentic) only**
-- [ ] Log thesis + position same session — [commands/log-positions.md](../commands/log-positions.md)
+- [ ] **Stop — user replies `confirm` / `confirm plan and order`**
+- [ ] MCP `review_equity_order` then `place_equity_order` — **Portfolio C (Agentic) only**
+- [ ] Write plan JSON + log thesis — [commands/log-positions.md](../commands/log-positions.md)
 
 **Never MCP trade:** IRA (`ira_robinhood`), taxable (`robinhood_taxable`). Taxable sync → `robinhood_sync.py`.
 
@@ -106,5 +108,6 @@ Before any new Agentic MCP order:
 
 ## Changelog
 
+- **2026-08-09** — TA-first chart intakes + `ta-confluence`; `agentic-copilot-trade` gates; TW filenames include `1D|1W|1M`
 - **2026-05-31** — Reports layout v2: category-grouped subdirs (`market/`, `screeners/`, `portfolio/`, etc.); `scripts/report_paths.py` registry
 - **2026-05-31** — Initial checklist; consolidated steps from phase-1, PENDING_WORK, LOAD_GUIDE

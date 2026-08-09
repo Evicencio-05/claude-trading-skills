@@ -27,9 +27,11 @@ User-supplied images/exports only; no news/FMP fetch; fusion next.
 - [x] GEX/VEX contract (Skylit docs)
 - [x] Operator-charts contract (example `HOOD_operator_2026-08-08`)
 - [x] **Fusion** — `ta-confluence` skill/command + rubric + judgment layer → `reports/charts/confluence/`
+- [x] **Agentic co-pilot** — `agentic-copilot-trade` + `config/agentic_copilot.yaml.example`
 - [ ] Live session smoke with full TW list + GEX/VEX + operator chart
 - [ ] Deep-research news strip — deferred
 - [ ] v1.5 prediction log / process retro (after real sessions)
+- [ ] First filled Agentic co-pilot trade (user `confirm`)
 
 ---
 

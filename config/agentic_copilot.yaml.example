@@ -1,0 +1,23 @@
+# Copy to config/agentic_copilot.yaml (gitignored overrides OK) for persistent caps.
+# Chat overrides always win over this file. See commands/agentic-copilot-trade.md.
+
+account_key: robinhood_agentic
+
+sizing:
+  # Prefer hard dollar caps on the ~$50 Agentic account; risk_pct null = ignore %.
+  risk_pct: null
+  max_risk_dollars: 20
+  max_position_dollars: 45
+  max_position_pct: 100
+  min_shares: 1
+  account_size_source: mcp_buying_power  # or fixed
+  fixed_account_size: null
+  fractional: true
+
+gates:
+  require_new_entry_allowed: true
+  require_actionable_research: true
+  stale_research_days: 14
+
+learning:
+  write_plan_artifact: true

@@ -73,8 +73,10 @@ Only intermediate skill run artifacts (loose `.json` files) are gitignored.
 3. Run `/log-positions` in Claude Code — answer 4 questions per position
 
 **Robinhood Agentic MCP (Portfolio C):**
-Use Claude Code MCP for positions when available. IRA (B) stays manual unless
-MCP account discovery confirms IRA read access — see [decisions.md](../decisions.md).
+Read all accounts; trade Agentic only. Co-pilot workflow:
+[commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md)
+(confirm → review → confirm → place). IRA (B) is read + thesis logging only —
+see [decisions.md](../decisions.md).
 
 What sync/MCP captures automatically: ticker, size, avg cost, account, options fields, IRA flags.
 What always requires human input: thesis, confidence, stop, target.

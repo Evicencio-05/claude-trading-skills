@@ -144,3 +144,46 @@ def test_find_latest_same_day_artifact_finds_sector_date_only(tmp_repo):
     path.write_text("# sector")
     result = find_latest_same_day_artifact(tmp_repo, "sector_rotation", as_of)
     assert result == path
+
+
+@pytest.mark.parametrize(
+    ("key", "filename"),
+    [
+        ("tradewhisperer_charts", "SPY_tw_1D_2026-08-07.json"),
+        ("tradewhisperer_charts", "list_tw_daily_2026-08-07.json"),
+        ("gex_vex_maps", "UMAC_gex_2026-08-08.json"),
+        ("gex_vex_maps", "UMAC_vex_2026-08-08.json"),
+        ("operator_charts", "HOOD_operator_2026-08-08.json"),
+        ("ta_confluence", "TSEM_confluence_2026-08-09.json"),
+        ("ta_confluence", "session_confluence_daily_2026-08-09.json"),
+    ],
+)
+def test_find_latest_same_day_ticker_stem_chart_artifacts(tmp_repo, key, filename):
+    as_of = date.fromisoformat(filename.rsplit("_", 1)[-1].removesuffix(".json"))
+    chart_dir = artifact_dir(tmp_repo, key, mkdir=True)
+    path = chart_dir / filename
+    _write_json(path, {"source": key})
+    result = find_latest_same_day(tmp_repo, key, as_of)
+    assert result == path
+
+
+def test_find_latest_same_day_ticker_stem_prefers_newest_name(tmp_repo):
+    as_of = date(2026, 8, 9)
+    tw_dir = artifact_dir(tmp_repo, "tradewhisperer_charts", mkdir=True)
+    _write_json(tw_dir / "AAA_tw_1D_2026-08-09.json", {"n": 1})
+    _write_json(tw_dir / "ZZZ_tw_1W_2026-08-09.json", {"n": 2})
+    result = find_latest_same_day(tmp_repo, "tradewhisperer_charts", as_of)
+    assert result is not None
+    assert result.name == "ZZZ_tw_1W_2026-08-09.json"
+
+
+def test_agentic_and_entry_watchlist_artifact_dirs(tmp_repo):
+    assert artifact_dir(tmp_repo, "entry_watchlist", mkdir=True) == tmp_repo / "reports" / "logs"
+    assert (
+        artifact_dir(tmp_repo, "agentic_copilot_plan", mkdir=True) == tmp_repo / "reports" / "logs"
+    )
+    plan_dir = artifact_dir(tmp_repo, "agentic_copilot_plan")
+    _write_json(plan_dir / "agentic_copilot_plan_AVGO_2026-06-02.json", {"ticker": "AVGO"})
+    found = find_latest_same_day(tmp_repo, "agentic_copilot_plan", date(2026, 6, 2))
+    assert found is not None
+    assert "AVGO" in found.name

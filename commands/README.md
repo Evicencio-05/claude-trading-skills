@@ -20,6 +20,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/gex-vex-maps TICKER\|SPX` | [gex-vex-maps.md](gex-vex-maps.md) |
 | `/operator-charts TICKER` | [operator-charts.md](operator-charts.md) |
 | `/ta-confluence [candle_first\|map_first]` | [ta-confluence.md](ta-confluence.md) |
+| `/agentic-copilot-trade [TICKER]` | [agentic-copilot-trade.md](agentic-copilot-trade.md) |
 
 ## Cursor
 
@@ -34,6 +35,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | GEX/VEX maps | Skill `gex-vex-maps` — [gex-vex-maps.md](gex-vex-maps.md) |
 | Operator charts | Skill `operator-charts` — [operator-charts.md](operator-charts.md) |
 | TA confluence | Skill `ta-confluence` — [ta-confluence.md](ta-confluence.md) |
+| Agentic co-pilot | Skill `agentic-copilot-trade` — [agentic-copilot-trade.md](agentic-copilot-trade.md) |
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 

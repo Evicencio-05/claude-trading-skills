@@ -1,9 +1,0 @@
-{
-  "ticker": "HPE",
-  "fetched_at": "2026-05-30T22:14:34.552715-07:00",
-  "market_context": null,
-  "fred_calendar": "ERROR: usage: fred_calendar.py [-h] [--from FROM_DATE] [--to TO_DATE]\n                        [--api-key API_KEY] [--format {json,text}]\n                        [--output OUTPUT]\nfred_calendar.py: error: unrecognized arguments: --days 7",
-  "quote": {
-    "error": "402 Client Error: Payment Required for url: https://financialmodelingprep.com/stable/quote?symbol=HPE&apikey=bDtoS5Fq2WOHnzTurOppKpO10YDXk3Mi"
-  }
-}

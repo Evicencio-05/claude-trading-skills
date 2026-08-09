@@ -164,6 +164,7 @@ Revisit: If local quality insufficient, restrict to edge-hints only or upgrade m
 Operator trading leans technical (TradeWhisperer, Skylit GEX/VEX, own charts), not news/fundamental
 deep-research. Decision: Three fork-only intake skills under `.cursor/skills/`
 (`tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`) + `reports/charts/` via `report_paths`.
+Input contracts are filled for all three (TW charts/lists, Skylit GEX/VEX, operator S/R+fib+VP+SMA).
 User-supplied artifacts only. Operator charts use four indicators: white S/R, fib extensions,
 LuxAlgo VP shelves (https://www.tradingview.com/v/zVCsx5DL/), SMA 50/100/200 (orange/blue/green).
 Skylit via screenshots only — does not reopen Skylit $99/mo API gate.
@@ -176,3 +177,10 @@ and `map_first` (Skylit pick → TW color → operator chart). Shared scoring ru
 chart caps at WATCH; hard conflicts default NO_TRADE. Outputs under `reports/charts/confluence/`.
 No MCP, no auto thesis_store, no scraping.
 Revisit: v1.5 prediction log after several real sessions.
+
+**[2026-08-09] Agentic co-pilot gated workflow.**
+Decision: Ship `agentic-copilot-trade` (command + thin Cursor skill) with
+`config/agentic_copilot.yaml.example` dollar caps for Portfolio C. Passes: config/ticker →
+context gates → draft plan → user `confirm` → MCP `review_equity_order` → second confirm →
+`place_equity_order` → plan JSON + thesis_store. No autonomous place before Phase 3B.
+Revisit: After 3 filled co-pilot trades, tighten confirm phrasing if needed.

@@ -25,6 +25,7 @@ node_modules/
 .envrc
 .mcp.json
 .cursor/mcp.json
+config/agentic_copilot.yaml
 
 # Logs & temp
 logs/
@@ -46,7 +47,11 @@ reports/*.json
 reports/archives/*.json
 reports/skill-generation-log/*.json
 reports/skill-improvement-log/*.json
+# Intermediate FMP prefetch dumps (local only)
+reports/logs/research_prefetch/
 reviews/
+# Accidental misplaced state trees
+project-docs/state/
 
 # Robinhood auth (never commit)
 .tokens/
