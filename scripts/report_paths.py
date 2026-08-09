@@ -29,6 +29,7 @@ ARTIFACT_DIRS: dict[str, str] = {
     "tradewhisperer_charts": "reports/charts/tradewhisperer",
     "gex_vex_maps": "reports/charts/gex_vex",
     "operator_charts": "reports/charts/operator",
+    "ta_confluence": "reports/charts/confluence",
 }
 
 # Filename prefix for glob matching (key -> prefix)
@@ -49,6 +50,7 @@ ARTIFACT_PREFIXES: dict[str, str] = {
     "tradewhisperer_charts": "tw_",
     "gex_vex_maps": "gex_",
     "operator_charts": "operator_",
+    "ta_confluence": "confluence_",
 }
 
 ARTIFACT_KEYS = frozenset(ARTIFACT_DIRS)

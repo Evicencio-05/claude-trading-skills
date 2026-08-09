@@ -19,6 +19,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/tradewhisperer-charts TICKER` | [tradewhisperer-charts.md](tradewhisperer-charts.md) |
 | `/gex-vex-maps TICKER\|SPX` | [gex-vex-maps.md](gex-vex-maps.md) |
 | `/operator-charts TICKER` | [operator-charts.md](operator-charts.md) |
+| `/ta-confluence [candle_first\|map_first]` | [ta-confluence.md](ta-confluence.md) |
 
 ## Cursor
 
@@ -32,6 +33,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | TradeWhisperer charts | Skill `tradewhisperer-charts` — [tradewhisperer-charts.md](tradewhisperer-charts.md) |
 | GEX/VEX maps | Skill `gex-vex-maps` — [gex-vex-maps.md](gex-vex-maps.md) |
 | Operator charts | Skill `operator-charts` — [operator-charts.md](operator-charts.md) |
+| TA confluence | Skill `ta-confluence` — [ta-confluence.md](ta-confluence.md) |
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 

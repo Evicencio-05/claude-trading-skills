@@ -26,8 +26,10 @@ User-supplied images/exports only; no news/FMP fetch; fusion next.
 - [x] TradeWhisperer contract (charts + lists)
 - [x] GEX/VEX contract (Skylit docs)
 - [x] Operator-charts contract (example `HOOD_operator_2026-08-08`)
-- [ ] Design fusion workflow
+- [x] **Fusion** — `ta-confluence` skill/command + rubric + judgment layer → `reports/charts/confluence/`
+- [ ] Live session smoke with full TW list + GEX/VEX + operator chart
 - [ ] Deep-research news strip — deferred
+- [ ] v1.5 prediction log / process retro (after real sessions)
 
 ---
 

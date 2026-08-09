@@ -10,8 +10,8 @@
 
 - [x] **TA-first source foundations** — `tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`
 - [x] **All three input contracts filled** — TW charts/lists · Skylit GEX/VEX · operator S/R+fib+VP+SMA
-- [ ] **Fusion workflow** — combine three sources (next)
-- [ ] Deep-research news strip — deferred until fusion design
+- [x] **Fusion workflow** — `ta-confluence` (candle_first / map_first + judgment)
+- [ ] Deep-research news strip — deferred
 - [ ] **First Agentic trade** — user must reply **confirm** on presented plan
 
 ## Open Blockers

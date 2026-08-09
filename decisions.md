@@ -166,5 +166,13 @@ deep-research. Decision: Three fork-only intake skills under `.cursor/skills/`
 (`tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`) + `reports/charts/` via `report_paths`.
 User-supplied artifacts only. Operator charts use four indicators: white S/R, fib extensions,
 LuxAlgo VP shelves (https://www.tradingview.com/v/zVCsx5DL/), SMA 50/100/200 (orange/blue/green).
-Skylit via screenshots only — does not reopen Skylit $99/mo API gate. Fusion skill TBD after contracts.
-Revisit: After fusion design — decide whether to slim deep-research.
+Skylit via screenshots only — does not reopen Skylit $99/mo API gate.
+Revisit: After live confluence sessions — decide whether to slim deep-research.
+
+**[2026-08-09] TA confluence fusion — one skill, two entry modes.**
+Decision: Add `ta-confluence` with `candle_first` (TW BLUE/PINK shortlist → maps → operator chart)
+and `map_first` (Skylit pick → TW color → operator chart). Shared scoring rubric + judgment layer
+(devil’s advocate, invalidation, process grade). Verdicts PLAY/WATCH/NO_TRADE; missing operator
+chart caps at WATCH; hard conflicts default NO_TRADE. Outputs under `reports/charts/confluence/`.
+No MCP, no auto thesis_store, no scraping.
+Revisit: v1.5 prediction log after several real sessions.

@@ -1,0 +1,86 @@
+{
+  "source": "ta_confluence",
+  "ticker": "HOOD",
+  "as_of": "2026-08-08",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": null,
+    "gex": null,
+    "vex": null,
+    "operator": "reports/charts/operator/HOOD_operator_2026-08-08.json"
+  },
+  "score": 25,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 0,
+      "note": "No TW list/chart artifact for HOOD"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "HTF absent \u2014 full credit per rubric"
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 0,
+      "note": "No GEX/VEX artifacts in reports/charts/gex_vex"
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 0,
+      "note": "Single-mode N/A \u2014 maps missing"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 5,
+      "note": "Levels present (50 SMA~94, fib 0.786=93.85, VP shelf 75\u2013115) but mid-shelf / at-SMA chop \u2014 half credit"
+    }
+  },
+  "verdict": "NO_TRADE",
+  "judgment": {
+    "devils_advocate": [
+      "No TW color \u2014 cannot confirm BLUE/PINK trigger for the period",
+      "No Skylit magnets \u2014 cannot see king/gatekeeper traps above ~109 resistance cluster",
+      "Price at 50 SMA + fib 0.786 inside major VP shelf \u2014 easy fakeout / mid-range chop"
+    ],
+    "invalidation": {
+      "tw": "Unavailable \u2014 ingest TW daily/weekly list or HOOD chart first",
+      "maps": "Unavailable \u2014 paste GEX+VEX for HOOD",
+      "operator": "Invalid on daily close below 90.83 (fib 0.618) or sustained loss of 50 SMA ~94 toward 88.71"
+    },
+    "not_allowed_to_ignore": [
+      "Operator chart alone is not enough for PLAY",
+      "109 cluster (100 SMA + fib 1.618 + upper VP) is untested resistance without map confirmation"
+    ],
+    "rr_sketch": {
+      "entry_zone": "93\u201395 (at 50 SMA / fib 0.786)",
+      "stop": 90.83,
+      "target_1": 97.79,
+      "rough_rr": "~1.3R to fib 1.0 \u2014 asymmetric edge unclear without maps"
+    },
+    "process_grade": {
+      "tw_present": false,
+      "gex_and_vex_present": false,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: incomplete (smoke \u2014 missing TW and maps)"
+    },
+    "one_thing_to_verify": "Whether you are overweighting the bounce into 50 SMA without a TW BLUE and without knowing if 109 is a Skylit ceiling or magnet."
+  },
+  "override": null,
+  "gaps": [
+    "No TW artifacts under reports/charts/tradewhisperer/",
+    "No GEX/VEX artifacts under reports/charts/gex_vex/",
+    "Smoke only \u2014 not a live session"
+  ],
+  "hard_stops": [
+    "score_below_50"
+  ],
+  "smoke": true,
+  "last": 93.29,
+  "structure_notes": "Price ~93.29 consolidating near 50 SMA (~94) and fib 0.786 (93.85), below 100 SMA / fib 1.618 (~109) resistance cluster aligned with upper VP shelf; above 200 SMA (~80) and fib 0.000 (79.82)."
+}

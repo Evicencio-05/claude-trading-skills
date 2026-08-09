@@ -42,6 +42,7 @@ def test_artifact_dir_creates_subdirectory(tmp_repo):
         ("tradewhisperer_charts", ("reports", "charts", "tradewhisperer")),
         ("gex_vex_maps", ("reports", "charts", "gex_vex")),
         ("operator_charts", ("reports", "charts", "operator")),
+        ("ta_confluence", ("reports", "charts", "confluence")),
     ],
 )
 def test_ta_chart_source_artifact_dirs(tmp_repo, key, rel):
