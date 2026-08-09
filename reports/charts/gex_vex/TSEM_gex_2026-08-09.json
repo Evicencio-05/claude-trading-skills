@@ -1,0 +1,183 @@
+{
+  "source": "gex_vex",
+  "ticker": "TSEM",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot TSEM"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 252.49,
+    "change": 28.22,
+    "change_pct": 12.56,
+    "atm_strike": 250.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-16",
+      "2027-01-15"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 300.0,
+      "expiration": "2026-09-18",
+      "value_k": -311,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 300.0,
+        "expiration": "2026-09-18",
+        "value_k": -311,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-21",
+        "value_k": 195,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 190.0,
+        "expiration": "2026-08-21",
+        "value_k": -152,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-10-16",
+        "value_k": -126,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": -103,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-09-18",
+        "value_k": -73,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-09-18",
+        "value_k": -59,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -55,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-10-16",
+        "value_k": 47,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 250.0,
+        "expiration": "2026-09-18",
+        "value_k": -59,
+        "sign": "neg"
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-10-16",
+        "value_k": 47,
+        "sign": "pos"
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-09-18",
+        "value_k": -73,
+        "sign": "neg"
+      },
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -55,
+        "sign": "neg"
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-21",
+        "value_k": 195,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -55,
+        "sign": "neg",
+        "note": "Between spot ~252 and king 300"
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": -103,
+        "sign": "neg",
+        "note": "Near-term neg node above spot on path to 300"
+      }
+    ],
+    "air_pockets": "Many far OTM cells ~$0K; activity concentrated Aug 21 / Sep 18 / Oct 16",
+    "range_edges": {
+      "upside": 300.0,
+      "downside": 235.0
+    },
+    "map_timestamp": "2026-08-09 07:14:32",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 300.0,
+          "expiration": "2026-09-18",
+          "note": "King on both GEX (-$311K) and VEX (-$19,263K)"
+        },
+        {
+          "strike": 260.0,
+          "expiration": "2026-09-18",
+          "note": "Gatekeeper zone both modes (GEX -$55K / VEX -$2,973K)"
+        },
+        {
+          "strike": 240.0,
+          "expiration": "2026-10-16",
+          "note": "Shared downside cluster (GEX -$126K / VEX -$2,840K)"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed \u2014 hotspots only"
+  ],
+  "next": null
+}

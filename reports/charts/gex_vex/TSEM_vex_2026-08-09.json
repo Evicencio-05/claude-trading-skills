@@ -1,0 +1,187 @@
+{
+  "source": "gex_vex",
+  "ticker": "TSEM",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker VEX screenshot TSEM"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 252.49,
+    "change": 28.22,
+    "change_pct": 12.56,
+    "atm_strike": 250.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-16",
+      "2027-01-15"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 300.0,
+      "expiration": "2026-09-18",
+      "value_k": -19263,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 300.0,
+        "expiration": "2026-09-18",
+        "value_k": -19263,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 180.0,
+        "expiration": "2026-10-16",
+        "value_k": 4933,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 380.0,
+        "expiration": "2026-10-16",
+        "value_k": -3518,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 310.0,
+        "expiration": "2026-09-18",
+        "value_k": -3239,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 330.0,
+        "expiration": "2027-01-15",
+        "value_k": -3150,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -2973,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-10-16",
+        "value_k": -2840,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 370.0,
+        "expiration": "2026-08-21",
+        "value_k": 2833,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 400.0,
+        "expiration": "2026-10-16",
+        "value_k": 2709,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 165.0,
+        "expiration": "2026-08-21",
+        "value_k": 2597,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 190.0,
+        "expiration": "2026-08-21",
+        "value_k": 2562,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": -2231,
+        "sign": "neg",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -2973,
+        "sign": "neg"
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-10-16",
+        "value_k": -2840,
+        "sign": "neg"
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": -2231,
+        "sign": "neg"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 260.0,
+        "expiration": "2026-09-18",
+        "value_k": -2973,
+        "sign": "neg",
+        "note": "Large VEX gatekeeper between spot and king 300 \u2014 violent interaction risk"
+      },
+      {
+        "strike": 310.0,
+        "expiration": "2026-09-18",
+        "value_k": -3239,
+        "sign": "neg",
+        "note": "Just beyond king 300 \u2014 extension / overshoot cluster"
+      }
+    ],
+    "air_pockets": "Low activity on many deep ITM/OTM rows; dominant mass at Sep 18 300 and Oct 16 clusters",
+    "range_edges": {
+      "upside": 300.0,
+      "downside": 180.0
+    },
+    "map_timestamp": "2026-08-09 07:14:35",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "gex",
+      "overlap_zones": [
+        {
+          "strike": 300.0,
+          "expiration": "2026-09-18",
+          "note": "Shared king zone with GEX"
+        },
+        {
+          "strike": 260.0,
+          "expiration": "2026-09-18",
+          "note": "Shared gatekeeper above spot"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed \u2014 hotspots only"
+  ],
+  "next": null
+}
