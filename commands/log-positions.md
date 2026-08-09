@@ -104,6 +104,16 @@ Report at the end:
 
 ---
 
+## After agentic-copilot-trade
+
+When a plan JSON exists at `reports/logs/agentic_copilot_plan_{TICKER}_{DATE}.json` and the order was placed:
+
+- Prefill thesis / stop / target / confidence from `agent_proposal` when present
+- Still ask the four questions if any field is missing or the user wants to edit
+- Tag account `robinhood_agentic`; do not mark IRA
+
+---
+
 ## Notes
 
 - For IRA positions, add tag `ira` if not present. Flag IRA-eligible on every options line.

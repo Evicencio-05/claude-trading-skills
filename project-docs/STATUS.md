@@ -11,8 +11,9 @@
 - [x] **TA-first source foundations** — `tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`
 - [x] **All three input contracts filled** — TW charts/lists · Skylit GEX/VEX · operator S/R+fib+VP+SMA
 - [x] **Fusion workflow** — `ta-confluence` (candle_first / map_first + judgment)
+- [x] **Agentic co-pilot command** — `agentic-copilot-trade` + `config/agentic_copilot.yaml.example`
 - [ ] Deep-research news strip — deferred
-- [ ] **First Agentic trade** — user must reply **confirm** on presented plan
+- [ ] **First Agentic trade filled** — user must reply **confirm** on presented plan (workflow ready)
 
 ## Open Blockers
 
@@ -52,13 +53,15 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 | 14 days pre_market + posture log | **12/14** unique days (`reports/logs/posture_history.log`) |
 | 5+ deep/update on watchlist | HOOD/IBM/TSM/VECO @ 2026-05-31; MRAM/MU/P @ 2026-05-27; **FPS stale** |
 | 10+ trades logged, ≥2 types | ❌ 17 theses total (10 ACTIVE legacy + TE); not 10+ effective Phase 1 trades |
-| 3+ Agentic co-pilot MCP trades | ❌ 0 — awaiting user confirm |
+| 3+ Agentic co-pilot MCP trades | **0/3 filled** — `/agentic-copilot-trade` ready; awaiting user confirm |
 | IRA logged via MCP | ❌ |
 | 2+ portfolio_review reports | **1/2** — `portfolio_review_2026-05-28.md` |
 | Anthropic &lt;$20, pre-commit | Open |
 
 ## Recent Changes
 
+- TA-first intakes + `ta-confluence` + `agentic-copilot-trade` (2026-08-09)
+- `report_paths` same-day discovery for ticker-stem chart filenames (2026-08-09)
 - FMP Starter verified + stable API fmp_client fixes (2026-05-31)
 - Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md))
 - TE thesis logged (`th_te_grw_20260529_034d`); POWL closed 2026-05-29
