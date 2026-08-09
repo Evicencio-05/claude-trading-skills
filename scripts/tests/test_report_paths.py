@@ -179,7 +179,9 @@ def test_find_latest_same_day_ticker_stem_prefers_newest_name(tmp_repo):
 
 def test_agentic_and_entry_watchlist_artifact_dirs(tmp_repo):
     assert artifact_dir(tmp_repo, "entry_watchlist", mkdir=True) == tmp_repo / "reports" / "logs"
-    assert artifact_dir(tmp_repo, "agentic_copilot_plan", mkdir=True) == tmp_repo / "reports" / "logs"
+    assert (
+        artifact_dir(tmp_repo, "agentic_copilot_plan", mkdir=True) == tmp_repo / "reports" / "logs"
+    )
     plan_dir = artifact_dir(tmp_repo, "agentic_copilot_plan")
     _write_json(plan_dir / "agentic_copilot_plan_AVGO_2026-06-02.json", {"ticker": "AVGO"})
     found = find_latest_same_day(tmp_repo, "agentic_copilot_plan", date(2026, 6, 2))

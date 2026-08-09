@@ -1,8 +1,0 @@
-{
-  "ticker": "ADBE",
-  "fetched_at": "2026-05-31T16:05:00-07:00",
-  "quote": {"price": 259.21, "yearHigh": 421.48, "yearLow": 224.13, "marketCap": 104772682000},
-  "next_earnings": "2026-06-11",
-  "q2_guide": {"revenue": "6.43-6.48B", "nonGaapEps": "5.80-5.85", "nonGaapOm": "~44.5%"},
-  "institutional_flow": "FMP v3 blocked (403); not collected"
-}

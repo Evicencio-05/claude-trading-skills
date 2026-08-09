@@ -1,9 +1,0 @@
-{
-  "ticker": "AMAT",
-  "fetched_at": "2026-05-31T16:05:00-07:00",
-  "market_context": "reports/exposure_posture_2026-05-31_144530.md",
-  "fred_calendar": "NFP 2026-06-05; CPI 2026-06-10",
-  "quote": {"price": 450.06, "yearHigh": 462.4, "yearLow": 154.47, "marketCap": 357329187540},
-  "next_earnings": "2026-08-13",
-  "institutional_flow": "FMP v3 blocked (403); not collected"
-}
