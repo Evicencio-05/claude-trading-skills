@@ -2,8 +2,9 @@
 name: operator-charts
 description: >-
   Ingest the operator's own TradingView charts (S/R, Fibonacci extensions,
-  LuxAlgo VP shelves, 50/100/200 SMA) into a dated artifact. Use when the user
-  pastes their charting, says operator-charts, or provides personal TA markups.
+  LuxAlgo VP shelves, 50/100/200 SMA, white/yellow RSI strength) into a dated
+  artifact. Use when the user pastes their charting, says operator-charts, or
+  provides personal TA markups.
 ---
 
 # Operator Charts
@@ -36,3 +37,4 @@ Artifact key: `operator_charts`.
 - Co-pilot only — no MCP orders
 - Do not merge with TradeWhisperer or GEX/VEX in this skill
 - SMA colors fixed: orange 50 / blue 100 / green 200
+- RSI: white vs yellow vs 50 for buyer/seller strength (see input contract)

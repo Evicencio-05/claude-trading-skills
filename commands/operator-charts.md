@@ -5,7 +5,7 @@ argument-hint: "<TICKER>"
 
 # /operator-charts {TICKER}
 
-Ingest **user-supplied** personal chart images for `{TICKER}`. Four indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 50/100/200.
+Ingest **user-supplied** personal chart images for `{TICKER}`. Five indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 50/100/200, white/yellow RSI strength.
 
 **Co-pilot only.** No MCP orders. No cross-source merge. No news/FMP.
 
