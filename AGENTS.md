@@ -88,3 +88,13 @@ Do not duplicate API keys in committed files. Use `.env` at repo root (gitignore
 - **Cursor subscription:** code edits, refactors, test fixes
 - **Anthropic API:** synthesis-heavy workflows (deep research final pass, postmortems) — see `project-docs/reference/cost-discipline.md`
 - **Scripts/cron:** default for repeatable daily data — no LLM
+
+## Cursor Cloud specific instructions
+
+Dependencies are installed by the startup update script (`uv sync --extra dev` + `npm install`); `uv` lives at `~/.local/bin` and is on PATH in login shells. Run everything through `uv run` (e.g. `uv run python3 scripts/pre_market.py`). This is a **scripts-only** Python project (no installable package, no long-running server) — "running the app" means invoking `scripts/*.py` or `skills/*/scripts/*.py` CLIs.
+
+- **Tests — use the per-skill runner:** `bash scripts/run_all_tests.sh` (the pre-push gate). A single bulk `uv run pytest` over all `testpaths` fails at *collection* because skills share module basenames (`utils.py`, `scorer.py`, `helpers.py`); the `tools/thesis-manager` tests under `scripts/tests` are the usual trigger. Run one directory at a time (e.g. `uv run pytest skills/vcp-screener/scripts/tests -q`) or use the runner. `theme-detector` and `canslim-screener` are intentionally skipped (need optional `bs4`/extra deps).
+- **Lint parity:** CI and pre-commit pin **ruff 0.9.6**, but `uv sync` installs a newer ruff that can report spurious `ruff format` diffs. For CI-accurate results run `uvx ruff@0.9.6 check skills/ scripts/` and `uvx ruff@0.9.6 format --check skills/ scripts/`. Codespell: `uv run codespell --toml pyproject.toml skills/ scripts/`.
+- **Local Python is 3.12** though CI targets 3.9 (`ruff target-version = py39`); keep code 3.9-compatible.
+- **Fastest end-to-end smoke test (no keys):** `uv run python3 scripts/pre_market.py --dry-run --force` — computes the daily breadth/uptrend/sector posture from free public data (needs outbound network; drop `--dry-run` to write `reports/logs/`).
+- **API keys are optional for most dev/testing:** offline tools (`position-sizer`, `data-quality-checker`, `edge-*`, `trader-memory-core` core, most fixture-backed tests) need none. FMP-backed screeners need `FMP_API_KEY`; Robinhood MCP / FINVIZ / Alpaca need their own creds. Provide via repo-root `.env` (gitignored) or env vars.
