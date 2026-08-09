@@ -19,6 +19,9 @@ When the user requests one of these workflows, read the linked file and follow i
 | Options strategy plan for TICKER | [commands/options-strategy-planner.md](commands/options-strategy-planner.md) |
 | Research watchlist batch | [commands/review-portfolio.md](commands/review-portfolio.md) |
 | Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
+| TradeWhisperer charts (user screenshots) | [commands/tradewhisperer-charts.md](commands/tradewhisperer-charts.md) or skill `tradewhisperer-charts` |
+| GEX/VEX exposure maps (user screenshots) | [commands/gex-vex-maps.md](commands/gex-vex-maps.md) or skill `gex-vex-maps` |
+| Operator charts (your charting) | [commands/operator-charts.md](commands/operator-charts.md) or skill `operator-charts` |
 
 **Deep research rule:** Pass 0 preflight (`scripts/research_preflight.py`) reuse-first — then complete ALL Pass 1 collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
 

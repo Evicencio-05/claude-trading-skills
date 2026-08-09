@@ -1,6 +1,6 @@
 # Project Status
 
-**Last updated:** 2026-05-31
+**Last updated:** 2026-08-09
 **Active phase:** Phase 1 — Research + Co-Pilot Trading
 **Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md)
 **Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
@@ -8,11 +8,11 @@
 
 ## This Week's Focus
 
-- [x] **FMP Starter ($29/mo)** — active 2026-05-31; stable API fixes applied ([verification report](../reports/meta/fmp_starter_verification_2026-05-31.md))
-- [ ] **Update research — stale watchlist** — FPS (&gt;14d); `commands/review-portfolio.md` weekly
+- [x] **TA-first source foundations** — `tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`
+- [x] **All three input contracts filled** — TW charts/lists · Skylit GEX/VEX · operator S/R+fib+VP+SMA
+- [ ] **Fusion workflow** — combine three sources (next)
+- [ ] Deep-research news strip — deferred until fusion design
 - [ ] **First Agentic trade** — user must reply **confirm** on presented plan
-- [ ] **IRA thesis logging** — MCP read + four questions for open IRA positions
-- [ ] **Close expired theses** — TSLA, PENG per PENDING_WORK
 
 ## Open Blockers
 

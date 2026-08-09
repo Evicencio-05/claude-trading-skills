@@ -1,7 +1,7 @@
 # PENDING_WORK.md
 
 > Persistent task queue across Cursor, Claude Code, and terminal sessions.
-> **Last updated:** 2026-05-31
+> **Last updated:** 2026-08-09
 > **Active phase:** Phase 1 — Research + Co-Pilot Trading
 > **Operator cadence:** [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md)
 > **Session load order:** [PROJECT.md](PROJECT.md) → [LOAD_GUIDE.md](LOAD_GUIDE.md) → [project-docs/STATUS.md](project-docs/STATUS.md) → [phase-1-research-copilot.md](project-docs/phase-1-research-copilot.md)
@@ -9,6 +9,25 @@
 **Legend:** Auto-execute = agent can do without approval. Needs approval = money/architecture. Needs data = human-only input.
 
 **Fork policy:** Do not modify upstream `skills/<name>/SKILL.md` or `skills/<name>/scripts/` except fixes listed in [decisions.md](decisions.md). Never write `state/theses/` directly — use `thesis_store.py` / thesis-manager.
+
+---
+
+## TA-first source foundations (2026-08-09)
+
+User-supplied images/exports only; no news/FMP fetch; fusion next.
+
+| Source | Skill / command | Output |
+|--------|-----------------|--------|
+| TradeWhisperer | `tradewhisperer-charts` | `reports/charts/tradewhisperer/` — charts + lists |
+| GEX/VEX | `gex-vex-maps` | `reports/charts/gex_vex/` — Skylit Heatseeker screenshots |
+| Operator charts | `operator-charts` | `reports/charts/operator/` — S/R, fibs, LuxAlgo VP, SMA 50/100/200 |
+
+- [x] Skills + commands + `report_paths` keys
+- [x] TradeWhisperer contract (charts + lists)
+- [x] GEX/VEX contract (Skylit docs)
+- [x] Operator-charts contract (example `HOOD_operator_2026-08-08`)
+- [ ] Design fusion workflow
+- [ ] Deep-research news strip — deferred
 
 ---
 
