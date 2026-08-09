@@ -26,6 +26,8 @@ ARTIFACT_DIRS: dict[str, str] = {
     "prompt_retro": "reports/prompts",
     "prompt_digest": "reports/prompts",
     "meta": "reports/meta",
+    "entry_watchlist": "reports/logs",
+    "agentic_copilot_plan": "reports/logs",
     "tradewhisperer_charts": "reports/charts/tradewhisperer",
     "gex_vex_maps": "reports/charts/gex_vex",
     "operator_charts": "reports/charts/operator",
@@ -45,12 +47,43 @@ ARTIFACT_PREFIXES: dict[str, str] = {
     "breakout_trade_planner": "breakout_trade_plan_",
     "earnings_trade_analyzer": "earnings_trade_analyzer_",
     "pead_screener": "pead_screener_",
-    # Per-ticker files use {TICKER}_tw_|_gex_|_vex_|_operator_{date}; prefixes are
-    # for session-level aggregates only (find_latest_same_day may miss ticker stems).
+    "entry_watchlist": "entry_watchlist_",
+    "agentic_copilot_plan": "agentic_copilot_plan_",
+    # Chart intakes use ticker-stem names; see ARTIFACT_DATE_GLOBS.
     "tradewhisperer_charts": "tw_",
     "gex_vex_maps": "gex_",
     "operator_charts": "operator_",
     "ta_confluence": "confluence_",
+}
+
+# Extra same-day globs for keys whose filenames are not `{prefix}{date}*`.
+# `{date}` is replaced with ISO YYYY-MM-DD; each pattern is tried per extension.
+ARTIFACT_DATE_GLOBS: dict[str, tuple[str, ...]] = {
+    "tradewhisperer_charts": (
+        "*_tw_*_{date}*",
+        "list_tw_*_{date}*",
+        "tw_{date}*",
+    ),
+    "gex_vex_maps": (
+        "*_gex_{date}*",
+        "*_vex_{date}*",
+        "gex_{date}*",
+        "vex_{date}*",
+    ),
+    "operator_charts": (
+        "*_operator_{date}*",
+        "operator_{date}*",
+    ),
+    "ta_confluence": (
+        "*_confluence_{date}*",
+        "session_confluence_*_{date}*",
+        "confluence_{date}*",
+    ),
+    # Plans embed ticker between prefix and date: agentic_copilot_plan_AVGO_2026-06-02.json
+    "agentic_copilot_plan": (
+        "agentic_copilot_plan_*_{date}*",
+        "agentic_copilot_plan_{date}*",
+    ),
 }
 
 ARTIFACT_KEYS = frozenset(ARTIFACT_DIRS)
@@ -101,6 +134,34 @@ def find_latest_same_day(
     return result
 
 
+def _same_day_patterns(
+    key: str,
+    as_of: date,
+    extensions: tuple[str, ...],
+) -> list[str] | None:
+    """Build glob patterns for *key* on *as_of*, or None if key unknown."""
+    prefix = ARTIFACT_PREFIXES.get(key)
+    if prefix is None and key not in ARTIFACT_DATE_GLOBS:
+        return None
+    date_str = as_of.isoformat()
+    patterns: list[str] = []
+    for template in ARTIFACT_DATE_GLOBS.get(key, ()):
+        filled = template.format(date=date_str)
+        patterns.extend(f"{filled}{ext}" for ext in extensions)
+    # Always include classic prefix+date forms when a prefix is registered.
+    if prefix is not None:
+        patterns.extend(f"{prefix}{date_str}_*{ext}" for ext in extensions)
+        patterns.extend(f"{prefix}{date_str}{ext}" for ext in extensions)
+    # De-dupe while preserving order
+    seen: set[str] = set()
+    unique: list[str] = []
+    for pattern in patterns:
+        if pattern not in seen:
+            seen.add(pattern)
+            unique.append(pattern)
+    return unique
+
+
 def find_latest_same_day_artifact(
     repo_root: Path,
     key: str,
@@ -111,13 +172,11 @@ def find_latest_same_day_artifact(
     """Return newest artifact for *key* on calendar day *as_of*.
 
     Prefers JSON over markdown when timestamps tie. Searches canonical dir then legacy.
+    Supports ticker-stem chart names via ARTIFACT_DATE_GLOBS (e.g. SPY_tw_1D_DATE).
     """
-    prefix = ARTIFACT_PREFIXES.get(key)
-    if prefix is None:
+    patterns = _same_day_patterns(key, as_of, extensions)
+    if not patterns:
         return None
-    date_str = as_of.isoformat()
-    patterns = [f"{prefix}{date_str}_*{ext}" for ext in extensions]
-    patterns.extend(f"{prefix}{date_str}{ext}" for ext in extensions)
 
     for directory in search_dirs(repo_root, key):
         if not directory.exists():
