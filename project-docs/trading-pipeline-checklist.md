@@ -27,6 +27,10 @@
 | Broker snapshot | `reports/portfolio/portfolio_review_YYYY-MM-DD.md` |
 | Position sizing | `reports/portfolio/position_sizer_{YYYY-MM-DD}_{HHMMSS}.{json,md}` |
 | Watchlist batch summary | `reports/logs/portfolio_summary_YYYY-MM-DD.md` |
+| TradeWhisperer chart/list intake | `reports/charts/tradewhisperer/` |
+| GEX/VEX map intake | `reports/charts/gex_vex/{TICKER}_gex_DATE` · `{TICKER}_vex_DATE` |
+| Operator chart intake | `reports/charts/operator/{TICKER}_operator_DATE.{md,json}` |
+| TA confluence brief | `reports/charts/confluence/session_confluence_{period}_DATE` · `{TICKER}_confluence_DATE` |
 | Prompt retros / digests | `reports/prompts/prompt_run_retro_*.md`, `reports/prompts/prompt_learning_digest_*.md` |
 | Meta / audit session outputs | `reports/meta/` |
 | Theses | `state/theses/` (via `thesis_store.py` only) |

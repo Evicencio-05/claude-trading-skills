@@ -16,6 +16,10 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/review-portfolio` | [review-portfolio.md](review-portfolio.md) |
 | `/options-strategy-planner TICKER` | [options-strategy-planner.md](options-strategy-planner.md) |
 | `/scenario-analyzer` | [scenario-analyzer.md](scenario-analyzer.md) |
+| `/tradewhisperer-charts TICKER` | [tradewhisperer-charts.md](tradewhisperer-charts.md) |
+| `/gex-vex-maps TICKER\|SPX` | [gex-vex-maps.md](gex-vex-maps.md) |
+| `/operator-charts TICKER` | [operator-charts.md](operator-charts.md) |
+| `/ta-confluence [candle_first\|map_first]` | [ta-confluence.md](ta-confluence.md) |
 
 ## Cursor
 
@@ -26,6 +30,10 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Log positions | Skill `log-positions` — after sync and/or Robinhood MCP fetch |
 | Trade screenshot backfill | Skill `log-trade-screenshot` — paste Robinhood confirmation images |
 | Broker snapshot (MCP) | Skill `robinhood-portfolio-review` — live balances/positions; weekly before Agentic trades |
+| TradeWhisperer charts | Skill `tradewhisperer-charts` — [tradewhisperer-charts.md](tradewhisperer-charts.md) |
+| GEX/VEX maps | Skill `gex-vex-maps` — [gex-vex-maps.md](gex-vex-maps.md) |
+| Operator charts | Skill `operator-charts` — [operator-charts.md](operator-charts.md) |
+| TA confluence | Skill `ta-confluence` — [ta-confluence.md](ta-confluence.md) |
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 

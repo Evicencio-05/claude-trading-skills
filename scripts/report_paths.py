@@ -26,6 +26,10 @@ ARTIFACT_DIRS: dict[str, str] = {
     "prompt_retro": "reports/prompts",
     "prompt_digest": "reports/prompts",
     "meta": "reports/meta",
+    "tradewhisperer_charts": "reports/charts/tradewhisperer",
+    "gex_vex_maps": "reports/charts/gex_vex",
+    "operator_charts": "reports/charts/operator",
+    "ta_confluence": "reports/charts/confluence",
 }
 
 # Filename prefix for glob matching (key -> prefix)
@@ -41,6 +45,12 @@ ARTIFACT_PREFIXES: dict[str, str] = {
     "breakout_trade_planner": "breakout_trade_plan_",
     "earnings_trade_analyzer": "earnings_trade_analyzer_",
     "pead_screener": "pead_screener_",
+    # Per-ticker files use {TICKER}_tw_|_gex_|_vex_|_operator_{date}; prefixes are
+    # for session-level aggregates only (find_latest_same_day may miss ticker stems).
+    "tradewhisperer_charts": "tw_",
+    "gex_vex_maps": "gex_",
+    "operator_charts": "operator_",
+    "ta_confluence": "confluence_",
 }
 
 ARTIFACT_KEYS = frozenset(ARTIFACT_DIRS)

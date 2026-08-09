@@ -1,0 +1,226 @@
+{
+  "source": "operator",
+  "ticker": "TSEM",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "operator 1D fib set A (186.32 anchor \u2192 1.618=256.79 / 2.618=300.34)"
+    },
+    {
+      "type": "image",
+      "note": "operator 1D fib set B (186 anchor \u2192 0.5=252.49 / 0.618=268.29)"
+    },
+    {
+      "type": "image",
+      "note": "operator 1D channel + S/R 186.13 + RSI strength"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 252.49,
+    "change": null,
+    "change_pct": 12.37,
+    "volume": "2.16M (strong buy volume on breakout day)",
+    "sma": {
+      "50": 240.0,
+      "100": 230.0,
+      "200": 175.0
+    },
+    "price_vs_sma": {
+      "50": "above",
+      "100": "above",
+      "200": "above"
+    },
+    "sr_levels": [
+      186.13,
+      204.52,
+      252.49
+    ],
+    "fib_levels": [
+      {
+        "ratio": "1.618",
+        "price": 401.96,
+        "color": "dark_blue"
+      },
+      {
+        "ratio": "1.000",
+        "price": 319.94,
+        "color": "light_blue"
+      },
+      {
+        "ratio": "0.786",
+        "price": 290.75,
+        "color": "red"
+      },
+      {
+        "ratio": "0.618",
+        "price": 268.29,
+        "color": "yellow"
+      },
+      {
+        "ratio": "0.500",
+        "price": 252.49,
+        "color": "white"
+      },
+      {
+        "ratio": "0.382",
+        "price": 236.75,
+        "color": "orange"
+      },
+      {
+        "ratio": "0.000",
+        "price": 186.0,
+        "color": "white"
+      }
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "bounce support ~186.32",
+        "levels": [
+          {
+            "ratio": "3.618",
+            "price": 343.89,
+            "color": "purple"
+          },
+          {
+            "ratio": "2.618",
+            "price": 300.34,
+            "color": "red"
+          },
+          {
+            "ratio": "1.618",
+            "price": 256.79,
+            "color": "blue"
+          },
+          {
+            "ratio": "1.000",
+            "price": 229.87,
+            "color": "green"
+          },
+          {
+            "ratio": "0.786",
+            "price": 220.55,
+            "color": "pink"
+          },
+          {
+            "ratio": "0.618",
+            "price": 213.24,
+            "color": "yellow"
+          },
+          {
+            "ratio": "0.500",
+            "price": 208.1,
+            "color": "gray"
+          },
+          {
+            "ratio": "0.382",
+            "price": 202.96,
+            "color": "blue"
+          },
+          {
+            "ratio": "0.000",
+            "price": 186.32,
+            "color": "white"
+          }
+        ]
+      },
+      {
+        "anchor_note": "bounce support ~186; spot at 0.5",
+        "levels": [
+          {
+            "ratio": "1.618",
+            "price": 401.96,
+            "color": "dark_blue"
+          },
+          {
+            "ratio": "1.000",
+            "price": 319.94,
+            "color": "light_blue"
+          },
+          {
+            "ratio": "0.786",
+            "price": 290.75,
+            "color": "red"
+          },
+          {
+            "ratio": "0.618",
+            "price": 268.29,
+            "color": "yellow"
+          },
+          {
+            "ratio": "0.500",
+            "price": 252.49,
+            "color": "white"
+          },
+          {
+            "ratio": "0.382",
+            "price": 236.75,
+            "color": "orange"
+          },
+          {
+            "ratio": "0.000",
+            "price": 186.0,
+            "color": "white"
+          }
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "medium-term daily lookback through 2026 channel",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [
+        186.0,
+        252.0
+      ],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "~180\u2013200 major shelf",
+        "~220\u2013260 near-price shelf",
+        "~120\u2013140 deep shelf"
+      ],
+      "lowest_volume_zones": [
+        "thin/gap character ~270 toward 300 (air pocket risk)"
+      ],
+      "profile_labels": {
+        "support_zone": 186.13,
+        "high": 319.94
+      },
+      "colors_note": "orange/blue lower shelves; gray near current price"
+    },
+    "major_levels": [
+      186.13,
+      204.52,
+      319.94
+    ],
+    "rsi": {
+      "white": 54.0,
+      "yellow": 49.5,
+      "mid_50": 50,
+      "buyer_strength": true,
+      "seller_strength": false,
+      "deterioration_watch": "Not from >70 yet \u2014 watch for white failing back through 50 after reclaim",
+      "hold_note": "White reclaimed above 50 and yellow; must hold 50 area (not break back below)"
+    },
+    "channel": {
+      "type": "descending_channel",
+      "status": "testing_or_breaking_upper_boundary",
+      "notes": "Bounce off 186 support inside channel; looking for breakout toward higher fibs"
+    },
+    "earnings_markers": null,
+    "structure_notes": "Bounced 186 support, reclaimed 50/100 SMA with buy volume; spot ~252 testing fib cluster (set B 0.5=252.49; set A 1.618=256.79). Thesis: channel breakout \u2192 higher fibs (268 / 290 / 300 map magnet). RSI buyers reclaiming; hold 50.",
+    "operator_thesis": "TSEM bounced off 186 support and stayed within a channel. Looking for breakout of the channel toward higher fibs. Buy volume confirms buyer strength; reclaimed 100/50 SMA. RSI white above yellow and 50 = buyers have strength; want it to hold 50.",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA values approximated across charts (~240 / ~230 / ~175)",
+    "RSI white ~54\u201358 across panes \u2014 stored ~54 with buyer_strength true",
+    "Two fib anchors both operator-important \u2014 both kept in fib_sets"
+  ],
+  "next": null
+}

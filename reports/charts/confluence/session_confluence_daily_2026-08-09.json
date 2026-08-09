@@ -1,0 +1,22 @@
+{
+  "source": "ta_confluence",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "as_of": "2026-08-09",
+  "shortlist": [
+    {
+      "ticker": "TSEM",
+      "tw_color": "BLUE",
+      "score": 93,
+      "verdict": "PLAY",
+      "spot": 252.49,
+      "king": "300 / 2026-09-18"
+    }
+  ],
+  "gaps": [
+    "Weekly/monthly TW not provided \u2014 HTF scored as absent"
+  ],
+  "override": null,
+  "updated": "re-score after TW daily + operator charts + RSI rules"
+}

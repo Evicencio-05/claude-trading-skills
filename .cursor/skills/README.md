@@ -15,6 +15,10 @@ Symlinks point at the canonical skill tree in [`skills/`](../../skills/). **Edit
 - `log-positions` — [commands/log-positions.md](../../commands/log-positions.md) (sync + MCP)
 - `robinhood-portfolio-review` — MCP read-only portfolio report
 - `update-research` — [commands/update-research.md](../../commands/update-research.md)
+- `tradewhisperer-charts` — [commands/tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md)
+- `gex-vex-maps` — [commands/gex-vex-maps.md](../../commands/gex-vex-maps.md)
+- `operator-charts` — [commands/operator-charts.md](../../commands/operator-charts.md)
+- `ta-confluence` — [commands/ta-confluence.md](../../commands/ta-confluence.md)
 
 ## Add another skill
 

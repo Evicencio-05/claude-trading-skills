@@ -1,0 +1,110 @@
+{
+  "source": "ta_confluence",
+  "ticker": "TSEM",
+  "as_of": "2026-08-09",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": "reports/charts/tradewhisperer/TSEM_tw_1D_2026-08-09.json",
+    "gex": "reports/charts/gex_vex/TSEM_gex_2026-08-09.json",
+    "vex": "reports/charts/gex_vex/TSEM_vex_2026-08-09.json",
+    "operator": "reports/charts/operator/TSEM_operator_2026-08-09.json"
+  },
+  "score": 93,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 30,
+      "note": "Daily TW **BLUE** \u2014 full long trigger"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Weekly/monthly TW not provided \u2014 treat as absent (full). Flag: confirm weekly not RED stack when available."
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 18,
+      "note": "Upside shared king 300 aligns with fib 2.618=300.34 and channel-breakout thesis. GEX +195 at 235 supports reclaimed structure. Still discount for VEX gatekeepers 260\u2013270 and post +12% chase."
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 15,
+      "note": "GEX\u2229VEX king at 300 / 2026-09-18 \u2014 matches operator higher-fib / magnet target"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 10,
+      "note": "Clear thesis: 186 bounce, SMA reclaim, channel break, fib ladder, RSI buyer reclaim. Asymmetric path 252\u2192268/300 with invalidation under 236\u2013230 / loss of RSI 50."
+    }
+  },
+  "verdict": "PLAY",
+  "judgment": {
+    "devils_advocate": [
+      "Daily BLUE after a +12% bar can fail into BLUE\u2192PINK / false breakout if channel break rejects",
+      "Map path to 300 still runs through violent VEX ~260\u2013270 \u2014 expect wicks even if magnet holds",
+      "RSI just reclaimed 50 (~54) \u2014 buyers have strength but thesis dies if white loses 50 quickly"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily prints PINK or PINK_RED (or BLUE\u2192GREEN\u2192PINK false-break sequence) while long",
+      "maps": "Invalid if Sep-18 king leaves 300 / upside magnet dissipates while 260\u2013270 expand (rolling ceiling)",
+      "operator": "Invalid on daily close back inside failed channel below ~236.75 (fib 0.382 set B) or loss of 50 SMA (~240) with RSI white breaking back below 50"
+    },
+    "not_allowed_to_ignore": [
+      "Shared map king at **300** lines up with fib set A **2.618=300.34** \u2014 confluence target, not a market order through 260",
+      "RSI rule: white must **hold 50** after reclaim; deterioration watch is fail-back through 50, not waiting for 70",
+      "Weekly TW still unknown \u2014 do not size as if HTF is confirmed green"
+    ],
+    "rr_sketch": {
+      "entry_zone": "248\u2013255 (spot / fib 0.5 set B / reclaim of channel top); prefer hold above 236\u2013240 on any dip",
+      "stop": 230.0,
+      "targets": [
+        {
+          "level": 256.79,
+          "note": "fib set A 1.618"
+        },
+        {
+          "level": 268.29,
+          "note": "fib set B 0.618 \u2014 first higher fib"
+        },
+        {
+          "level": 300.0,
+          "note": "map king + fib A 2.618"
+        }
+      ],
+      "rough_rr": "~1.5R to 268 / ~2.5R+ to 300 from ~252 with stop ~230 \u2014 asymmetric if channel break holds"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all three sources + RSI rules recorded)"
+    },
+    "one_thing_to_verify": "Whether RSI white holds the 50 reclaim on the next 1\u20132 sessions while price negotiates the 256\u2013268 fib/gatekeeper zone \u2014 do not assume 300 is owed."
+  },
+  "override": null,
+  "gaps": [
+    "Weekly/monthly TW not provided \u2014 HTF scored as absent"
+  ],
+  "hard_stops": [],
+  "spot": 252.49,
+  "change_pct": 12.37,
+  "operator_thesis": "TSEM bounced off 186 support and stayed within a channel. Looking for breakout of the channel toward higher fibs. Buy volume confirms buyer strength; reclaimed 100/50 SMA. RSI white above yellow and 50 = buyers have strength; want it to hold 50.",
+  "map_summary": {
+    "shared_upside_magnet": {
+      "strike": 300.0,
+      "expiration": "2026-09-18"
+    },
+    "gatekeepers": [
+      260.0,
+      270.0
+    ],
+    "support_candidate_gex": {
+      "strike": 235.0,
+      "value_k": 195
+    }
+  }
+}

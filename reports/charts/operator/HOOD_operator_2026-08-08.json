@@ -1,0 +1,133 @@
+{
+  "source": "operator",
+  "ticker": "HOOD",
+  "as_of": "2026-08-08",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Operator 1D TradingView chart \u2014 S/R, fibs, LuxAlgo VP, SMA 50/100/200"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 93.29,
+    "change": null,
+    "change_pct": null,
+    "volume": "14.86M",
+    "sma": {
+      "50": 94.0,
+      "100": 109.0,
+      "200": 80.0
+    },
+    "price_vs_sma": {
+      "50": "at",
+      "100": "below",
+      "200": "above"
+    },
+    "sr_levels": [
+      85.0,
+      88.0,
+      90.0,
+      93.0,
+      95.0,
+      97.0,
+      100.0
+    ],
+    "fib_levels": [
+      {
+        "ratio": "4.618",
+        "price": 163.55,
+        "color": "orange"
+      },
+      {
+        "ratio": "3.618",
+        "price": 145.38,
+        "color": "purple"
+      },
+      {
+        "ratio": "2.618",
+        "price": 127.2,
+        "color": "red"
+      },
+      {
+        "ratio": "1.618",
+        "price": 109.03,
+        "color": "blue"
+      },
+      {
+        "ratio": "1.000",
+        "price": 97.79,
+        "color": "white"
+      },
+      {
+        "ratio": "0.786",
+        "price": 93.85,
+        "color": "yellow"
+      },
+      {
+        "ratio": "0.618",
+        "price": 90.83,
+        "color": "orange"
+      },
+      {
+        "ratio": "0.500",
+        "price": 88.71,
+        "color": "green"
+      },
+      {
+        "ratio": "0.382",
+        "price": 86.56,
+        "color": "blue"
+      },
+      {
+        "ratio": "0.000",
+        "price": 79.82,
+        "color": "white"
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "long lookback covering 2025 peak through 2026 recovery",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [
+        76.23,
+        109.03
+      ],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "~75\u2013115 major shelf",
+        "~35\u201355 secondary shelf"
+      ],
+      "lowest_volume_zones": [],
+      "profile_labels": {
+        "high": 129.02,
+        "node": 76.23,
+        "node2": 63.19,
+        "low": 39.21
+      },
+      "colors_note": "orange/blue value-area style bars; gray lower-volume rows"
+    },
+    "major_levels": [
+      129.0,
+      109.0,
+      78.0,
+      63.0,
+      39.0
+    ],
+    "rsi": 55.0,
+    "earnings_markers": "future earnings marker ~Nov 2026; past E markers on volume pane",
+    "structure_notes": "Price ~93.29 consolidating near 50 SMA (~94) and fib 0.786 (93.85), below 100 SMA / fib 1.618 (~109) resistance cluster aligned with upper VP shelf; above 200 SMA (~80) and fib 0.000 (79.82).",
+    "chart_timestamp": "2026-08-08"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA values approximated from axis labels (~94 / ~109 / ~80)",
+    "White S/R cluster 85\u2013100 approximated \u2014 exact line prices may vary",
+    "POC/VAH/VAL not explicitly labeled on screenshot",
+    "RSI ~50\u201360 approximated as 55"
+  ],
+  "next": null
+}

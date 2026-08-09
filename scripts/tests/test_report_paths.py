@@ -36,6 +36,22 @@ def test_artifact_dir_creates_subdirectory(tmp_repo):
     assert path.is_dir()
 
 
+@pytest.mark.parametrize(
+    ("key", "rel"),
+    [
+        ("tradewhisperer_charts", ("reports", "charts", "tradewhisperer")),
+        ("gex_vex_maps", ("reports", "charts", "gex_vex")),
+        ("operator_charts", ("reports", "charts", "operator")),
+        ("ta_confluence", ("reports", "charts", "confluence")),
+    ],
+)
+def test_ta_chart_source_artifact_dirs(tmp_repo, key, rel):
+    path = artifact_dir(tmp_repo, key, mkdir=True)
+    assert path == tmp_repo.joinpath(*rel)
+    assert path.is_dir()
+    assert key in ARTIFACT_KEYS
+
+
 def test_default_output_dir_matches_artifact_dir(tmp_repo):
     assert default_output_dir(tmp_repo, "vcp_screener") == artifact_dir(tmp_repo, "vcp_screener")
 

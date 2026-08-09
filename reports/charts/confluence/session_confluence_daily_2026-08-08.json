@@ -1,0 +1,23 @@
+{
+  "source": "ta_confluence",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "as_of": "2026-08-08",
+  "shortlist": [
+    {
+      "ticker": "HOOD",
+      "tw_color": null,
+      "score": 25,
+      "verdict": "NO_TRADE",
+      "note": "Smoke dry-run from operator artifact only"
+    }
+  ],
+  "gaps": [
+    "No TW artifacts under reports/charts/tradewhisperer/",
+    "No GEX/VEX artifacts under reports/charts/gex_vex/",
+    "Smoke only \u2014 not a live session"
+  ],
+  "override": null,
+  "smoke": true
+}

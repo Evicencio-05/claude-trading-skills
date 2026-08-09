@@ -159,3 +159,20 @@ low-stakes text (edge hints, retro drafts, distill suggestions, skill-idea abstr
 Spot-check ~10% of outputs (risk M1). Never route trading, MCP, research synthesis, or git execution.
 Canonical doc: [local-model-integration.md](project-docs/reference/local-model-integration.md).
 Revisit: If local quality insufficient, restrict to edge-hints only or upgrade model tag in `OLLAMA_MODEL`.
+
+**[2026-08-09] TA-first personal chart sources — fork intake skills.**
+Operator trading leans technical (TradeWhisperer, Skylit GEX/VEX, own charts), not news/fundamental
+deep-research. Decision: Three fork-only intake skills under `.cursor/skills/`
+(`tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`) + `reports/charts/` via `report_paths`.
+User-supplied artifacts only. Operator charts use four indicators: white S/R, fib extensions,
+LuxAlgo VP shelves (https://www.tradingview.com/v/zVCsx5DL/), SMA 50/100/200 (orange/blue/green).
+Skylit via screenshots only — does not reopen Skylit $99/mo API gate.
+Revisit: After live confluence sessions — decide whether to slim deep-research.
+
+**[2026-08-09] TA confluence fusion — one skill, two entry modes.**
+Decision: Add `ta-confluence` with `candle_first` (TW BLUE/PINK shortlist → maps → operator chart)
+and `map_first` (Skylit pick → TW color → operator chart). Shared scoring rubric + judgment layer
+(devil’s advocate, invalidation, process grade). Verdicts PLAY/WATCH/NO_TRADE; missing operator
+chart caps at WATCH; hard conflicts default NO_TRADE. Outputs under `reports/charts/confluence/`.
+No MCP, no auto thesis_store, no scraping.
+Revisit: v1.5 prediction log after several real sessions.
