@@ -1,0 +1,179 @@
+{
+  "source": "gex_vex",
+  "ticker": "UMAC",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot UMAC Aug 9 01:25:50 PM"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 26.11,
+    "change": 1.93,
+    "change_pct": 7.94,
+    "atm_strike": 26.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-11-20",
+      "2027-01-15"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 30.0,
+      "expiration": "2026-08-21",
+      "value_k": 573,
+      "sign": "pos",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 573,
+        "sign": "pos",
+        "starred": true
+      },
+      {
+        "strike": 22.5,
+        "expiration": "2026-08-21",
+        "value_k": 301,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 25.0,
+        "expiration": "2026-08-21",
+        "value_k": 258,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-09-18",
+        "value_k": 104,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 26.0,
+        "expiration": "2026-08-14",
+        "value_k": -83,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-28",
+        "value_k": 80,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 24.0,
+        "expiration": "2026-08-14",
+        "value_k": -56,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 45.0,
+        "expiration": "2026-08-21",
+        "value_k": 62,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 35.0,
+        "expiration": "2026-08-21",
+        "value_k": 54,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 34.0,
+        "expiration": "2026-08-14",
+        "value_k": 49,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 20.0,
+        "expiration": "2026-08-21",
+        "value_k": -43,
+        "sign": "neg",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 26.0,
+        "expiration": "2026-08-14",
+        "value_k": -83,
+        "sign": "neg"
+      },
+      {
+        "strike": 25.0,
+        "expiration": "2026-08-21",
+        "value_k": 258,
+        "sign": "pos"
+      },
+      {
+        "strike": 24.0,
+        "expiration": "2026-08-14",
+        "value_k": -56,
+        "sign": "neg"
+      },
+      {
+        "strike": 22.5,
+        "expiration": "2026-08-21",
+        "value_k": 301,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 573,
+        "sign": "pos",
+        "note": "King / primary upside wall between spot and ~32 Fib target"
+      }
+    ],
+    "air_pockets": "Thin GEX between ~27–29 ahead of 30 king; sparse below ~20",
+    "range_edges": {
+      "upside": 30.0,
+      "downside": 22.5
+    },
+    "map_timestamp": "2026-08-09 13:25:50",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 30.0,
+          "expiration": "2026-08-21",
+          "note": "Shared king zone with VEX"
+        },
+        {
+          "strike": 22.5,
+          "expiration": "2026-08-21",
+          "note": "Shared high-|value| strike; GEX positive vs VEX strongly negative"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed — top_nodes from visible hotspots only"
+  ],
+  "next": null
+}

@@ -1,0 +1,33 @@
+{
+  "source": "operator",
+  "ticker": "UMAC",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "UMAC 1D Fib + SMAs + VP + RSI: last 26.11; Fib 1.0=23.46, 1.618=31.58; ATH~34.35; green SMA bounce mid-July; VP shelf ~22–26 and deep HVN ~14–17"
+    },
+    {
+      "type": "image",
+      "note": "UMAC 1D ascending channel: parallel white rails + midline; horizontal ~22.93 flipped support; high label 34.36; RSI ~60; LuxAlgo VP HVN ~12–18"
+    },
+    {
+      "type": "image",
+      "note": "UMAC 1D channel/SMA stack: blue horizontal ~23.46 break+retest; price above orange/blue/green SMAs; VP secondary shelf ~24–26; RSI ~55–60"
+    },
+    {
+      "type": "image",
+      "note": "UMAC 1D Fib extension focus: 23.46 (1.0) support after retest; 31.58 (1.618) overhead; RSI ~62; dashed uptrend support"
+    },
+    {
+      "type": "text",
+      "note": "Operator bias Long: broke+retested 23.46; prior 200 SMA bounce; VP shelf; longer-term upward channel; continuation toward ATH / 1.618 Fib ~32"
+    }
+  ],
+  "extracted": {},
+  "confidence": null,
+  "gaps": [
+    "schema not yet defined by operator"
+  ],
+  "next": "await operator brief for this source"
+}

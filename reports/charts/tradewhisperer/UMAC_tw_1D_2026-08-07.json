@@ -1,0 +1,55 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "UMAC",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "UMAC 1D @TradexWhisperer TradingView chart (operator screenshot)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1D",
+    "last": 26.11,
+    "change": 1.88,
+    "change_pct": 7.76,
+    "ohlc": null,
+    "volume": "3.97M",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN",
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 22.69,
+      "blue": 18.75,
+      "green": 15.90,
+      "purple": 13.44
+    },
+    "volume_profile_notes": "POC ~26.25; HVN / shelf roughly 20–24 under current price",
+    "oscillators": {
+      "pane1": {
+        "blue": 80.91,
+        "orange": 87.74
+      },
+      "pane2": {
+        "blue": 1.20,
+        "orange": 0.3778
+      },
+      "pane3": {
+        "value": "261.46M"
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-07"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "oscillator pane names not labeled on chart",
+    "full recent_candle_sequence truncated — only latest GREEN stack confidently readable",
+    "chart date bar may lag map as_of 2026-08-09"
+  ],
+  "next": null
+}
