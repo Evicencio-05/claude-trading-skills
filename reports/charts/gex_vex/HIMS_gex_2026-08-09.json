@@ -1,0 +1,196 @@
+{
+  "source": "gex_vex",
+  "ticker": "HIMS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot HIMS"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 31.59,
+    "change": 1.94,
+    "change_pct": 6.54,
+    "atm_strike": 31.5,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-16",
+      "2026-11-20"
+    ],
+    "strikes_visible": "6–90; activity concentrated ~20–50",
+    "king_node": {
+      "strike": 28.0,
+      "expiration": "2026-08-21",
+      "value_k": -1103,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 28.0,
+        "expiration": "2026-08-21",
+        "value_k": -1103,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 1085,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 35.0,
+        "expiration": "2026-08-21",
+        "value_k": 996,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 31.5,
+        "expiration": "2026-08-14",
+        "value_k": -614,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 25.0,
+        "expiration": "2026-08-21",
+        "value_k": 398,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-09-18",
+        "value_k": 333,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 33.0,
+        "expiration": "2026-09-18",
+        "value_k": 313,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-14",
+        "value_k": -283,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 39.0,
+        "expiration": "2026-08-21",
+        "value_k": 277,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 37.0,
+        "expiration": "2026-08-21",
+        "value_k": 276,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 45.0,
+        "expiration": "2026-08-21",
+        "value_k": 205,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 31.5,
+        "expiration": "2026-08-14",
+        "value_k": -614,
+        "sign": "neg"
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 1085,
+        "sign": "pos"
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-14",
+        "value_k": -283,
+        "sign": "neg"
+      },
+      {
+        "strike": 35.0,
+        "expiration": "2026-08-21",
+        "value_k": 996,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 1085,
+        "sign": "pos",
+        "note": "Massive pos pivot just below spot — magnet / support if held"
+      },
+      {
+        "strike": 35.0,
+        "expiration": "2026-08-21",
+        "value_k": 996,
+        "sign": "pos",
+        "note": "First major upside wall / magnet on path to ~38"
+      }
+    ],
+    "air_pockets": "Thin cells outside 20–50; Aug-21 column dominates",
+    "range_edges": {
+      "upside": 35.0,
+      "downside": 28.0
+    },
+    "map_timestamp": "2026-08-09 21:13:22",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 28.0,
+          "expiration": "2026-08-21",
+          "note": "GEX king floor −$1,103K aligns with VEX +$2,115K — shared support near best entry ~27.42"
+        },
+        {
+          "strike": 35.0,
+          "expiration": "2026-08-21",
+          "note": "GEX +$996K vs VEX king +$3,542K — shared upside magnet before ~38"
+        },
+        {
+          "strike": 37.0,
+          "expiration": "2026-08-21",
+          "note": "GEX +$276K / VEX +$1,416K toward recent-high target ~38"
+        },
+        {
+          "strike": 39.0,
+          "expiration": "2026-08-21",
+          "note": "GEX +$277K / VEX +$1,903K — overshoot / target cluster above 38"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed — hotspots only"
+  ],
+  "next": null
+}

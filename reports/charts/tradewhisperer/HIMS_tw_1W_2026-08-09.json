@@ -1,0 +1,58 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "HIMS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "HIMS 1W @TradexWhisperer-style TradingView chart (+13.76% week)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1W",
+    "last": 31.59,
+    "change": null,
+    "change_pct": 13.76,
+    "ohlc": {
+      "open": 27.6,
+      "high": 32.42,
+      "low": 27.57,
+      "close": 31.59
+    },
+    "volume": "51.26M green weekly bar",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN"
+    ],
+    "ma_levels": {
+      "yellow": 33.18,
+      "dark_blue": 25.0
+    },
+    "volume_profile_notes": "Shelf ~30–35; larger nodes 50–60 residual from prior cycle",
+    "oscillators": {
+      "pane1": {
+        "blue": 41.29,
+        "orange": 31.98,
+        "note": "bullish cross still below 50"
+      },
+      "pane2": {
+        "blue": 0.3961,
+        "orange": -0.2849,
+        "note": "momentum cross up"
+      },
+      "pane3": {
+        "value": "-984.04M"
+      }
+    },
+    "price_vs_mas": "above_dark_blue_testing_yellow",
+    "chart_timestamp": "2026-08-07",
+    "fib_channel_note": "reclaimed ~0.618 (~26.5); heading toward ~0.786 (~35) then 1.0 (~42.5)"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "Patreon weekly list not pasted — GREEN inferred from strong green weekly candle",
+    "Weekly RSI-like pane still <50 — early reclaim, not full HTF strength confirmation"
+  ],
+  "next": null
+}

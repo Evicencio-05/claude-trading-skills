@@ -1,0 +1,123 @@
+{
+  "source": "ta_confluence",
+  "ticker": "HIMS",
+  "as_of": "2026-08-09",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": "reports/charts/tradewhisperer/HIMS_tw_1D_2026-08-09.json",
+    "tw_weekly": "reports/charts/tradewhisperer/HIMS_tw_1W_2026-08-09.json",
+    "gex": "reports/charts/gex_vex/HIMS_gex_2026-08-09.json",
+    "vex": "reports/charts/gex_vex/HIMS_vex_2026-08-09.json",
+    "operator": "reports/charts/operator/HIMS_operator_2026-08-09.json"
+  },
+  "score": 73,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 15,
+      "note": "Daily TW **GREEN** (continuation) — half long points; not BLUE start. Inferred from chart (no Patreon list)."
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Weekly TW **GREEN** strong +13.8% candle — no RED/PINK stack vs long. Note: weekly oscillator still <50 (early, not a hard fight)."
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 18,
+      "note": "Long-supportive: GEX king floor 28 (−$1.1M) + VEX king magnet 35 (+$3.5M) toward ~38. Discount for near-spot GEX 31.5 −$614K, contested 30 (GEX+ vs VEX−), and post-+6.5% mid-channel chase."
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 15,
+      "note": "GEX∩VEX at **28** (floor / best entry) and **35** (magnet before 38); 37/39 clusters support recent-high target."
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 5,
+      "note": "Clear channel + 27.42 / ~38 plan, but spot is **mid-channel** near dashed midline with ~1.5R if stop under 27.42 — half credit until pullback fills preferred zone."
+    }
+  },
+  "verdict": "WATCH",
+  "judgment": {
+    "devils_advocate": [
+      "Daily GREEN after +6.5% / weekly +14% can stall into GREEN→PINK or dark consolidation before 35–38",
+      "Path to 38 must negotiate VEX/GEX **35** magnet and contested **30** — rocket thesis can still wick hard",
+      "Spot mid-channel: R:R to 38 with stop under 27.42 is only ~1.5R; TW stoch pane ~85 already stretched"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily prints PINK or PINK_RED (or GREEN→PINK false-continuation) while long",
+      "maps": "Invalid if Aug-21 **28** floor dissipates / migrates lower while **25** neg expands, or upside **35** magnet rolls into a hard ceiling with shrinking 37–39",
+      "operator": "Invalid on daily close below ascending-channel support / preferred zone **~27.42–27.0** with RSI white breaking back below 50; deeper fail of **~24** kills the bounce structure"
+    },
+    "not_allowed_to_ignore": [
+      "Best confluence long is **27.42–28** (channel + 100 SMA ~27.84 + GEX/VEX 28) — not a market order through mid-channel because it 'can rocket'",
+      "VEX king **35** is the first magnet — treat **35 then 38** as ladder, not one owed print",
+      "Operator RSI white must **hold 50**; weekly oscillators still <50 — HTF strength is early"
+    ],
+    "rr_sketch": {
+      "entry_zone": "Preferred **27.42–28.50** (channel support / map floor); spot **31.20–32.00** only as reduced-size continuation if holding above 30–31.5",
+      "stop": 24.0,
+      "targets": [
+        {
+          "level": 33.18,
+          "note": "weekly yellow / near-term resistance"
+        },
+        {
+          "level": 35.0,
+          "note": "VEX king + GEX wall + fib ~0.786"
+        },
+        {
+          "level": 38.13,
+          "note": "recent high / channel top zone"
+        }
+      ],
+      "rough_rr": "From ~27.50 with stop ~24: ~2.2R to 35 / ~3R to 38. From spot ~31.59 with same stop: ~0.8R to 35 / ~1.5R to 38 — mid-range, hence WATCH"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all three sources; GREEN inferred; mid-range hard-stop applied → WATCH)"
+    },
+    "one_thing_to_verify": "Whether **28 / Aug-21** still prints as the shared floor on the next map refresh if price dips — do not assume 27.42 fills just because it is 'best'."
+  },
+  "override": null,
+  "gaps": [
+    "Patreon TW daily/weekly color lists not pasted — GREEN inferred from charts",
+    "Name flagged unpredictable by operator — size/volatility discipline outside this brief"
+  ],
+  "hard_stops": [
+    "Operator mid-range at spot with weak R:R → max WATCH for chase; pullback 27.42–28 is the upgrade path to PLAY"
+  ],
+  "spot": 31.59,
+  "change_pct": 6.54,
+  "operator_thesis": "HIMS can continue higher and retest recent high ~38. Careful / unpredictable; can rocket. Long from current (~31.59) not bad, but long off 27.42 is best.",
+  "map_summary": {
+    "shared_floor": {
+      "strike": 28.0,
+      "expiration": "2026-08-21",
+      "gex_k": -1103,
+      "vex_k": 2115
+    },
+    "shared_upside_magnet": {
+      "strike": 35.0,
+      "expiration": "2026-08-21",
+      "gex_k": 996,
+      "vex_k": 3542
+    },
+    "target_cluster": [
+      37.0,
+      39.0
+    ],
+    "fail_zone": {
+      "strike": 25.0,
+      "vex_k": -2810
+    }
+  },
+  "upgrade_to_play": "Fill or reclaim hold in **27.42–28.50** with RSI white still >50 and Aug-21 28 map floor intact; daily stays GREEN/BLUE (not PINK)."
+}

@@ -1,0 +1,121 @@
+{
+  "source": "operator",
+  "ticker": "NVDA",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "NVDA 1D operator chart \u2014 S/R, fibs, VP, SMA, RSI; short-to-212 then long thesis"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 223.96,
+    "change": 4.91,
+    "change_pct": 2.24,
+    "volume": null,
+    "sma": {
+      "50": 200.0,
+      "100": 198.0,
+      "200": 195.0
+    },
+    "price_vs_sma": {
+      "50": "above",
+      "100": "above",
+      "200": "above"
+    },
+    "sr_levels": [
+      212.71,
+      224.71,
+      236.54
+    ],
+    "fib_levels": [
+      {
+        "ratio": "1.000",
+        "price": 236.54,
+        "color": "white"
+      },
+      {
+        "ratio": "0.786",
+        "price": 226.54,
+        "color": "purple"
+      },
+      {
+        "ratio": "0.618",
+        "price": 218.69,
+        "color": "yellow"
+      },
+      {
+        "ratio": "0.500",
+        "price": 213.17,
+        "color": "white"
+      },
+      {
+        "ratio": "0.382",
+        "price": 207.65,
+        "color": "orange"
+      },
+      {
+        "ratio": "0.000",
+        "price": 189.8,
+        "color": "white"
+      }
+    ],
+    "fib_sets": null,
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "daily lookback covering spring\u2013summer 2026 swing",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [
+        212.0,
+        210.0,
+        182.0
+      ],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "~208\u2013215 value-area / shelf",
+        "~180\u2013184 deep shelf"
+      ],
+      "lowest_volume_zones": [],
+      "profile_labels": {
+        "high": 236.54,
+        "low": 164.27,
+        "overnight": 224.71
+      },
+      "colors_note": "yellow/blue HVN near 208\u2013215; lower shelf ~180\u2013184"
+    },
+    "major_levels": [
+      181.0,
+      202.0,
+      235.0,
+      236.54
+    ],
+    "rsi": {
+      "white": 65.0,
+      "yellow": 58.0,
+      "mid_50": 50,
+      "buyer_strength": true,
+      "seller_strength": false,
+      "deterioration_watch": "White ~65 trending toward 70 \u2014 if rolls back toward 50 from >70, buyer strength fades",
+      "hold_note": "Buyers currently in control (white > yellow and > 50); short thesis fights active buyer strength until RSI deteriorates"
+    },
+    "channel": {
+      "type": "ascending_support_trendline",
+      "status": "intact_near_210",
+      "notes": "White ascending TL ~210; dashed descending TL from May peak broken upside recently"
+    },
+    "earnings_markers": null,
+    "structure_notes": "Price 223.96 above all SMAs, above fib 0.5 (213.17) and S/R 212.71. RSI buyers strong (~65). Operator plan: careful short toward ~212, then longs off 212. 212 aligns fib 0.5 + white S/R + VP shelf / ascending TL cluster.",
+    "operator_thesis": "Decent opportunity to short NVDA back down to the 212 level and then take longs off of it. More careful about the short \u2014 could take time; watch for maps to concur.",
+    "chart_timestamp": "2026-08-10"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA values clustered ~195\u2013205 approximated from chart description",
+    "RSI yellow approximated (~58) \u2014 white ~65 confirmed buyer strength"
+  ],
+  "next": null
+}

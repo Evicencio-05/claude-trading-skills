@@ -1,0 +1,190 @@
+{
+  "source": "gex_vex",
+  "ticker": "NVDA",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit GEX NVDA"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 223.96,
+    "change": 4.91,
+    "change_pct": 2.24,
+    "atm_strike": 225.0,
+    "expirations": [
+      "2026-08-10",
+      "2026-08-12",
+      "2026-08-14",
+      "2026-08-17",
+      "2026-08-19",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11"
+    ],
+    "king_node": {
+      "strike": 220.0,
+      "expiration": "2026-08-21",
+      "value_k": 29087,
+      "sign": "pos",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": 29087,
+        "sign": "pos",
+        "starred": true
+      },
+      {
+        "strike": 227.5,
+        "expiration": "2026-08-14",
+        "value_k": 17930,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-14",
+        "value_k": 17704,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-14",
+        "value_k": -9869,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 222.5,
+        "expiration": "2026-08-10",
+        "value_k": 7427,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-21",
+        "value_k": 6437,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 222.5,
+        "expiration": "2026-08-12",
+        "value_k": -6242,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 210.0,
+        "expiration": "2026-08-21",
+        "value_k": 5566,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-21",
+        "value_k": 5154,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 230.0,
+        "expiration": "2026-08-14",
+        "value_k": 5147,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 230.0,
+        "expiration": "2026-08-21",
+        "value_k": 5028,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": 29087,
+        "sign": "pos"
+      },
+      {
+        "strike": 222.5,
+        "expiration": "2026-08-10",
+        "value_k": 7427,
+        "sign": "pos"
+      },
+      {
+        "strike": 222.5,
+        "expiration": "2026-08-12",
+        "value_k": -6242,
+        "sign": "neg"
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-14",
+        "value_k": 17704,
+        "sign": "pos"
+      },
+      {
+        "strike": 227.5,
+        "expiration": "2026-08-14",
+        "value_k": 17930,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": 29087,
+        "sign": "pos",
+        "note": "Massive positive GEX BETWEEN spot (~224) and short target 212 \u2014 primary floor/magnet short must defeat"
+      }
+    ],
+    "air_pockets": "If 220 breaks, path toward 210 GEX support (~$5.6M) is relatively cleaner than through 220",
+    "range_edges": {
+      "upside": 227.5,
+      "downside": 220.0
+    },
+    "map_timestamp": "2026-08-09 20:45:03",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 220.0,
+          "expiration": "2026-08-21",
+          "note": "GEX king +$29M vs VEX huge -$320M at same strike \u2014 magnet + volatility risk"
+        },
+        {
+          "strike": 210.0,
+          "expiration": "2026-08-21",
+          "note": "GEX +$5.6M support / VEX -$213M \u2014 near operator 212 long zone"
+        },
+        {
+          "strike": 200.0,
+          "expiration": "2026-08-21",
+          "note": "GEX +$6.4M / VEX king -$394M deeper magnet"
+        }
+      ]
+    },
+    "thesis_note_short_to_212": "Maps do NOT yet concur with an easy short to 212: 220 is a dominant positive-GEX wall. Short thesis needs 220 to weaken/reshuffle or be accepted through. Longs near 212 better framed as IF 220 breaks and price tags fib 0.5 / VP shelf."
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed \u2014 hotspots only"
+  ],
+  "next": null
+}

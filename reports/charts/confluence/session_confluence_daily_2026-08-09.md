@@ -1,11 +1,11 @@
-# TA Confluence Session — daily
-**As of:** 2026-08-09 · **Mode:** map_first · **Bias:** long
+# Session Confluence — daily 2026-08-09
+**Mode:** map_first · **Bias:** long
 
-## Shortlist
-
-| Ticker | Spot | TW | Score | Verdict |
-|--------|------|-----|-------|---------|
-| TSEM | 252.49 | BLUE | 93 | **PLAY** |
+| Ticker | TW | Score | Verdict | Note |
+|--------|-----|-------|---------|------|
+| TSEM | BLUE | 93 | **PLAY** | Shared king 300 / channel break |
+| HIMS | GREEN | 73 | **WATCH** | Prefer **27.42–28** → ~38; spot mid-channel |
 
 ## Gaps
-- Weekly/monthly TW not provided
+- HIMS Patreon color lists not pasted (GREEN inferred)
+- TSEM weekly TW list still absent

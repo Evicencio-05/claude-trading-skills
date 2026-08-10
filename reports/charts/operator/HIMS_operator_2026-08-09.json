@@ -1,0 +1,156 @@
+{
+  "source": "operator",
+  "ticker": "HIMS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "operator 1D ascending channel + SMA + RSI (spot 31.59)"
+    },
+    {
+      "type": "image",
+      "note": "operator 1D channel/S/R alternate pane (spot 31.59)"
+    },
+    {
+      "type": "image",
+      "note": "TW-style 1D with MAs / oscillators (close 31.59, recent high line 38.13)"
+    },
+    {
+      "type": "image",
+      "note": "TW-style 1W Fibonacci channel + oscillators (week close 31.59, +13.76%)"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 31.59,
+    "change": 1.94,
+    "change_pct": 6.54,
+    "volume": "recent daily ~8.23M teal buy bar; weekly ~51.26M",
+    "sma": {
+      "50": 31.44,
+      "100": 27.84,
+      "200": 31.0
+    },
+    "price_vs_sma": {
+      "50": "above",
+      "100": "above",
+      "200": "testing_or_above"
+    },
+    "sr_levels": [
+      16.0,
+      24.0,
+      24.5,
+      27.42,
+      31.59,
+      35.0,
+      35.1,
+      38.0,
+      38.13,
+      50.0,
+      57.5,
+      58.0
+    ],
+    "fib_levels": [
+      {
+        "ratio": "1.000",
+        "price": 42.5,
+        "color": "white",
+        "note": "weekly fib channel 1.0 approx"
+      },
+      {
+        "ratio": "0.786",
+        "price": 35.0,
+        "color": "green",
+        "note": "weekly fib channel ~0.786"
+      },
+      {
+        "ratio": "0.618",
+        "price": 26.5,
+        "color": "cyan",
+        "note": "weekly fib channel ~0.618 reclaimed"
+      }
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "weekly Fibonacci channel (recovery from Mar 2026 low)",
+        "levels": [
+          {
+            "ratio": "1.000",
+            "price": 42.5,
+            "color": "white"
+          },
+          {
+            "ratio": "0.786",
+            "price": 35.0,
+            "color": "green"
+          },
+          {
+            "ratio": "0.618",
+            "price": 26.5,
+            "color": "cyan"
+          }
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "daily recovery from ~13.74 Mar low through Aug 2026",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [
+        15.7,
+        24.0,
+        31.0
+      ],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "~23–26 recent shelf / bounce zone",
+        "~27.5–35 consolidation / current HVN",
+        "~15.7 deep shelf (Mar base)"
+      ],
+      "lowest_volume_zones": [
+        "volume gap character ~16–24 on longer lookback"
+      ],
+      "profile_labels": {
+        "support_zone": 24.0,
+        "high": 38.13
+      },
+      "colors_note": "HVN around current 30–35 band; deep POC near 15.7"
+    },
+    "major_levels": [
+      24.0,
+      27.42,
+      35.0,
+      38.13
+    ],
+    "rsi": {
+      "white": 53.0,
+      "yellow": 48.0,
+      "mid_50": 50,
+      "buyer_strength": true,
+      "seller_strength": false,
+      "deterioration_watch": "Not from >70 on operator RSI — watch white fail back through 50 after reclaim; TW-style stoch pane already ~85 (overbought short-term)",
+      "hold_note": "White reclaimed above 50 and yellow (~52–53); must hold 50 area"
+    },
+    "channel": {
+      "type": "ascending_channel",
+      "status": "mid_channel_near_dashed_midline",
+      "lower": 27.0,
+      "upper": 38.5,
+      "notes": "Lower bound ~27–28 aligns with best entry 27.42; upper ~38–40 aligns with recent high ~38.13 and green/200 SMA resistance on one pane"
+    },
+    "earnings_markers": null,
+    "structure_notes": "Recovery from ~13.74 Mar low inside ascending channel. Spot 31.59 mid-range after +6.5% day / +13.8% week. Horizontal ~35 then recent high 38.13. Preferred long 27.42 = channel support + ~100 SMA (~27.84). RSI buyers reclaiming; short-term oscillators stretched.",
+    "operator_thesis": "HIMS can continue higher and retest recent high ~38. Careful / unpredictable; can rocket. Long from current (~31.59) not bad, but long off 27.42 is best.",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA values approximated across panes (~31.44 / ~27.84 / ~31 or green ~38 depending on chart)",
+    "RSI white ~52–53 across operator panes; TW oscillator pane ~85 is separate overbought read",
+    "Fib channel levels approximate from weekly screenshot"
+  ],
+  "next": null
+}
