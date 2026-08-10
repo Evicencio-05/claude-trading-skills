@@ -74,7 +74,7 @@ def parse_markdown_table(section: str) -> list[dict[str, str]]:
         cells = [c.strip() for c in line.strip("|").split("|")]
         if len(cells) < len(headers):
             cells.extend([""] * (len(headers) - len(cells)))
-        rows.append(dict(zip(headers, cells, strict=False)))
+        rows.append(dict(zip(headers, cells)))
     return rows
 
 
