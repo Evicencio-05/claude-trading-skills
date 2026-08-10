@@ -1,0 +1,192 @@
+{
+  "source": "gex_vex",
+  "ticker": "NVDA",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit VEX NVDA"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 223.96,
+    "change": 4.91,
+    "change_pct": 2.24,
+    "atm_strike": 225.0,
+    "expirations": [
+      "2026-08-10",
+      "2026-08-12",
+      "2026-08-14",
+      "2026-08-17",
+      "2026-08-19",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11"
+    ],
+    "king_node": {
+      "strike": 200.0,
+      "expiration": "2026-08-21",
+      "value_k": -394131,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-21",
+        "value_k": -394131,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-14",
+        "value_k": -325726,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -320350,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": 277910,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 210.0,
+        "expiration": "2026-08-21",
+        "value_k": -212924,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 227.5,
+        "expiration": "2026-08-14",
+        "value_k": 190535,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 235.0,
+        "expiration": "2026-08-21",
+        "value_k": 167041,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 210.0,
+        "expiration": "2026-08-14",
+        "value_k": -145642,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 215.0,
+        "expiration": "2026-08-19",
+        "value_k": 104699,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 215.0,
+        "expiration": "2026-08-17",
+        "value_k": 94124,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 280.0,
+        "expiration": "2026-08-21",
+        "value_k": 38108,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 212.5,
+        "expiration": "2026-08-21",
+        "value_k": 24900,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -320350,
+        "sign": "neg"
+      },
+      {
+        "strike": 227.5,
+        "expiration": "2026-08-14",
+        "value_k": 190535,
+        "sign": "pos"
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-14",
+        "value_k": null,
+        "sign": null
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -320350,
+        "sign": "neg",
+        "note": "Huge VEX at 220 \u2014 if tested, expect violent/wicky interaction; not a calm glide to 212"
+      },
+      {
+        "strike": 210.0,
+        "expiration": "2026-08-21",
+        "value_k": -212924,
+        "sign": "neg",
+        "note": "Near 212 long zone \u2014 high |VEX|; bounce can be sharp"
+      }
+    ],
+    "air_pockets": "Outside 190\u2013300 / mid-Aug expiries many $0K cells",
+    "range_edges": {
+      "upside": 250.0,
+      "downside": 200.0
+    },
+    "map_timestamp": "2026-08-09 20:45:11",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "gex",
+      "overlap_zones": [
+        {
+          "strike": 220.0,
+          "expiration": "2026-08-21",
+          "note": "Shared critical strike for short path"
+        },
+        {
+          "strike": 210.0,
+          "expiration": "2026-08-21",
+          "note": "Shared near operator 212 long zone"
+        },
+        {
+          "strike": 200.0,
+          "expiration": "2026-08-21",
+          "note": "VEX king; deeper than 212 target"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed \u2014 hotspots only",
+    "225 VEX cell near spot not fully labeled in extract"
+  ],
+  "next": null
+}

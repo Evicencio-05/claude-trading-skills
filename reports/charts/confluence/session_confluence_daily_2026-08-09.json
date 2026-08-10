@@ -12,11 +12,22 @@
       "verdict": "PLAY",
       "spot": 252.49,
       "king": "300 / 2026-09-18"
+    },
+    {
+      "ticker": "HIMS",
+      "tw_color": "GREEN",
+      "score": 73,
+      "verdict": "WATCH",
+      "spot": 31.59,
+      "king": "GEX 28 floor / VEX 35 magnet (2026-08-21)",
+      "preferred_entry": "27.42–28",
+      "target": 38.13
     }
   ],
   "gaps": [
-    "Weekly/monthly TW not provided \u2014 HTF scored as absent"
+    "HIMS: Patreon TW lists not pasted — GREEN inferred from charts",
+    "TSEM: Weekly/monthly TW list still absent"
   ],
   "override": null,
-  "updated": "re-score after TW daily + operator charts + RSI rules"
+  "updated": "added HIMS map_first long confluence (WATCH 73)"
 }

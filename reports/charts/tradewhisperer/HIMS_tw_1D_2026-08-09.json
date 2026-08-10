@@ -1,0 +1,57 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "HIMS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "HIMS 1D @TradexWhisperer-style TradingView chart (close 31.59)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1D",
+    "last": 31.59,
+    "change": 1.93,
+    "change_pct": 6.51,
+    "ohlc": null,
+    "volume": "8.23M teal buy bar on latest session (elevated vs prior days)",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN",
+      "GREEN",
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "yellow": 31.44,
+      "green": 29.73,
+      "blue": 27.84
+    },
+    "volume_profile_notes": "HVN ~23–26 and ~30–34; spot in upper consolidation shelf",
+    "oscillators": {
+      "pane1": {
+        "blue": 85.29,
+        "orange": 84.93,
+        "note": "overbought short-term"
+      },
+      "pane2": {
+        "blue": -0.5637,
+        "orange": -0.5987,
+        "note": "bullish cross still below zero"
+      },
+      "pane3": {
+        "value": "443.02M"
+      }
+    },
+    "price_vs_mas": "above_all_near_yellow",
+    "chart_timestamp": "2026-08-07/09",
+    "resistance_marked": 38.13
+  },
+  "confidence": "medium",
+  "gaps": [
+    "Patreon daily color list not pasted — GREEN inferred from chart candle sequence / continuation after bounce",
+    "MA color mapping is TW chart labels, not necessarily operator 50/100/200"
+  ],
+  "next": null
+}
