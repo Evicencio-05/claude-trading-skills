@@ -18,6 +18,7 @@ Two kinds of entries live here:
 |-------|--------|---------|
 | `deep-research` | Active | [deep-research.md](../../commands/deep-research.md) |
 | `log-positions` | Active | [log-positions.md](../../commands/log-positions.md) |
+| `log-trade-screenshot` | Active | [log-trade-screenshot.md](../../commands/log-trade-screenshot.md) |
 | `robinhood-portfolio-review` | Active | MCP portfolio report |
 | `update-research` | Active | [update-research.md](../../commands/update-research.md) |
 | `tradewhisperer-charts` | Contract active | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) |
@@ -25,6 +26,7 @@ Two kinds of entries live here:
 | `operator-charts` | Contract active | [operator-charts.md](../../commands/operator-charts.md) |
 | `ta-confluence` | Active (candle_first / map_first) | [ta-confluence.md](../../commands/ta-confluence.md) |
 | `agentic-copilot-trade` | Co-pilot gates (confirm before place) | [agentic-copilot-trade.md](../../commands/agentic-copilot-trade.md) |
+| `options-flow-tail` | Active (user-supplied screener) | [options-flow-tail.md](../../commands/options-flow-tail.md) |
 
 ## Add a symlinked upstream skill
 

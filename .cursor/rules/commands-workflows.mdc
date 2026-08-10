@@ -24,6 +24,7 @@ When the user requests one of these workflows, read the linked file and follow i
 | Operator charts (your charting) | [commands/operator-charts.md](commands/operator-charts.md) or skill `operator-charts` |
 | TA confluence (candle-first / map-first) | [commands/ta-confluence.md](commands/ta-confluence.md) or skill `ta-confluence` |
 | Agentic co-pilot trade (Portfolio C) | [commands/agentic-copilot-trade.md](commands/agentic-copilot-trade.md) or skill `agentic-copilot-trade` |
+| Options flow screener → primary tail | [commands/options-flow-tail.md](commands/options-flow-tail.md) or skill `options-flow-tail` |
 
 **Deep research rule:** Pass 0 preflight (`scripts/research_preflight.py`) reuse-first — then complete ALL Pass 1 collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
 

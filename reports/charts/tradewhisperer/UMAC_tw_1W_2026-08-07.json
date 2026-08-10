@@ -1,0 +1,57 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "UMAC",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "UMAC 1W @TradexWhisperer TradingView chart (operator screenshot)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1W",
+    "last": 26.11,
+    "change": 4.95,
+    "change_pct": 23.39,
+    "ohlc": {
+      "open": 21.30,
+      "high": 27.19,
+      "low": 20.78,
+      "close": 26.11
+    },
+    "volume": "26.77M",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 15.30,
+      "blue": 11.57
+    },
+    "volume_profile_notes": null,
+    "oscillators": {
+      "pane1": {
+        "blue": 25.46,
+        "orange": 14.24
+      },
+      "pane2": {
+        "blue": 7.14,
+        "orange": 2.10
+      },
+      "pane3": {
+        "value": "317.95M"
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-07"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "oscillator pane names not labeled on chart",
+    "HTF GREEN dominates daily — weekly stack supportive of continuation",
+    "full recent_candle_sequence truncated — only latest GREEN weekly prints confidently readable"
+  ],
+  "next": null
+}
