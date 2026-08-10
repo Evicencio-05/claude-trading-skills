@@ -21,6 +21,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/operator-charts TICKER` | [operator-charts.md](operator-charts.md) |
 | `/ta-confluence [candle_first\|map_first]` | [ta-confluence.md](ta-confluence.md) |
 | `/agentic-copilot-trade [TICKER]` | [agentic-copilot-trade.md](agentic-copilot-trade.md) |
+| `/options-flow-tail` | [options-flow-tail.md](options-flow-tail.md) |
 
 ## Cursor
 
@@ -36,6 +37,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Operator charts | Skill `operator-charts` — [operator-charts.md](operator-charts.md) |
 | TA confluence | Skill `ta-confluence` — [ta-confluence.md](ta-confluence.md) |
 | Agentic co-pilot | Skill `agentic-copilot-trade` — [agentic-copilot-trade.md](agentic-copilot-trade.md) |
+| Options flow tail | Skill `options-flow-tail` — [options-flow-tail.md](options-flow-tail.md) |
 | Research watchlist batch | [review-portfolio.md](review-portfolio.md) — staleness &gt;14d → `/update-research`; not the MCP snapshot |
 | Others | See table in `.cursor/rules/commands-workflows.mdc` |
 

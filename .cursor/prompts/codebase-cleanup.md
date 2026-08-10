@@ -28,9 +28,9 @@ Map every overlap category. For each finding, record: **path**, **duplicate of**
 ```bash
 ls -la .cursor/skills/
 ```
-- **Keep as directories (wrappers):** `deep-research`, `log-positions`, `robinhood-portfolio-review`, `update-research`
-- **Must be symlinks:** everything else → `../../skills/<name>`
-- Flag any copied skill trees under `.cursor/skills/`
+- **Keep as directories (fork-local wrappers):** any skill that has no twin under `skills/` — currently `deep-research`, `log-positions`, `log-trade-screenshot`, `robinhood-portfolio-review`, `update-research`, `tradewhisperer-charts`, `gex-vex-maps`, `operator-charts`, `ta-confluence`, `agentic-copilot-trade`, `options-flow-tail` (see `.cursor/skills/README.md`)
+- **Must be symlinks:** every entry that mirrors `skills/<name>` → `../../skills/<name>`
+- Flag any **copied** upstream skill trees under `.cursor/skills/` (directory that also exists under `skills/` and is not a symlink)
 
 ### C. Robinhood / MCP script overlap
 Review for duplicate responsibilities:

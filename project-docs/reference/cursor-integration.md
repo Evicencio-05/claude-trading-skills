@@ -7,7 +7,7 @@
 | Path | Role |
 |------|------|
 | `skills/` | Canonical skill source (scripts + references + SKILL.md) |
-| `.cursor/skills/` | Symlinks + workflow wrappers (`deep-research`, `log-positions`) |
+| `.cursor/skills/` | Symlinks to `skills/` + fork-local workflow dirs (see [skills README](../../.cursor/skills/README.md)) |
 | `.cursor/rules/` | Auto-loaded session router, Python conventions, command map |
 | `commands/` | Workflow specs (shared by Claude slash commands and Cursor) |
 | `.cursor/prompts/` | Prompt learning loop — meta prompts + Tier 2 durable invocations; see [README](../../.cursor/prompts/README.md) |
@@ -16,7 +16,7 @@
 ## Setup checklist
 
 1. Open repo in Cursor — `project-router.mdc` loads automatically.
-2. Confirm `.cursor/skills/`: most entries symlink to `../../skills/<name>`; wrapper dirs (`deep-research`, `log-positions`, `update-research`, `robinhood-portfolio-review`) are repo-local and link to `commands/` — see [.cursor/skills/README.md](../../.cursor/skills/README.md).
+2. Confirm `.cursor/skills/`: upstream skills symlink to `../../skills/<name>`; fork workflow dirs are repo-local (SKILL.md + optional `references/`) and link to `commands/` — full list in [.cursor/skills/README.md](../../.cursor/skills/README.md).
 3. Optional: `ln -sfn "$(pwd)/skills/<name>" ~/.claude/skills/<name>` for Claude Code parity.
 4. Ensure `.env` exists at repo root with `FMP_API_KEY` etc. (gitignored).
 5. Run `uv run python3 scripts/pre_market.py --dry-run` to verify daily stack.
