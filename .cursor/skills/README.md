@@ -21,7 +21,7 @@ Two kinds of entries live here:
 | `log-trade-screenshot` | Active | [log-trade-screenshot.md](../../commands/log-trade-screenshot.md) |
 | `robinhood-portfolio-review` | Active | MCP portfolio report |
 | `update-research` | Active | [update-research.md](../../commands/update-research.md) |
-| `tradewhisperer-charts` | Contract active | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) |
+| `tradewhisperer-charts` | List-first (color SoT); charts optional | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) · `scripts/tw_list_resolve.py` |
 | `gex-vex-maps` | Contract active | [gex-vex-maps.md](../../commands/gex-vex-maps.md) |
 | `operator-charts` | Contract active | [operator-charts.md](../../commands/operator-charts.md) |
 | `ta-confluence` | Active (candle_first / map_first) | [ta-confluence.md](../../commands/ta-confluence.md) |

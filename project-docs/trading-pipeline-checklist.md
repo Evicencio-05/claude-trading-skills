@@ -1,6 +1,6 @@
 # Trading Pipeline Checklist
 
-> **Last updated:** 2026-05-31 (reports layout v2)
+> **Last updated:** 2026-08-11 (TW list-first + HTF stack)
 > **Active phase:** [Phase 1 — Research + Co-Pilot](phase-1-research-copilot.md)
 >
 > Canonical operator cadence for research → thesis → co-pilot execution.
@@ -27,7 +27,9 @@
 | Broker snapshot | `reports/portfolio/portfolio_review_YYYY-MM-DD.md` |
 | Position sizing | `reports/portfolio/position_sizer_{YYYY-MM-DD}_{HHMMSS}.{json,md}` |
 | Watchlist batch summary | `reports/logs/portfolio_summary_YYYY-MM-DD.md` |
-| TradeWhisperer chart/list intake | `reports/charts/tradewhisperer/{TICKER}_tw_{1D\|1W\|1M}_DATE` · `list_tw_{daily\|weekly\|monthly}_DATE` |
+| TradeWhisperer list intake (color SoT) | `reports/charts/tradewhisperer/list_tw_{daily\|weekly\|monthly}_DATE` |
+| TradeWhisperer chart intake (optional structure) | `reports/charts/tradewhisperer/{TICKER}_tw_{1D\|1W\|1M}_DATE` |
+| TW HTF color stack | `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of DATE` |
 | GEX/VEX map intake | `reports/charts/gex_vex/{TICKER}_gex_DATE` · `{TICKER}_vex_DATE` |
 | Operator chart intake | `reports/charts/operator/{TICKER}_operator_DATE.{md,json}` |
 | TA confluence brief | `reports/charts/confluence/session_confluence_{period}_DATE` · `{TICKER}_confluence_DATE` |
@@ -45,11 +47,14 @@ Path registry: [`scripts/report_paths.py`](../scripts/report_paths.py)
 
 - [ ] Run `uv run python3 scripts/pre_market.py` (timer: `pre-market.timer` — see [launchd/README.md](../launchd/README.md))
 - [ ] Read `reports/logs/market_context_YYYY-MM-DD.json` (or `.md`) — posture, ceiling, position flags
+- [ ] **TW lists (prefer text)** — ingest daily Patreon candle list via `/tradewhisperer-charts` → `list_tw_daily_DATE`; optional weekly/monthly when posted. Charts only for finalists (structure).
+- [ ] Optional TA session — `/ta-confluence candle_first` after lists + maps + operator chart ([ta-confluence.md](../commands/ta-confluence.md))
 
 ---
 
 ## Weekly
 
+- [ ] Ingest TW **weekly** (and monthly if posted) candle lists → `list_tw_weekly_*` / `list_tw_monthly_*` for HTF stacks
 - [ ] Run `uv run python3 scripts/update_stale_research.py` → queue + `reports/logs/research_staleness_*.md`
 - [ ] **Research watchlist batch** — [commands/review-portfolio.md](../commands/review-portfolio.md) or per-ticker [commands/update-research.md](../commands/update-research.md) from queue
 - [ ] **Broker snapshot** — skill `robinhood-portfolio-review` → `reports/portfolio/portfolio_review_*.md`
@@ -108,6 +113,7 @@ Use [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md) (s
 
 ## Changelog
 
+- **2026-08-11** — TW list-first cadence; `scripts/tw_list_resolve.py` HTF stacks; confluence requires period list for PLAY
 - **2026-08-09** — TA-first chart intakes + `ta-confluence`; `agentic-copilot-trade` gates; TW filenames include `1D|1W|1M`
 - **2026-05-31** — Reports layout v2: category-grouped subdirs (`market/`, `screeners/`, `portfolio/`, etc.); `scripts/report_paths.py` registry
 - **2026-05-31** — Initial checklist; consolidated steps from phase-1, PENDING_WORK, LOAD_GUIDE
