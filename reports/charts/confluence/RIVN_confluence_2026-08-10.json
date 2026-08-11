@@ -1,0 +1,134 @@
+{
+  "source": "ta_confluence",
+  "ticker": "RIVN",
+  "as_of": "2026-08-10",
+  "mode": "candle_first",
+  "period": "daily",
+  "bias": "long",
+  "tw_color": "BLUE_GREEN",
+  "tw_stack": {
+    "daily": "BLUE_GREEN",
+    "weekly": "BLUE",
+    "monthly": "GREEN"
+  },
+  "htf": {
+    "fight": false,
+    "fierce": false,
+    "htf_absent": false,
+    "score_guide": "full",
+    "reason": "no bearish HTF stack vs long"
+  },
+  "artifacts": {
+    "tw_lists": {
+      "daily": "reports/charts/tradewhisperer/list_tw_daily_2026-08-10.json",
+      "weekly": "reports/charts/tradewhisperer/list_tw_weekly_2026-08-07.json",
+      "monthly": "reports/charts/tradewhisperer/list_tw_monthly_2026-07-31.json"
+    },
+    "tw_chart": null,
+    "gex": "reports/charts/gex_vex/RIVN_gex_2026-08-10.json",
+    "vex": "reports/charts/gex_vex/RIVN_vex_2026-08-10.json",
+    "operator": "reports/charts/operator/RIVN_operator_2026-08-10.json"
+  },
+  "score": 74,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 30,
+      "note": "Daily list BLUE_GREEN (bullish start confirmed) — full long trigger. SoT: list_tw_daily_2026-08-10."
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Stack D BLUE_GREEN / W BLUE / M GREEN — htf_fight score_guide=full, no fierce bearish HTF."
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 10,
+      "note": "Mixed: VEX king 20 Dec (+$21.6M) is a long magnet; GEX/VEX both print large neg at 17 this week (−$5.0M class) as path gatekeeper. Spot support GEX 16 (+$1.3M) helps the channel bounce, but near-term maps are not clean long-path."
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 6,
+      "note": "GEX∩VEX at 17 (hostile near-spot) and 20 (shared upside magnet, farther). Contested 15 (GEX+ vs VEX−). Overlap near bounce thesis is weak until 17 clears."
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 8,
+      "note": "Clear ascending-channel low + fib ladder + VP shelf 15.29 — asymmetric edge defined. Half-dock for missing SMA colors and neutral RSI (not white>yellow>50 confirmed)."
+    }
+  },
+  "verdict": "WATCH",
+  "judgment": {
+    "devils_advocate": [
+      "GEX king 17 / Aug-14 (−$5.1M) + VEX 17 (−$5.0M) sit immediately overhead — channel bounce can stall or wick into that vol pocket before mid-channel",
+      "VEX 15 Sep (−$5.1M) is a hard fail zone if the channel/VP shelf breaks — bounce thesis dies fast",
+      "Operator flagged important data — maps/channel do not price event risk; A+ label ignores that"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily list prints PINK or PINK_RED (BLUE_GREEN → pink cancel)",
+      "maps": "Invalid if 16 GEX support fades while 17 neg expands / migrates down, or VEX 15 becomes the active magnet",
+      "operator": "Invalid on daily close below channel low / VP yellow shelf ~15.29 (deeper fail ~15.0 map zone)"
+    },
+    "not_allowed_to_ignore": [
+      "Near-term path is through a shared 17 neg GEX∩VEX gate — not a clean runway to 20",
+      "Best long magnet 20 is real on VEX/GEX but is a ladder after 17.65 / 18.55, not owed from 16.3",
+      "RSI ~53 is not confirmed buyer strength (need white > yellow and >50 hold)",
+      "Upcoming data can invalidate a technically pretty channel touch"
+    ],
+    "rr_sketch": {
+      "entry_zone": "Channel/VP bounce 15.95–16.45 (fib 0.382–0.5); avoid chasing through 17 until accepted",
+      "stop": 15.0,
+      "targets": [
+        {"level": 16.95, "note": "fib 0.618"},
+        {"level": 17.65, "note": "fib 0.786 — must clear GEX/VEX 17 pocket"},
+        {"level": 18.55, "note": "fib 1.0 / prior swing / near channel mid"},
+        {"level": 20.0, "note": "VEX/GEX upside magnet"}
+      ],
+      "rough_rr": "From ~16.30 stop 15.0: ~1.0R to 17.65 / ~1.7R to 18.55 / ~2.8R to 20. First R is through the hostile 17 node → treat as WATCH until reclaim."
+    },
+    "process_grade": {
+      "period_list_color_present": true,
+      "htf_stack_checked": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "list_vs_chart_conflict": "NA",
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid — TW list stack + both maps + operator; A+ claim downgraded on 17 gate + event gap → WATCH"
+    },
+    "one_thing_to_verify": "Whether 17 / Aug-14 still prints as the GEX star / VEX gate after the next map refresh — do not upgrade to PLAY while that pocket is untouched and expanding."
+  },
+  "override": null,
+  "gaps": [
+    "Operator mentioned important upcoming data but did not specify the event — not researched (out of scope)",
+    "SMA 50/100/200 not readable on pasted operator charts"
+  ],
+  "hard_stops": [],
+  "spot": 16.32,
+  "change_pct": 2.38,
+  "operator_thesis": "RIVN just touched the bottom of a well-respected channel and looks like it can keep in the range. Important data coming up but looks like a solid A+ play.",
+  "map_summary": {
+    "near_term_gate": {
+      "strike": 17.0,
+      "expiration": "2026-08-14",
+      "gex_k": -5076,
+      "vex_k": -4979
+    },
+    "spot_support_gex": {
+      "strike": 16.0,
+      "expiration": "2026-08-14",
+      "gex_k": 1302
+    },
+    "shared_upside_magnet": {
+      "strike": 20.0,
+      "gex_k": 3265,
+      "vex_k": 21553
+    },
+    "fail_zone_vex": {
+      "strike": 15.0,
+      "expiration": "2026-09-18",
+      "vex_k": -5115
+    }
+  },
+  "upgrade_to_play": "Daily acceptance/reclaim above 17 with 16/channel still holding, or pullback hold of 15.29–15.95 that does not activate VEX 15 magnet — and after the named data risk is known."
+}

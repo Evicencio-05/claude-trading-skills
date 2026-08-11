@@ -1,0 +1,63 @@
+{
+  "source": "gex_vex",
+  "ticker": "RIVN",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX RIVN Aug 10 05:40:28 PM"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 16.32,
+    "change": 0.38,
+    "change_pct": 2.38,
+    "atm_strike": 16.5,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-11-20",
+      "2026-12-18"
+    ],
+    "king_node": {
+      "strike": 17.0,
+      "expiration": "2026-08-14",
+      "value_k": -5076,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -5076, "sign": "neg", "starred": true},
+      {"strike": 20.0, "expiration": "2026-12-18", "value_k": 3265, "sign": "pos", "starred": false},
+      {"strike": 17.0, "expiration": "2026-09-18", "value_k": 3220, "sign": "pos", "starred": false},
+      {"strike": 15.0, "expiration": "2026-09-18", "value_k": 1961, "sign": "pos", "starred": false},
+      {"strike": 16.0, "expiration": "2026-08-14", "value_k": 1302, "sign": "pos", "starred": false},
+      {"strike": 17.5, "expiration": "2026-08-14", "value_k": -1257, "sign": "neg", "starred": false},
+      {"strike": 19.5, "expiration": "2026-08-21", "value_k": -1128, "sign": "neg", "starred": false},
+      {"strike": 20.0, "expiration": "2026-09-18", "value_k": 1095, "sign": "pos", "starred": false}
+    ],
+    "nodes_near_spot": [
+      {"strike": 16.0, "expiration": "2026-08-14", "value_k": 1302, "note": "pos support just below spot"},
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -5076, "note": "king neg / vol pocket overhead"},
+      {"strike": 17.5, "expiration": "2026-08-14", "value_k": -1257, "note": "neg continuation above king"}
+    ],
+    "gatekeeper_candidates": [
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -5076, "role": "near-term vol gate / overshoot risk"},
+      {"strike": 17.5, "expiration": "2026-08-14", "value_k": -1257, "role": "secondary overhead neg"}
+    ],
+    "air_pockets": [],
+    "range_edges": {"lower_interest": 15.0, "upper_interest": 20.0},
+    "map_timestamp": "2026-08-10T17:40:28",
+    "confluence_with": "vex"
+  },
+  "confidence": "high",
+  "gaps": ["Exact full-grid OCR partial — top |value| nodes prioritized"],
+  "next": null
+}

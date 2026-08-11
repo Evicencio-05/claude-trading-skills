@@ -1,0 +1,63 @@
+{
+  "source": "gex_vex",
+  "ticker": "RIVN",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker VEX RIVN Aug 10 05:41:20 PM"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 16.32,
+    "change": 0.38,
+    "change_pct": 2.38,
+    "atm_strike": 16.5,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-11-20",
+      "2026-12-18"
+    ],
+    "king_node": {
+      "strike": 20.0,
+      "expiration": "2026-12-18",
+      "value_k": 21553,
+      "sign": "pos",
+      "starred": false
+    },
+    "top_nodes": [
+      {"strike": 20.0, "expiration": "2026-12-18", "value_k": 21553, "sign": "pos", "starred": false},
+      {"strike": 35.0, "expiration": "2026-12-18", "value_k": 12695, "sign": "pos", "starred": false},
+      {"strike": 20.0, "expiration": "2026-09-18", "value_k": 6337, "sign": "pos", "starred": false},
+      {"strike": 19.5, "expiration": "2026-08-21", "value_k": -5300, "sign": "neg", "starred": false},
+      {"strike": 15.0, "expiration": "2026-09-18", "value_k": -5115, "sign": "neg", "starred": false},
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -4979, "sign": "neg", "starred": false},
+      {"strike": 17.0, "expiration": "2026-09-18", "value_k": 4399, "sign": "pos", "starred": false},
+      {"strike": 20.0, "expiration": "2026-08-21", "value_k": 3293, "sign": "pos", "starred": false},
+      {"strike": 17.5, "expiration": "2026-08-14", "value_k": -2024, "sign": "neg", "starred": false}
+    ],
+    "nodes_near_spot": [
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -4979, "note": "near-term neg resistance/vol"},
+      {"strike": 15.0, "expiration": "2026-09-18", "value_k": -5115, "note": "fail zone if channel breaks"}
+    ],
+    "gatekeeper_candidates": [
+      {"strike": 17.0, "expiration": "2026-08-14", "value_k": -4979, "role": "blocks path to 20 magnet"},
+      {"strike": 19.5, "expiration": "2026-08-21", "value_k": -5300, "role": "2-week ceiling candidate"}
+    ],
+    "air_pockets": [],
+    "range_edges": {"lower_interest": 15.0, "upper_interest": 20.0},
+    "map_timestamp": "2026-08-10T17:41:20",
+    "confluence_with": "gex"
+  },
+  "confidence": "high",
+  "gaps": ["Full-grid OCR partial — largest |value_k| cells prioritized"],
+  "next": null
+}
