@@ -11,6 +11,8 @@ Ingest **user-supplied** TradeWhisperer inputs. **Lists are the candle-color sou
 
 **Resolver:** after lists are on disk, HTF stacks via `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of YYYY-MM-DD` (uses latest weekly/monthly list on or before that date).
 
+**Overlap + sector:** after list persist, `uv run python3 scripts/tw_list_resolve.py overlap --as-of YYYY-MM-DD --bias either --write-pending` → `overlap_tw_{as_of}.{md,json}` using [`config/tw_sector_map.yaml`](../config/tw_sector_map.yaml).
+
 ## PHASE 0 — INTAKE
 
 Prefer **list** when the paste is a Patreon candle color list (or both list + chart). Classify list vs chart.
@@ -32,3 +34,15 @@ Fill envelope per contract; normalize candle colors (`BLUE-GREEN` → `BLUE_GREE
 Write `.json` + `.md`. No trade plan. No merge with other TA sources.
 
 Confirm path in chat. For multi-period HTF, ingest each list separately (`list_tw_daily_*`, `list_tw_weekly_*`, `list_tw_monthly_*`).
+
+## PHASE 3 — OVERLAP + SECTOR
+
+After the session period list is on disk (and weekly/monthly exist or already on disk for lookback):
+
+1. Run:
+   ```bash
+   uv run python3 scripts/tw_list_resolve.py overlap --as-of {as_of} --bias either --write-pending
+   ```
+2. Summarize in chat: top bull/bear overlaps and vs-benchmark rows (e.g. CVX/XOM vs XLE).
+3. Report `unmapped` / `pending_added` count. Promote `pending:` → `tickers:` in `config/tw_sector_map.yaml` when the operator assigns a real benchmark (no FMP/news lookup).
+4. Artifacts: `reports/charts/tradewhisperer/overlap_tw_{as_of}.{md,json}`.

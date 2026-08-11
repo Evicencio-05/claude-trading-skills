@@ -62,6 +62,7 @@ ARTIFACT_DATE_GLOBS: dict[str, tuple[str, ...]] = {
     "tradewhisperer_charts": (
         "*_tw_*_{date}*",
         "list_tw_*_{date}*",
+        "overlap_tw_{date}*",
         "tw_{date}*",
     ),
     "gex_vex_maps": (
