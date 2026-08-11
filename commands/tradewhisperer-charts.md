@@ -9,7 +9,7 @@ Ingest **user-supplied** TradeWhisperer inputs. **Lists are the candle-color sou
 
 **Paths:** `reports/charts/tradewhisperer/` — lists `list_tw_{period}_{as_of}` · charts `{TICKER}_tw_{1D|1W|1M}_{as_of}`.
 
-**Resolver:** after lists are on disk, HTF stacks via `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of YYYY-MM-DD`.
+**Resolver:** after lists are on disk, HTF stacks via `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of YYYY-MM-DD` (uses latest weekly/monthly list on or before that date).
 
 ## PHASE 0 — INTAKE
 

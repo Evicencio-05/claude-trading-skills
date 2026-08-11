@@ -16,7 +16,8 @@ Output: `reports/charts/tradewhisperer/`.
 3. Always write **`buckets`** and **`ticker_index`** (build index from buckets if missing).
 4. Normalize bucket keys: `BLUE-GREEN` → `BLUE_GREEN`, `PINK-RED` → `PINK_RED`, `TRIM-OPTION` → `TRIM_OPTION`.
 5. **Conflict rule:** if list color and chart-inferred color disagree for the same ticker/period, **list wins**; note chart color under `gaps`.
-6. HTF overlap: ingest separate list files per period; resolve with `scripts/tw_list_resolve.py`.
+6. HTF overlap: ingest separate list files per period; resolve with `scripts/tw_list_resolve.py` (looks up latest weekly/monthly list **on or before** session `as_of`).
+7. When both standard and PLUS tier lists are pasted for the same period/date, **merge** into one `list_tw_{period}_{as_of}` artifact.
 
 ## Lists — extract
 

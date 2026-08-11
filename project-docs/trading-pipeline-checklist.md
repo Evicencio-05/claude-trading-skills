@@ -47,7 +47,7 @@ Path registry: [`scripts/report_paths.py`](../scripts/report_paths.py)
 
 - [ ] Run `uv run python3 scripts/pre_market.py` (timer: `pre-market.timer` — see [launchd/README.md](../launchd/README.md))
 - [ ] Read `reports/logs/market_context_YYYY-MM-DD.json` (or `.md`) — posture, ceiling, position flags
-- [ ] **TW lists (prefer text)** — ingest daily Patreon candle list via `/tradewhisperer-charts` → `list_tw_daily_DATE`; optional weekly/monthly when posted. Charts only for finalists (structure).
+- [ ] **TW lists (prefer text)** — on long-lived branch `cursor/tw-ta-ingest-22c6`, ingest via `/tradewhisperer-charts` → `list_tw_daily_DATE` (+ weekly/monthly when posted). Charts only for finalists (structure).
 - [ ] Optional TA session — `/ta-confluence candle_first` after lists + maps + operator chart ([ta-confluence.md](../commands/ta-confluence.md))
 
 ---

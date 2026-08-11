@@ -1,0 +1,24 @@
+{
+  "source": "ta_confluence",
+  "mode": "candle_first",
+  "period": "daily",
+  "bias": "long",
+  "as_of": "2026-08-10",
+  "shortlist": [
+    {
+      "ticker": "RIVN",
+      "tw_color": "BLUE_GREEN",
+      "tw_stack": {
+        "daily": "BLUE_GREEN",
+        "weekly": "BLUE",
+        "monthly": "GREEN"
+      },
+      "score": 74,
+      "verdict": "WATCH"
+    }
+  ],
+  "gaps": [
+    "Session focused on operator-selected RIVN from prior HTF shortlist"
+  ],
+  "override": null
+}

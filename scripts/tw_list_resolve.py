@@ -69,8 +69,26 @@ def _index_from_buckets(buckets: dict[str, list[str]]) -> dict[str, str]:
     return index
 
 
+def _list_as_of_from_name(path: Path, period_key: str) -> date | None:
+    """Parse YYYY-MM-DD from list_tw_{period}_{date}*.json filename."""
+    prefix = f"list_tw_{period_key}_"
+    name = path.name
+    if not name.startswith(prefix) or not name.endswith(".json"):
+        return None
+    rest = name[len(prefix) : -len(".json")]
+    date_part = rest.split("_", 1)[0]
+    try:
+        return date.fromisoformat(date_part)
+    except ValueError:
+        return None
+
+
 def find_list(repo_root: Path, period: str, as_of: date) -> Path | None:
-    """Return newest list_tw_{period}_{as_of}*.json in the TW charts dir."""
+    """Return newest list_tw_{period}_* on or before *as_of*.
+
+    Prefers exact-date matches; otherwise the latest prior dated list for the period
+    (so weekly/monthly HTF stacks work when list titles predate the session day).
+    """
     period_key = period.strip().lower()
     if period_key not in PERIODS:
         raise ValueError(f"period must be one of {PERIODS}, got {period!r}")
@@ -78,10 +96,22 @@ def find_list(repo_root: Path, period: str, as_of: date) -> Path | None:
     if not directory.exists():
         return None
     date_str = as_of.isoformat()
-    matches = sorted(directory.glob(f"list_tw_{period_key}_{date_str}*.json"))
-    if not matches:
+    exact = sorted(directory.glob(f"list_tw_{period_key}_{date_str}*.json"))
+    if exact:
+        return exact[-1]
+
+    candidates: list[tuple[date, Path]] = []
+    for path in directory.glob(f"list_tw_{period_key}_*.json"):
+        list_date = _list_as_of_from_name(path, period_key)
+        if list_date is None or list_date > as_of:
+            continue
+        candidates.append((list_date, path))
+    if not candidates:
         return None
-    return matches[-1]
+    # Latest list date, then newest filename among that date
+    best_date = max(d for d, _ in candidates)
+    same_day = sorted(p for d, p in candidates if d == best_date)
+    return same_day[-1]
 
 
 def load_list(path: Path) -> dict[str, Any]:

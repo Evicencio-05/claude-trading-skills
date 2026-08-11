@@ -96,6 +96,23 @@ def test_find_list_missing_returns_none(tmp_path: Path):
     assert find_list(tmp_path, "monthly", date(2026, 8, 10)) is None
 
 
+def test_find_list_lookback_uses_latest_on_or_before(tmp_path: Path):
+    """Weekly/monthly list titles often predate the session as_of."""
+    tw_dir = artifact_dir(tmp_path, "tradewhisperer_charts", mkdir=True)
+    (tw_dir / "list_tw_weekly_2026-08-07.json").write_text("{}")
+    (tw_dir / "list_tw_weekly_2026-07-31.json").write_text("{}")
+    (tw_dir / "list_tw_monthly_2026-07-31.json").write_text("{}")
+    # Future weekly must not win
+    (tw_dir / "list_tw_weekly_2026-08-14.json").write_text("{}")
+
+    assert find_list(tmp_path, "weekly", date(2026, 8, 10)).name == (
+        "list_tw_weekly_2026-08-07.json"
+    )
+    assert find_list(tmp_path, "monthly", date(2026, 8, 10)).name == (
+        "list_tw_monthly_2026-07-31.json"
+    )
+
+
 def test_load_list_builds_index_from_buckets(tmp_path: Path):
     as_of = "2026-08-10"
     payload = _list_payload(
