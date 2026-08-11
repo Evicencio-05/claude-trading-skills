@@ -1,0 +1,286 @@
+# TradeWhisperer ticker → sector/benchmark ETF map
+# Used by: scripts/tw_list_resolve.py overlap | map-lookup
+# Promote pending → tickers once a real benchmark is known. Do not invent silently.
+
+benchmarks:
+  XLB:
+    name: Materials
+    class: sector
+  XLC:
+    name: Communication Services
+    class: sector
+  XLE:
+    name: Energy
+    class: sector
+  XLF:
+    name: Financials
+    class: sector
+  XLI:
+    name: Industrials
+    class: sector
+  XLK:
+    name: Technology
+    class: sector
+  XLP:
+    name: Consumer Staples
+    class: sector
+  XLRE:
+    name: Real Estate
+    class: sector
+  XLU:
+    name: Utilities
+    class: sector
+  XLV:
+    name: Health Care
+    class: sector
+  XLY:
+    name: Consumer Discretionary
+    class: sector
+  SPY:
+    name: S&P 500
+    class: index
+  QQQ:
+    name: Nasdaq 100
+    class: index
+  IWM:
+    name: Russell 2000
+    class: index
+  SMH:
+    name: Semiconductors
+    class: thematic
+  XBI:
+    name: Biotech
+    class: thematic
+  ARKK:
+    name: Innovation
+    class: thematic
+  GDX:
+    name: Gold Miners
+    class: commodity
+  SLV:
+    name: Silver
+    class: commodity
+  USO:
+    name: Crude Oil
+    class: commodity
+  UNG:
+    name: Natural Gas
+    class: commodity
+  EWY:
+    name: South Korea
+    class: country
+  MOO:
+    name: Agriculture
+    class: thematic
+
+tickers:
+  # Energy
+  CVX:
+    benchmark: XLE
+    class: equity
+  XOM:
+    benchmark: XLE
+    class: equity
+  COP:
+    benchmark: XLE
+    class: equity
+  OXY:
+    benchmark: XLE
+    class: equity
+  # Technology / mega-cap
+  AAPL:
+    benchmark: XLK
+    class: equity
+  MSFT:
+    benchmark: XLK
+    class: equity
+  NVDA:
+    benchmark: SMH
+    class: equity
+  AVGO:
+    benchmark: SMH
+    class: equity
+  AMD:
+    benchmark: SMH
+    class: equity
+  TSM:
+    benchmark: SMH
+    class: equity
+  INTC:
+    benchmark: SMH
+    class: equity
+  MU:
+    benchmark: SMH
+    class: equity
+  AMZN:
+    benchmark: XLY
+    class: equity
+  META:
+    benchmark: XLC
+    class: equity
+  GOOGL:
+    benchmark: XLC
+    class: equity
+  NFLX:
+    benchmark: XLC
+    class: equity
+  TSLA:
+    benchmark: XLY
+    class: equity
+  ORCL:
+    benchmark: XLK
+    class: equity
+  CRM:
+    benchmark: XLK
+    class: equity
+  ADBE:
+    benchmark: XLK
+    class: equity
+  NOW:
+    benchmark: XLK
+    class: equity
+  SNOW:
+    benchmark: XLK
+    class: equity
+  PLTR:
+    benchmark: XLK
+    class: equity
+  PANW:
+    benchmark: XLK
+    class: equity
+  CRWD:
+    benchmark: XLK
+    class: equity
+  # Financials
+  JPM:
+    benchmark: XLF
+    class: equity
+  GS:
+    benchmark: XLF
+    class: equity
+  V:
+    benchmark: XLF
+    class: equity
+  MA:
+    benchmark: XLF
+    class: equity
+  BRK.B:
+    benchmark: XLF
+    class: equity
+  HOOD:
+    benchmark: XLF
+    class: equity
+  IBKR:
+    benchmark: XLF
+    class: equity
+  COIN:
+    benchmark: XLF
+    class: equity
+  # Health care
+  LLY:
+    benchmark: XLV
+    class: equity
+  UNH:
+    benchmark: XLV
+    class: equity
+  ISRG:
+    benchmark: XLV
+    class: equity
+  HIMS:
+    benchmark: XLV
+    class: equity
+  # Consumer / retail
+  COST:
+    benchmark: XLP
+    class: equity
+  WMT:
+    benchmark: XLP
+    class: equity
+  NKE:
+    benchmark: XLY
+    class: equity
+  SBUX:
+    benchmark: XLY
+    class: equity
+  CMG:
+    benchmark: XLY
+    class: equity
+  # Industrials
+  CAT:
+    benchmark: XLI
+    class: equity
+  BA:
+    benchmark: XLI
+    class: equity
+  GE:
+    benchmark: XLI
+    class: equity
+  # Utilities / staples / RE
+  NEE:
+    benchmark: XLU
+    class: equity
+  # Crypto / proxies (benchmark is closest listed proxy)
+  BTC:
+    benchmark: SPY
+    class: crypto
+  ETH:
+    benchmark: SPY
+    class: crypto
+  # Oil/gas proxies already have commodity benchmarks as symbols;
+  # map related names to XLE when not the ETF itself.
+  INOD:
+    benchmark: XLK
+    class: equity
+  RIVN:
+    benchmark: XLY
+    class: equity
+  UMAC:
+    benchmark: XLK
+    class: equity
+  TSEM:
+    benchmark: SMH
+    class: equity
+  DELL:
+    benchmark: XLK
+    class: equity
+  IBM:
+    benchmark: XLK
+    class: equity
+  ARM:
+    benchmark: SMH
+    class: equity
+  QCOM:
+    benchmark: SMH
+    class: equity
+  ASML:
+    benchmark: SMH
+    class: equity
+  ANET:
+    benchmark: XLK
+    class: equity
+  ABNB:
+    benchmark: XLY
+    class: equity
+  U:
+    benchmark: XLK
+    class: equity
+  ZETA:
+    benchmark: XLK
+    class: equity
+  OKTA:
+    benchmark: XLK
+    class: equity
+  APP:
+    benchmark: XLK
+    class: equity
+  TTD:
+    benchmark: XLC
+    class: equity
+  RBLX:
+    benchmark: XLC
+    class: equity
+  BIDU:
+    benchmark: XLK
+    class: equity
+
+pending: {}

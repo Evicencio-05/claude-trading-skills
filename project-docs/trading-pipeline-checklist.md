@@ -30,6 +30,7 @@
 | TradeWhisperer list intake (color SoT) | `reports/charts/tradewhisperer/list_tw_{daily\|weekly\|monthly}_DATE` |
 | TradeWhisperer chart intake (optional structure) | `reports/charts/tradewhisperer/{TICKER}_tw_{1D\|1W\|1M}_DATE` |
 | TW HTF color stack | `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of DATE` |
+| TW HTF overlap + sector compare | `uv run python3 scripts/tw_list_resolve.py overlap --as-of DATE --bias either --write-pending` → `overlap_tw_DATE` · map `config/tw_sector_map.yaml` |
 | GEX/VEX map intake | `reports/charts/gex_vex/{TICKER}_gex_DATE` · `{TICKER}_vex_DATE` |
 | Operator chart intake | `reports/charts/operator/{TICKER}_operator_DATE.{md,json}` |
 | TA confluence brief | `reports/charts/confluence/session_confluence_{period}_DATE` · `{TICKER}_confluence_DATE` |
@@ -47,7 +48,7 @@ Path registry: [`scripts/report_paths.py`](../scripts/report_paths.py)
 
 - [ ] Run `uv run python3 scripts/pre_market.py` (timer: `pre-market.timer` — see [launchd/README.md](../launchd/README.md))
 - [ ] Read `reports/logs/market_context_YYYY-MM-DD.json` (or `.md`) — posture, ceiling, position flags
-- [ ] **TW lists (prefer text)** — on long-lived branch `cursor/tw-ta-ingest-22c6`, ingest via `/tradewhisperer-charts` → `list_tw_daily_DATE` (+ weekly/monthly when posted). Charts only for finalists (structure).
+- [ ] **TW lists (prefer text)** — on long-lived branch `cursor/tw-ta-ingest-22c6`, ingest via `/tradewhisperer-charts` → `list_tw_daily_DATE` (+ weekly/monthly when posted). Charts only for finalists (structure). Then run PHASE 3 overlap (`tw_list_resolve.py overlap`) and note vs-benchmark + unmapped.
 - [ ] Optional TA session — `/ta-confluence candle_first` after lists + maps + operator chart ([ta-confluence.md](../commands/ta-confluence.md))
 
 ---

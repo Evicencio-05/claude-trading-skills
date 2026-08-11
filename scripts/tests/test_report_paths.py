@@ -151,6 +151,7 @@ def test_find_latest_same_day_artifact_finds_sector_date_only(tmp_repo):
     [
         ("tradewhisperer_charts", "SPY_tw_1D_2026-08-07.json"),
         ("tradewhisperer_charts", "list_tw_daily_2026-08-07.json"),
+        ("tradewhisperer_charts", "overlap_tw_2026-08-07.json"),
         ("gex_vex_maps", "UMAC_gex_2026-08-08.json"),
         ("gex_vex_maps", "UMAC_vex_2026-08-08.json"),
         ("operator_charts", "HOOD_operator_2026-08-08.json"),
