@@ -53,6 +53,14 @@ def test_load_watchlist_config(tmp_env):
     cfg = load_watchlist_config(tmp_env["watchlist_path"])
     assert cfg["MRAM"] == {"watching": True, "notes": "swing"}
     assert cfg["FPS"]["watching"] is False
+    assert "tier_pin" not in cfg["MRAM"]
+
+
+def test_load_watchlist_config_tier_pin(tmp_env):
+    tmp_env["watchlist_path"].write_text("AAA:\n  watching: true\n  tier_pin: B\n  notes: ''\n")
+    cfg = load_watchlist_config(tmp_env["watchlist_path"])
+    assert cfg["AAA"]["tier_pin"] == "B"
+    assert cfg["AAA"]["watching"] is True
 
 
 def test_load_watchlist_config_missing_returns_empty(tmp_env):
