@@ -1,5 +1,5 @@
 ---
-description: "Fuse TradeWhisperer candles, Skylit GEX/VEX, and operator charts into a PLAY/WATCH/NO_TRADE brief with judgment coaching. Modes: candle_first | map_first."
+description: "Fuse TradeWhisperer candle lists (HTF stacks), Skylit GEX/VEX maps, and operator charts into a PLAY/WATCH/NO_TRADE brief with judgment coaching. Modes: candle_first | map_first."
 argument-hint: "[candle_first|map_first] [daily|weekly|monthly] [bias: long|short|either] [TICKER]"
 ---
 
@@ -8,6 +8,8 @@ argument-hint: "[candle_first|map_first] [daily|weekly|monthly] [bias: long|shor
 Combine the three TA intake sources into a **setup brief**. Co-pilot only — no MCP orders, no news/FMP, no scraping.
 
 **Artifact paths:** key `ta_confluence` → `reports/charts/confluence/`.
+
+**TW color SoT:** Patreon **lists** (`list_tw_*`). Charts optional for structure. Resolve stacks with `uv run python3 scripts/tw_list_resolve.py`.
 
 ---
 
@@ -19,7 +21,7 @@ Combine the three TA intake sources into a **setup brief**. Co-pilot only — no
 /ta-confluence map_first UMAC
 ```
 
-Paste the relevant screenshots/lists in the same thread (TW list/charts, GEX/VEX, operator charts).
+Paste TW **lists** (prefer text), plus GEX/VEX and operator charts as needed. TW chart screenshots are optional.
 
 ---
 
@@ -30,7 +32,7 @@ Parse overrides (defaults in parentheses):
 | Override | Default | Effect |
 |----------|---------|--------|
 | `candle_first` / `map_first` | Infer from inputs; else ask once | Entry path |
-| `daily` / `weekly` / `monthly` | From TW list title if present; else `daily` | Period for TW color |
+| `daily` / `weekly` / `monthly` | From TW list title if present; else `daily` | Period for TW color / shortlist |
 | `bias: long` / `short` / `either` | `long` for candle_first; `either` for map_first | Shortlist filter |
 | `override play` | off | Allow PLAY despite hard stop — must record reason |
 
@@ -47,17 +49,19 @@ Reuse intake skills; write/read artifacts under `reports/charts/`. Do not re-imp
 
 ### candle_first
 
-1. Ingest TW **list** (and optional charts) via `tradewhisperer-charts`.
-2. Shortlist per rubric (BLUE/BLUE_GREEN for long; PINK/PINK_RED for short).
-3. Ask operator which shortlist tickers to map (or accept “all primary”).
-4. Ingest **GEX + VEX** per ticker via `gex-vex-maps` (prefer both).
-5. For finalists, require **operator-charts** paste — stop and ask if missing.
+1. Ingest TW **lists** via `tradewhisperer-charts` (period list required for the session period). Also ingest weekly/monthly lists when pasted or already on disk for the same `as_of`.
+2. Run `uv run python3 scripts/tw_list_resolve.py shortlist --period {period} --as-of {as_of} --bias {bias}` (or equivalent library call) for the shortlist.
+3. For each shortlist / operator-chosen ticker, run `… stack TICKER --as-of {as_of} --bias {bias} --period {period}` → `tw_stack` + HTF fight.
+4. Optional: ingest TW **charts** for finalists (structure only). List color wins on conflict → note under `gaps`.
+5. Ask operator which shortlist tickers to map (or accept “all primary”).
+6. Ingest **GEX + VEX** per ticker via `gex-vex-maps` (prefer both).
+7. For finalists, require **operator-charts** paste — stop and ask if missing.
 
 ### map_first
 
 1. Ingest pasted **GEX/VEX** via `gex-vex-maps`; drop empty/weak maps.
 2. Rank by |king| and structure.
-3. Resolve TW color for period: use same-day `list_tw_{period}_*` if present, else ingest TW list/chart via `tradewhisperer-charts`.
+3. Resolve TW color via list stack: same-day `list_tw_{period}_*` + `tw_list_resolve.py stack`. Chart-only color is insufficient for PLAY — ingest list if missing.
 4. Require **operator-charts** for any ticker considered for PLAY.
 
 If a source is missing, note `gaps` and continue with capped verdicts.
@@ -68,7 +72,7 @@ If a source is missing, note `gaps` and continue with capped verdicts.
 
 For each ticker with enough data, score 0–100 per [confluence_rubric.md](../.cursor/skills/ta-confluence/references/confluence_rubric.md).
 
-Apply hard stops (missing operator chart → max WATCH; hard TW↔map / HTF fight → NO_TRADE unless override).
+Use `tw_stack` for the HTF factor / hard stops (`htf_fight` from resolver). Apply hard stops (missing operator chart → max WATCH; hard TW↔map / fierce HTF fight → NO_TRADE unless override; missing period **list** color → cannot PLAY).
 
 Produce factor breakdown in JSON.
 
@@ -107,7 +111,7 @@ Create `reports/charts/confluence/` if needed.
   "period": "daily|weekly|monthly",
   "bias": "long|short|either",
   "as_of": "YYYY-MM-DD",
-  "shortlist": [{"ticker": "UMAC", "tw_color": "BLUE", "score": 72, "verdict": "WATCH"}],
+  "shortlist": [{"ticker": "UMAC", "tw_color": "BLUE", "tw_stack": {"daily": "BLUE", "weekly": "GREEN", "monthly": null}, "score": 72, "verdict": "WATCH"}],
   "gaps": [],
   "override": null
 }
@@ -123,8 +127,16 @@ Create `reports/charts/confluence/` if needed.
   "mode": "map_first",
   "period": "daily",
   "bias": "long",
+  "tw_color": "BLUE",
+  "tw_stack": {"daily": "BLUE", "weekly": "GREEN", "monthly": null},
+  "htf": {"fight": false, "fierce": false, "htf_absent": false, "score_guide": "full"},
   "artifacts": {
-    "tw": "reports/charts/tradewhisperer/...",
+    "tw_lists": {
+      "daily": "reports/charts/tradewhisperer/list_tw_daily_YYYY-MM-DD.json",
+      "weekly": "reports/charts/tradewhisperer/list_tw_weekly_YYYY-MM-DD.json",
+      "monthly": null
+    },
+    "tw_chart": null,
     "gex": "reports/charts/gex_vex/...",
     "vex": "reports/charts/gex_vex/...",
     "operator": "reports/charts/operator/..."
@@ -155,3 +167,4 @@ Markdown: ranked table + per-ticker brief. Confirm paths in chat. **No trade pla
 - Scraping Patreon or Skylit
 - Deep-research / news
 - PLAY without operator chart
+- PLAY from chart-inferred TW color without a period list

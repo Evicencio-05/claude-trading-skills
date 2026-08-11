@@ -1,7 +1,7 @@
 # PENDING_WORK.md
 
 > Persistent task queue across Cursor, Claude Code, and terminal sessions.
-> **Last updated:** 2026-08-09
+> **Last updated:** 2026-08-11
 > **Active phase:** Phase 1 — Research + Co-Pilot Trading
 > **Operator cadence:** [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md)
 > **Session load order:** [PROJECT.md](PROJECT.md) → [LOAD_GUIDE.md](LOAD_GUIDE.md) → [project-docs/STATUS.md](project-docs/STATUS.md) → [phase-1-research-copilot.md](project-docs/phase-1-research-copilot.md)
@@ -18,17 +18,18 @@ User-supplied images/exports only; no news/FMP fetch; fusion next.
 
 | Source | Skill / command | Output |
 |--------|-----------------|--------|
-| TradeWhisperer | `tradewhisperer-charts` | `reports/charts/tradewhisperer/` — charts + lists |
+| TradeWhisperer | `tradewhisperer-charts` | `reports/charts/tradewhisperer/` — **lists** (color SoT) + optional charts |
 | GEX/VEX | `gex-vex-maps` | `reports/charts/gex_vex/` — Skylit Heatseeker screenshots |
 | Operator charts | `operator-charts` | `reports/charts/operator/` — S/R, fibs, LuxAlgo VP, SMA 50/100/200 |
 
 - [x] Skills + commands + `report_paths` keys
 - [x] TradeWhisperer contract (charts + lists)
+- [x] **List-first TW + HTF stack resolver** — `scripts/tw_list_resolve.py`; confluence uses `tw_stack` (2026-08-11)
 - [x] GEX/VEX contract (Skylit docs)
 - [x] Operator-charts contract (example `HOOD_operator_2026-08-08`)
 - [x] **Fusion** — `ta-confluence` skill/command + rubric + judgment layer → `reports/charts/confluence/`
 - [x] **Agentic co-pilot** — `agentic-copilot-trade` + `config/agentic_copilot.yaml.example`
-- [ ] Live session smoke with full TW list + GEX/VEX + operator chart
+- [ ] Live session smoke with full TW **lists** (daily+weekly) + GEX/VEX + operator chart
 - [ ] Deep-research news strip — deferred
 - [ ] v1.5 prediction log / process retro (after real sessions)
 - [ ] First filled Agentic co-pilot trade (user `confirm`)
