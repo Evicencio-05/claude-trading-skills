@@ -72,9 +72,7 @@ benchmarks:
   MOO:
     name: Agriculture
     class: thematic
-
 tickers:
-  # Energy
   CVX:
     benchmark: XLE
     class: equity
@@ -87,7 +85,6 @@ tickers:
   OXY:
     benchmark: XLE
     class: equity
-  # Technology / mega-cap
   AAPL:
     benchmark: XLK
     class: equity
@@ -151,7 +148,6 @@ tickers:
   CRWD:
     benchmark: XLK
     class: equity
-  # Financials
   JPM:
     benchmark: XLF
     class: equity
@@ -176,7 +172,6 @@ tickers:
   COIN:
     benchmark: XLF
     class: equity
-  # Health care
   LLY:
     benchmark: XLV
     class: equity
@@ -189,11 +184,13 @@ tickers:
   HIMS:
     benchmark: XLV
     class: equity
-  # Consumer / retail
   COST:
     benchmark: XLP
     class: equity
   WMT:
+    benchmark: XLP
+    class: equity
+  KO:
     benchmark: XLP
     class: equity
   NKE:
@@ -205,7 +202,6 @@ tickers:
   CMG:
     benchmark: XLY
     class: equity
-  # Industrials
   CAT:
     benchmark: XLI
     class: equity
@@ -215,19 +211,15 @@ tickers:
   GE:
     benchmark: XLI
     class: equity
-  # Utilities / staples / RE
   NEE:
     benchmark: XLU
     class: equity
-  # Crypto / proxies (benchmark is closest listed proxy)
   BTC:
     benchmark: SPY
     class: crypto
   ETH:
     benchmark: SPY
     class: crypto
-  # Oil/gas proxies already have commodity benchmarks as symbols;
-  # map related names to XLE when not the ETF itself.
   INOD:
     benchmark: XLK
     class: equity
@@ -282,5 +274,658 @@ tickers:
   BIDU:
     benchmark: XLK
     class: equity
-
-pending: {}
+pending:
+  '000660':
+    benchmark: null
+    class: unknown
+  005930:
+    benchmark: null
+    class: unknown
+  AAOI:
+    benchmark: null
+    class: unknown
+  ABCL:
+    benchmark: null
+    class: unknown
+  ACHR:
+    benchmark: null
+    class: unknown
+  ADUR:
+    benchmark: null
+    class: unknown
+  AEHR:
+    benchmark: null
+    class: unknown
+  AEVA:
+    benchmark: null
+    class: unknown
+  AFRM:
+    benchmark: null
+    class: unknown
+  AGI:
+    benchmark: null
+    class: unknown
+  AI:
+    benchmark: null
+    class: unknown
+  ALAB:
+    benchmark: null
+    class: unknown
+  AMKR:
+    benchmark: null
+    class: unknown
+  AMPG:
+    benchmark: null
+    class: unknown
+  AMPX:
+    benchmark: null
+    class: unknown
+  AMSC:
+    benchmark: null
+    class: unknown
+  APLD:
+    benchmark: null
+    class: unknown
+  AS:
+    benchmark: null
+    class: unknown
+  ASM:
+    benchmark: null
+    class: unknown
+  ASPI:
+    benchmark: null
+    class: unknown
+  ASTS:
+    benchmark: null
+    class: unknown
+  ASX:
+    benchmark: null
+    class: unknown
+  ATAI:
+    benchmark: null
+    class: unknown
+  ATI:
+    benchmark: null
+    class: unknown
+  AVAV:
+    benchmark: null
+    class: unknown
+  AXON:
+    benchmark: null
+    class: unknown
+  AXP:
+    benchmark: null
+    class: unknown
+  AXTI:
+    benchmark: null
+    class: unknown
+  BABA:
+    benchmark: null
+    class: unknown
+  BB:
+    benchmark: null
+    class: unknown
+  BBAI:
+    benchmark: null
+    class: unknown
+  BE:
+    benchmark: null
+    class: unknown
+  BMNR:
+    benchmark: null
+    class: unknown
+  BNB:
+    benchmark: null
+    class: unknown
+  BROS:
+    benchmark: null
+    class: unknown
+  BRZE:
+    benchmark: null
+    class: unknown
+  BSX:
+    benchmark: null
+    class: unknown
+  BTBT:
+    benchmark: null
+    class: unknown
+  BULL:
+    benchmark: null
+    class: unknown
+  BWXT:
+    benchmark: null
+    class: unknown
+  BXSL:
+    benchmark: null
+    class: unknown
+  CAMT:
+    benchmark: null
+    class: unknown
+  CART:
+    benchmark: null
+    class: unknown
+  CAVA:
+    benchmark: null
+    class: unknown
+  CBRS:
+    benchmark: null
+    class: unknown
+  CDNS:
+    benchmark: null
+    class: unknown
+  CEG:
+    benchmark: null
+    class: unknown
+  CELH:
+    benchmark: null
+    class: unknown
+  CHD:
+    benchmark: null
+    class: unknown
+  CIFR:
+    benchmark: null
+    class: unknown
+  CLS:
+    benchmark: null
+    class: unknown
+  CLSK:
+    benchmark: null
+    class: unknown
+  COHR:
+    benchmark: null
+    class: unknown
+  COPX:
+    benchmark: null
+    class: unknown
+  CPNG:
+    benchmark: null
+    class: unknown
+  CRCL:
+    benchmark: null
+    class: unknown
+  CRDO:
+    benchmark: null
+    class: unknown
+  CRWV:
+    benchmark: null
+    class: unknown
+  CVNA:
+    benchmark: null
+    class: unknown
+  D:
+    benchmark: null
+    class: unknown
+  DAVE:
+    benchmark: null
+    class: unknown
+  DBA:
+    benchmark: null
+    class: unknown
+  DDOG:
+    benchmark: null
+    class: unknown
+  DECK:
+    benchmark: null
+    class: unknown
+  DKNG:
+    benchmark: null
+    class: unknown
+  DLO:
+    benchmark: null
+    class: unknown
+  DOCS:
+    benchmark: null
+    class: unknown
+  DOGE:
+    benchmark: null
+    class: unknown
+  DRAM:
+    benchmark: null
+    class: unknown
+  DRS:
+    benchmark: null
+    class: unknown
+  DSV:
+    benchmark: null
+    class: unknown
+  DUOL:
+    benchmark: null
+    class: unknown
+  DXY:
+    benchmark: null
+    class: unknown
+  EAT:
+    benchmark: null
+    class: unknown
+  EL:
+    benchmark: null
+    class: unknown
+  ELF:
+    benchmark: null
+    class: unknown
+  ENTG:
+    benchmark: null
+    class: unknown
+  EOSE:
+    benchmark: null
+    class: unknown
+  FICO:
+    benchmark: null
+    class: unknown
+  FLS:
+    benchmark: null
+    class: unknown
+  FN:
+    benchmark: null
+    class: unknown
+  FNMA:
+    benchmark: null
+    class: unknown
+  FTNT:
+    benchmark: null
+    class: unknown
+  FUTU:
+    benchmark: null
+    class: unknown
+  GEV:
+    benchmark: null
+    class: unknown
+  GFS:
+    benchmark: null
+    class: unknown
+  GLW:
+    benchmark: null
+    class: unknown
+  GOLD:
+    benchmark: null
+    class: unknown
+  GRAB:
+    benchmark: null
+    class: unknown
+  GRRR:
+    benchmark: null
+    class: unknown
+  GTLB:
+    benchmark: null
+    class: unknown
+  HCI:
+    benchmark: null
+    class: unknown
+  HIVE:
+    benchmark: null
+    class: unknown
+  HNST:
+    benchmark: null
+    class: unknown
+  HPE:
+    benchmark: null
+    class: unknown
+  IGV:
+    benchmark: null
+    class: unknown
+  IMSR:
+    benchmark: null
+    class: unknown
+  INFQ:
+    benchmark: null
+    class: unknown
+  INTU:
+    benchmark: null
+    class: unknown
+  IONQ:
+    benchmark: null
+    class: unknown
+  IREN:
+    benchmark: null
+    class: unknown
+  JOBY:
+    benchmark: null
+    class: unknown
+  KEEL:
+    benchmark: null
+    class: unknown
+  KRKNF:
+    benchmark: null
+    class: unknown
+  KTOS:
+    benchmark: null
+    class: unknown
+  KULR:
+    benchmark: null
+    class: unknown
+  LASR:
+    benchmark: null
+    class: unknown
+  LCID:
+    benchmark: null
+    class: unknown
+  LEU:
+    benchmark: null
+    class: unknown
+  LFMD:
+    benchmark: null
+    class: unknown
+  LIF:
+    benchmark: null
+    class: unknown
+  LITE:
+    benchmark: null
+    class: unknown
+  LMB:
+    benchmark: null
+    class: unknown
+  LMND:
+    benchmark: null
+    class: unknown
+  LNTH:
+    benchmark: null
+    class: unknown
+  LULU:
+    benchmark: null
+    class: unknown
+  LUNR:
+    benchmark: null
+    class: unknown
+  LWLG:
+    benchmark: null
+    class: unknown
+  LYFT:
+    benchmark: null
+    class: unknown
+  MARA:
+    benchmark: null
+    class: unknown
+  MDB:
+    benchmark: null
+    class: unknown
+  MELI:
+    benchmark: null
+    class: unknown
+  MP:
+    benchmark: null
+    class: unknown
+  MRAM:
+    benchmark: null
+    class: unknown
+  MRVL:
+    benchmark: null
+    class: unknown
+  MSOS:
+    benchmark: null
+    class: unknown
+  MSTR:
+    benchmark: null
+    class: unknown
+  NBIS:
+    benchmark: null
+    class: unknown
+  NDX:
+    benchmark: null
+    class: unknown
+  NET:
+    benchmark: null
+    class: unknown
+  NNE:
+    benchmark: null
+    class: unknown
+  NOK:
+    benchmark: null
+    class: unknown
+  NTLA:
+    benchmark: null
+    class: unknown
+  NU:
+    benchmark: null
+    class: unknown
+  NVO:
+    benchmark: null
+    class: unknown
+  NVTS:
+    benchmark: null
+    class: unknown
+  ODD:
+    benchmark: null
+    class: unknown
+  OKLO:
+    benchmark: null
+    class: unknown
+  ONDS:
+    benchmark: null
+    class: unknown
+  ONON:
+    benchmark: null
+    class: unknown
+  ONTO:
+    benchmark: null
+    class: unknown
+  OPEN:
+    benchmark: null
+    class: unknown
+  OSCR:
+    benchmark: null
+    class: unknown
+  OUST:
+    benchmark: null
+    class: unknown
+  PATH:
+    benchmark: null
+    class: unknown
+  PAYC:
+    benchmark: null
+    class: unknown
+  PGY:
+    benchmark: null
+    class: unknown
+  PLMR:
+    benchmark: null
+    class: unknown
+  PLNT:
+    benchmark: null
+    class: unknown
+  PM:
+    benchmark: null
+    class: unknown
+  POET:
+    benchmark: null
+    class: unknown
+  POWL:
+    benchmark: null
+    class: unknown
+  PRME:
+    benchmark: null
+    class: unknown
+  PSNL:
+    benchmark: null
+    class: unknown
+  PYPL:
+    benchmark: null
+    class: unknown
+  QBTS:
+    benchmark: null
+    class: unknown
+  QS:
+    benchmark: null
+    class: unknown
+  RBRK:
+    benchmark: null
+    class: unknown
+  RCAT:
+    benchmark: null
+    class: unknown
+  RDDT:
+    benchmark: null
+    class: unknown
+  RDW:
+    benchmark: null
+    class: unknown
+  RGTI:
+    benchmark: null
+    class: unknown
+  RIGL:
+    benchmark: null
+    class: unknown
+  RKLB:
+    benchmark: null
+    class: unknown
+  RKT:
+    benchmark: null
+    class: unknown
+  ROOT:
+    benchmark: null
+    class: unknown
+  SBET:
+    benchmark: null
+    class: unknown
+  SBS:
+    benchmark: null
+    class: unknown
+  SE:
+    benchmark: null
+    class: unknown
+  SEZL:
+    benchmark: null
+    class: unknown
+  SG:
+    benchmark: null
+    class: unknown
+  SHOP:
+    benchmark: null
+    class: unknown
+  SIVE:
+    benchmark: null
+    class: unknown
+  SKWD:
+    benchmark: null
+    class: unknown
+  SMCI:
+    benchmark: null
+    class: unknown
+  SMMT:
+    benchmark: null
+    class: unknown
+  SMR:
+    benchmark: null
+    class: unknown
+  SNDK:
+    benchmark: null
+    class: unknown
+  SNEX:
+    benchmark: null
+    class: unknown
+  SNPS:
+    benchmark: null
+    class: unknown
+  SOFI:
+    benchmark: null
+    class: unknown
+  SOL:
+    benchmark: null
+    class: unknown
+  SOUN:
+    benchmark: null
+    class: unknown
+  SPGI:
+    benchmark: null
+    class: unknown
+  SPOT:
+    benchmark: null
+    class: unknown
+  SRAD:
+    benchmark: null
+    class: unknown
+  STX:
+    benchmark: null
+    class: unknown
+  TDOC:
+    benchmark: null
+    class: unknown
+  TEAM:
+    benchmark: null
+    class: unknown
+  TEM:
+    benchmark: null
+    class: unknown
+  TER:
+    benchmark: null
+    class: unknown
+  TIGR:
+    benchmark: null
+    class: unknown
+  TIL:
+    benchmark: null
+    class: unknown
+  TLT:
+    benchmark: null
+    class: unknown
+  TMDX:
+    benchmark: null
+    class: unknown
+  TOST:
+    benchmark: null
+    class: unknown
+  TTMI:
+    benchmark: null
+    class: unknown
+  UBER:
+    benchmark: null
+    class: unknown
+  UEC:
+    benchmark: null
+    class: unknown
+  UPST:
+    benchmark: null
+    class: unknown
+  URNM:
+    benchmark: null
+    class: unknown
+  UUUU:
+    benchmark: null
+    class: unknown
+  VIX:
+    benchmark: null
+    class: unknown
+  VKTX:
+    benchmark: null
+    class: unknown
+  VNET:
+    benchmark: null
+    class: unknown
+  VPG:
+    benchmark: null
+    class: unknown
+  VRSN:
+    benchmark: null
+    class: unknown
+  VRT:
+    benchmark: null
+    class: unknown
+  WDC:
+    benchmark: null
+    class: unknown
+  WGMI:
+    benchmark: null
+    class: unknown
+  WRD:
+    benchmark: null
+    class: unknown
+  WULF:
+    benchmark: null
+    class: unknown
+  WYFI:
+    benchmark: null
+    class: unknown
+  XE:
+    benchmark: null
+    class: unknown
+  XFAB:
+    benchmark: null
+    class: unknown
+  XRP:
+    benchmark: null
+    class: unknown
+  XYZ:
+    benchmark: null
+    class: unknown
+  ZS:
+    benchmark: null
+    class: unknown
