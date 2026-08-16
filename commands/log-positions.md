@@ -6,14 +6,16 @@ description: "Log positions to trader-memory-core via pending_ingest.json (sync)
 
 Log open positions to **trader-memory-core** with minimal human input (four questions per position).
 
+**Scope:** Portfolio **A** (taxable) and **C** (Agentic) only. **Do not log Portfolio B (IRA)** — operator discontinued.
+
 ## Two ingestion sources
 
 | Source | When to use | Data origin |
 |--------|-------------|-------------|
 | **A — Sync** | Portfolio A taxable; scheduled daily | `scripts/robinhood_sync.py` → `state/pending_ingest.json` |
-| **B — MCP CLI** | IRA, Agentic, all taxable accounts | `scripts/robinhood_mcp.py ingest-pending` |
+| **B — MCP CLI** | Agentic (C) and/or taxable (A) | `scripts/robinhood_mcp.py ingest-pending` |
 
-**Portfolio B (IRA):** Not in `robinhood_sync.py`. Use **Source B** (MCP) or [tools/thesis-manager/](../tools/thesis-manager/) **Theses** page.
+**Portfolio B (IRA):** Skip — do not run four-questions for `ira_robinhood`.
 
 **Portfolio C (Agentic):** Prefer **Source B** when MCP is connected in Cursor.
 
@@ -41,7 +43,7 @@ uv run python3 scripts/robinhood_mcp.py ingest-pending
 
 Account mapping: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml) and [decisions.md](../decisions.md).
 
-Equity positions only via MCP today; options on IRA may need thesis-manager until options MCP ingest exists.
+Equity positions only via MCP today. When ingesting, **filter out** `ira_robinhood` / IRA account numbers before asking questions.
 
 Then run the shared prompt below.
 
@@ -54,7 +56,7 @@ Determine source:
   - If state/pending_ingest.json has PENDING_THESIS rows, use them.
   - Else if user asked for MCP log-positions, fetch via Robinhood MCP (Source B) first, then continue.
 
-Find all positions where "status" is "PENDING_THESIS".
+Find all positions where "status" is "PENDING_THESIS" and account is robinhood_taxable or robinhood_agentic (skip ira_robinhood).
 If there are none, report: "No positions pending thesis input." and stop.
 
 For each pending position, work through them ONE AT A TIME in this order:

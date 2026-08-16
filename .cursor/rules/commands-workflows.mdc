@@ -1,5 +1,5 @@
 ---
-description: Multi-step trading workflows from commands/ (deep research, position logging, research updates)
+description: Multi-step trading workflows from commands/ (TA confluence, Agentic co-pilot, optional research)
 alwaysApply: false
 ---
 
@@ -8,24 +8,26 @@ alwaysApply: false
 Slash commands in `commands/` are **workflow specs** shared by Claude Code and Cursor.
 When the user requests one of these workflows, read the linked file and follow it exactly.
 
+**Daily core:** TA intakes → confluence → optional Agentic confirm (Portfolio C). Research is on demand.
+
 | User intent | Workflow file |
 |-------------|---------------|
-| Deep research on TICKER | [commands/deep-research.md](commands/deep-research.md) |
-| Update existing research | [commands/update-research.md](commands/update-research.md) |
-| Log positions (sync or MCP) | [commands/log-positions.md](commands/log-positions.md) or skill `log-positions` |
-| Log trade from screenshot | [commands/log-trade-screenshot.md](commands/log-trade-screenshot.md) or skill `log-trade-screenshot` |
-| Robinhood portfolio review | Skill `robinhood-portfolio-review` → `reports/portfolio_review_*.md` |
-| Intraday options plan | [commands/intraday-options.md](commands/intraday-options.md) |
-| Options strategy plan for TICKER | [commands/options-strategy-planner.md](commands/options-strategy-planner.md) |
-| Research watchlist batch | [commands/review-portfolio.md](commands/review-portfolio.md) |
-| Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
-| TradeWhisperer charts (user screenshots) | [commands/tradewhisperer-charts.md](commands/tradewhisperer-charts.md) or skill `tradewhisperer-charts` |
+| TradeWhisperer lists/charts (user paste) | [commands/tradewhisperer-charts.md](commands/tradewhisperer-charts.md) or skill `tradewhisperer-charts` |
 | GEX/VEX exposure maps (user screenshots) | [commands/gex-vex-maps.md](commands/gex-vex-maps.md) or skill `gex-vex-maps` |
 | Operator charts (your charting) | [commands/operator-charts.md](commands/operator-charts.md) or skill `operator-charts` |
 | TA confluence (candle-first / map-first) | [commands/ta-confluence.md](commands/ta-confluence.md) or skill `ta-confluence` |
 | Agentic co-pilot trade (Portfolio C) | [commands/agentic-copilot-trade.md](commands/agentic-copilot-trade.md) or skill `agentic-copilot-trade` |
 | Options flow screener → primary tail | [commands/options-flow-tail.md](commands/options-flow-tail.md) or skill `options-flow-tail` |
+| Log positions (A+C only — skip IRA) | [commands/log-positions.md](commands/log-positions.md) or skill `log-positions` |
+| Log trade from screenshot | [commands/log-trade-screenshot.md](commands/log-trade-screenshot.md) or skill `log-trade-screenshot` |
+| Robinhood portfolio review (A+C focus) | Skill `robinhood-portfolio-review` → `reports/portfolio/portfolio_review_*.md` |
+| Intraday options plan | [commands/intraday-options.md](commands/intraday-options.md) |
+| Options strategy plan for TICKER | [commands/options-strategy-planner.md](commands/options-strategy-planner.md) |
+| Deep research on TICKER (optional) | [commands/deep-research.md](commands/deep-research.md) |
+| Update existing research (optional) | [commands/update-research.md](commands/update-research.md) |
+| Research watchlist batch (optional) | [commands/review-portfolio.md](commands/review-portfolio.md) |
+| Scenario analysis | [commands/scenario-analyzer.md](commands/scenario-analyzer.md) |
 
-**Deep research rule:** Pass 0 preflight (`scripts/research_preflight.py`) reuse-first — then complete ALL Pass 1 collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
+**Deep research rule (when used):** Pass 0 preflight (`scripts/research_preflight.py`) reuse-first — then complete ALL Pass 1 collection before writing any report text. Partial data beats no report; note failures in one sentence and continue.
 
 See [commands/README.md](commands/README.md) for Claude vs Cursor invocation.

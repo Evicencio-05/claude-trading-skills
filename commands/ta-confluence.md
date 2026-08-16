@@ -161,6 +161,16 @@ Markdown: ranked table + per-ticker brief. Confirm paths in chat. **No trade pla
 
 ---
 
+## PHASE 5 — PREDICTION LOG (v1.5)
+
+After persist, append rows per [prediction_log_v15.md](../.cursor/skills/ta-confluence/references/prediction_log_v15.md)
+to `reports/charts/confluence/prediction_log_{as_of}.md` (optional `.json`).
+
+Skip if the session was a dry fixture with no operator judgment. Fill `outcome_*`
+on later days for taken PLAY/WATCH that became trades (Portfolio C or A only).
+
+---
+
 ## Non-goals
 
 - Auto thesis_store / Agentic orders
@@ -168,3 +178,4 @@ Markdown: ranked table + per-ticker brief. Confirm paths in chat. **No trade pla
 - Deep-research / news
 - PLAY without operator chart
 - PLAY from chart-inferred TW color without a period list
+- IRA thesis logging

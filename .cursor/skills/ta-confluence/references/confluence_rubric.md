@@ -36,12 +36,15 @@ Absolute value outranks color. King can be yellow or purple.
 |-----------|-------------|
 | Operator chart missing | **WATCH** (never PLAY) |
 | Period **list** color missing (chart-only TW) | **WATCH** (never PLAY) |
+| Period **list** color older than 3 trading days vs session `as_of` | **WATCH** (never PLAY) — note stale `tw_as_of` under `gaps` |
 | Hard TW vs map conflict (e.g. long + BLUE but maps clearly ceiling/bearish posture) | **NO_TRADE** unless operator chat-overrides |
 | Fierce HTF fight (`htf.fierce` — e.g. daily BLUE under weekly/monthly RED/PINK_RED stack for long) | **NO_TRADE** default |
 | Fierce HTF fight short (daily PINK under weekly/monthly GREEN/BLUE_GREEN stack) | **NO_TRADE** default |
 | Operator mid-range with ~1:1 R:R and no map edge | **WATCH** or **NO_TRADE** |
 
 Chat override: operator may force PLAY after hard stop — record `override: true` + reason in JSON; process grade must flag it.
+
+**Stale list rule:** Prefer same-`as_of` (or prior session day) `list_tw_{period}_*`. If only an older list exists, keep the color for context but cap at WATCH and list the age in `gaps` (see BE 2026-08-15 session).
 
 ## Verdict thresholds
 

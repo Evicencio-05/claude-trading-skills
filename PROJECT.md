@@ -19,11 +19,11 @@ Center of gravity is learning from your technical analysis, not fundamentals scr
 | Skylit GEX/VEX heatmaps | `gex-vex-maps` | Magnets, kings, traps, volatility context (user-pasted) |
 | Your TradingView markups | `operator-charts` | S/R, fibs, LuxAlgo VP, SMA stack, RSI — required before PLAY |
 
-Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis + Agentic co-pilot when confluence warrants. Fundamentals / FMP screeners / deep-research are **optional backup** — deep-research only on PLAY or when confluence is on the verge and you agree.
+Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis + Agentic co-pilot when confluence warrants (log **A + C** only). Fundamentals / FMP screeners / deep-research are **optional backup** — deep-research only on PLAY or when confluence is on the verge and you agree.
 
 **Long-term vision:** An autonomous partner that compounds edge from your TA patterns, charting habits, theses, and trade outcomes.
 
-**Project posture:** Extend what exists. TA intakes + confluence + Agentic co-pilot are built. The gap is active learning → playbook → logged co-pilot trades → eventual Agentic autonomy.
+**Project posture:** Extend what exists. TA intakes + confluence + Agentic co-pilot are built. The gap is live TA sessions → confirmed Agentic fills → logged outcomes (A+C) → playbook learning → eventual Agentic autonomy.
 
 ---
 
@@ -32,7 +32,8 @@ Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis 
 - **Budget:** $30–50/mo target, $100/mo ceiling
 - **Time:** Limited weekly hours (college student)
 - **Capital:** ~$500 Robinhood across accounts (grows over time)
-- **Execution:** Robinhood Agentic MCP (Portfolio C); read all accounts, trade Agentic only
+- **Execution:** Robinhood Agentic MCP (Portfolio C); trade Agentic only
+- **Logging scope:** Portfolio C (Agentic) + Portfolio A (taxable individual) only — **do not log IRA (Portfolio B)**
 - **Hardware:** Local laptop/desktop only
 - **Repo:** Private fork; no upstream contributions yet
 
@@ -41,10 +42,10 @@ Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis 
 ## Non-Negotiables (read every session)
 
 1. **Audit before building.** Use existing skills before extending them.
-2. **Robinhood MCP gates.** Read all accounts; trade Agentic account only; flag IRA-ineligible options before actionable advice.
+2. **Robinhood MCP gates.** Trade Agentic (C) only; never MCP-trade A or B. Thesis logging = **A + C only** (IRA logging discontinued).
 3. **No autonomous MCP execution before Phase 3B.** Co-pilot mode until Phase 3 sub-phase criteria met.
 4. **Risk controls are immutable from the agent.** Limits live in user-editable config, not agent-writable files.
-5. **Every trade is logged** to `trader-memory-core` — stocks and options.
+5. **Every A/C trade is logged** to `trader-memory-core` — stocks and options.
 6. **Cost discipline.** Default to free/local. Justify every paid subscription.
 7. **Human-in-the-loop for skill changes.** Auto-generated PRs require review.
 8. **TA routing.** Default path is TW → GEX/VEX → operator charts → `ta-confluence`. Do not open deep-research or screener rabbit holes unless PLAY, verge-of-confluence (with user OK), or explicit ask. Ask for missing artifacts before forcing a verdict. NO_TRADE is a valid success. Propose playbook updates for review — never silently overwrite playbook or risk config.
@@ -58,6 +59,7 @@ Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis 
 - Crypto, forex, mobile apps
 - Upstream contributions for now
 - Fundamentals-first product direction (screeners / deep-research as default daily work)
+- **IRA (Portfolio B) thesis logging / four-questions cadence** — operator discontinued
 
 ---
 
@@ -84,7 +86,7 @@ Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis 
 
 | Phase | Doc | Focus |
 |---|---|---|
-| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — TA intakes + confluence + thesis + Agentic co-pilot |
+| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — TA intakes + confluence + A+C thesis + Agentic co-pilot |
 | Phase 2 | `project-docs/phase-2-learning-loop.md` | TA patterns → charting coach → playbook → postmortems |
 | Phase 3 | `project-docs/phase-3-agentic-execution.md` | Agentic MCP autonomous execution |
 
@@ -134,6 +136,7 @@ You cannot start Phase N until Phase N-1 exit criteria are met. When advancing:
 - **Co-pilot mode:** Agent surfaces alerts and recommendations; user confirms and executes
 - **Autonomous mode:** Agent executes within hard limits (Phase 3B+, Agentic account only)
 - **Kill switch:** User-triggered halt of all autonomous activity
+- **TA session:** TW lists + GEX/VEX + operator chart → `ta-confluence` brief
 - **Three sources:** TradeWhisperer lists, Skylit GEX/VEX (pasted), operator charts
 - **Optional backup:** Fundamentals skills / deep-research — not the default path
 

@@ -7,7 +7,7 @@ alwaysApply: true
 
 Private fork of claude-trading-skills. **Extend what exists** — audit before building new skills.
 
-**Product center:** TA three sources (TradeWhisperer lists, Skylit GEX/VEX pastes, operator charts) → `ta-confluence` → playbook learning → Agentic co-pilot. Fundamentals / deep-research are optional backup only.
+**Product center:** TA three sources (TradeWhisperer lists, Skylit GEX/VEX pastes, operator charts) → `ta-confluence` → playbook learning → Agentic co-pilot. Fundamentals / deep-research are optional backup only. Log theses for **A + C only**.
 
 ## Session start (read in order)
 
@@ -20,10 +20,10 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 ## Non-negotiables (every session)
 
 1. Audit before building — use existing skills first
-2. Robinhood MCP — read all accounts; trade Agentic only; flag IRA-ineligible options
+2. Robinhood MCP — trade Agentic (C) only; log theses for **A + C only** (IRA logging discontinued)
 3. **No autonomous MCP execution** before Phase 3B (co-pilot only until then)
 4. Risk controls are immutable from the agent (user-editable config only)
-5. Every trade logged via `trader-memory-core`
+5. Every A/C trade logged via `trader-memory-core`
 6. Cost discipline — prefer free/local scripts over LLM calls
 7. Human review for auto-generated skill PRs
 8. Never commit secrets, API keys, or absolute paths with usernames
@@ -36,7 +36,9 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 | Daily/weekly/TA/trade cadence | `project-docs/trading-pipeline-checklist.md` |
 | Planning/reviewing trades | `project-docs/playbook.md` |
 | Standing TA session prompt | `.cursor/prompts/ta-first-session.md` |
-| TW / GEX / operator / confluence | matching skill `SKILL.md` or `commands/ta-confluence.md` |
+| TA confluence session | `commands/ta-confluence.md` + intake commands |
+| Agentic co-pilot place | `commands/agentic-copilot-trade.md` |
+| TW / GEX / operator contracts | matching skill `SKILL.md` |
 | Skill status | `project-docs/audit/skills_audit.md` |
 | Deep research on a ticker | `commands/deep-research.md` — **gated** (PLAY / verge / ask) |
 | Update research on a ticker | `commands/update-research.md` — same gate; `scripts/research_preflight.py` first |
@@ -57,11 +59,12 @@ Then load **only** the active phase doc (see STATUS.md). Do not load all phase d
 
 ## Key operational facts
 
-- Active phase: **Phase 1** — [phase-1-research-copilot.md](../../project-docs/phase-1-research-copilot.md) (TA confluence + co-pilot)
-- economic-calendar-fetcher: v3 **BLOCKED** — use `scripts/fred_calendar.py`
-- vcp-screener / canslim: optional backup — `--universe` watchlist OK; full S&P 500 needs FMP Premium ($69/mo)
-- market-top-detector: works on Starter stable API
-- Portfolio B = Robinhood Roth IRA — flag IRA-ineligible options before actionable advice
+- Active phase: **Phase 1 — TA Confluence + Co-pilot** — [phase-1-research-copilot.md](../../project-docs/phase-1-research-copilot.md)
+- Daily core: TW lists → GEX/VEX → operator charts → `ta-confluence` → optional Agentic confirm
+- Deep research / FMP screeners: gated optional backup only
+- Log **A + C** only — Portfolio B (IRA) logging discontinued
+- Trade MCP: Portfolio C (Agentic) only
+- economic-calendar-fetcher: v3 **BLOCKED** — use `scripts/fred_calendar.py` (parked vs TA path)
 - Operator cadence: [trading-pipeline-checklist.md](../../project-docs/trading-pipeline-checklist.md)
 
 ## Output conventions

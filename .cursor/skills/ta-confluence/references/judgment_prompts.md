@@ -30,6 +30,7 @@ List 1–3 facts the operator must acknowledge (examples):
 - GEX king above while VEX king fights
 - Price mid VP shelf with 50/100 SMA sandwich and no edge
 - TRIM_OPTION mistaken for new long entry
+- Period list color older than 3 trading days vs session `as_of` (stale TW)
 
 ## R:R sketch
 
