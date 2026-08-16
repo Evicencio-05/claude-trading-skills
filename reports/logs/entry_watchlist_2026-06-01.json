@@ -13,7 +13,7 @@
         "position"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/MSFW_2026-05-31.md",
+      "report_path": "reports/research/MSFW_2026-05-31.md",
       "tier": "C",
       "tier_score": 146,
       "tier_reasons": [
@@ -38,7 +38,7 @@
         "watchlist"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/VECO_2026-05-31.md",
+      "report_path": "reports/research/VECO_2026-05-31.md",
       "tier": "C",
       "tier_score": 146,
       "tier_reasons": [
@@ -62,7 +62,7 @@
         "position"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/HOOD_2026-05-31.md",
+      "report_path": "reports/research/HOOD_2026-05-31.md",
       "tier": "C",
       "tier_score": 116,
       "tier_reasons": [
@@ -87,7 +87,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/DIS_2026-05-31.md",
+      "report_path": "reports/research/DIS_2026-05-31.md",
       "tier": "C",
       "tier_score": 112,
       "tier_reasons": [
@@ -112,7 +112,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/NOK_2026-05-31.md",
+      "report_path": "reports/research/NOK_2026-05-31.md",
       "tier": "C",
       "tier_score": 112,
       "tier_reasons": [
@@ -137,7 +137,7 @@
         "idea"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/TSM_2026-05-31.md",
+      "report_path": "reports/research/TSM_2026-05-31.md",
       "tier": "C",
       "tier_score": 70,
       "tier_reasons": [
@@ -161,7 +161,7 @@
         "watchlist"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/PLTR_2026-05-31.md",
+      "report_path": "reports/research/PLTR_2026-05-31.md",
       "tier": "C",
       "tier_score": 40,
       "tier_reasons": [
@@ -185,7 +185,7 @@
         "watchlist"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/DELL_2026-05-31.md",
+      "report_path": "reports/research/DELL_2026-05-31.md",
       "tier": "C",
       "tier_score": 30,
       "tier_reasons": [
@@ -209,7 +209,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/ARM_2026-05-31.md",
+      "report_path": "reports/research/ARM_2026-05-31.md",
       "tier": "C",
       "tier_score": 10,
       "tier_reasons": [
@@ -233,7 +233,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/DRAM_2026-05-31.md",
+      "report_path": "reports/research/DRAM_2026-05-31.md",
       "tier": "C",
       "tier_score": 10,
       "tier_reasons": [
@@ -257,7 +257,7 @@
         "watchlist"
       ],
       "notes": "",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/HPE_2026-05-31.md",
+      "report_path": "reports/research/HPE_2026-05-31.md",
       "tier": "C",
       "tier_score": 10,
       "tier_reasons": [
@@ -281,7 +281,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/IBM_2026-05-31.md",
+      "report_path": "reports/research/IBM_2026-05-31.md",
       "tier": "C",
       "tier_score": 10,
       "tier_reasons": [
@@ -305,7 +305,7 @@
         "watchlist"
       ],
       "notes": "nan",
-      "report_path": "/home/evice/repos/claude-trading-skills/reports/research/RBLX_2026-05-31.md",
+      "report_path": "reports/research/RBLX_2026-05-31.md",
       "tier": "C",
       "tier_score": 10,
       "tier_reasons": [

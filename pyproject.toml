@@ -122,7 +122,7 @@ skips = [
 
 [tool.codespell]
 skip = ".venv,*.json,*.csv,*.baseline,skill-packages,*.pyc,__pycache__"
-ignore-words-list = "trough,ore,cna,acn,blok,hims,pont,claus,theses,te"
+ignore-words-list = "trough,ore,cna,acn,blok,hims,pont,claus,theses,te,coo,synopsys,lasr,cros,avance"
 
 [tool.coverage.run]
 source = ["skills"]

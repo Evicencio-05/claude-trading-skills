@@ -8,7 +8,7 @@
 | C | VECO | 146 | ACTIVE | 4 | Watch — Speculative Buy on $57 | CANSLIM 39.5 | probe_default |
 | C | HOOD | 108 | ACTIVE | 2 | Management earns trust on prod | — | probe_default |
 | C | MSFW | 106 | ACTIVE | 4 | — | — | missing_deep_research |
-| C | PLTR | 40 | — | — | Watch / selective Buy — Qualit | CANSLIM 39.5 | probe_default |
+| C | PLTR | 40 | — | — | Watch / selective Buy — Quality | CANSLIM 39.5 | probe_default |
 | C | DELL | 25 | — | — | Management earns trust on AI e | CANSLIM 70.7 | probe_default |
 | C | ARM | 10 | — | — | Watch / Hold — Structural AI w | CANSLIM 60.5 | watch_or_avoid_verdict |
 | C | DIS | 10 | — | — | Management warrants cautious o | CANSLIM 33.9 | probe_default |
