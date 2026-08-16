@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-06-02",
+  "generated_at": "2026-06-02T06:06:25",
+  "sources": {
+    "breadth": null,
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-06-02_060622.json",
+    "sector": "reports/market/sector/sector_rotation_2026-06-02.md"
+  },
+  "breadth": {
+    "score": null,
+    "zone": null
+  },
+  "uptrend": {
+    "score": 56.4,
+    "zone": "Neutral",
+    "exposure_guidance": "Reduced Exposure (60-80%)",
+    "guidance": "Mixed signals. Participate selectively with tighter risk controls.",
+    "strongest": {
+      "component": "sector_participation",
+      "label": "Sector Participation",
+      "score": 78
+    },
+    "weakest": {
+      "component": "market_breadth",
+      "label": "Market Breadth (Overall)",
+      "score": 36
+    },
+    "active_warnings": [
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Reduce position sizes by 20-30%",
+      "Focus on strongest sectors only",
+      "Tighten stop-losses",
+      "Avoid low-quality setups",
+      "Increase cash allocation gradually"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Technology",
+    "cycle_phase": "Mid",
+    "risk_regime": "RISK-ON",
+    "risk_score": 75,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Technology",
+        "ratio": "36.8%"
+      },
+      {
+        "rank": "2",
+        "sector": "Communication Services",
+        "ratio": "28.1%"
+      },
+      {
+        "rank": "3",
+        "sector": "Basic Materials",
+        "ratio": "26.8%"
+      }
+    ],
+    "overbought": []
+  },
+  "synthesis": {
+    "posture": "UNKNOWN",
+    "ceiling": "N/A",
+    "headline": "Unknown \u2014 breadth N/A/100, uptrend 56.4/100, leading sector Technology.",
+    "risk_flags": [
+      "SECTOR DIVERGENCE WARNING"
+    ],
+    "actions": [
+      "Reduce position sizes by 20-30%",
+      "Focus on strongest sectors only",
+      "Tighten stop-losses",
+      "Avoid low-quality setups",
+      "Increase cash allocation gradually"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

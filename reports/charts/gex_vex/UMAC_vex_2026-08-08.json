@@ -1,0 +1,139 @@
+{
+  "source": "gex_vex",
+  "ticker": "UMAC",
+  "as_of": "2026-08-08",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker VEX screenshot UMAC"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 26.11,
+    "change": 1.93,
+    "change_pct": 7.94,
+    "atm_strike": 26.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-11-20",
+      "2027-01-15"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 30.0,
+      "expiration": "2026-08-21",
+      "value_k": 1918,
+      "sign": "pos",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 1918,
+        "sign": "pos",
+        "starred": true
+      },
+      {
+        "strike": 22.5,
+        "expiration": "2026-08-21",
+        "value_k": -902,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 45.0,
+        "expiration": "2026-08-21",
+        "value_k": 631,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 50.0,
+        "expiration": "2027-01-15",
+        "value_k": 610,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-09-18",
+        "value_k": 487,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 35.0,
+        "expiration": "2026-09-18",
+        "value_k": -283,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 10.0,
+        "expiration": "2027-01-15",
+        "value_k": 211,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 22.5,
+        "expiration": "2026-08-21",
+        "value_k": -902,
+        "sign": "neg"
+      },
+      {
+        "strike": 30.0,
+        "expiration": "2026-08-21",
+        "value_k": 1918,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 22.5,
+        "expiration": "2026-08-21",
+        "value_k": -902,
+        "sign": "neg",
+        "note": "Large negative VEX below spot \u2014 violent interaction risk if tested"
+      }
+    ],
+    "air_pockets": "Low activity below ~15; dense action in 2026-08-21 column",
+    "range_edges": {
+      "upside": 30.0,
+      "downside": 22.5
+    },
+    "map_timestamp": "2026-08-08 22:59:49",
+    "opex_note": null,
+    "confluence_with": {
+      "mode": "gex",
+      "overlap_zones": [
+        {
+          "strike": 30.0,
+          "expiration": "2026-08-21",
+          "note": "Shared king zone with GEX"
+        },
+        {
+          "strike": 22.5,
+          "expiration": "2026-08-21",
+          "note": "Shared high-|value| strike; VEX strongly negative vs GEX positive"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full matrix not transcribed \u2014 top_nodes from visible hotspots only"
+  ],
+  "next": null
+}

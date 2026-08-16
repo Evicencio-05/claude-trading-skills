@@ -1,0 +1,104 @@
+{
+  "profile": [
+    {
+      "symbol": "GFS",
+      "price": 54.58,
+      "marketCap": 29948091465,
+      "beta": 1.796,
+      "lastDividend": 0.12,
+      "range": "31.59-92.55",
+      "change": 1.89,
+      "changePercentage": 3.58702,
+      "volume": 3996007,
+      "averageVolume": 4561513,
+      "companyName": "GLOBALFOUNDRIES Inc.",
+      "currency": "USD",
+      "cik": "0001709048",
+      "isin": "KYG393871085",
+      "cusip": "G39387108",
+      "exchangeFullName": "NASDAQ Global Select",
+      "exchange": "NASDAQ",
+      "industry": "Semiconductors",
+      "website": "https://gf.com",
+      "description": "GLOBALFOUNDRIES Inc. operates as a prominent global semiconductor foundry, specializing in the creation of integrated circuits. These vital components are instrumental in powering a wide array of ubiquitous electronic devices. The company's diverse portfolio includes the manufacturing of various semiconductor devices, such as microprocessors, mobile application processors, baseband and network processors, radio frequency modems, microcontrollers, power management units, and microelectromechanical systems. Additionally, it offers comprehensive wafer fabrication services and advanced technological solutions. Established in 2009, the firm maintains its headquarters in Malta, New York.",
+      "ceo": "Timothy Graham Breen",
+      "sector": "Technology",
+      "country": "US",
+      "fullTimeEmployees": "14000",
+      "phone": "518 305 9013",
+      "address": "400 Stonebreak Road Extension",
+      "city": "Malta",
+      "state": "NY",
+      "zip": "12020",
+      "image": "https://images.financialmodelingprep.com/symbol/GFS.png",
+      "ipoDate": "2021-10-28",
+      "defaultImage": false,
+      "isEtf": false,
+      "isActivelyTrading": true,
+      "isAdr": false,
+      "isFund": false
+    }
+  ],
+  "peers": [
+    {
+      "symbol": "CDW",
+      "companyName": "CDW Corporation",
+      "price": 139.42,
+      "mktCap": 17811323260
+    },
+    {
+      "symbol": "COHR",
+      "companyName": "Coherent, Inc.",
+      "price": 325.83,
+      "mktCap": 63745159961
+    },
+    {
+      "symbol": "GIB",
+      "companyName": "CGI Inc.",
+      "price": 73.41,
+      "mktCap": 15693376838
+    },
+    {
+      "symbol": "MTSI",
+      "companyName": "MACOM Technology Solutions Holdings, Inc.",
+      "price": 316.44,
+      "mktCap": 24143034725
+    },
+    {
+      "symbol": "NTNX",
+      "companyName": "Nutanix, Inc.",
+      "price": 66.605,
+      "mktCap": 18004663600
+    },
+    {
+      "symbol": "ON",
+      "companyName": "ON Semiconductor Corporation",
+      "price": 82.66,
+      "mktCap": 32180529920
+    },
+    {
+      "symbol": "STM",
+      "companyName": "STMicroelectronics N.V.",
+      "price": 54.29,
+      "mktCap": 48456278202
+    },
+    {
+      "symbol": "TRMB",
+      "companyName": "Trimble Inc.",
+      "price": 57.6,
+      "mktCap": 13427223494
+    },
+    {
+      "symbol": "TYL",
+      "companyName": "Tyler Technologies, Inc.",
+      "price": 328.64,
+      "mktCap": 13458563872
+    },
+    {
+      "symbol": "UMC",
+      "companyName": "United Microelectronics Corporation",
+      "price": 19.15,
+      "mktCap": 47766953991
+    }
+  ]
+}

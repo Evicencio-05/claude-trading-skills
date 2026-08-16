@@ -1,0 +1,195 @@
+{
+  "ticker": "DIS",
+  "as_of": "2026-05-31",
+  "generated_at": "2026-05-31T14:31:05.807826-07:00",
+  "force_refresh": false,
+  "watchlist_symbols": [
+    "ARM",
+    "DELL",
+    "DIS",
+    "DRAM",
+    "HPE",
+    "IBM",
+    "NOK",
+    "PLTR",
+    "RBLX",
+    "TSM",
+    "VECO"
+  ],
+  "summary": {
+    "reuse": 8,
+    "run": 2
+  },
+  "artifacts": {
+    "market_context": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-05-31.md"
+    },
+    "market_breadth": {
+      "action": "reuse",
+      "path": "reports/market/breadth/market_breadth_2026-05-31_124822.json"
+    },
+    "uptrend_analysis": {
+      "action": "reuse",
+      "path": "reports/market/uptrend/uptrend_analysis_2026-05-31_124823.json"
+    },
+    "market_top": {
+      "action": "reuse",
+      "path": "reports/market/top/market_top_2026-05-31_134130.json"
+    },
+    "exposure_posture": {
+      "action": "reuse",
+      "path": "reports/market/exposure/exposure_posture_2026-05-31_204112.json"
+    },
+    "fred_calendar": {
+      "action": "reuse",
+      "path": "reports/logs/fred_calendar_2026-05-31.json"
+    },
+    "vcp_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/vcp/vcp_screener_2026-05-31_143022.json",
+      "ticker_row": null
+    },
+    "canslim_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/canslim/canslim_screener_2026-05-31_143052.json",
+      "ticker_row": {
+        "symbol": "DIS",
+        "company_name": "The Walt Disney Company",
+        "sector": "Communication Services",
+        "price": 101.84,
+        "market_cap": 0,
+        "composite_score": 33.9,
+        "rating": "Weak",
+        "rating_description": "Does not meet CANSLIM criteria",
+        "guidance": "Avoid",
+        "weakest_component": "C",
+        "weakest_score": 0,
+        "c_component": {
+          "score": 0,
+          "latest_qtr_eps_growth": -29.8,
+          "latest_qtr_revenue_growth": 6.5,
+          "latest_eps": 1.27,
+          "year_ago_eps": 1.81,
+          "latest_revenue": 25168000000,
+          "year_ago_revenue": 23621000000,
+          "latest_qtr_date": "2026-03-28",
+          "year_ago_qtr_date": "2025-03-29",
+          "interpretation": "Weak - Does not meet CANSLIM criteria (EPS -29.8%, Revenue +6.5%)",
+          "quality_warning": null,
+          "error": null
+        },
+        "a_component": {
+          "score": 72,
+          "eps_cagr_3yr": 58.4,
+          "revenue_cagr_3yr": 4.5,
+          "stability": "erratic",
+          "eps_values": [
+            1.73,
+            1.29,
+            2.72,
+            6.88
+          ],
+          "revenue_values": [
+            82722000000,
+            88898000000,
+            91361000000,
+            94425000000
+          ],
+          "years_analyzed": 4,
+          "interpretation": "Strong - 58.4% CAGR, well above CANSLIM 25% threshold (erratic)",
+          "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+          "error": null
+        },
+        "n_component": {
+          "score": 40,
+          "distance_from_high_pct": -18.3,
+          "current_price": 101.84,
+          "week_52_high": 124.69,
+          "week_52_low": 92.19,
+          "breakout_detected": false,
+          "current_volume": 6071256,
+          "avg_volume": null,
+          "volume_ratio": null,
+          "interpretation": "Weak - Lacks momentum (-18.3% from high)",
+          "error": null
+        },
+        "s_component": {
+          "score": 60,
+          "up_down_ratio": 1.1595038529640775,
+          "accumulation_detected": false,
+          "avg_up_volume": 10214159,
+          "avg_down_volume": 8809077,
+          "up_days_count": 25,
+          "down_days_count": 34,
+          "interpretation": "Neutral/Weak Accumulation (ratio: 1.16x) - Slightly positive volume trend."
+        },
+        "l_component": {
+          "score": 0,
+          "stock_52w_performance": -11.38,
+          "sp500_52w_performance": 25.26,
+          "relative_performance": -36.64,
+          "rs_rank_estimate": 10,
+          "days_analyzed": 365,
+          "interpretation": "Weak - 52-week return -11.4% (-36.6% vs benchmark). Significant underperformance - avoid",
+          "quality_warning": null,
+          "error": null,
+          "rs_3m_return": -2.4,
+          "rs_6m_return": -1.55,
+          "rs_12m_return": -9.1,
+          "benchmark_3m_return": 10.15,
+          "benchmark_6m_return": 11.27,
+          "benchmark_12m_return": 28.21,
+          "rel_3m": -12.55,
+          "rel_6m": -12.81,
+          "rel_12m": -37.31,
+          "weighted_stock_performance": -4.15,
+          "weighted_relative_performance": -20.05,
+          "available_periods": [
+            "3m",
+            "6m",
+            "12m"
+          ],
+          "missing_periods": [],
+          "benchmark_52w_performance": 25.26,
+          "rs_benchmark": "^GSPC",
+          "rs_benchmark_relative_return": -37.31,
+          "rs_rating": "Weak",
+          "rs_component_score": 0,
+          "rs_rank_percentile": 10
+        },
+        "i_component": {
+          "score": 0,
+          "error": "No institutional holder data"
+        },
+        "m_component": {
+          "score": 90,
+          "trend": "strong_uptrend",
+          "sp500_price": 7580.06,
+          "sp500_ema_50": 7186.179684790908,
+          "distance_from_ema_pct": 5.48,
+          "vix_level": 15.32,
+          "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+          "warning": null,
+          "error": null
+        },
+        "threshold_check": {
+          "passes_all": false,
+          "failed_components": [
+            "C",
+            "L",
+            "I"
+          ],
+          "recommendation": "avoid",
+          "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+        }
+      }
+    },
+    "theme_detector": {
+      "action": "run"
+    },
+    "breakout_trade_planner": {
+      "action": "run"
+    }
+  }
+}

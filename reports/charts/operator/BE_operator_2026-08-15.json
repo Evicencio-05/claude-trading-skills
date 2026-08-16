@@ -1,0 +1,129 @@
+{
+  "source": "operator",
+  "ticker": "BE",
+  "as_of": "2026-08-15",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "BE 1D NYSE chart: spot 229.94; fib set Low 116.51 → 180.90 → extensions; LuxAlgo VP; SMA 50/100/200; RSI pane"
+    },
+    {
+      "type": "text",
+      "note": "Operator bias Long: looks strong for upside; tight invalidation under current level; most acceptable downside anything under 220.7"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 229.94,
+    "change": -5.82,
+    "change_pct": -2.46,
+    "volume": null,
+    "sma": {
+      "50": 255.0,
+      "100": 218.0,
+      "200": 180.0
+    },
+    "price_vs_sma": {
+      "50": "below",
+      "100": "above",
+      "200": "above"
+    },
+    "sr_levels": [
+      220.7,
+      285.0,
+      349.49
+    ],
+    "fib_levels": [
+      {
+        "ratio": "3.618",
+        "price": 349.49,
+        "color": "magenta"
+      },
+      {
+        "ratio": "2.618",
+        "price": 285.0,
+        "color": "red"
+      },
+      {
+        "ratio": "1.618",
+        "price": 220.7,
+        "color": "blue"
+      },
+      {
+        "ratio": "1.0",
+        "price": 180.9,
+        "color": "white"
+      },
+      {
+        "ratio": "0.618",
+        "price": 156.3,
+        "color": "yellow"
+      },
+      {
+        "ratio": "0",
+        "price": 116.51,
+        "color": "white"
+      }
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "Low 116.51 to High/leg 180.90 then extensions",
+        "levels": [
+          {"ratio": "0", "price": 116.51},
+          {"ratio": "1.0", "price": 180.9},
+          {"ratio": "1.618", "price": 220.7},
+          {"ratio": "2.618", "price": 285.0},
+          {"ratio": "3.618", "price": 349.49}
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "visible range spans ~116 low through ~351 swing high",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [150.0, 160.0, 225.0, 230.0],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "120–180 deep HVN / primary acceptance",
+        "220–230 secondary shelf near spot"
+      ],
+      "lowest_volume_zones": [
+        "above ~260 toward 285–350 — thinner relative to base HVN"
+      ],
+      "profile_labels": {
+        "high": 351.28,
+        "low": 116.51
+      },
+      "colors_note": "orange/blue value-area nodes; gray lower volume"
+    },
+    "major_levels": [
+      351.28,
+      180.9,
+      116.51
+    ],
+    "rsi": {
+      "white": 47.0,
+      "yellow": null,
+      "mid_50": 50,
+      "buyer_strength": false,
+      "seller_strength": false,
+      "deterioration_watch": null,
+      "hold_note": "white ~45–50 near midline — not buyer strength yet; watch reclaim and hold of 50"
+    },
+    "channel": null,
+    "earnings_markers": null,
+    "structure_notes": "Recovery from ~180.90 fib 1.0 after July dump from ~351; consolidating just above fib 1.618=220.70; below declining 50 SMA (~255); above rising 200 near base; RSI neutral mid-zone",
+    "operator_thesis": "Long BE. Looks pretty strong for the upside, but very tight invalidation if it breaks under this current level — most acceptable downside anything under 220.7.",
+    "chart_timestamp": "2026-08-15"
+  },
+  "confidence": "high",
+  "gaps": [
+    "Exact 50/100/200 SMA prints unlabeled — estimated from chart (~255 / ~218 / ~180)",
+    "RSI yellow signal value unlabeled; white ~45–50 estimated",
+    "POC not numerically labeled"
+  ],
+  "next": null
+}

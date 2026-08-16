@@ -13,6 +13,8 @@ Task prompts are **ephemeral by default** (Tier 1). Durable knowledge lives in [
 
 Meta prompts (Tier 0) maintain the loop; they are not trading workflows.
 
+**Structural changes** (path moves, layout migrations): `prompt-engine` injects a **Reference audit** section; `prompt-complete` Phase 1.5 verifies reference integrity; optional rule [structural-changes.mdc](../rules/structural-changes.mdc).
+
 ## Tier policy
 
 | Tier | What | Where |
@@ -20,7 +22,7 @@ Meta prompts (Tier 0) maintain the loop; they are not trading workflows.
 | 0 Meta | Engine, complete, distill | This directory — always kept |
 | 1 Ephemeral | One-off tasks | **Chat only** — snapshot in retro |
 | 2 Durable | Repeatable invocations | `.cursor/prompts/<name>.md` — see table below |
-| 3 Workflow | Multi-step | `commands/` — not saved here |
+| 3 Workflow | Multi-step | `commands/` — not saved here (e.g. [agentic-copilot-trade.md](../../commands/agentic-copilot-trade.md)) |
 
 Full policy: [prompt-engine.md](prompt-engine.md) § Tier policy.
 

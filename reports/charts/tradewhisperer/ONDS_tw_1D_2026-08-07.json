@@ -1,0 +1,57 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "ONDS",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "ONDS 1D @TradexWhisperer TradingView chart; last 9.11 (+4.23%); watermark Aug 7"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1D",
+    "last": 9.11,
+    "change": 0.37,
+    "change_pct": 4.23,
+    "ohlc": null,
+    "volume": null,
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 9.29,
+      "blue": 9.37,
+      "yellow": 8.75,
+      "purple": 7.13
+    },
+    "volume_profile_notes": "HVN shelf ~7.5–9.0 under/at spot; next shelf ~10.0–11.5; LVN between",
+    "oscillators": {
+      "pane1": {
+        "blue": 97.64,
+        "orange": null,
+        "note": "stochastic-style overbought"
+      },
+      "pane2": {
+        "blue": 0.1455,
+        "orange": -0.1062,
+        "note": "MACD-style bullish cross / rising"
+      },
+      "pane3": {
+        "value": "1.71B",
+        "note": "OBV/flow rising"
+      }
+    },
+    "price_vs_mas": "above_yellow_below_orange_blue",
+    "chart_timestamp": "2026-08-07"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "Chart watermark Aug 7 vs map/operator as_of Aug 9 — last print matches 9.11",
+    "Full recent_candle_sequence truncated — GREEN continuation stack from list+chart",
+    "Oscillator pane names not labeled"
+  ],
+  "next": null
+}

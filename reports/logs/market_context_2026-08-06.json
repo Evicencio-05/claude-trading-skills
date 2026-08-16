@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-08-06",
+  "generated_at": "2026-08-06T06:07:30",
+  "sources": {
+    "breadth": "reports/market/breadth/market_breadth_2026-08-06_060728.json",
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-08-06_060729.json",
+    "sector": "reports/market/sector/sector_rotation_2026-08-06.md"
+  },
+  "breadth": {
+    "score": 74.2,
+    "zone": "Healthy",
+    "exposure_guidance": "75-90%",
+    "guidance": "Above-average breadth. Normal operations with standard risk management.",
+    "strongest": {
+      "component": "breadth_level_trend",
+      "label": "Current Breadth Level & Trend",
+      "score": 90
+    },
+    "weakest": {
+      "component": "historical_percentile",
+      "label": "Historical Percentile",
+      "score": 40
+    },
+    "active_warnings": [],
+    "actions": [
+      "Normal position sizing",
+      "Standard stop-loss levels",
+      "New position entries allowed",
+      "Monitor for deterioration in leading indicators"
+    ]
+  },
+  "uptrend": {
+    "score": 60.1,
+    "zone": "Bull",
+    "exposure_guidance": "Normal Exposure, Lower End (80-90%)",
+    "guidance": "Healthy market breadth supporting equity allocation. Standard position management. However, active warnings suggest operating at the conservative end of the range.",
+    "strongest": {
+      "component": "sector_rotation",
+      "label": "Sector Rotation",
+      "score": 86
+    },
+    "weakest": {
+      "component": "market_breadth",
+      "label": "Market Breadth (Overall)",
+      "score": 52
+    },
+    "active_warnings": [
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Normal position sizing",
+      "New entries on quality setups",
+      "Standard stop-loss levels",
+      "Monitor sector rotation for early warnings"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Industrials",
+    "cycle_phase": "Early",
+    "risk_regime": "RISK-ON",
+    "risk_score": 86,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Industrials",
+        "ratio": "34.5%"
+      },
+      {
+        "rank": "2",
+        "sector": "Consumer Cyclical",
+        "ratio": "33.8%"
+      },
+      {
+        "rank": "3",
+        "sector": "Financial",
+        "ratio": "33.7%"
+      }
+    ],
+    "overbought": []
+  },
+  "synthesis": {
+    "posture": "NEW_ENTRY_ALLOWED",
+    "ceiling": "70%",
+    "headline": "New Entry Allowed \u2014 breadth 74.2/100, uptrend 60.1/100, leading sector Industrials.",
+    "risk_flags": [
+      "SECTOR DIVERGENCE WARNING"
+    ],
+    "actions": [
+      "Normal position sizing",
+      "New entries on quality setups",
+      "Standard stop-loss levels",
+      "Monitor sector rotation for early warnings",
+      "New position entries allowed"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

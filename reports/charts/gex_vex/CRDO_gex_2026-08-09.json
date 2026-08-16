@@ -1,0 +1,204 @@
+{
+  "source": "gex_vex",
+  "ticker": "CRDO",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot CRDO Aug 9 14:28:07"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 249.89,
+    "change": 18.95,
+    "change_pct": 8.22,
+    "atm_strike": 250.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-16",
+      "2026-11-20"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 250.0,
+      "expiration": "2026-08-21",
+      "value_k": -283,
+      "sign": "neg",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -283,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-08-21",
+        "value_k": 250,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-09-18",
+        "value_k": 98,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 290.0,
+        "expiration": "2026-08-14",
+        "value_k": 94,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-21",
+        "value_k": 92,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-14",
+        "value_k": -82,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-09-18",
+        "value_k": 71,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 230.0,
+        "expiration": "2026-08-14",
+        "value_k": -72,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-09-18",
+        "value_k": 63,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 280.0,
+        "expiration": "2026-08-21",
+        "value_k": 58,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 260.0,
+        "expiration": "2026-08-21",
+        "value_k": 54,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -283,
+        "sign": "neg"
+      },
+      {
+        "strike": 260.0,
+        "expiration": "2026-08-21",
+        "value_k": 54,
+        "sign": "pos"
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-09-18",
+        "value_k": 71,
+        "sign": "pos"
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-21",
+        "value_k": 92,
+        "sign": "pos"
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-08-21",
+        "value_k": 250,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -283,
+        "sign": "neg",
+        "note": "ATM king by |value| — wicky/chop risk at spot after +8% day"
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-08-21",
+        "value_k": 250,
+        "sign": "pos",
+        "note": "Primary upside magnet — aligns with VEX king and fib 2.618~308"
+      },
+      {
+        "strike": 225.0,
+        "expiration": "2026-08-21",
+        "value_k": 92,
+        "sign": "pos",
+        "note": "Positive floor / support below 50 SMA zone"
+      }
+    ],
+    "air_pockets": "Most cells near $0K; mass concentrated at 250/300 Aug-21 and scattered 225–290",
+    "range_edges": {
+      "upside": 300.0,
+      "downside": 225.0
+    },
+    "map_timestamp": "2026-08-09 14:28:07",
+    "opex_note": "2026-08-21 dominant column",
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 300.0,
+          "expiration": "2026-08-21",
+          "note": "Upside magnet both modes (GEX $250K / VEX $13567K king)"
+        },
+        {
+          "strike": 250.0,
+          "expiration": "2026-08-21",
+          "note": "ATM negative both modes (GEX -$283K king / VEX -$1892K)"
+        },
+        {
+          "strike": 290.0,
+          "expiration": "2026-08-14",
+          "note": "Elevated positive both (GEX $94K / VEX large ~$4M class)"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full strike×expiry matrix not transcribed — top_nodes from visible hotspots only"
+  ],
+  "next": null
+}

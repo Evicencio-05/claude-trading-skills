@@ -1,0 +1,193 @@
+{
+  "ticker": "DELL",
+  "as_of": "2026-05-31",
+  "generated_at": "2026-05-31T14:31:05.743340-07:00",
+  "force_refresh": false,
+  "watchlist_symbols": [
+    "ARM",
+    "DELL",
+    "DIS",
+    "DRAM",
+    "HPE",
+    "IBM",
+    "NOK",
+    "PLTR",
+    "RBLX",
+    "TSM",
+    "VECO"
+  ],
+  "summary": {
+    "reuse": 8,
+    "run": 2
+  },
+  "artifacts": {
+    "market_context": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-05-31.md"
+    },
+    "market_breadth": {
+      "action": "reuse",
+      "path": "reports/market/breadth/market_breadth_2026-05-31_124822.json"
+    },
+    "uptrend_analysis": {
+      "action": "reuse",
+      "path": "reports/market/uptrend/uptrend_analysis_2026-05-31_124823.json"
+    },
+    "market_top": {
+      "action": "reuse",
+      "path": "reports/market/top/market_top_2026-05-31_134130.json"
+    },
+    "exposure_posture": {
+      "action": "reuse",
+      "path": "reports/market/exposure/exposure_posture_2026-05-31_204112.json"
+    },
+    "fred_calendar": {
+      "action": "reuse",
+      "path": "reports/logs/fred_calendar_2026-05-31.json"
+    },
+    "vcp_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/vcp/vcp_screener_2026-05-31_143022.json",
+      "ticker_row": null
+    },
+    "canslim_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/canslim/canslim_screener_2026-05-31_143052.json",
+      "ticker_row": {
+        "symbol": "DELL",
+        "company_name": "Dell Technologies Inc.",
+        "sector": "Technology",
+        "price": 421.3,
+        "market_cap": 0,
+        "composite_score": 70.7,
+        "rating": "Strong",
+        "rating_description": "Solid across all components, minor weaknesses",
+        "guidance": "Buy, standard sizing (8-12% of portfolio)",
+        "weakest_component": "I",
+        "weakest_score": 0,
+        "c_component": {
+          "score": 100,
+          "latest_qtr_eps_growth": 281.3,
+          "latest_qtr_revenue_growth": 87.5,
+          "latest_eps": 5.3,
+          "year_ago_eps": 1.39,
+          "latest_revenue": 43842000000,
+          "year_ago_revenue": 23378000000,
+          "latest_qtr_date": "2026-05-01",
+          "year_ago_qtr_date": "2025-05-02",
+          "interpretation": "Exceptional - Explosive earnings acceleration (EPS +281.3%, Revenue +87.5%)",
+          "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+          "error": null
+        },
+        "a_component": {
+          "score": 66,
+          "eps_cagr_3yr": 39.1,
+          "revenue_cagr_3yr": 3.5,
+          "stability": "stable",
+          "eps_values": [
+            3.33,
+            4.71,
+            6.51,
+            8.96
+          ],
+          "revenue_values": [
+            102301000000,
+            88425000000,
+            95567000000,
+            113538000000
+          ],
+          "years_analyzed": 4,
+          "interpretation": "Acceptable - 39.1% CAGR meets CANSLIM minimum (stable)",
+          "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+          "error": null
+        },
+        "n_component": {
+          "score": 60,
+          "distance_from_high_pct": -1.8,
+          "current_price": 421.3,
+          "week_52_high": 429.151,
+          "week_52_low": 106.38,
+          "breakout_detected": false,
+          "current_volume": 38177231,
+          "avg_volume": null,
+          "volume_ratio": null,
+          "interpretation": "Acceptable - Within 15% of high (-1.8% from high)",
+          "error": null
+        },
+        "s_component": {
+          "score": 60,
+          "up_down_ratio": 1.4454121193171225,
+          "accumulation_detected": false,
+          "avg_up_volume": 9572006,
+          "avg_down_volume": 6622337,
+          "up_days_count": 36,
+          "down_days_count": 23,
+          "interpretation": "Neutral/Weak Accumulation (ratio: 1.45x) - Slightly positive volume trend."
+        },
+        "l_component": {
+          "score": 100,
+          "stock_52w_performance": 253.17,
+          "sp500_52w_performance": 25.26,
+          "relative_performance": 227.91,
+          "rs_rank_estimate": 99,
+          "days_analyzed": 365,
+          "interpretation": "Market Leader - 52-week return +253.2% (+227.9% vs benchmark). Strong momentum, prime CANSLIM candidate",
+          "quality_warning": null,
+          "error": null,
+          "rs_3m_return": 174.12,
+          "rs_6m_return": 215.86,
+          "rs_12m_return": 270.42,
+          "benchmark_3m_return": 10.15,
+          "benchmark_6m_return": 11.27,
+          "benchmark_12m_return": 28.21,
+          "rel_3m": 163.97,
+          "rel_6m": 204.59,
+          "rel_12m": 242.21,
+          "weighted_stock_performance": 215.53,
+          "weighted_relative_performance": 199.63,
+          "available_periods": [
+            "3m",
+            "6m",
+            "12m"
+          ],
+          "missing_periods": [],
+          "benchmark_52w_performance": 25.26,
+          "rs_benchmark": "^GSPC",
+          "rs_benchmark_relative_return": 242.21,
+          "rs_rating": "Market Leader",
+          "rs_component_score": 100,
+          "rs_rank_percentile": 99
+        },
+        "i_component": {
+          "score": 0,
+          "error": "No institutional holder data"
+        },
+        "m_component": {
+          "score": 90,
+          "trend": "strong_uptrend",
+          "sp500_price": 7580.06,
+          "sp500_ema_50": 7186.179684790908,
+          "distance_from_ema_pct": 5.48,
+          "vix_level": 15.32,
+          "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+          "warning": null,
+          "error": null
+        },
+        "threshold_check": {
+          "passes_all": false,
+          "failed_components": [
+            "I"
+          ],
+          "recommendation": "watchlist",
+          "reason": "One component below threshold: I"
+        }
+      }
+    },
+    "theme_detector": {
+      "action": "run"
+    },
+    "breakout_trade_planner": {
+      "action": "run"
+    }
+  }
+}

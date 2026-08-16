@@ -1,0 +1,49 @@
+{
+  "ticker": "ADI",
+  "fetched_at": "2026-08-15",
+  "source": "robinhood_mcp",
+  "quote": {
+    "last": 389.39,
+    "prev_close": 381.17,
+    "as_of": "2026-08-14"
+  },
+  "fundamentals": {
+    "market_cap": 189666822505.6,
+    "pe": 57.87,
+    "pb": 5.6211,
+    "float": 485776000,
+    "shares_out": 487087040,
+    "div_yield": 0.0166147,
+    "high_52w": 445.91,
+    "low_52w": 223.47,
+    "avg_vol_30d": 3746977,
+    "ceo": "Vincent T. Roche"
+  },
+  "technicals": {
+    "rsi14": 54.1,
+    "sma50": 391.57,
+    "sma150": 364.52,
+    "sma200": 338.22,
+    "macd": -0.804,
+    "macd_signal": -3.541,
+    "macd_hist": 2.737,
+    "atr14": 12.68
+  },
+  "rs_vs_spy": {
+    "1m": {
+      "adi": 2.33,
+      "spy": 3.41,
+      "rel": -1.08
+    },
+    "3m": {
+      "adi": -8.76,
+      "spy": 3.77,
+      "rel": -12.53
+    },
+    "6m": {
+      "adi": 17.51,
+      "spy": 13.95,
+      "rel": 3.56
+    }
+  }
+}

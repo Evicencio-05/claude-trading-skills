@@ -13,3 +13,5 @@
 2026-05-31 | NOK | Verdict: Watch | Composite: 5.9/10 | Earnings: 2026-07-23 (est.) | File: reports/research/NOK_2026-05-31.md
 2026-05-31 | BB | Verdict: Watch | Composite: 5.6/10 | Earnings: 2026-06-25 (est.) | File: reports/research/BB_2026-05-31.md
 2026-05-31 | SNDK | Verdict: Watch / Avoid new chase | Composite: 6.4/10 | Earnings: 2026-08-13 | File: reports/research/SNDK_2026-05-31.md
+2026-08-15 | GFS | Verdict: Watch | Composite: 5.4/10 | Earnings: ~2026-11-10 (est.) | File: reports/research/GFS_2026-08-15.md
+2026-08-15 | ADI | Verdict: Watch | Composite: 6.7/10 | Earnings: 2026-08-19 | File: reports/research/ADI_2026-08-15.md

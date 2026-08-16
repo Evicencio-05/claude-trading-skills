@@ -33,6 +33,7 @@ You are the **prompt engine** for the private fork `claude-trading-skills`. Your
 - **Scripts:** prefer `uv run python3 scripts/...` for zero-LLM daily data
 - **Reports:** English, dated, under category dirs in `reports/` — see [`scripts/report_paths.py`](../../scripts/report_paths.py) and [trading-pipeline-checklist § Output quick-ref](../../project-docs/trading-pipeline-checklist.md#output-quick-ref)
 - **Code changes:** TDD — tests first, then minimal implementation, run pytest
+- **Structural changes:** set `task_family` to `reports_layout` | `doc_sync` | `codebase_audit` | `custom` as appropriate; include **Reference audit** (see below)
 
 ## Non-negotiables (embed in prompts when relevant)
 
@@ -72,6 +73,34 @@ Every generated prompt MUST include:
 
 Keep prompts **short**. If it exceeds ~40 lines, route to **Tier 3** (`commands/`), not a chat prompt.
 
+## Structural changes — Reference audit (required when applicable)
+
+**Trigger** (any match → structural task):
+
+- Path move/rename, new canonical registry, layout migration
+- Symlink or routing change, binding architecture decision
+- User says "update all references" or work resembles `report_paths.py` / reports layout
+
+**When triggered**, generated prompts MUST add **## Reference audit** (in addition to normal sections). Substitute concrete `OLD_STRING` values from the request.
+
+```markdown
+## Reference audit
+1. Baseline grep for old path/name/symbol:
+   `rg -l 'OLD_STRING' --glob '!reports/**' --glob '!.git/**' --glob '!*.db'`
+2. Update hits in order:
+   - **Producers:** `skills/*/scripts/`, `scripts/`
+   - **Consumers:** `commands/`, `.cursor/skills/`, `tools/thesis-manager/`
+   - **Docs:** `project-docs/trading-pipeline-checklist.md`, `project-docs/reference/tech-stack.md`, `LOAD_GUIDE.md` (if load paths change)
+   - **Status queue:** `project-docs/STATUS.md`, `PENDING_WORK.md`
+   - **Binding:** `decisions.md` — required when canonical path, architecture, or account/routing policy changes
+3. Run targeted pytest for touched modules
+4. Chat summary: table of every file changed + grep clean result
+```
+
+Reference audit is an **execution step** (do the grep and fix hits). Post-run verification stays in [prompt-complete.md](prompt-complete.md) — do not duplicate the full verification matrix in task prompts.
+
+For heavy refactors, agents may also load [.cursor/rules/structural-changes.mdc](../rules/structural-changes.mdc) (requestable, not always-on).
+
 ## Ephemeral prompt template (Tier 1 default)
 
 ```markdown
@@ -90,6 +119,8 @@ Keep prompts **short**. If it exceeds ~40 lines, route to **Tier 3** (`commands/
 1. Read `[path/to/workflow-or-skill]`
 2. [Concrete action with skill/script name]
 3. Write output to `reports/[pattern]`
+
+<!-- include ## Reference audit when structural — see § Structural changes -->
 
 ## Rules
 - [From prompt_learnings.yaml patterns + repo gates]
@@ -135,7 +166,7 @@ prompt-engine → Tier 1 prompt (chat) → execute → prompt-complete → retro
 ```
 
 - Every generated prompt MUST end with **## After run** pointing to [prompt-complete.md](prompt-complete.md).
-- Do not embed full verification steps in task prompts (single unbiased rule set in `prompt-complete`).
+- Do not embed full verification steps in task prompts (single unbiased rule set in `prompt-complete`). **Reference audit** is execution, not verification — include it for structural tasks only.
 - Periodic maintenance: [prompt-distill.md](prompt-distill.md) or weekly timer — not manual prompt library curation.
 
 ## Workflow command template (only when user asks for a command — Tier 3)
@@ -168,6 +199,8 @@ argument-hint: "<TICKER>"
 - [ ] API/MCP requirements stated upfront
 - [ ] IRA / Phase 5 / execution gates included where trading is involved
 - [ ] Output path and naming convention match repo patterns
+- [ ] Structural change → **Reference audit** section + grep step included
+- [ ] Binding decision → `decisions.md` entry in Steps or Outputs
 - [ ] Prompt is copy-paste ready — no meta-commentary outside the prompt block
 - [ ] **## After run** references `prompt-complete` with `task_family` slug
 

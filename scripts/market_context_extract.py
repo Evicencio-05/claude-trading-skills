@@ -231,7 +231,9 @@ def resolve_artifacts(
     keys = ("market_breadth", "uptrend_analysis", "sector_rotation")
     stdouts = (breadth_stdout, uptrend_stdout, sector_stdout)
     if len(keys) != len(stdouts):
-        raise ValueError(f"artifact key/stdout length mismatch: {len(keys)} != {len(stdouts)}")
+        raise ValueError(
+            f"artifact key/stdout length mismatch: {len(keys)} != {len(stdouts)}"
+        )
     resolved: dict[str, Path | None] = {}
     for key, stdout in zip(keys, stdouts):
         path = find_latest_same_day_artifact(repo_root, key, as_of)

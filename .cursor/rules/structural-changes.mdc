@@ -1,0 +1,40 @@
+---
+description: Reference audit checklist for path moves, renames, layout migrations, and binding architecture changes
+alwaysApply: false
+---
+
+# Structural Changes — Reference Audit
+
+Load this rule when a task moves/renames paths, introduces a canonical registry, migrates layout, or changes binding architecture.
+
+## Before marking done
+
+1. **Grep old path/name/symbol:**
+
+```bash
+rg -l 'OLD_STRING' --glob '!reports/**' --glob '!.git/**' --glob '!*.db'
+```
+
+Substitute concrete `OLD_STRING` from the change. Zero hits outside allowed exceptions = clean.
+
+**Allowed exceptions:** `reports/**` historical snapshots, `.cursor/prompts/archive/**`, dated files under `reports/prompts/`.
+
+2. **Update hits in order:**
+
+| Tier | Paths |
+|------|-------|
+| Producers | `skills/*/scripts/`, `scripts/` |
+| Consumers | `commands/`, `.cursor/skills/`, `tools/thesis-manager/` |
+| Docs | `project-docs/trading-pipeline-checklist.md`, `project-docs/reference/tech-stack.md`, `LOAD_GUIDE.md` (if load paths change) |
+| Status | `project-docs/STATUS.md`, `PENDING_WORK.md` |
+| Binding | `decisions.md` — **required** when canonical path, architecture, or account/routing policy changes |
+
+3. **Test:** run targeted pytest for touched modules.
+
+4. **Summarize:** table of every file changed + grep clean result in chat.
+
+## Gates
+
+- Do not commit unless the user explicitly asks.
+- Full prompt template: [.cursor/prompts/prompt-engine.md](../prompts/prompt-engine.md) § Structural changes.
+- Post-run verification: [.cursor/prompts/prompt-complete.md](../prompts/prompt-complete.md) Phase 1.5.
