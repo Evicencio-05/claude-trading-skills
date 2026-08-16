@@ -42,19 +42,19 @@ ATM GEX **−283** / VEX **−1892** at **250** after +8% — prefer hold/retest
 
 ## Judgment
 ### Devil’s advocate
-1. +8% into ATM −283/−1892 → wick before 300  
-2. Stoch-style ~89 — pause risk at 250 / 1.618  
-3. Fail 50 SMA → VEX −1926 @ 225 toward 210.68  
+1. +8% into ATM −283/−1892 → wick before 300
+2. Stoch-style ~89 — pause risk at 250 / 1.618
+3. Fail 50 SMA → VEX −1926 @ 225 toward 210.68
 
 ### Invalidation
-- **TW:** daily PINK / PINK_RED  
-- **Maps:** 300 magnet dies / ATM 250 neg becomes the magnet  
-- **Operator:** daily close below **~236** or RSI white loses 50 with channel fail  
+- **TW:** daily PINK / PINK_RED
+- **Maps:** 300 magnet dies / ATM 250 neg becomes the magnet
+- **Operator:** daily close below **~236** or RSI white loses 50 with channel fail
 
 ### Not allowed to ignore
-- GREEN continuation ≠ dampened; rubric still half-weights vs BLUE daily  
-- Destination **300/308**, not 370 first  
-- ATM neg @ 250 = chase risk  
+- GREEN continuation ≠ dampened; rubric still half-weights vs BLUE daily
+- Destination **300/308**, not 370 first
+- ATM neg @ 250 = chase risk
 
 ### Process
 **solid**

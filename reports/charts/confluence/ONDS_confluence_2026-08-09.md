@@ -41,19 +41,19 @@
 
 ## Judgment
 ### Devil’s advocate
-1. GREEN into .382 + SMA sandwich — reject risk; TW stoch-style already ~97  
-2. Aug GEX −941 @ 9.5 / −562 @ 10 can chop before Sep king delivers  
-3. Fail shelf → VEX −537 @ 8 can flush toward 7.7 / 7.13  
+1. GREEN into .382 + SMA sandwich — reject risk; TW stoch-style already ~97
+2. Aug GEX −941 @ 9.5 / −562 @ 10 can chop before Sep king delivers
+3. Fail shelf → VEX −537 @ 8 can flush toward 7.7 / 7.13
 
 ### Invalidation
-- **TW:** daily PINK / PINK_RED  
-- **Maps:** 10 king dies / Aug 9.5–10 neg expands as magnet  
-- **Operator:** daily close below **~8.50** or RSI white loses 50 with failed SMA reclaim  
+- **TW:** daily PINK / PINK_RED
+- **Maps:** 10 king dies / Aug 9.5–10 neg expands as magnet
+- **Operator:** daily close below **~8.50** or RSI white loses 50 with failed SMA reclaim
 
 ### Not allowed to ignore
-- GREEN ≠ BLUE trigger weight  
-- Still under 50/100 — reclaim is required  
-- Destination is map **10** / .5 first; .618 is stretch after  
+- GREEN ≠ BLUE trigger weight
+- Still under 50/100 — reclaim is required
+- Destination is map **10** / .5 first; .618 is stretch after
 
 ### Process
 **solid**

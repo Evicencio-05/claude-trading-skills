@@ -39,19 +39,19 @@
 
 ## Judgment
 ### Devil’s advocate
-1. GREEN + ATM −83 GEX → stall/wick before 30  
-2. King **30** = magnet *and* wall before 32  
-3. Fail 23.46 → VEX −902 at 22.5 can flush hard  
+1. GREEN + ATM −83 GEX → stall/wick before 30
+2. King **30** = magnet *and* wall before 32
+3. Fail 23.46 → VEX −902 at 22.5 can flush hard
 
 ### Invalidation
-- **TW:** daily PINK / PINK_RED  
-- **Maps:** 30 king dies / ceilings roll down  
-- **Operator:** daily close below **23.46** or RSI white loses 50 with channel break  
+- **TW:** daily PINK / PINK_RED
+- **Maps:** 30 king dies / ceilings roll down
+- **Operator:** daily close below **23.46** or RSI white loses 50 with channel break
 
 ### Not allowed to ignore
-- GREEN ≠ BLUE trigger weight  
-- Map destination is **30**, not 32  
-- Negative VEX **22.5** = violent fail risk  
+- GREEN ≠ BLUE trigger weight
+- Map destination is **30**, not 32
+- Negative VEX **22.5** = violent fail risk
 
 ### Process
 **solid**

@@ -39,19 +39,19 @@
 
 ## Judgment
 ### Devil’s advocate
-1. Stale **PINK_RED** still fights a forced long  
-2. **250** wall is the near-term map, not the 370 magnet  
-3. Break of **220.70** + VEX −7441 → amplify risk, not gentle stop  
+1. Stale **PINK_RED** still fights a forced long
+2. **250** wall is the near-term map, not the 370 magnet
+3. Break of **220.70** + VEX −7441 → amplify risk, not gentle stop
 
 ### Invalidation
-- **TW:** daily PINK / PINK_RED while long  
-- **Maps:** 250 expands as magnet / upside nodes roll down  
-- **Operator:** daily close below **220.70**  
+- **TW:** daily PINK / PINK_RED while long
+- **Maps:** 250 expands as magnet / upside nodes roll down
+- **Operator:** daily close below **220.70**
 
 ### Not allowed to ignore
-- Path blocked by **250** before 270+  
-- **220** is GEX∩VEX **fight**, not dual support  
-- TW color stale and hostile  
+- Path blocked by **250** before 270+
+- **220** is GEX∩VEX **fight**, not dual support
+- TW color stale and hostile
 
 ### Process
 **solid**
@@ -60,7 +60,7 @@
 Do not treat distant green upside (370 king) as owed while sitting under the **250** VEX wall.
 
 ## Upgrade path
-- **→ WATCH:** fresh TW not PINK/RED + hold 220.70 + RSI reclaim 50  
+- **→ WATCH:** fresh TW not PINK/RED + hold 220.70 + RSI reclaim 50
 - **→ PLAY:** accept/clear **250** toward 260–270 with supportive TW, or maps reshuffle 250 negatives away
 
 ## Verdict

@@ -140,7 +140,7 @@
 
 ### 4. Momentum
 
-- **Raw Slope:** +0.0042 
+- **Raw Slope:** +0.0042
 - **Smoothed Slope (EMA(3)):** +0.0048 (score: 64/100)
 - **Acceleration (10v10):** 0.004168 (accelerating, score: 75/100)
 - **Sector Slope Breadth:** 8/11 positive (score: 73/100)
