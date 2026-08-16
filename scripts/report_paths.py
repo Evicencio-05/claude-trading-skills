@@ -79,6 +79,7 @@ ARTIFACT_DATE_GLOBS: dict[str, tuple[str, ...]] = {
         "*_confluence_{date}*",
         "session_confluence_*_{date}*",
         "confluence_{date}*",
+        "prediction_log_{date}*",
     ),
     # Plans embed ticker between prefix and date: agentic_copilot_plan_AVGO_2026-06-02.json
     "agentic_copilot_plan": (

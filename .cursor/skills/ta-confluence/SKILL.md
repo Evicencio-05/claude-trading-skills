@@ -26,6 +26,7 @@ Always finish with **operator chart** before PLAY. Period **list** color require
 |------|------|
 | [references/confluence_rubric.md](references/confluence_rubric.md) | Scoring + hard stops |
 | [references/judgment_prompts.md](references/judgment_prompts.md) | Devil’s advocate / invalidation / process grade |
+| [references/prediction_log_v15.md](references/prediction_log_v15.md) | After session — prediction / process log |
 | TW / GEX / operator contracts | Via those skills — do not re-extract from scratch |
 
 ## Upstream intake (reuse)
@@ -39,6 +40,7 @@ Always finish with **operator chart** before PLAY. Period **list** color require
 
 - `reports/charts/confluence/session_confluence_{period}_{as_of}.{md,json}`
 - `reports/charts/confluence/{TICKER}_confluence_{as_of}.{md,json}` (charted finalists)
+- `reports/charts/confluence/prediction_log_{as_of}.{md,json}` (v1.5 — after real sessions)
 
 Artifact key: `ta_confluence`. Include `tw_color`, `tw_stack`, `htf`, `artifacts.tw_lists`.
 
