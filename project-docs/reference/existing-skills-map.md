@@ -107,8 +107,11 @@ Enable in Phase 2 with branch protection.
 
 | Phase | Skill / component | Why Needed |
 |---|---|---|
-| 2 | behavioral-pattern-detector | Personal behavioral detection for stocks/options |
+| 2 | TA pattern journal + charting coach → playbook distill (docs/process first; thin scripts only if needed) | Active learning from TW/maps/operator sessions |
+| 2 | Confluence-linked postmortem habit (extend trader-memory-core usage) | Close the loop on three-source theses |
 | 3 | agentic-executor (or scripts wrapper) | Autonomous Robinhood Agentic MCP execution |
+
+Do **not** prioritize a standalone `behavioral-pattern-detector` or fundamentals research-quality program — see [phase-2-learning-loop.md](../phase-2-learning-loop.md) [2026-08-16].
 
 ---
 
