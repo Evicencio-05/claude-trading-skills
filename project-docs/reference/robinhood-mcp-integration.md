@@ -53,11 +53,11 @@ uv run python3 scripts/robinhood_mcp.py ingest-pending --dry-run
 
 ## Account map
 
-| Portfolio | `thesis_store` | account_number (last 4) |
-|-----------|----------------|-------------------------|
-| A taxable | `robinhood_taxable` | ••••9309 |
-| B Roth IRA | `ira_robinhood` | ••••3854 |
-| C Agentic | `robinhood_agentic` | ••••7016 |
+| Portfolio | `thesis_store` | account_number (last 4) | In scope |
+|-----------|----------------|-------------------------|----------|
+| A taxable | `robinhood_taxable` | ••••9309 | Sync + log |
+| B Roth IRA | `ira_robinhood` | ••••3854 | Discover only — **do not log** |
+| C Agentic | `robinhood_agentic` | ••••7016 | Trade + log |
 
 Full config: [config/robinhood_accounts.yaml](../../config/robinhood_accounts.yaml)
 
@@ -67,16 +67,16 @@ Full config: [config/robinhood_accounts.yaml](../../config/robinhood_accounts.ya
 
 ### Portfolio review
 
-Skill: **robinhood-portfolio-review** — run CLI commands above, write `reports/portfolio/portfolio_review_YYYY-MM-DD.md`.
+Skill: **robinhood-portfolio-review** — run CLI commands above, write `reports/portfolio/portfolio_review_YYYY-MM-DD.md` with **A + C focus** (IRA awareness only).
 
-### Log positions
+### Log positions (A + C only)
 
 | Source | Command |
 |--------|---------|
 | A — Sync | `uv run python3 scripts/robinhood_sync.py` |
-| B — MCP CLI | `uv run python3 scripts/robinhood_mcp.py ingest-pending` |
+| B — MCP CLI | `uv run python3 scripts/robinhood_mcp.py ingest-pending` (filter out IRA) |
 
-Then **log-positions** skill / [commands/log-positions.md](../../commands/log-positions.md).
+Then **log-positions** skill / [commands/log-positions.md](../../commands/log-positions.md). **Skip IRA four-questions.**
 
 ### Scripts (not MCP)
 
@@ -103,5 +103,5 @@ See [mcp-cursor-compat.md](mcp-cursor-compat.md) for Cursor-specific notes.
 ## Related
 
 - [AGENTS.md](../../AGENTS.md)
-- [playbook.md](../playbook.md) — IRA rules
+- [playbook.md](../playbook.md) — A+C scope; IRA logging discontinued
 - [decisions.md](../../decisions.md)

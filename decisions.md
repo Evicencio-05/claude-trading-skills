@@ -184,3 +184,20 @@ Decision: Ship `agentic-copilot-trade` (command + thin Cursor skill) with
 context gates → draft plan → user `confirm` → MCP `review_equity_order` → second confirm →
 `place_equity_order` → plan JSON + thesis_store. No autonomous place before Phase 3B.
 Revisit: After 3 filled co-pilot trades, tighten confirm phrasing if needed.
+
+**[2026-08-16] Charter + Phase 2 rewrite — TA-first learning product.**
+Decision: Project north star is three-source TA (TW lists, pasted GEX/VEX, operator charts) →
+`ta-confluence` → personal playbook → Agentic co-pilot. Fundamentals screeners and deep-research
+are optional backup only; deep-research allowed on PLAY, verge-of-confluence (user OK), or explicit ask.
+Phase 2 goal rewritten from behavioral-pattern-detector / research-quality / Sharpe backtest gates to
+session pattern journal → charting coach → TA playbook → confluence-linked postmortems.
+Docs updated: `PROJECT.md`, phase-1/2/3, STATUS, LOAD_GUIDE, checklist, playbook, project-router,
+`.cursor/prompts/ta-first-session.md`. Skylit $99/mo API gate unchanged; pasted Heatseeker remains in-scope.
+Revisit: After Phase 1 exit — confirm Phase 2 exit criteria still match live cadence.
+
+**[2026-08-16] A/C logging only — IRA thesis logging discontinued.**
+Decision: Thesis logging scope is Portfolio **A** (`robinhood_taxable`) + **C** (`robinhood_agentic`) only.
+**Discontinue IRA (B) four-questions / thesis logging** (operator time). MCP may still discover IRA
+accounts; do not spend sessions on IRA intake. Prediction log v1.5 template under
+`.cursor/skills/ta-confluence/references/prediction_log_v15.md`.
+Revisit: If operator resumes IRA logging, restore playbook IRA section from git history.

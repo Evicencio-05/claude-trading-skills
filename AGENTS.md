@@ -7,12 +7,14 @@ This repo supports **two AI harnesses** over one portable core (`skills/`, `scri
 | Task | Tool | Notes |
 |------|------|-------|
 | Edit skill Python, tests, refactors | **Cursor** | Included in Cursor subscription; use `.cursor/rules/` |
-| Daily pre-market (breadth, uptrend, sector) | **Terminal** | `uv run python3 scripts/pre_market.py` — zero LLM cost |
-| Research preflight (reuse same-day artifacts) | **Terminal** | `uv run python3 scripts/research_preflight.py --ticker TICKER` — zero LLM cost |
-| Screeners, thesis CLI, FRED calendar | **Terminal** | Run `skills/*/scripts/*.py` directly |
-| Deep research, multi-skill synthesis | **Cursor or Claude Code** | Pass 0 preflight first; then `commands/deep-research.md` or `.cursor/skills/deep-research` |
+| Daily pre-market (breadth, uptrend, sector) | **Terminal** | `uv run python3 scripts/pre_market.py` — zero LLM cost; posture **context** |
+| TA session (TW / GEX / operator → confluence) | **Cursor or Claude Code** | `commands/ta-confluence.md` + intake skills; primary daily loop |
+| Agentic co-pilot place (Portfolio C) | **Cursor** + Robinhood MCP | `commands/agentic-copilot-trade.md` — user `confirm` |
+| Research preflight (optional) | **Terminal** | `uv run python3 scripts/research_preflight.py --ticker TICKER` |
+| Screeners, thesis CLI, FRED calendar | **Terminal** | On demand — not daily core |
+| Deep research (optional fundamentals) | **Cursor or Claude Code** | Pass 0 preflight first; then `commands/deep-research.md` |
 | Chart image analysis (technical/sector/breadth) | **Cursor or Claude Code** | Invoke skill by name; provide images |
-| Robinhood portfolio read / log positions | **Cursor** + Robinhood MCP | Skills: `robinhood-portfolio-review`, `log-positions`; see [Robinhood MCP](#robinhood-mcp) |
+| Robinhood portfolio read / log A+C | **Cursor** + Robinhood MCP | Skills: `robinhood-portfolio-review`, `log-positions` (skip IRA) |
 | Robinhood scheduled sync (Portfolio A) | **Terminal** | `robinhood_sync.py` + `robinhood-sync.timer` |
 | Alpaca portfolio-manager | **Claude Code** (optional) | See [Portfolio MCP](#portfolio-mcp) below |
 | Automated skill-improvement PRs | **Claude CLI** | `scripts/run_skill_improvement_loop.py` |
@@ -25,6 +27,8 @@ This repo supports **two AI harnesses** over one portable core (`skills/`, `scri
 2. [LOAD_GUIDE.md](LOAD_GUIDE.md)
 3. [project-docs/STATUS.md](project-docs/STATUS.md)
 4. Active phase doc only (see STATUS.md)
+
+**Product center:** TW lists → GEX/VEX → operator charts → `ta-confluence` → playbook. Deep-research is gated (PLAY / verge / ask). Standing prompt: [`.cursor/prompts/ta-first-session.md`](.cursor/prompts/ta-first-session.md).
 
 Cursor loads (1)–(3) automatically via `.cursor/rules/project-router.mdc`.
 
@@ -64,8 +68,9 @@ Official **Robinhood Agentic Trading MCP** for this fork (primary in Cursor).
 | URL | `https://agent.robinhood.com/mcp/trading` |
 | Setup | `bash scripts/setup_robinhood_mcp.sh` → `.cursor/mcp.json` (gitignored) |
 | Cursor compat | [project-docs/reference/mcp-cursor-compat.md](project-docs/reference/mcp-cursor-compat.md) |
-| Read | All accounts (positions, balances, history) |
-| Trade | Agentic account only; Phase 5+ with user confirmation |
+| Read | All accounts (discovery OK) |
+| Trade | Agentic (C) only; Phase 3B+ with user confirmation |
+| Log | Portfolio A + C only — **skip IRA (B)** |
 | Guide | [project-docs/reference/robinhood-mcp-integration.md](project-docs/reference/robinhood-mcp-integration.md) |
 | Rules | [.cursor/rules/robinhood-mcp.mdc](.cursor/rules/robinhood-mcp.mdc) |
 

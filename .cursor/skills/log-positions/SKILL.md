@@ -1,9 +1,10 @@
 ---
 name: log-positions
 description: >-
-  Log Robinhood positions to trader-memory-core with four thesis questions per
-  position. Use after robinhood_sync.py, after MCP position fetch, or when the
-  user asks to log positions, register theses, or update position memory.
+  Log Robinhood Portfolio A (taxable) and C (Agentic) positions to
+  trader-memory-core with four thesis questions. Skip IRA (B). Use after
+  robinhood_sync.py, after MCP Agentic/taxable fetch, or when the user asks
+  to log positions for A/C.
 ---
 
 # Log Positions
@@ -21,8 +22,8 @@ Account mapping: [decisions.md](../../../decisions.md) discovery table.
 
 ## MCP guardrails
 
-- Read-only unless user explicitly requests a trade (Phase 5+).
-- IRA: eligibility flag on every options line.
+- Read-only unless user explicitly requests a trade (Phase 3B+ co-pilot confirm).
+- Log **Portfolio A + C only** — skip `ira_robinhood` / IRA four-questions.
 - Register via thesis-manager or `thesis_store.register()` — not `thesis_ingest.py`.
 
 See [robinhood-mcp-integration.md](../../../project-docs/reference/robinhood-mcp-integration.md).

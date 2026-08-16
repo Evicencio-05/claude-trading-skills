@@ -1,5 +1,5 @@
 ---
-description: Robinhood Agentic MCP guardrails — read all accounts, trade Agentic only, IRA rules, Phase 5 execution gate
+description: Robinhood Agentic MCP guardrails — trade Agentic only; log A+C; skip IRA logging
 alwaysApply: false
 ---
 
@@ -13,42 +13,41 @@ If MCP tools fail with **-32600 / structured content**, confirm `.cursor/mcp.jso
 
 | Action | Allowed |
 |--------|---------|
-| List accounts, positions, balances, order history | All accounts |
-| Place/modify/cancel orders | **Robinhood Agentic account only** |
+| List accounts, positions, balances, order history | All accounts (discovery OK) |
+| Place/modify/cancel orders | **Robinhood Agentic (C) only** |
 | Trades on IRA or taxable via MCP | **Never** |
 
-## Phase 5 gate
+## Phase gate
 
-**No autonomous execution before Phase 5** ([PROJECT.md](PROJECT.md)).
+**No autonomous execution before Phase 3B** ([PROJECT.md](PROJECT.md)). Co-pilot: user `confirm` before place.
 
-- Default: **read-only** MCP usage.
-- Do not invoke order-placement MCP tools unless the user explicitly requests a specific trade and confirms account + size.
-- After any trade (Phase 5+): log to `trader-memory-core` via `thesis_store.py`.
+- Default: **read-only** MCP usage until an explicit co-pilot confirm.
+- Do not invoke order-placement MCP tools unless the user confirms the plan.
+- After any Agentic (C) trade: log to `trader-memory-core` via `thesis_store.py` / `/log-positions`.
 
 ## Portfolio B (IRA)
 
-- Read positions via MCP if available.
-- Every options recommendation: **IRA-eligible: Yes/No**.
-- Permitted: long calls/puts, covered calls, cash-secured puts.
-- Not permitted: naked selling, undefined-risk spreads.
+- May appear in MCP account lists — **do not log** IRA positions or run four-questions.
+- Do not spend session time on IRA eligibility workflows unless the user explicitly asks about IRA.
 
-## Thesis logging
+## Thesis logging (A + C only)
 
 - Never write YAML directly under `state/theses/`.
 - Use [commands/log-positions.md](commands/log-positions.md) or `thesis_store.py` / thesis-manager.
-- Two sources: `state/pending_ingest.json` (sync) or live MCP snapshot (same four questions).
+- Sources: `state/pending_ingest.json` (Portfolio A sync) or MCP snapshot for **Agentic (C)** / taxable (A).
+- Skip `ira_robinhood` rows.
 
 ## Hybrid with scripts
 
 - Daily market: `uv run python3 scripts/pre_market.py` (not MCP).
-- Scheduled taxable sync: `robinhood_sync.py` + timer — keep even when MCP works.
+- Scheduled taxable sync: `robinhood_sync.py` + timer — keep for Portfolio A.
 
 ## Account keys
 
-| Portfolio | `thesis_store` account |
-|-----------|------------------------|
-| A taxable | `robinhood_taxable` |
-| B IRA | `ira_robinhood` |
-| C Agentic | `robinhood_agentic` |
+| Portfolio | `thesis_store` account | In scope |
+|-----------|------------------------|----------|
+| A taxable | `robinhood_taxable` | Sync + log |
+| B IRA | `ira_robinhood` | Discover only — no log |
+| C Agentic | `robinhood_agentic` | Trade + log |
 
 See account discovery table in [decisions.md](decisions.md).

@@ -5,28 +5,28 @@ Two kinds of entries live here:
 1. **Upstream / shared skills** — symlinks into [`skills/`](../../skills/). Edit under `skills/`, not the symlink.
 2. **Fork workflow skills** — real directories under `.cursor/skills/` (no `skills/` copy). Edit here; authoritative steps live in [`commands/`](../../commands/).
 
-## Symlinked skills (daily + research stack)
+## Workflow skills — TA-first (fork-local)
+
+| Skill | Status | Command |
+|-------|--------|---------|
+| `tradewhisperer-charts` | List-first (color SoT); charts optional | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) · `scripts/tw_list_resolve.py` |
+| `gex-vex-maps` | Contract active | [gex-vex-maps.md](../../commands/gex-vex-maps.md) |
+| `operator-charts` | Contract active | [operator-charts.md](../../commands/operator-charts.md) |
+| `ta-confluence` | Active (candle_first / map_first) + prediction log v1.5 | [ta-confluence.md](../../commands/ta-confluence.md) |
+| `agentic-copilot-trade` | Co-pilot gates (confirm before place) — Portfolio C | [agentic-copilot-trade.md](../../commands/agentic-copilot-trade.md) |
+| `options-flow-tail` | Active (user-supplied screener) | [options-flow-tail.md](../../commands/options-flow-tail.md) |
+| `log-positions` | A+C only — skip IRA | [log-positions.md](../../commands/log-positions.md) |
+| `log-trade-screenshot` | Active | [log-trade-screenshot.md](../../commands/log-trade-screenshot.md) |
+| `robinhood-portfolio-review` | A+C focus | MCP portfolio report |
+| `deep-research` | On demand (not daily core) | [deep-research.md](../../commands/deep-research.md) |
+| `update-research` | On demand | [update-research.md](../../commands/update-research.md) |
+
+## Symlinked skills (posture + helpers)
 
 - `market-breadth-analyzer`, `uptrend-analyzer`, `sector-analyst`
 - `breadth-chart-analyst`, `market-top-detector`, `ibd-distribution-day-monitor`
 - `us-stock-analysis`, `technical-analyst`, `earnings-trade-analyzer`, `earnings-calendar`
 - `exposure-coach`, `position-sizer`, `trader-memory-core`
-
-## Workflow skills (fork-local under `.cursor/skills/`)
-
-| Skill | Status | Command |
-|-------|--------|---------|
-| `deep-research` | Active | [deep-research.md](../../commands/deep-research.md) |
-| `log-positions` | Active | [log-positions.md](../../commands/log-positions.md) |
-| `log-trade-screenshot` | Active | [log-trade-screenshot.md](../../commands/log-trade-screenshot.md) |
-| `robinhood-portfolio-review` | Active | MCP portfolio report |
-| `update-research` | Active | [update-research.md](../../commands/update-research.md) |
-| `tradewhisperer-charts` | Contract active | [tradewhisperer-charts.md](../../commands/tradewhisperer-charts.md) |
-| `gex-vex-maps` | Contract active | [gex-vex-maps.md](../../commands/gex-vex-maps.md) |
-| `operator-charts` | Contract active | [operator-charts.md](../../commands/operator-charts.md) |
-| `ta-confluence` | Active (candle_first / map_first) | [ta-confluence.md](../../commands/ta-confluence.md) |
-| `agentic-copilot-trade` | Co-pilot gates (confirm before place) | [agentic-copilot-trade.md](../../commands/agentic-copilot-trade.md) |
-| `options-flow-tail` | Active (user-supplied screener) | [options-flow-tail.md](../../commands/options-flow-tail.md) |
 
 ## Add a symlinked upstream skill
 

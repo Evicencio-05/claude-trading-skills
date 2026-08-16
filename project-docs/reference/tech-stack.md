@@ -87,8 +87,9 @@ trading-agent/                       # Your fork
 │
 ├── skills/                          # Existing 40+ skills
 │   ├── ... (existing)
-│   ├── behavioral-pattern-detector/ # NEW (Phase 2)
-│   └── agentic-executor/            # NEW (Phase 3B, or scripts wrapper)
+│   ├── ta-confluence / chart intakes  # Phase 1 — TW, GEX/VEX, operator (built)
+│   ├── playbook distill notes         # Phase 2 — pattern journal / charting coach (process)
+│   └── agentic-executor/              # NEW (Phase 3B, or scripts wrapper)
 │
 ├── playbook/                        # NEW — your living rulebook
 │   ├── playbook.md

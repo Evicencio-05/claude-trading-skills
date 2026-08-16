@@ -1,0 +1,102 @@
+{
+  "source": "ta_confluence_prediction_log",
+  "as_of": "2026-08-16",
+  "rows": [
+    {
+      "ticker": "BE",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "tw_color": null,
+      "verdict": "NO_TRADE",
+      "score": 42,
+      "confluence_path": "reports/charts/confluence/BE_confluence_2026-08-15.json",
+      "taken": false,
+      "account": null,
+      "notes": "TW list 8d stale"
+    },
+    {
+      "ticker": "RIVN",
+      "mode": "candle_first",
+      "period": "daily",
+      "bias": "long",
+      "tw_color": "BLUE_GREEN",
+      "verdict": "WATCH",
+      "score": 74,
+      "confluence_path": "reports/charts/confluence/RIVN_confluence_2026-08-10.json",
+      "taken": false,
+      "account": null
+    },
+    {
+      "ticker": "TSEM",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "PLAY",
+      "score": 93,
+      "confluence_path": "reports/charts/confluence/TSEM_confluence_2026-08-09.json",
+      "taken": false,
+      "account": null,
+      "notes": "Candidate for Agentic if reconfirmed same-day"
+    },
+    {
+      "ticker": "CRDO",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "PLAY",
+      "score": 76,
+      "confluence_path": "reports/charts/confluence/CRDO_confluence_2026-08-09.json",
+      "taken": false,
+      "account": null
+    },
+    {
+      "ticker": "ONDS",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "WATCH",
+      "score": 74,
+      "confluence_path": "reports/charts/confluence/ONDS_confluence_2026-08-09.json",
+      "taken": false,
+      "account": null
+    },
+    {
+      "ticker": "HIMS",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "WATCH",
+      "score": 73,
+      "confluence_path": "reports/charts/confluence/HIMS_confluence_2026-08-09.json",
+      "taken": false,
+      "account": null
+    },
+    {
+      "ticker": "UMAC",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "WATCH",
+      "score": 73,
+      "confluence_path": "reports/charts/confluence/UMAC_confluence_2026-08-09.json",
+      "taken": false,
+      "account": null
+    },
+    {
+      "ticker": "HOOD",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "long",
+      "verdict": "NO_TRADE",
+      "score": 25,
+      "confluence_path": "reports/charts/confluence/HOOD_confluence_2026-08-08.json",
+      "taken": false,
+      "account": null
+    }
+  ],
+  "process_retro": [
+    "Rubric: period list older than 3 trading days caps at WATCH",
+    "Agentic confirm still operator-owned; cloud session has no Robinhood MCP"
+  ]
+}

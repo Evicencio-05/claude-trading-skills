@@ -48,7 +48,7 @@
 
 | # | Risk | Mitigation |
 |---|---|---|
-| P1 | Trading addiction / overtrading | `behavioral-pattern-detector` flags overtrading. Daily trade limit. Mandatory cooldowns. |
+| P1 | Trading addiction / overtrading | Playbook max trades/day + Phase 2 lightweight process flags (confluence missing, ignored invalidation). Optional later script. Daily trade limit. Mandatory cooldowns. |
 | P2 | Loss-chasing / revenge trading | Pattern detector flags revenge trades. 30-min mandatory cooldown after 2 losses. |
 | P3 | Funding the project beyond budget | Hard $100/mo project ceiling. No drawing on personal capital for tools. |
 | P4 | College workload conflict | Phase docs are calendar-flexible. Pause autonomous mode during exam weeks. |

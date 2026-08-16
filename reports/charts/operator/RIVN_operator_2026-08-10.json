@@ -1,0 +1,87 @@
+{
+  "source": "operator",
+  "ticker": "RIVN",
+  "as_of": "2026-08-10",
+  "inputs": [
+    {"type": "image", "note": "RIVN 1D channel+fib+VP+RSI near channel low Aug 10"},
+    {"type": "image", "note": "RIVN 1D longer ascending channel + VP nodes Aug 10"}
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 16.39,
+    "change": null,
+    "change_pct": null,
+    "volume": null,
+    "sma": {"50": null, "100": null, "200": null},
+    "price_vs_sma": null,
+    "sr_levels": [13.0, 15.29, 15.3, 19.5, 19.6, 21.0, 21.2, 22.4],
+    "fib_levels": [
+      {"ratio": "1.618", "price": 20.95, "color": null},
+      {"ratio": "1", "price": 18.55, "color": null},
+      {"ratio": "0.786", "price": 17.65, "color": null},
+      {"ratio": "0.618", "price": 16.95, "color": null},
+      {"ratio": "0.5", "price": 16.45, "color": null},
+      {"ratio": "0.382", "price": 15.95, "color": null},
+      {"ratio": "0.236", "price": 15.34, "color": null},
+      {"ratio": "0", "price": 14.35, "color": null}
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "local high ~18.55 to low ~14.35",
+        "levels": [
+          {"ratio": "0.5", "price": 16.45},
+          {"ratio": "0.618", "price": 16.95},
+          {"ratio": "0.786", "price": 17.65},
+          {"ratio": "1", "price": 18.55},
+          {"ratio": "1.618", "price": 20.95}
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "multi-month recovery profile",
+      "poc": 15.29,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [15.29, 17.5, 12.77],
+      "trough_nodes": [],
+      "highest_volume_zones": ["15.0–15.5 HVN / yellow shelf", "14–17.5 acceptance band"],
+      "lowest_volume_zones": [],
+      "profile_labels": {
+        "high": 22.69,
+        "node_17_5": 17.5,
+        "yellow_poc": 15.29,
+        "node_12_77": 12.77,
+        "low": 11.57
+      },
+      "colors_note": "orange/blue value-area customization; yellow shelf ~15.29"
+    },
+    "major_levels": [13.0, 15.29],
+    "rsi": {
+      "white": 52.8,
+      "yellow": null,
+      "mid_50": 50,
+      "buyer_strength": null,
+      "seller_strength": false,
+      "deterioration_watch": null,
+      "hold_note": "RSI ~53 near mid — must hold reclaim/hold of 50 for buyer strength thesis"
+    },
+    "channel": {
+      "type": "ascending_parallel",
+      "status": "testing_lower_bound",
+      "notes": "Lower bound ~16.0–16.4 (Jan/May/Aug lows). Midline ~18.25. Upper bound ~20.5 (Jun high context)."
+    },
+    "earnings_markers": null,
+    "structure_notes": "Price sitting on ascending channel support near fib 0.5 (~16.45) and above VP yellow shelf 15.29. Neutral RSI ~53.",
+    "operator_thesis": "RIVN just touched the bottom of a well-respected channel and looks like it can keep in the range. Important data coming up but looks like a solid A+ play.",
+    "chart_timestamp": "2026-08-10"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA 50/100/200 not clearly labeled on pasted charts",
+    "RSI yellow signal value not readable — white ~52.8 only",
+    "Event/data risk named by operator but not identified on chart"
+  ],
+  "next": null
+}

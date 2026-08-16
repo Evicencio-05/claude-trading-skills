@@ -1,11 +1,16 @@
-# Session Confluence — daily 2026-08-09
-**Mode:** map_first · **Bias:** long
+# TA Confluence Session — daily
+**As of:** 2026-08-09 · **Mode:** map_first · **Bias:** long
 
-| Ticker | TW | Score | Verdict | Note |
-|--------|-----|-------|---------|------|
-| TSEM | BLUE | 93 | **PLAY** | Shared king 300 / channel break |
-| HIMS | GREEN | 73 | **WATCH** | Prefer **27.42–28** → ~38; spot mid-channel |
+## Shortlist
+
+| Ticker | Spot | TW | Score | Verdict |
+|--------|------|-----|-------|---------|
+| TSEM | 252.49 | BLUE | 93 | **PLAY** |
+| CRDO | 249.89 | GREEN | 76 | **PLAY** |
+| ONDS | 9.11 | GREEN | 74 | **WATCH** |
+| UMAC | 26.11 | GREEN | 73 | **WATCH** |
 
 ## Gaps
-- HIMS Patreon color lists not pasted (GREEN inferred)
-- TSEM weekly TW list still absent
+- CRDO not on Aug-7 TW list — colors from charts only
+- ONDS / UMAC TW dated 2026-08-07 vs maps 2026-08-09
+- Operator SMA prints approximate on ONDS / CRDO

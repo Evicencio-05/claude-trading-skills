@@ -1,7 +1,7 @@
-# Phase 2 — Learning Loop
+# Phase 2 — TA Learning Loop
 
-**Duration:** 8 weeks
-**Goal:** Personalize the learning infrastructure for stock/options workflows. Detect behavioral patterns, validate playbook setups, improve research quality, and enable the skill auto-improvement loop.
+**Duration:** ~8 weeks after Phase 1 exit
+**Goal:** Turn confluence sessions and trade outcomes into a personal playbook. Observe TW + GEX/VEX patterns, coach operator charting, refine theses, and close the loop with postmortems — not fundamentals-quality tracking or screener-first R&D.
 
 ---
 
@@ -9,137 +9,104 @@
 
 Phase 1 exit criteria met. You should have:
 
+- Reliable TW list / GEX-VEX / operator chart → `ta-confluence` cadence
 - 10+ trades logged across ≥2 types in `trader-memory-core`
-- 3+ co-pilot Agentic trades with full thesis logging
-- Daily pre-market stack running reliably
-- Personal playbook seed started in [playbook.md](playbook.md)
+- 3+ co-pilot Agentic trades with thesis logging
+- Playbook seed started in [playbook.md](playbook.md) (TA setup skeleton OK)
 
 ---
 
 ## What you're building
 
-### 2.1 — behavioral-pattern-detector (Weeks 1–2)
+### 2.1 — Session pattern journal (Weeks 1–2)
 
-Reads `trader-memory-core` history and flags stock/options behavioral patterns:
+After each confluence session, write a short dated note (markdown under `reports/charts/confluence/` or `reports/logs/ta_patterns_YYYY-MM-DD.md`):
 
-- Overtrading days: &gt;5 trades in a single session
-- Revenge trades: new entry within 30 min of a stopped-out loss
-- Moved stops: stop moved away from entry after trade was open
-- FOMO entries: chasing a move beyond the original plan
-- Ignored research: trade without a completed research report when warranted
-- Skipped stop: manual close at larger loss than defined stop
-- Confidence mismatch: large position on low-confidence thesis
-- Earnings gamble: entry within 48 hrs of earnings without explicit earnings thesis
-- IV ignorance: bought options when IV rank &gt;70
-- Thesis drift: held past original invalidation trigger
+- Recurring TW list / HTF stack patterns (colors that worked, fights that failed)
+- Recurring GEX/VEX structures (king placement, air pockets, traps)
+- Operator chart habits worth keeping or fixing
+- Verdict quality: PLAY / WATCH / NO_TRADE vs what happened next (when known)
 
-**Output:**
+**Rules:** Cite artifacts, not generic TA. Propose only — operator approves playbook merges.
 
-- Daily report of patterns triggered yesterday
-- Pre-trade hook: `/deep-research` and co-pilot checklist query this skill for warnings
-- Weekly summary in Streamlit dashboard
+### 2.2 — Charting coach loop (Weeks 2–4)
 
-**Architecture:** Reads from trader-memory-core SQLite; thresholds in `config.yaml`; no external APIs.
+Active coaching on operator markups:
 
-### 2.2 — Personal playbook (Weeks 2–4)
+- What to mark vs ignore on the next chart
+- Level hygiene (S/R, fib, VP shelf, SMA stack conflicts)
+- Bias mistakes (forcing PLAY without period list color, ignoring HTF fight)
+- One concrete “try this next session” item per review
 
-Expand [playbook.md](playbook.md) with stock/options setups only:
+Output lives in playbook **Charting Coach** section + session notes. No silent edits to risk config.
+
+### 2.3 — Personal TA playbook (Weeks 2–5)
+
+Expand [playbook.md](playbook.md) with setups derived from the three sources:
 
 ```markdown
-## Stock & Options Setups
-
 ### Setup: [Name]
-- What it looks like
-- Conditions required
+- TW conditions (period list color, HTF stack / fight rules)
+- Map conditions (GEX/VEX magnets, kings, traps)
+- Operator chart conditions (S/R, fib, VP, SMA)
 - Entry trigger
-- Stop placement
+- Invalidation (TW + maps + operator — one kill each when data exists)
 - Target methodology
-- Historical performance (updated by edge-pipeline-orchestrator)
 - When NOT to take it
-
-## Risk Rules
-
-### Per-trade
-- Max risk per trade: 1% of account
-- Max concurrent positions: [your number]
-
-### Per-day
-- Max trades per day: 5 (warning at 3)
-- Stop trading after 2 consecutive losses
-
-## Lessons (most recent first)
+- Linked confluence / thesis IDs
 ```
 
 **Process:**
 
-- Week 2: Document current setups (even if just 2–3)
-- Week 3: Run `edge-pipeline-orchestrator` on full trade history
-- Week 4: Review proposed rules; approve/reject/modify — every rule is your decision
+- Document 2–3 live setups even if rough
+- Weekly distill: session notes → candidate playbook deltas for human approve/reject
+- Prefer extending `ta-confluence` judgment refs over building new skills
 
-### 2.3 — Equity backtesting (Weeks 4–5)
+### 2.4 — Thesis + postmortem loop (Weeks 4–6)
 
-Use `backtest-expert` skill to validate playbook setups on historical equity data:
+- Confluence PLAY / strong WATCH → thesis draft (trader-memory-core)
+- Optional deep-research only for PLAY or verge-of-confluence (user OK)
+- On close: postmortem tied to which source domains were right/wrong
+- Track invalidation discipline (did TW/map/chart kills fire? Did you act?)
 
-- Define entry/stop/target as code per setup
-- Model slippage and commissions honestly
-- Walk-forward analysis (rolling 6-month train, 3-month test)
-- Regime-segmented analysis (high VIX vs low VIX)
+Defer old “research quality tracking for every deep-research report” — only track research that was actually requested under the TA gate.
 
-**Quality gates** (must pass before a setup graduates to live co-pilot):
+### 2.5 — Lightweight behavior checks (Week 5–6)
 
-- Sharpe ratio &gt; 1.0 on out-of-sample windows
-- Profit factor &gt; 1.5
-- Max drawdown &lt; 15% at strategy level
-- Win rate &gt; 40% (or compensating R:R)
-- At least 100 trades in test period
-- Performance consistent across regimes (not single-regime overfit)
+Use trader-memory history for **TA-relevant** process flags only (no separate Streamlit-first build):
 
-Strategies that fail: revise playbook entry or retire the rule.
+- Entry without confluence artifact / operator chart
+- PLAY override without documented reason
+- Ignored invalidation after entry
+- Thesis drift past stated kill levels
+- Overtrading relative to playbook max/day (when defined)
 
-### 2.4 — signal-postmortem configuration (Week 5)
+Optional later: automate as a thin script. Do not block Phase 2 on a full behavioral-pattern-detector product.
 
-- Stocks: track which `/deep-research` verdicts were correct over 6-month windows
-- Options: track which `options-strategy-advisor` recommendations were profitable
+### 2.6 — Playbook validation (Weeks 6–7)
 
-### 2.5 — Streamlit dashboard (Week 6)
+Validate setups against logged outcomes (small-n honest):
 
-Run at `scripts/dashboard.py` (or `tools/thesis-manager/` for research UI):
+- Forward journal: next N similar setups → hit rate / R multiple
+- Use `backtest-expert` only if a setup is rule-crisp enough; do not force Sharpe gates on n≪100
+- Retire or revise rules that fail out-of-sample notes
 
-- Today's market posture (exposure-coach output)
-- Open positions across Robinhood accounts
-- Stock watchlist with research report status
-- Recent trade reviews (last 5 closed)
-- Behavioral pattern alerts
-- Today's calendar (economic events + earnings)
-- Weekly P&L by account and instrument type
+Quality bar for graduating a setup to default co-pilot use:
 
-### 2.6 — Research quality tracking (Week 7)
+- Written invalidation in all three domains (or explicit gap)
+- ≥5 logged instances with postmortem notes (or documented exception)
+- Operator sign-off in playbook
 
-Track every `/deep-research` report:
+### 2.7 — Skill improvement (optional, Weeks 7–8)
 
-- Verdict, confidence score
-- Price performance at 1/3/6 months
-- Thesis invalidation triggers — did they fire? Did you act?
-- Bull/bear probability calibration
+Enable skill-improvement loop only with branch protection and human PR review. Leave skill-generation disabled until Phase 3. Prefer patches to TA skills / judgment refs over new fundamentals skills.
 
-Store in: `reports/logs/research_outcomes.md` (or repo-relative equivalent).
+### 2.8 — Skylit paid subscription decision (end of Phase 2)
 
-### 2.7 — Skill auto-improvement loop (Weeks 7–8)
+Pastes/screenshots already in use. Subscribe to Skylit **API / $99/mo** only if YES to ALL:
 
-Enable with branch protection:
-
-1. Branch protection on main: require PR review, require tests
-2. Enable skill-improvement loop (daily)
-3. Leave skill-generation pipeline disabled until Phase 3
-
-Review every PR. Cost: ~$10/mo.
-
-### 2.8 — Skylit decision (end of Week 8)
-
-Subscribe only if YES to ALL:
-
-- Specific strategy needs GEX/dark pool data
-- Free data alternatives exhausted
+- Specific playbook setup needs data you cannot get from pasted maps
+- Free / paste workflow exhausted
 - Can afford 3 months ($297)
 - Strategy could pay for subscription within 2 months at account size
 
@@ -149,31 +116,34 @@ Document YES/NO in [decisions.md](../decisions.md).
 
 ## Exit criteria
 
-- [ ] `behavioral-pattern-detector` built for stock/options patterns
-- [ ] Personal playbook has 3+ stock/options setups
-- [ ] At least 2 playbook setups passed equity backtest quality gates
-- [ ] 30+ total trades logged
-- [ ] At least 1 playbook rule approved from edge-pipeline-orchestrator output
-- [ ] Research quality tracking active with 10+ reports tracked
-- [ ] Streamlit dashboard operational and used daily
-- [ ] Skill-improvement loop running with branch protection
-- [ ] Explicit YES/NO on Skylit in decisions.md
+- [ ] Recurring TA pattern journal active (session notes for ≥4 weeks)
+- [ ] Charting coach section in playbook with ≥5 actionable items applied or rejected
+- [ ] Personal playbook has 3+ TA setups (TW + maps + operator conditions)
+- [ ] 30+ total trades logged with thesis discipline
+- [ ] ≥5 closed trades with postmortems linking confluence domains
+- [ ] At least 2 playbook rules explicitly approved from weekly distill
+- [ ] Deep-research usage stays gated (PLAY / verge / explicit ask) — spot-check session logs
+- [ ] Explicit YES/NO on Skylit paid subscription in decisions.md
 - [ ] Monthly Anthropic spend &lt; $30
 
 ---
 
 ## Common pitfalls
 
-1. Skipping research quality tracking — this measures whether `/deep-research` actually helps returns
-2. Cherry-picking backtest parameters — walk-forward prevents this
-3. Auto-merging skill-improvement PRs — always read the diff
-4. Buying Skylit "just to see" — $99/mo is the entire project budget
+1. Sliding back into fundamentals-first deep-research as daily default
+2. Writing playbook rules without citing TW/map/chart artifacts
+3. Auto-merging skill-improvement or playbook LLM suggestions
+4. Buying Skylit API “just to see” — $99/mo is the project budget
+5. Forcing backtest Sharpe gates on tiny trade samples
 
 ---
 
 ## What's NOT in Phase 2
 
-Autonomous MCP execution (Phase 3). New upstream skill creation beyond wrappers and project-specific tools.
+- Autonomous MCP execution (Phase 3)
+- Rebuilding a fundamentals research-quality program as the phase goal
+- New upstream skill creation beyond thin wrappers / TA judgment extensions
+- Streamlit dashboard as a Phase 2 blocker (nice-to-have only)
 
 ---
 

@@ -6,7 +6,7 @@ Use after confluence scoring. Stress-test the operator’s read — do not cheer
 
 Fill concretely from the artifacts:
 
-1. **Color risk:** What TW sequence invalidates the bias within 1–3 bars?
+1. **Color risk:** What TW list color / HTF stack (`tw_stack`) invalidates the bias within 1–3 bars? Prefer list colors over chart-inferred.
 2. **Map risk:** Which king/gatekeeper/air-pocket could trap or reverse the move?
 3. **Chart risk:** Which SMA / fib / VP shelf / S/R makes R:R fail if tagged?
 
@@ -16,7 +16,7 @@ Write one kill condition in each domain when data exists:
 
 | Domain | Template |
 |--------|----------|
-| TW | `Invalid if period prints {COLOR} or {SEQUENCE}` |
+| TW | `Invalid if period list prints {COLOR} or HTF stack flips to {STACK}` |
 | Maps | `Invalid if king migrates to {strike} / upside ceiling rolls to {strike}` |
 | Operator | `Invalid on daily close beyond {price} (S/R|fib|SMA|VP)` |
 
@@ -30,6 +30,7 @@ List 1–3 facts the operator must acknowledge (examples):
 - GEX king above while VEX king fights
 - Price mid VP shelf with 50/100 SMA sandwich and no edge
 - TRIM_OPTION mistaken for new long entry
+- Period list color older than 3 trading days vs session `as_of` (stale TW)
 
 ## R:R sketch
 
@@ -46,9 +47,11 @@ Score honestly:
 
 | Check | Pass? |
 |-------|-------|
-| TW color for period present | Y/N |
+| Period **list** color present (not chart-only) | Y/N |
+| HTF stack checked (`tw_stack` / weekly+monthly lists or htf_absent) | Y/N |
 | Both GEX and VEX present (or gap noted) | Y/N |
 | Operator chart present | Y/N |
+| List vs chart color conflict noted (list wins) | Y/N/NA |
 | Conflicts surfaced before verdict | Y/N |
 | Override used? | Y/N + reason |
 
