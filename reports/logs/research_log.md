@@ -15,3 +15,6 @@
 2026-05-31 | SNDK | Verdict: Watch / Avoid new chase | Composite: 6.4/10 | Earnings: 2026-08-13 | File: reports/research/SNDK_2026-05-31.md
 2026-08-15 | GFS | Verdict: Watch | Composite: 5.4/10 | Earnings: ~2026-11-10 (est.) | File: reports/research/GFS_2026-08-15.md
 2026-08-15 | ADI | Verdict: Watch | Composite: 6.7/10 | Earnings: 2026-08-19 | File: reports/research/ADI_2026-08-15.md
+2026-08-16 | HIMS | Verdict: Watch | Composite: 4.8/10 | Earnings: 2026-11-02 (tent.) | File: reports/research/HIMS_2026-08-16.md
+2026-08-16 | WDC | Verdict: Watch | Composite: 5.8/10 | Earnings: 2026-10-29 (tent.) | File: reports/research/WDC_2026-08-16.md
+2026-08-16 | POWL | Verdict: Watch | Composite: 5.8/10 | Earnings: 2026-11-17 (tent.) | File: reports/research/POWL_2026-08-16.md

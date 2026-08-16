@@ -1,0 +1,20 @@
+{
+  "source": "ta_confluence",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "short",
+  "as_of": "2026-08-16",
+  "shortlist": [
+    {
+      "ticker": "CRWD",
+      "tw_color": null,
+      "score": 53,
+      "verdict": "WATCH"
+    }
+  ],
+  "gaps": [
+    "CRWD: no TW list/chart (daily list 2026-08-07 has no CRWD)",
+    "CRWD: no weekly/monthly TW"
+  ],
+  "override": null
+}

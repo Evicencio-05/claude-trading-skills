@@ -1,0 +1,180 @@
+{
+  "ticker": "POWL",
+  "fetched_at": "2026-08-16T17:06:43.124550+00:00",
+  "endpoints": {
+    "quote": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "profile": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "POWL",
+          "price": 213.48,
+          "marketCap": 7777417968,
+          "beta": 1.216,
+          "lastDividend": 0.35833,
+          "range": "78.5-328",
+          "change": 9.44,
+          "changePercentage": 4.62654,
+          "volume": 421492,
+          "averageVolume": 739616,
+          "companyName": "Powell Industries, Inc.",
+          "currency": "USD",
+          "cik": "0000080420",
+          "isin": "US7391281067",
+          "cusip": "739128106",
+          "exchangeFullName": "NASDAQ Global Select",
+          "exchange": "NASDAQ",
+          "industry": "Electrical Equipment & Parts",
+          "website": "https://www.powellind.com",
+          "description": "Powell Industries, Inc., operating with its subsidiaries, specializes in the comprehensive design, development, manufacturing, sales, and maintenance of customized electrical apparatus and systems. These advanced solutions are engineered to efficiently manage the distribution, regulation, and oversight of electrical energy. Their product line is extensive, including integrated power control room substations, tailor-made modular components, electrical enclosures, medium-voltage circuit breakers, communications systems for monitoring and control, motor control centers, and bus duct systems. They also provide both standard and arc-resistant switchgear and control gear for power distribution. These systems are adept at operating across a wide voltage range, from 480 volts to 38,000 volts, and find critical applications in numerous heavy industrial environments. Such sectors include oil and gas refining, both onshore and offshore oil and gas production, petrochemical processing, liquefied natural gas (LNG) terminals, pipeline and terminal infrastructure, mining and metals, light rail traction power, electric utilities, and the pulp and paper industry. In addition to their core products, the company offers a variety of crucial support services. These encompass providing spare parts, conducting field service inspections, handling installation and commissioning, undertaking modifications and repairs, supplying retrofit and retrofill components for existing systems, and offering replacement circuit breakers for switchgear. Founded in 1947 and based in Houston, Texas, Powell Industries, Inc. boasts a global operational presence, extending across the United States, Canada, Mexico, Central and South America, Europe, the Middle East, and Africa.",
+          "ceo": "Brett A. Cope",
+          "sector": "Industrials",
+          "country": "US",
+          "fullTimeEmployees": "3143",
+          "phone": "713 944 6900",
+          "address": "8550 Mosley Road",
+          "city": "Houston",
+          "state": "TX",
+          "zip": "77075-1180",
+          "image": "https://images.financialmodelingprep.com/symbol/POWL.png",
+          "ipoDate": "1980-03-17",
+          "defaultImage": false,
+          "isEtf": false,
+          "isActivelyTrading": true,
+          "isAdr": false,
+          "isFund": false
+        }
+      ]
+    },
+    "key_metrics_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "ratios_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_quarter": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "balance_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "cashflow_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "analyst_estimates": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "price_target_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "grades_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "earnings_surprises": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "institutional": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "insider": {
+      "status": 402,
+      "error": "Restricted Endpoint: This endpoint is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "short_interest": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "peers": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "ALK",
+          "companyName": "Alaska Air Group, Inc.",
+          "price": 45.96,
+          "mktCap": 5121276840
+        },
+        {
+          "symbol": "BCO",
+          "companyName": "The Brink's Company",
+          "price": 114.27,
+          "mktCap": 4705752870
+        },
+        {
+          "symbol": "ECG",
+          "companyName": "Everus Construction Group, Inc.",
+          "price": 141.04,
+          "mktCap": 7198908110
+        },
+        {
+          "symbol": "ENS",
+          "companyName": "EnerSys",
+          "price": 203.4,
+          "mktCap": 7415176028
+        },
+        {
+          "symbol": "EOSE",
+          "companyName": "Eos Energy Enterprises, Inc.",
+          "price": 4.02,
+          "mktCap": 1164054319
+        },
+        {
+          "symbol": "GVA",
+          "companyName": "Granite Construction Incorporated",
+          "price": 127.1,
+          "mktCap": 5562469221
+        },
+        {
+          "symbol": "HAYW",
+          "companyName": "Hayward Holdings, Inc.",
+          "price": 15.16,
+          "mktCap": 3215739200
+        },
+        {
+          "symbol": "MMS",
+          "companyName": "Maximus, Inc.",
+          "price": 55.28,
+          "mktCap": 2904433312
+        },
+        {
+          "symbol": "MSM",
+          "companyName": "MSC Industrial Direct Co., Inc.",
+          "price": 123.82,
+          "mktCap": 6914888866
+        },
+        {
+          "symbol": "OMAB",
+          "companyName": "Grupo Aeroportuario del Centro Norte, S.A.B. de C.V.",
+          "price": 103.39,
+          "mktCap": 4990757003
+        }
+      ]
+    },
+    "historical_price": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "technical_sma": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    }
+  }
+}

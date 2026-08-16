@@ -1,0 +1,102 @@
+{
+  "source": "gex_vex",
+  "ticker": "CRWD",
+  "as_of": "2026-08-16",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker VEX screenshot CRWD — spot 216.95 (−3.88%), map ~10:16:26"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 216.95,
+    "change": -8.74,
+    "change_pct": -3.88,
+    "atm_strike": 217.5,
+    "expirations": [
+      "2026-08-23",
+      "2026-08-30",
+      "2026-09-06",
+      "2026-09-13",
+      "2026-09-20",
+      "2026-09-27",
+      "2026-10-18",
+      "2026-11-15",
+      "2027-01-17"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 187.5,
+      "expiration": "2026-09-20",
+      "value_k": 25484,
+      "sign": "pos",
+      "starred": true
+    },
+    "top_nodes": [
+      {"strike": 187.5, "expiration": "2026-09-20", "value_k": 25484, "sign": "pos", "starred": true},
+      {"strike": 167.5, "expiration": "2026-09-20", "value_k": -17835, "sign": "neg", "starred": false},
+      {"strike": 200.0, "expiration": "2026-08-23", "value_k": 14471, "sign": "pos", "starred": false},
+      {"strike": 240.0, "expiration": "2026-08-23", "value_k": 11478, "sign": "pos", "starred": false},
+      {"strike": 230.0, "expiration": "2026-09-20", "value_k": 7939, "sign": "pos", "starred": false},
+      {"strike": 245.0, "expiration": "2026-09-20", "value_k": -7293, "sign": "neg", "starred": false},
+      {"strike": 170.0, "expiration": "2026-08-23", "value_k": -6313, "sign": "neg", "starred": false},
+      {"strike": 205.0, "expiration": "2026-11-15", "value_k": -6224, "sign": "neg", "starred": false},
+      {"strike": 247.5, "expiration": "2026-09-20", "value_k": -5620, "sign": "neg", "starred": false}
+    ],
+    "nodes_near_spot": [
+      {"strike": 200.0, "expiration": "2026-08-23", "value_k": 14471, "sign": "pos"},
+      {"strike": 240.0, "expiration": "2026-08-23", "value_k": 11478, "sign": "pos"},
+      {"strike": 230.0, "expiration": "2026-09-20", "value_k": 7939, "sign": "pos"}
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-23",
+        "value_k": 14471,
+        "role": "large_positive_below — magnet/support on path to 190"
+      },
+      {
+        "strike": 240.0,
+        "expiration": "2026-08-23",
+        "value_k": 11478,
+        "role": "upside_positive_magnet — squeeze/reclaim risk overhead"
+      }
+    ],
+    "air_pockets": [
+      "Relative thin band between ~210 and 200 vs the huge 187.5 Sep node"
+    ],
+    "range_edges": {
+      "king_magnet": "187.5 Sep-20 +25484★",
+      "overhead_pos": "240 Aug-23 +11478",
+      "deep_neg": "167.5 Sep-20 -17835"
+    },
+    "map_timestamp": "2026-08-16 10:16:26",
+    "structure_notes": "VEX king is ★ 187.5 Sep monthly +$25,484K — strongest magnet near operator ~190 target. Near-term 200 (+14.5M) is a support/magnet on the way down. Overhead 240 (+11.5M) is reclaim risk if short fails. Deep neg 167.5 is stretch beyond thesis.",
+    "confluence_with": {
+      "mode": "gex",
+      "artifact": "reports/charts/gex_vex/CRWD_gex_2026-08-16.json",
+      "overlap_zones": [
+        {
+          "strike": 187.5,
+          "note": "Shared thesis zone — VEX king POS (+25484) vs GEX NEG (~−680★): magnet + amplify fight"
+        },
+        {
+          "strike": 200.0,
+          "note": "VEX large POS (+14471) vs GEX NEG (~−428 Aug-21): support vs accelerator fight"
+        },
+        {
+          "strike": 230.0,
+          "note": "Both modes show POS at/near 230 (Sep) — overhead positive"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Expiration calendar differs from GEX grid (VEX starts ~Aug-23 vs GEX Aug-21) — vendor column set as shown",
+    "Full grid not transcribed — hotspots only"
+  ],
+  "next": null
+}

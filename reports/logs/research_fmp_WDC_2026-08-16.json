@@ -1,0 +1,160 @@
+{
+  "ticker": "WDC",
+  "fetched_at": "2026-08-16T17:06:07.588904+00:00",
+  "endpoints": {
+    "quote": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "profile": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "WDC",
+          "price": 508.8,
+          "marketCap": 175374201600,
+          "beta": 2.217,
+          "lastDividend": 0.5,
+          "range": "73.14-799.87",
+          "change": 21.51,
+          "changePercentage": 4.41421,
+          "volume": 9844298,
+          "averageVolume": 8256033,
+          "companyName": "Western Digital Corporation",
+          "currency": "USD",
+          "cik": "0000106040",
+          "isin": "US9581021055",
+          "cusip": "958102105",
+          "exchangeFullName": "NASDAQ Global Select",
+          "exchange": "NASDAQ",
+          "industry": "Computer Hardware",
+          "website": "https://www.westerndigital.com",
+          "description": "Western Digital Corporation designs, manufactures, and markets a broad range of data storage devices and software solutions across the United States, China, Hong Kong, Europe, the Middle East, Africa, and the rest of Asia, serving an international market. The company's product lineup includes client devices such as hard disk drives (HDDs) and solid-state drives (SSDs) for computing platforms like desktops, notebooks, smart video systems, gaming consoles, and set-top boxes. They also provide flash-based embedded storage solutions for mobile phones, tablets, laptops, and various portable and wearable technologies, extending into automotive, Internet of Things (IoT), industrial, and connected home applications. Additionally, Western Digital produces flash-based memory wafers. For data centers, their offerings comprise enterprise helium hard drives and sophisticated flash-based SSDs, often bundled with software tailored for enterprise servers, online transaction processing, data analysis, and other business applications. This segment also includes comprehensive data storage systems, tiered storage models, and various data storage platforms. Consumer-oriented client solutions consist of external HDDs in both mobile and desktop configurations, portable SSDs, and removable memory cards compatible with mobile phones, tablets, imaging systems, cameras, and smart video systems. Furthermore, they offer universal serial bus (USB) flash drives for computing and general consumer markets, alongside wireless drive products designed for on-the-go content backup and high-definition streaming of media and documents to tablets, smartphones, and PCs. Western Digital sells its diverse portfolio through original equipment manufacturers (OEMs), distributors, dealers, resellers, and retailers, utilizing its prominent G-Technology, SanDisk, and WD brands. Founded in 1970, the corporation is headquartered in San Jose, California.",
+          "ceo": "Tiang Yew Tan",
+          "sector": "Technology",
+          "country": "US",
+          "fullTimeEmployees": "40000",
+          "phone": "408 717 6000",
+          "address": "5601 Great Oaks Parkway",
+          "city": "San Jose",
+          "state": "CA",
+          "zip": "95119",
+          "image": "https://images.financialmodelingprep.com/symbol/WDC.png",
+          "ipoDate": "1978-10-31",
+          "defaultImage": false,
+          "isEtf": false,
+          "isActivelyTrading": true,
+          "isAdr": false,
+          "isFund": false
+        }
+      ]
+    },
+    "key_metrics_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "ratios_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_quarter": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "balance_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "cashflow_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "analyst_estimates": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "price_target_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "grades_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "peers": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "DDOG",
+          "companyName": "Datadog, Inc.",
+          "price": 255.46,
+          "mktCap": 90933586050
+        },
+        {
+          "symbol": "EA",
+          "companyName": "Electronic Arts Inc.",
+          "price": 209.7,
+          "mktCap": 52924891248
+        },
+        {
+          "symbol": "GRMN",
+          "companyName": "Garmin Ltd.",
+          "price": 310.2,
+          "mktCap": 59823000600
+        },
+        {
+          "symbol": "INFY",
+          "companyName": "Infosys Limited",
+          "price": 12.09,
+          "mktCap": 49056142200
+        },
+        {
+          "symbol": "MPWR",
+          "companyName": "Monolithic Power Systems, Inc.",
+          "price": 1402.01,
+          "mktCap": 68880751300
+        },
+        {
+          "symbol": "MSI",
+          "companyName": "Motorola Solutions, Inc.",
+          "price": 466.51,
+          "mktCap": 77438793960
+        },
+        {
+          "symbol": "NXPI",
+          "companyName": "NXP Semiconductors N.V.",
+          "price": 234.71,
+          "mktCap": 59185453280
+        },
+        {
+          "symbol": "SMCI",
+          "companyName": "Super Micro Computer, Inc.",
+          "price": 39.84,
+          "mktCap": 25771420320
+        },
+        {
+          "symbol": "STX",
+          "companyName": "Seagate Technology Holdings plc",
+          "price": 973.44,
+          "mktCap": 218273477760
+        },
+        {
+          "symbol": "XYZ",
+          "companyName": "Block, Inc.",
+          "price": 82.88,
+          "mktCap": 49328598959
+        }
+      ]
+    },
+    "insider": {
+      "status": 404,
+      "error": "[]"
+    }
+  }
+}

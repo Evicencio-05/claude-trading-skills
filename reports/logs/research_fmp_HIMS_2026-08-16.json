@@ -1,0 +1,180 @@
+{
+  "ticker": "HIMS",
+  "fetched_at": "2026-08-16T17:00:31.905118+00:00",
+  "endpoints": {
+    "quote": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "profile": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "HIMS",
+          "price": 28.15,
+          "marketCap": 6279702000,
+          "beta": 2.415,
+          "lastDividend": 0,
+          "range": "13.74-65.299",
+          "change": -0.62,
+          "changePercentage": -2.15502,
+          "volume": 8958741,
+          "averageVolume": 21509466,
+          "companyName": "Hims & Hers Health, Inc.",
+          "currency": "USD",
+          "cik": "0001773751",
+          "isin": "US4330001060",
+          "cusip": "433000106",
+          "exchangeFullName": "New York Stock Exchange",
+          "exchange": "NYSE",
+          "industry": "Medical - Equipment & Services",
+          "website": "https://www.hims.com",
+          "description": "Hims & Hers Health, Inc. operates a comprehensive digital health platform that seamlessly links individuals with licensed medical professionals for virtual consultations and ongoing care. Through its user-friendly websites and mobile app, the company delivers a diverse portfolio of health and wellness solutions directly to consumers. This includes access to recurring prescription medications, alongside a wide selection of over-the-counter drugs, devices, cosmetics, and dietary supplements. Its core focus areas are general wellness, sexual health, skincare, and hair care. Specific non-prescription offerings span categories such as: Wellness: encompassing items like vitamin C, melatonin, biotin, and collagen protein supplements. Skincare: including products such as moisturizers, serums, and face washes. Sexual Health: providing essentials like condoms, climax delay sprays and wipes, vibrators, and lubricants. Hair Care: offering specialized shampoos, conditioners, scalp scrubs, and topical treatments like minoxidil. Beyond direct sales, Hims & Hers also distributes health and wellness products via wholesale partnerships. The company's headquarters are located in San Francisco, California.",
+          "ceo": "Andrew Dudum",
+          "sector": "Healthcare",
+          "country": "US",
+          "fullTimeEmployees": "2442",
+          "phone": "415 851 0195",
+          "address": "2269 Chestnut Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94123",
+          "image": "https://images.financialmodelingprep.com/symbol/HIMS.png",
+          "ipoDate": "2019-09-13",
+          "defaultImage": false,
+          "isEtf": false,
+          "isActivelyTrading": true,
+          "isAdr": false,
+          "isFund": false
+        }
+      ]
+    },
+    "key_metrics_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "ratios_ttm": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "income_quarter": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "balance_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "cashflow_annual": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "analyst_estimates": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "price_target_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "grades_consensus": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "earnings_surprises": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "institutional": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "insider": {
+      "status": 404,
+      "error": "[]"
+    },
+    "short_interest": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    },
+    "peers": {
+      "status": 200,
+      "error": null,
+      "data": [
+        {
+          "symbol": "ALGN",
+          "companyName": "Align Technology, Inc.",
+          "price": 181.31,
+          "mktCap": 12985082606
+        },
+        {
+          "symbol": "BAX",
+          "companyName": "Baxter International Inc.",
+          "price": 26.73,
+          "mktCap": 13819302866
+        },
+        {
+          "symbol": "BMRN",
+          "companyName": "BioMarin Pharmaceutical Inc.",
+          "price": 67.36,
+          "mktCap": 13019610240
+        },
+        {
+          "symbol": "ENSG",
+          "companyName": "The Ensign Group, Inc.",
+          "price": 181.65,
+          "mktCap": 10587004136
+        },
+        {
+          "symbol": "HQY",
+          "companyName": "HealthEquity, Inc.",
+          "price": 104.73,
+          "mktCap": 8755653903
+        },
+        {
+          "symbol": "MRNA",
+          "companyName": "Moderna, Inc.",
+          "price": 63.32,
+          "mktCap": 25124489520
+        },
+        {
+          "symbol": "PEN",
+          "companyName": "Penumbra, Inc.",
+          "price": 327.02,
+          "mktCap": 12881121588
+        },
+        {
+          "symbol": "QGEN",
+          "companyName": "Qiagen N.V.",
+          "price": 42.95,
+          "mktCap": 8858437500
+        },
+        {
+          "symbol": "RVTY",
+          "companyName": "Revvity, Inc.",
+          "price": 116.84,
+          "mktCap": 13034670400
+        },
+        {
+          "symbol": "TECH",
+          "companyName": "Bio-Techne Corporation",
+          "price": 72.4,
+          "mktCap": 11335595600
+        }
+      ]
+    },
+    "historical_price": {
+      "status": 402,
+      "error": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+    },
+    "technical_sma": {
+      "status": 403,
+      "error": "{\n  \"Error Message\": \"Legacy Endpoint : Due to Legacy endpoints being no longer supported - This endpoint is only available for legacy users who have valid subscriptions prior August 31, 2025. Please visit our documentation page https://site.financialmodelingprep.com/developer/docs for our current APIs. \"\n}"
+    }
+  }
+}
