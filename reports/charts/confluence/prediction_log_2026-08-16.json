@@ -3,6 +3,25 @@
   "as_of": "2026-08-16",
   "rows": [
     {
+      "ticker": "CRWD",
+      "mode": "map_first",
+      "period": "daily",
+      "bias": "short",
+      "tw_color": "PINK",
+      "tw_stack": {
+        "daily": "PINK",
+        "weekly": "BLUE_GREEN",
+        "monthly": "GREEN"
+      },
+      "verdict": "NO_TRADE",
+      "score": 63,
+      "process_grade": "solid",
+      "confluence_path": "reports/charts/confluence/CRWD_confluence_2026-08-16.json",
+      "taken": false,
+      "account": null,
+      "notes": "TW filled from 2026-08-14 lists; fierce HTF fight hard stop"
+    },
+    {
       "ticker": "BE",
       "mode": "map_first",
       "period": "daily",

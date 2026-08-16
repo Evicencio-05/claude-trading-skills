@@ -1,30 +1,39 @@
 # TA Confluence — CRWD
-**As of:** 2026-08-16 · **Verdict:** WATCH · **Score:** 53/100
+**As of:** 2026-08-16 · **Verdict:** NO_TRADE · **Score:** 63/100
 **Mode:** map_first · **Bias:** short · **Period:** daily
+
+## TW stack (list SoT)
+| TF | Color | List |
+|----|-------|------|
+| Daily | **PINK** | `list_tw_daily_2026-08-14.json` |
+| Weekly | **BLUE_GREEN** | `list_tw_weekly_2026-08-14.json` |
+| Monthly | **GREEN** | `list_tw_monthly_2026-07-31.json` |
+
+**HTF:** fierce fight (`score_guide=zero`) — daily PINK under bullish W/M stack.
 
 ## Sources
 | Source | Path |
 |--------|------|
-| TW list / chart | — (**missing**) |
+| TW lists | daily / weekly 2026-08-14 · monthly 2026-07-31 |
 | GEX | `reports/charts/gex_vex/CRWD_gex_2026-08-16.json` |
 | VEX | `reports/charts/gex_vex/CRWD_vex_2026-08-16.json` |
 | Operator | `reports/charts/operator/CRWD_operator_2026-08-16.json` |
 
-## Why WATCH (not PLAY)
-- Agree the **chart thesis**: fib **2.618 / channel top** rejection, RSI divergence, thin VP, target **~190** is coherent
-- Agree **destination maps**: VEX ★**187.5 +$25.5M** sits on the channel-bottom zone
-- Disagree that it’s cascade-ready **from 217**: still inside Aug-21 GEX **210–220 positive cushion**; **200** is a GEX∩VEX **fight**
-- **No TW color** — short trigger not confirmed (0/30)
+## Why NO_TRADE (not WATCH/PLAY)
+- Daily **PINK** confirms the short trigger (30/30) — TW gap closed
+- **Hard stop:** fierce HTF fight — weekly **BLUE_GREEN** + monthly **GREEN** vs short
+- Chart thesis still coherent (fib 2.618 rejection → ~190) and VEX ★**187.5** supports destination
+- Near-term maps still contested: GEX **210–220** cushion + **200** GEX∩VEX fight
 
 ## Factor scores
 | Factor | Pts |
 |--------|-----|
-| TW trigger | 0/30 (missing) |
-| HTF | 20/20 (absent) |
+| TW trigger | 30/30 (PINK) |
+| HTF | 0/20 (fierce fight) |
 | GEX/VEX support | 14/25 |
 | GEX∩VEX overlap | 10/15 |
 | Operator | 9/10 |
-| **Total** | **53** |
+| **Total** | **63** (hard-stopped to NO_TRADE) |
 
 ## Levels (operator + maps)
 | Role | Level |
@@ -38,28 +47,28 @@
 
 ## Judgment
 ### Devil’s advocate
-1. Missing TW — BLUE/GREEN would kill the short fade
+1. PINK daily into BLUE_GREEN/GREEN HTF is trap risk
 2. **210–220** GEX cushion can trap chase-shorts
 3. **240** VEX positive + extended SMAs → squeeze risk on failed rejection
 
 ### Invalidation
-- **TW:** daily BLUE / BLUE_GREEN while short
+- **TW:** daily BLUE / BLUE_GREEN; unresolved fierce HTF fight
 - **Maps:** 187.5 shrinks; 220–240 positives expand as magnets
 - **Operator:** daily close above **227.08**
 
 ### Not allowed to ignore
+- Fierce HTF fight hard stop
 - Still **inside** GEX pos cluster
 - **200** is a fight, not vacuum
-- No TW → no PLAY
 
 ### Process
 **solid**
 
 ### One thing to verify
-Don’t treat ★**187.5** as owed while sitting in the **210–220** cushion.
+Don’t let daily PINK override the fierce bullish HTF stack.
 
 ## Upgrade path
-- **→ PLAY:** TW PINK/PINK_RED **and** break/accept under **210** toward 200, rejection still valid under **227.08**
+- **→ PLAY:** HTF fight clears **and** break/accept under **210** toward 200, rejection still valid under **227.08**, daily stays PINK/PINK_RED
 
 ## Verdict
-**WATCH** — chart + destination magnet are real; near-term pin at 210–220 and missing TW keep this off PLAY.
+**NO_TRADE** — daily PINK unlocked the TW factor, but weekly BLUE_GREEN + monthly GREEN is a fierce HTF hard stop for short.

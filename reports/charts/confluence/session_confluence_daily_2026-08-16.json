@@ -7,14 +7,25 @@
   "shortlist": [
     {
       "ticker": "CRWD",
-      "tw_color": null,
-      "score": 53,
-      "verdict": "WATCH"
+      "tw_color": "PINK",
+      "tw_stack": {
+        "daily": "PINK",
+        "weekly": "BLUE_GREEN",
+        "monthly": "GREEN"
+      },
+      "htf": {
+        "fight": true,
+        "fierce": true,
+        "htf_absent": false,
+        "score_guide": "zero"
+      },
+      "score": 63,
+      "verdict": "NO_TRADE"
     }
   ],
   "gaps": [
-    "CRWD: no TW list/chart (daily list 2026-08-07 has no CRWD)",
-    "CRWD: no weekly/monthly TW"
+    "CRWD: TW lists from 2026-08-14 (Fri) vs Sunday as_of — prior session, OK",
+    "CRWD: fierce HTF fight (W BLUE_GREEN / M GREEN) hard-stops short despite daily PINK"
   ],
   "override": null
 }

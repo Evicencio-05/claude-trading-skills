@@ -5,6 +5,7 @@ Accounts: **C** or **A** only if taken.
 
 | as_of | ticker | mode | period | bias | tw_color | verdict | score | process_grade | confluence_path | taken? | account | outcome_T1 | outcome_T5 | notes |
 |-------|--------|------|--------|------|----------|---------|-------|---------------|-----------------|--------|---------|------------|------------|-------|
+| 2026-08-16 | CRWD | map_first | daily | short | PINK | NO_TRADE | 63 | solid | `CRWD_confluence_2026-08-16.json` | N | — | | | TW filled; fierce HTF W BLUE_GREEN / M GREEN |
 | 2026-08-15 | BE | map_first | daily | long | (stale) | NO_TRADE | 42 | — | `BE_confluence_2026-08-15.json` | N | — | | | TW list 8d stale |
 | 2026-08-10 | RIVN | candle_first | daily | long | BLUE_GREEN | WATCH | 74 | — | `RIVN_confluence_2026-08-10.json` | N | — | | | Full stack on disk |
 | 2026-08-09 | TSEM | map_first | daily | long | — | PLAY | 93 | — | `TSEM_confluence_2026-08-09.json` | N | — | | | Candidate for Agentic if reconfirmed |
@@ -19,3 +20,4 @@ Accounts: **C** or **A** only if taken.
 - Stale TW lists now hard-cap at WATCH (rubric update) after BE 2026-08-15 gaps.
 - Prediction log v1.5 template + PHASE 5 in `/ta-confluence`.
 - PLAY briefs (TSEM, CRDO) exist — Agentic fills still require operator `confirm` (no Robinhood MCP in cloud agent session).
+- CRWD refresh: filling missing TW can *raise* score and still land **NO_TRADE** when HTF is fierce (daily PINK under W BLUE_GREEN / M GREEN).
