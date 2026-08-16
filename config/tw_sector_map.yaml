@@ -187,12 +187,22 @@ tickers:
   KO:
     benchmark: XLP
     class: equity
+  KO:
+    benchmark: XLP
+    class: equity
+  NKE:
+    benchmark: XLY
+    class: equity
+  SBUX:
+    benchmark: XLY
   LLY:
     benchmark: XLV
     class: equity
   MA:
     benchmark: XLF
     class: equity
+  CAT:
+    benchmark: XLI
   META:
     benchmark: XLC
     class: equity
@@ -205,6 +215,14 @@ tickers:
   NEE:
     benchmark: XLU
     class: equity
+  BTC:
+    benchmark: SPY
+    class: crypto
+  ETH:
+    benchmark: SPY
+    class: crypto
+  INOD:
+    benchmark: XLK
   NFLX:
     benchmark: XLC
     class: equity
@@ -497,6 +515,9 @@ pending:
   DRAM:
     benchmark: null
     class: unknown
+  DRS:
+    benchmark: null
+    class: unknown
   DSV:
     benchmark: null
     class: unknown
@@ -558,6 +579,9 @@ pending:
     benchmark: null
     class: unknown
   GTLB:
+    benchmark: null
+    class: unknown
+  HCI:
     benchmark: null
     class: unknown
   HIVE:
@@ -722,10 +746,16 @@ pending:
   PAYC:
     benchmark: null
     class: unknown
+  PGY:
+    benchmark: null
+    class: unknown
   PLMR:
     benchmark: null
     class: unknown
   PLNT:
+    benchmark: null
+    class: unknown
+  PM:
     benchmark: null
     class: unknown
   POET:
@@ -924,6 +954,9 @@ pending:
     benchmark: null
     class: unknown
   XRP:
+    benchmark: null
+    class: unknown
+  XYZ:
     benchmark: null
     class: unknown
   ZS:
