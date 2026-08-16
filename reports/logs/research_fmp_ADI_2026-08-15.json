@@ -1,0 +1,809 @@
+{
+  "ticker": "ADI",
+  "fetched_at": "2026-08-15",
+  "quote": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "profile": {
+    "status": 200,
+    "data": [
+      {
+        "symbol": "ADI",
+        "price": 389.39,
+        "marketCap": 189666806930,
+        "beta": 1.212,
+        "lastDividend": 4.18,
+        "range": "223.47-445.91",
+        "change": 8.22,
+        "changePercentage": 2.15652,
+        "volume": 2106632,
+        "averageVolume": 4322291,
+        "companyName": "Analog Devices, Inc.",
+        "currency": "USD",
+        "cik": "0000006281",
+        "isin": "US0326541051",
+        "cusip": "032654105",
+        "exchangeFullName": "NASDAQ Global Select",
+        "exchange": "NASDAQ",
+        "industry": "Semiconductors",
+        "website": "https://www.analog.com",
+        "description": "Analog Devices, Inc. (ADI) is a technology leader specializing in the conception, production, validation, and global marketing of integrated circuits (ICs), software solutions, and advanced subsystems. Their offerings leverage sophisticated analog, mixed-signal, and digital signal processing technologies. The company's comprehensive product lineup features data converters, which are critical for transforming real-world analog signals into digital data and subsequently converting digital data back into analog signals. They also provide power management and reference devices, essential for power conversion, driver supervision, system sequencing, and energy optimization in industries such as automotive, telecommunications, industrial applications, and premium consumer markets. These power ICs are supported by integrated performance, integration, and software design simulation tools for precise power supply development. ADI's portfolio further includes high-performance amplifiers, designed for conditioning analog signals, as well as radio frequency (RF) and microwave ICs that underpin cellular infrastructure. They also develop microelectromechanical systems (MEMS) technology, encompassing accelerometers for sensing acceleration, gyroscopes for measuring rotation, inertial measurement units (IMUs) for detecting multi-axis movement, broadband switches for radio and instrumentation systems, and isolators. Moreover, the company supplies digital signal processing (DSP) and system products engineered for rapid numeric calculations. Serving a wide array of clients across the industrial, automotive, consumer, instrumentation, aerospace, and communications sectors, Analog Devices distributes its products globally. This is accomplished via a multifaceted approach, including a direct sales force, authorized third-party distributors, independent sales representatives throughout the United States, the Americas, Europe, Japan, China, and other regions of Asia, in addition to its online platform. Analog Devices, Inc. was founded in 1965 and is headquartered in Wilmington, Massachusetts.",
+        "ceo": "Vincent T. Roche",
+        "sector": "Technology",
+        "country": "US",
+        "fullTimeEmployees": "24500",
+        "phone": "781 935 5565",
+        "address": "One Analog Way",
+        "city": "Wilmington",
+        "state": "MA",
+        "zip": "01887",
+        "image": "https://images.financialmodelingprep.com/symbol/ADI.png",
+        "ipoDate": "1980-03-17",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ]
+  },
+  "ratios_ttm": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "key_metrics_ttm": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "key_metrics": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "ratios": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "income": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "income_quarterly": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "balance": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "cashflow": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "cashflow_quarterly": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "earnings": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "analyst_estimates": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "price_target_consensus": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "price_target_summary": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "grades_consensus": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "grades": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "historical_price": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "technical_rsi": {
+    "status": 402,
+    "data": "Restricted Endpoint: This endpoint is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "technical_sma_50": {
+    "status": 402,
+    "data": "Restricted Endpoint: This endpoint is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "technical_sma_200": {
+    "status": 402,
+    "data": "Restricted Endpoint: This endpoint is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "shares_float": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "insider": {
+    "status": 404,
+    "data": []
+  },
+  "institutional": {
+    "status": 404,
+    "data": []
+  },
+  "sec_filings": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'from' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "news": {
+    "status": 402,
+    "data": "Restricted Endpoint: This endpoint is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "peers": {
+    "status": 200,
+    "data": [
+      {
+        "symbol": "CDNS",
+        "companyName": "Cadence Design Systems, Inc.",
+        "price": 324.82,
+        "mktCap": 89453154260
+      },
+      {
+        "symbol": "DELL",
+        "companyName": "Dell Technologies Inc.",
+        "price": 491.13,
+        "mktCap": 326233565636
+      },
+      {
+        "symbol": "KLAC",
+        "companyName": "KLA Corporation",
+        "price": 203.72,
+        "mktCap": 266115361600
+      },
+      {
+        "symbol": "MPWR",
+        "companyName": "Monolithic Power Systems, Inc.",
+        "price": 1402.01,
+        "mktCap": 68880751300
+      },
+      {
+        "symbol": "MRVL",
+        "companyName": "Marvell Technology, Inc.",
+        "price": 222.02,
+        "mktCap": 194437567320
+      },
+      {
+        "symbol": "MSTR",
+        "companyName": "Strategy Inc",
+        "price": 93.04,
+        "mktCap": 30778376320
+      },
+      {
+        "symbol": "NXPI",
+        "companyName": "NXP Semiconductors N.V.",
+        "price": 234.71,
+        "mktCap": 59185453280
+      },
+      {
+        "symbol": "SNPS",
+        "companyName": "Synopsys, Inc.",
+        "price": 421.5,
+        "mktCap": 80708535488
+      },
+      {
+        "symbol": "STM",
+        "companyName": "STMicroelectronics N.V.",
+        "price": 54.29,
+        "mktCap": 48456278202
+      },
+      {
+        "symbol": "TXN",
+        "companyName": "Texas Instruments Incorporated",
+        "price": 279.58,
+        "mktCap": 255325788052
+      }
+    ]
+  },
+  "enterprise_values": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "owner_earnings": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "dividend": {
+    "status": 402,
+    "data": "Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "earnings_calendar": {
+    "status": 200,
+    "data": [
+      {
+        "symbol": "DIS",
+        "date": "2026-11-12",
+        "epsActual": null,
+        "epsEstimated": 1.64,
+        "revenueActual": null,
+        "revenueEstimated": 25068040000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "CSCO",
+        "date": "2026-11-11",
+        "epsActual": null,
+        "epsEstimated": 1.15,
+        "revenueActual": null,
+        "revenueEstimated": 18005110000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SONY",
+        "date": "2026-11-10",
+        "epsActual": null,
+        "epsEstimated": 0.3937,
+        "revenueActual": null,
+        "revenueEstimated": 19906070000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "MRNA",
+        "date": "2026-11-05",
+        "epsActual": null,
+        "epsEstimated": -1.38,
+        "revenueActual": null,
+        "revenueEstimated": 872924100,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "LCID",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": -2.29779,
+        "revenueActual": null,
+        "revenueEstimated": 518232100,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "MGM",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 0.2508,
+        "revenueActual": null,
+        "revenueEstimated": 4288572000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SNAP",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 0.00472,
+        "revenueActual": null,
+        "revenueEstimated": 1730159000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "ET",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 0.3865,
+        "revenueActual": null,
+        "revenueEstimated": 30295490000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "ETSY",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 1.29,
+        "revenueActual": null,
+        "revenueEstimated": 667683500,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "ROKU",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 0.531,
+        "revenueActual": null,
+        "revenueEstimated": 1406471000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "HOOD",
+        "date": "2026-11-04",
+        "epsActual": null,
+        "epsEstimated": 0.47,
+        "revenueActual": null,
+        "revenueEstimated": 1347659000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SHOP",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": 0.44,
+        "revenueActual": null,
+        "revenueEstimated": 3756582000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "AMD",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": 1.9,
+        "revenueActual": null,
+        "revenueEstimated": 12947020000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "PINS",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": 0.48,
+        "revenueActual": null,
+        "revenueEstimated": 1205163000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "PFE",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": 0.79,
+        "revenueActual": null,
+        "revenueEstimated": 15934540000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "UBER",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": 0.858,
+        "revenueActual": null,
+        "revenueEstimated": 14701490000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "RIVN",
+        "date": "2026-11-03",
+        "epsActual": null,
+        "epsEstimated": -0.67,
+        "revenueActual": null,
+        "revenueEstimated": 1965594000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "PLTR",
+        "date": "2026-11-02",
+        "epsActual": null,
+        "epsEstimated": 0.41,
+        "revenueActual": null,
+        "revenueEstimated": 2166901000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "FUBO",
+        "date": "2026-11-02",
+        "epsActual": null,
+        "epsEstimated": -0.33841,
+        "revenueActual": null,
+        "revenueEstimated": 1516588000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "CVX",
+        "date": "2026-10-30",
+        "epsActual": null,
+        "epsEstimated": 4.48,
+        "revenueActual": null,
+        "revenueEstimated": 56768320000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "ABBV",
+        "date": "2026-10-30",
+        "epsActual": null,
+        "epsEstimated": 3.87,
+        "revenueActual": null,
+        "revenueEstimated": 17305200000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "XOM",
+        "date": "2026-10-30",
+        "epsActual": null,
+        "epsEstimated": 3.51,
+        "revenueActual": null,
+        "revenueEstimated": 97097180000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "RKT",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": 0.17,
+        "revenueActual": null,
+        "revenueEstimated": 2642885000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "RBLX",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": -0.39,
+        "revenueActual": null,
+        "revenueEstimated": 1632712000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": 1.96,
+        "revenueActual": null,
+        "revenueEstimated": 201828500000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "RIOT",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": -0.3,
+        "revenueActual": null,
+        "revenueEstimated": 159008500,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "AAPL",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": 1.98,
+        "revenueActual": null,
+        "revenueEstimated": 113340900000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "COIN",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": -0.13727,
+        "revenueActual": null,
+        "revenueEstimated": 1183260000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SIRI",
+        "date": "2026-10-29",
+        "epsActual": null,
+        "epsEstimated": 0.77,
+        "revenueActual": null,
+        "revenueEstimated": 2155307000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "TSLA",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 0.47,
+        "revenueActual": null,
+        "revenueEstimated": 27655660000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "BA",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": -0.15,
+        "revenueActual": null,
+        "revenueEstimated": 24965020000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "FDX",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 3.8,
+        "revenueActual": null,
+        "revenueEstimated": 21786500000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "GOOGL",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 3.02,
+        "revenueActual": null,
+        "revenueEstimated": 126468900000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "META",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 6.75,
+        "revenueActual": null,
+        "revenueEstimated": 63263560000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "MSFT",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 4.67,
+        "revenueActual": null,
+        "revenueEstimated": 90556630000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SBUX",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 0.71,
+        "revenueActual": null,
+        "revenueEstimated": 9209726000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "T",
+        "date": "2026-10-28",
+        "epsActual": null,
+        "epsEstimated": 0.62,
+        "revenueActual": null,
+        "revenueEstimated": 31687330000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "V",
+        "date": "2026-10-27",
+        "epsActual": null,
+        "epsEstimated": 3.43,
+        "revenueActual": null,
+        "revenueEstimated": 12091290000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "SOFI",
+        "date": "2026-10-27",
+        "epsActual": null,
+        "epsEstimated": 0.16,
+        "revenueActual": null,
+        "revenueEstimated": 1249785000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "UNH",
+        "date": "2026-10-27",
+        "epsActual": null,
+        "epsEstimated": 4.03,
+        "revenueActual": null,
+        "revenueEstimated": 111311300000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "PYPL",
+        "date": "2026-10-27",
+        "epsActual": null,
+        "epsEstimated": 1.32,
+        "revenueActual": null,
+        "revenueEstimated": 8716815000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "CARR",
+        "date": "2026-10-27",
+        "epsActual": null,
+        "epsEstimated": 0.789,
+        "revenueActual": null,
+        "revenueEstimated": 5958003000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "HCA",
+        "date": "2026-10-23",
+        "epsActual": null,
+        "epsEstimated": 6.78,
+        "revenueActual": null,
+        "revenueEstimated": 19397450000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "F",
+        "date": "2026-10-22",
+        "epsActual": null,
+        "epsEstimated": 0.41,
+        "revenueActual": null,
+        "revenueEstimated": 48422770000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "NOK",
+        "date": "2026-10-22",
+        "epsActual": null,
+        "epsEstimated": 0.08,
+        "revenueActual": null,
+        "revenueEstimated": 5745047000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "INTC",
+        "date": "2026-10-22",
+        "epsActual": null,
+        "epsEstimated": 0.39,
+        "revenueActual": null,
+        "revenueEstimated": 16310220000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "AAL",
+        "date": "2026-10-22",
+        "epsActual": null,
+        "epsEstimated": -0.20203,
+        "revenueActual": null,
+        "revenueEstimated": 16119000000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "UAL",
+        "date": "2026-10-21",
+        "epsActual": null,
+        "epsEstimated": 3.18,
+        "revenueActual": null,
+        "revenueEstimated": 17814850000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "GE",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 1.99,
+        "revenueActual": null,
+        "revenueEstimated": 12833930000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "VZ",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 1.29,
+        "revenueActual": null,
+        "revenueEstimated": 34798610000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "LMT",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 7.56,
+        "revenueActual": null,
+        "revenueEstimated": 20459690000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "GM",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 3.54,
+        "revenueActual": null,
+        "revenueEstimated": 48714680000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "KO",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 0.86,
+        "revenueActual": null,
+        "revenueEstimated": 12895220000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "NFLX",
+        "date": "2026-10-20",
+        "epsActual": null,
+        "epsEstimated": 0.82,
+        "revenueActual": null,
+        "revenueEstimated": 12872570000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "TSM",
+        "date": "2026-10-15",
+        "epsActual": null,
+        "epsEstimated": 4.45,
+        "revenueActual": null,
+        "revenueEstimated": 45052550000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "BAC",
+        "date": "2026-10-14",
+        "epsActual": null,
+        "epsEstimated": 1.19,
+        "revenueActual": null,
+        "revenueEstimated": 31347430000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "JPM",
+        "date": "2026-10-13",
+        "epsActual": null,
+        "epsEstimated": 5.83,
+        "revenueActual": null,
+        "revenueEstimated": 50631230000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "C",
+        "date": "2026-10-13",
+        "epsActual": null,
+        "epsEstimated": 2.68,
+        "revenueActual": null,
+        "revenueEstimated": 23747440000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "JNJ",
+        "date": "2026-10-13",
+        "epsActual": null,
+        "epsEstimated": 2.95,
+        "revenueActual": null,
+        "revenueEstimated": 25318300000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "GS",
+        "date": "2026-10-13",
+        "epsActual": null,
+        "epsEstimated": 16.41,
+        "revenueActual": null,
+        "revenueEstimated": 17641610000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "WFC",
+        "date": "2026-10-13",
+        "epsActual": null,
+        "epsEstimated": 1.84,
+        "revenueActual": null,
+        "revenueEstimated": 22368700000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "DAL",
+        "date": "2026-10-08",
+        "epsActual": null,
+        "epsEstimated": 2.19,
+        "revenueActual": null,
+        "revenueEstimated": 17566860000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "PEP",
+        "date": "2026-10-08",
+        "epsActual": null,
+        "epsEstimated": 2.31,
+        "revenueActual": null,
+        "revenueEstimated": 25003290000,
+        "lastUpdated": "2026-08-15"
+      },
+      {
+        "symbol": "TLRY",
+        "date": "2026-10-08",
+        "epsActual": null,
+        "epsEstimated": -0.18,
+        "revenueActual": null,
+        "revenueEstimated": 269419900,
+        "lastUpdated": "2026-08-15"
+      }
+    ]
+  },
+  "earnings_calendar_adi": {
+    "status": 200,
+    "data": []
+  }
+}

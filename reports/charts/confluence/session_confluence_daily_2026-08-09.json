@@ -14,20 +14,35 @@
       "king": "300 / 2026-09-18"
     },
     {
-      "ticker": "HIMS",
+      "ticker": "CRDO",
+      "tw_color": "GREEN",
+      "score": 76,
+      "verdict": "PLAY",
+      "spot": 249.89,
+      "king": "300 / 2026-08-21"
+    },
+    {
+      "ticker": "ONDS",
+      "tw_color": "GREEN",
+      "score": 74,
+      "verdict": "WATCH",
+      "spot": 9.11,
+      "king": "10 / 2026-09-18"
+    },
+    {
+      "ticker": "UMAC",
       "tw_color": "GREEN",
       "score": 73,
       "verdict": "WATCH",
-      "spot": 31.59,
-      "king": "GEX 28 floor / VEX 35 magnet (2026-08-21)",
-      "preferred_entry": "27.42–28",
-      "target": 38.13
+      "spot": 26.11,
+      "king": "30 / 2026-08-21"
     }
   ],
   "gaps": [
-    "HIMS: Patreon TW lists not pasted — GREEN inferred from charts",
-    "TSEM: Weekly/monthly TW list still absent"
+    "CRDO not on list_tw_daily_2026-08-07 — colors from charts only",
+    "ONDS / UMAC TW chart/list dated 2026-08-07 vs maps 2026-08-09",
+    "ONDS / CRDO operator SMA prints approximate; TW labels used as cross-check"
   ],
   "override": null,
-  "updated": "added HIMS map_first long confluence (WATCH 73)"
+  "updated": "added CRDO map_first long confluence (PLAY 76)"
 }

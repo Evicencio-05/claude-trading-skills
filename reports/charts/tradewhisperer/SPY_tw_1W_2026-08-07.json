@@ -1,0 +1,59 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "SPY",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "SPY 1W @TradexWhisperer TradingView chart (operator screenshot)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1W",
+    "last": 773.26,
+    "change": 26.23,
+    "change_pct": 3.51,
+    "ohlc": null,
+    "volume": "255.08M",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN",
+      "GREEN",
+      "GREEN",
+      "PINK",
+      "RED",
+      "RED",
+      "BLUE",
+      "GREEN",
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 695.52,
+      "blue": 642.66
+    },
+    "volume_profile_notes": "Heavy volume node / POC area near orange MA (~695); HVN band roughly 560\u2013670",
+    "oscillators": {
+      "pane1": {
+        "blue": 25.34,
+        "orange": 19.35
+      },
+      "pane2": {
+        "blue": 19.72,
+        "orange": 18.93
+      },
+      "pane3": {
+        "blue": 21.178
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-07 21:40 UTC"
+  },
+  "confidence": "high",
+  "gaps": [
+    "recent_candle_sequence approximated from visible history \u2014 not every bar labeled",
+    "oscillator pane names not labeled on chart"
+  ],
+  "next": null
+}

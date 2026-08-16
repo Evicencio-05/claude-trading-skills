@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-07-15",
+  "generated_at": "2026-07-15T06:00:56",
+  "sources": {
+    "breadth": "reports/market/breadth/market_breadth_2026-07-15_060055.json",
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-07-15_060056.json",
+    "sector": "reports/market/sector/sector_rotation_2026-07-15.md"
+  },
+  "breadth": {
+    "score": 57.2,
+    "zone": "Neutral",
+    "exposure_guidance": "60-75%",
+    "guidance": "Mixed signals. Be selective with new positions and tighten risk controls.",
+    "strongest": {
+      "component": "ma_crossover",
+      "label": "8MA vs 200MA Crossover",
+      "score": 65
+    },
+    "weakest": {
+      "component": "cycle_position",
+      "label": "Peak/Trough Cycle Position",
+      "score": 50
+    },
+    "active_warnings": [],
+    "actions": [
+      "Reduce new position sizes by 25-50%",
+      "Tighten stop-losses",
+      "Focus on stocks with strong relative strength",
+      "Avoid lagging sectors and speculative names"
+    ]
+  },
+  "uptrend": {
+    "score": 34.1,
+    "zone": "Cautious",
+    "exposure_guidance": "Defensive (30-60%)",
+    "guidance": "Weak breadth environment. Prioritize capital preservation over gains.",
+    "strongest": {
+      "component": "historical_context",
+      "label": "Historical Context",
+      "score": 52
+    },
+    "weakest": {
+      "component": "momentum",
+      "label": "Momentum",
+      "score": 28
+    },
+    "active_warnings": [
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Healthcare",
+    "cycle_phase": "Late",
+    "risk_regime": null,
+    "risk_score": null,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Healthcare",
+        "ratio": "38.6%"
+      },
+      {
+        "rank": "2",
+        "sector": "Energy",
+        "ratio": "31.0%"
+      },
+      {
+        "rank": "3",
+        "sector": "Financial",
+        "ratio": "30.6%"
+      }
+    ],
+    "overbought": [
+      "Healthcare: 38.6%"
+    ]
+  },
+  "synthesis": {
+    "posture": "CAUTIOUS",
+    "ceiling": "50%",
+    "headline": "Cautious \u2014 breadth 57.2/100, uptrend 34.1/100, leading sector Healthcare.",
+    "risk_flags": [
+      "SECTOR DIVERGENCE WARNING",
+      "Overbought sectors: Healthcare: 38.6%"
+    ],
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

@@ -35,7 +35,7 @@ Cursor loads (1)–(3) automatically via `.cursor/rules/project-router.mdc`.
 | Resource | Purpose |
 |----------|---------|
 | `.cursor/rules/` | Always-on project router + Python conventions + command workflows |
-| `.cursor/skills/` | Symlinks to `skills/` plus workflow skills (`deep-research`, `log-positions`, `robinhood-portfolio-review`) |
+| `.cursor/skills/` | Symlinks to `skills/` plus fork-local workflow dirs (see [.cursor/skills/README.md](.cursor/skills/README.md)) |
 | `.cursor/mcp.json.example` | Copy to `.cursor/mcp.json` for Robinhood MCP (gitignored) |
 | [commands/README.md](commands/README.md) | How slash commands map to Cursor |
 
@@ -81,8 +81,9 @@ Do not duplicate API keys in committed files. Use `.env` at repo root (gitignore
 
 ## Single source of truth
 
-- Skill bodies: `skills/<name>/` only
-- `.cursor/skills/<name>` → symlink, not a copy
+- Upstream skill bodies: `skills/<name>/` only
+- `.cursor/skills/<name>` → symlink to `../../skills/<name>` when mirroring an upstream skill
+- Fork-local workflow skills (no `skills/` twin) live as real dirs under `.cursor/skills/` and link to `commands/` — see [.cursor/skills/README.md](.cursor/skills/README.md)
 - `~/.claude/skills/<name>` → symlink for Claude Code, not a forked copy
 
 ## Cost discipline

@@ -21,7 +21,7 @@ def get_repo_root() -> Path:
 
 
 def load_watchlist_config(path: Path) -> dict[str, dict]:
-    """Load watchlist YAML; return ticker -> {watching, notes}."""
+    """Load watchlist YAML; return ticker -> {watching, notes, optional tier_pin}."""
     if not path.exists():
         return {}
     data = yaml.safe_load(path.read_text()) or {}
@@ -31,10 +31,14 @@ def load_watchlist_config(path: Path) -> dict[str, dict]:
     for ticker, entry in data.items():
         if not isinstance(entry, dict):
             continue
-        result[str(ticker).upper()] = {
+        row: dict = {
             "watching": bool(entry.get("watching", False)),
             "notes": str(entry.get("notes", "")),
         }
+        raw_pin = entry.get("tier_pin")
+        if raw_pin is not None and str(raw_pin).strip():
+            row["tier_pin"] = str(raw_pin).strip().upper()
+        result[str(ticker).upper()] = row
     return result
 
 

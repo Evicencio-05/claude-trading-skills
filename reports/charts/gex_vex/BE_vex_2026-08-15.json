@@ -1,0 +1,218 @@
+{
+  "source": "gex_vex",
+  "ticker": "BE",
+  "as_of": "2026-08-15",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker VEX screenshot BE — spot 229.94 (−2.46%), map ~22:51"
+    }
+  ],
+  "extracted": {
+    "category": "vex",
+    "vendor": "skylit",
+    "spot": 229.94,
+    "change": -5.82,
+    "change_pct": -2.46,
+    "atm_strike": 230.0,
+    "expirations": [
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-02",
+      "2026-10-16",
+      "2026-11-20"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 370.0,
+      "expiration": "2026-09-18",
+      "value_k": 41245,
+      "sign": "pos",
+      "starred": false
+    },
+    "top_nodes": [
+      {
+        "strike": 370.0,
+        "expiration": "2026-09-18",
+        "value_k": 41245,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -30366,
+        "sign": "neg",
+        "starred": true
+      },
+      {
+        "strike": 280.0,
+        "expiration": "2026-10-16",
+        "value_k": 22639,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 320.0,
+        "expiration": "2026-09-18",
+        "value_k": 19284,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-08-21",
+        "value_k": 14677,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-21",
+        "value_k": -13762,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": 13466,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 280.0,
+        "expiration": "2026-09-18",
+        "value_k": 11591,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 300.0,
+        "expiration": "2026-11-20",
+        "value_k": 8455,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -7441,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 230.0,
+        "expiration": "2026-08-21",
+        "value_k": -2457,
+        "sign": "neg",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 230.0,
+        "expiration": "2026-08-21",
+        "value_k": -2457,
+        "sign": "neg"
+      },
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -7441,
+        "sign": "neg"
+      },
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -30366,
+        "sign": "neg"
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": 13466,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 250.0,
+        "expiration": "2026-08-21",
+        "value_k": -30366,
+        "sign": "neg",
+        "note": "Starred front-week wall — must negotiate before upside magnets; |value| second only to 370 king"
+      },
+      {
+        "strike": 220.0,
+        "expiration": "2026-08-21",
+        "value_k": -7441,
+        "sign": "neg",
+        "note": "Negative under spot — break of ~220 amplifies downside (wicky), not a soft floor"
+      },
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-21",
+        "value_k": -13762,
+        "sign": "neg",
+        "note": "Deep downside negative magnet if 220 fails"
+      },
+      {
+        "strike": 370.0,
+        "expiration": "2026-09-18",
+        "value_k": 41245,
+        "sign": "pos",
+        "note": "Abs-value king / distant upside magnet — stretch, not near-term path"
+      },
+      {
+        "strike": 270.0,
+        "expiration": "2026-08-21",
+        "value_k": 13466,
+        "sign": "pos",
+        "note": "First large upside positive after 250 wall"
+      }
+    ],
+    "air_pockets": "Huge concentrations at 250 Aug-21 and 370 Sep-18; path 250→270 is the near-term story",
+    "range_edges": {
+      "upside": 370.0,
+      "downside": 200.0
+    },
+    "map_timestamp": "2026-08-15 22:51:22",
+    "opex_note": "2026-08-21 front + 2026-09-18 king column",
+    "confluence_with": {
+      "mode": "gex",
+      "overlap_zones": [
+        {
+          "strike": 250.0,
+          "expiration": "2026-08-21",
+          "note": "Shared overhead negative wall (VEX −30366K starred / GEX −2134K king)"
+        },
+        {
+          "strike": 230.0,
+          "expiration": "2026-08-21",
+          "note": "Shared ATM negative"
+        },
+        {
+          "strike": 220.0,
+          "expiration": "2026-08-21",
+          "note": "FIGHT — VEX −7441K vs GEX +704K"
+        },
+        {
+          "strike": 270.0,
+          "expiration": "2026-08-21",
+          "note": "Shared upside positive after wall"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full strike×expiry matrix not transcribed — top_nodes from visible hotspots only",
+    "320 Sep-18 value approximated from visible hotspot (~19284K)"
+  ],
+  "next": null
+}

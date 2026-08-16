@@ -1,0 +1,53 @@
+{
+  "ticker": "AVGO",
+  "as_of": "2026-06-02",
+  "effective_config": {
+    "account_key": "robinhood_agentic",
+    "sizing": {
+      "risk_pct": null,
+      "max_risk_dollars": 20.0,
+      "max_position_dollars": 45.0,
+      "max_position_pct": 100,
+      "min_shares": 1,
+      "account_size_source": "mcp_buying_power",
+      "fixed_account_size": null,
+      "fractional": true
+    },
+    "gates": {
+      "require_new_entry_allowed": true,
+      "require_actionable_research": true,
+      "stale_research_days": 14
+    },
+    "learning": {
+      "write_plan_artifact": true
+    }
+  },
+  "agent_proposal": {
+    "thesis": "Broadcom — leading custom AI ASIC partner with best-in-class margins; small fractional probe ahead of FQ2 earnings.",
+    "confidence": 3,
+    "entry": "market dollar_amount $45.00 (~0.094 shares @ ~$478.75 limit reference)",
+    "stop": 395,
+    "target": 455,
+    "max_loss_est": 6.36,
+    "account": "robinhood_agentic",
+    "account_number_suffix": "7016",
+    "order_type": "market",
+    "market_hours": "regular_hours",
+    "posture_override": "user continued despite CASH_PRIORITY"
+  },
+  "user_decision": "confirm plan and order",
+  "user_overrides": {
+    "fractional": true
+  },
+  "review_summary": {
+    "dollar_amount": "45.00",
+    "order_checks": {},
+    "quote_last_trade": "459.99",
+    "quote_ask": "480.00",
+    "estimated_shares": "0.093990"
+  },
+  "order_id": "6a1e6ec7-a93d-4374-b8e6-3b67b3866ec9",
+  "order_state": "queued",
+  "ref_id": "89cfbb28-6084-4422-9412-9b94b06bc7be",
+  "research_path": "reports/research/AVGO_2026-05-31.md"
+}

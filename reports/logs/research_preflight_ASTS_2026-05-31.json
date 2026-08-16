@@ -1,0 +1,182 @@
+{
+  "ticker": "ASTS",
+  "as_of": "2026-05-31",
+  "generated_at": "2026-05-31T14:31:05.938516-07:00",
+  "force_refresh": false,
+  "watchlist_symbols": [
+    "ARM",
+    "DELL",
+    "DIS",
+    "DRAM",
+    "HPE",
+    "IBM",
+    "NOK",
+    "PLTR",
+    "RBLX",
+    "TSM",
+    "VECO"
+  ],
+  "summary": {
+    "reuse": 8,
+    "run": 2
+  },
+  "artifacts": {
+    "market_context": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-05-31.md"
+    },
+    "market_breadth": {
+      "action": "reuse",
+      "path": "reports/market/breadth/market_breadth_2026-05-31_124822.json"
+    },
+    "uptrend_analysis": {
+      "action": "reuse",
+      "path": "reports/market/uptrend/uptrend_analysis_2026-05-31_124823.json"
+    },
+    "market_top": {
+      "action": "reuse",
+      "path": "reports/market/top/market_top_2026-05-31_134130.json"
+    },
+    "exposure_posture": {
+      "action": "reuse",
+      "path": "reports/market/exposure/exposure_posture_2026-05-31_204112.json"
+    },
+    "fred_calendar": {
+      "action": "reuse",
+      "path": "reports/logs/fred_calendar_2026-05-31.json"
+    },
+    "vcp_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/vcp/vcp_screener_2026-05-31_143022.json",
+      "ticker_row": null
+    },
+    "canslim_screener": {
+      "action": "reuse",
+      "path": "reports/screeners/canslim/canslim_screener_2026-05-31_143104.json",
+      "ticker_row": {
+        "symbol": "ASTS",
+        "company_name": "AST SpaceMobile, Inc.",
+        "sector": "Technology",
+        "price": 113.41,
+        "market_cap": 0,
+        "composite_score": 39.5,
+        "rating": "Weak",
+        "rating_description": "Does not meet CANSLIM criteria",
+        "guidance": "Avoid",
+        "weakest_component": "C",
+        "weakest_score": 0,
+        "c_component": {
+          "score": 0,
+          "latest_qtr_eps_growth": -230.0,
+          "latest_qtr_revenue_growth": 1952.2,
+          "latest_eps": -0.66,
+          "year_ago_eps": -0.2,
+          "latest_revenue": 14735000,
+          "year_ago_revenue": 718000,
+          "latest_qtr_date": "2026-03-31",
+          "year_ago_qtr_date": "2025-03-31",
+          "interpretation": "Weak - Does not meet CANSLIM criteria (EPS -230.0%, Revenue +1952.2%)",
+          "quality_warning": null,
+          "error": null
+        },
+        "a_component": {
+          "score": 0,
+          "error": "Negative or zero EPS in year 2025-12-31 - cannot calculate CAGR",
+          "eps_cagr_3yr": null,
+          "revenue_cagr_3yr": null,
+          "stability": "unknown",
+          "eps_values": null,
+          "interpretation": "Negative EPS - not a CANSLIM candidate"
+        },
+        "n_component": {
+          "score": 40,
+          "distance_from_high_pct": -15.3,
+          "current_price": 113.41,
+          "week_52_high": 133.86,
+          "week_52_low": 22.72,
+          "breakout_detected": false,
+          "current_volume": 54954386,
+          "avg_volume": null,
+          "volume_ratio": null,
+          "interpretation": "Weak - Lacks momentum (-15.3% from high)",
+          "error": null
+        },
+        "s_component": {
+          "score": 60,
+          "up_down_ratio": 1.0983749064569321,
+          "accumulation_detected": false,
+          "avg_up_volume": 19490376,
+          "avg_down_volume": 17744738,
+          "up_days_count": 31,
+          "down_days_count": 28,
+          "interpretation": "Neutral/Weak Accumulation (ratio: 1.10x) - Slightly positive volume trend."
+        },
+        "l_component": {
+          "score": 100,
+          "stock_52w_performance": 386.11,
+          "sp500_52w_performance": 25.26,
+          "relative_performance": 360.85,
+          "rs_rank_estimate": 99,
+          "days_analyzed": 365,
+          "interpretation": "Market Leader - 52-week return +386.1% (+360.8% vs benchmark). Strong momentum, prime CANSLIM candidate",
+          "quality_warning": null,
+          "error": null,
+          "rs_3m_return": 30.48,
+          "rs_6m_return": 104.27,
+          "rs_12m_return": 381.16,
+          "benchmark_3m_return": 10.15,
+          "benchmark_6m_return": 11.27,
+          "benchmark_12m_return": 28.21,
+          "rel_3m": 20.33,
+          "rel_6m": 93.0,
+          "rel_12m": 352.95,
+          "weighted_stock_performance": 157.82,
+          "weighted_relative_performance": 141.92,
+          "available_periods": [
+            "3m",
+            "6m",
+            "12m"
+          ],
+          "missing_periods": [],
+          "benchmark_52w_performance": 25.26,
+          "rs_benchmark": "^GSPC",
+          "rs_benchmark_relative_return": 352.95,
+          "rs_rating": "Market Leader",
+          "rs_component_score": 100,
+          "rs_rank_percentile": 99
+        },
+        "i_component": {
+          "score": 0,
+          "error": "No institutional holder data"
+        },
+        "m_component": {
+          "score": 90,
+          "trend": "strong_uptrend",
+          "sp500_price": 7580.06,
+          "sp500_ema_50": 7186.179684790908,
+          "distance_from_ema_pct": 5.48,
+          "vix_level": 15.32,
+          "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+          "warning": null,
+          "error": null
+        },
+        "threshold_check": {
+          "passes_all": false,
+          "failed_components": [
+            "C",
+            "A",
+            "I"
+          ],
+          "recommendation": "avoid",
+          "reason": "Multiple components below threshold: C, A, I"
+        }
+      }
+    },
+    "theme_detector": {
+      "action": "run"
+    },
+    "breakout_trade_planner": {
+      "action": "run"
+    }
+  }
+}

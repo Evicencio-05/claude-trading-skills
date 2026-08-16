@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-07-28",
+  "generated_at": "2026-07-28T13:58:50",
+  "sources": {
+    "breadth": "reports/market/breadth/market_breadth_2026-07-28_135848.json",
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-07-28_135849.json",
+    "sector": "reports/market/sector/sector_rotation_2026-07-28.md"
+  },
+  "breadth": {
+    "score": 59.5,
+    "zone": "Neutral",
+    "exposure_guidance": "60-75%",
+    "guidance": "Mixed signals. Be selective with new positions and tighten risk controls.",
+    "strongest": {
+      "component": "bearish_signal",
+      "label": "Bearish Signal Status",
+      "score": 85
+    },
+    "weakest": {
+      "component": "cycle_position",
+      "label": "Peak/Trough Cycle Position",
+      "score": 35
+    },
+    "active_warnings": [],
+    "actions": [
+      "Reduce new position sizes by 25-50%",
+      "Tighten stop-losses",
+      "Focus on stocks with strong relative strength",
+      "Avoid lagging sectors and speculative names"
+    ]
+  },
+  "uptrend": {
+    "score": 32.4,
+    "zone": "Cautious",
+    "exposure_guidance": "Defensive (30-60%)",
+    "guidance": "Weak breadth environment. Prioritize capital preservation over gains.",
+    "strongest": {
+      "component": "historical_context",
+      "label": "Historical Context",
+      "score": 48
+    },
+    "weakest": {
+      "component": "market_breadth",
+      "label": "Market Breadth (Overall)",
+      "score": 31
+    },
+    "active_warnings": [
+      {
+        "flag": "late_cycle",
+        "label": "LATE CYCLE WARNING",
+        "description": "Commodity sectors leading both cyclical and defensive groups. Historically associated with late-cycle inflation or sector rotation preceding broader market weakness.",
+        "actions": [
+          "Favor lower end of exposure range (e.g. 80% if guidance is 80-100%)",
+          "New entries limited to A-grade setups only",
+          "Tighten stops on commodity/cyclical positions",
+          "Monitor for commodity rollover as potential broad market lead indicator"
+        ]
+      },
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "LATE CYCLE WARNING; SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Energy",
+    "cycle_phase": "Mid",
+    "risk_regime": null,
+    "risk_score": null,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Energy",
+        "ratio": "48.4%"
+      },
+      {
+        "rank": "2",
+        "sector": "Real Estate",
+        "ratio": "37.1%"
+      },
+      {
+        "rank": "3",
+        "sector": "Healthcare",
+        "ratio": "26.6%"
+      }
+    ],
+    "overbought": [
+      "Energy: 48.4%",
+      "Real Estate: 37.1%"
+    ]
+  },
+  "synthesis": {
+    "posture": "CAUTIOUS",
+    "ceiling": "50%",
+    "headline": "Cautious \u2014 breadth 59.5/100, uptrend 32.4/100, leading sector Energy.",
+    "risk_flags": [
+      "LATE CYCLE WARNING",
+      "SECTOR DIVERGENCE WARNING",
+      "Overbought sectors: Energy: 48.4%, Real Estate: 37.1%"
+    ],
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

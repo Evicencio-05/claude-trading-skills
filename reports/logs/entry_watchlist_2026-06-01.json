@@ -1,0 +1,329 @@
+{
+  "as_of": "2026-06-01",
+  "tier_a_cap": 5,
+  "market_gate": "REDUCE_ONLY",
+  "tickers": [
+    {
+      "ticker": "MSFW",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "ACTIVE",
+      "watching": false,
+      "eligibility": [
+        "position"
+      ],
+      "notes": "",
+      "report_path": "reports/research/MSFW_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 146,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Avoid \u2014 tactical income wrapper with documented NAV erosion; buy MSFT directly if bullish on Microsoft.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "4",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "VECO",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "ACTIVE",
+      "watching": true,
+      "eligibility": [
+        "position",
+        "watchlist"
+      ],
+      "notes": "",
+      "report_path": "reports/research/VECO_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 146,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Watch \u2014 Speculative Buy on $57\u201358 consolidation; SAMR risk caps conviction.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "4",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "HOOD",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "ACTIVE",
+      "watching": false,
+      "eligibility": [
+        "position"
+      ],
+      "notes": "",
+      "report_path": "reports/research/HOOD_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 116,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management earns trust on product velocity but warrants skepticism on regulatory navigation and revenue guidance precision (Q1 miss).",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "4",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "DIS",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "ACTIVE",
+      "watching": true,
+      "eligibility": [
+        "position",
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/DIS_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 112,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management warrants cautious optimism \u2014 Q2 beat and streaming margin milestone under new CEO \u2014 but unproven on ESPN DTC transition and macro park sensitivity.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "3",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "NOK",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "ACTIVE",
+      "watching": true,
+      "eligibility": [
+        "position",
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/NOK_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 112,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management earns trust on optical/AI execution; mobile RAN profitability still a work in progress.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "3",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "TSM",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "IDEA",
+      "watching": true,
+      "eligibility": [
+        "watchlist",
+        "idea"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/TSM_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 70,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Highest credibility in sector.",
+      "research_confidence": "High",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "5",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "PLTR",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "",
+      "report_path": "reports/research/PLTR_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 40,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Watch / selective Buy \u2014 Quality compounder; size small; prefer dips vs 52-wk high $208.",
+      "research_confidence": "High on fundamentals (10-Q May 2026); Medium on entry (better than BE/CLS extension).",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "DELL",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "CLOSED",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "",
+      "report_path": "reports/research/DELL_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 30,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management earns trust on AI execution \u2014 guide raises and backlog metrics are credible \u2014 but valuation after a 33% gap requires proof of margin durability, not just revenue.",
+      "research_confidence": "Medium-High",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "5",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "ARM",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/ARM_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 10,
+      "tier_reasons": [
+        "watch_or_avoid_verdict"
+      ],
+      "verdict": "Watch / Hold \u2014 Structural AI winner; do not chase at $335+ after 177% YTD rally.",
+      "research_confidence": "High on fundamentals (SEC 6-K filed May 6); Low on near-term entry timing given extension.",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "DRAM",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/DRAM_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 10,
+      "tier_reasons": [
+        "watch_or_avoid_verdict"
+      ],
+      "verdict": "Watch / Avoid new chase \u2014 excellent vehicle for memory thesis, terrible entry timing at ATH after parabolic launch run.",
+      "research_confidence": "Medium-High",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "HPE",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "",
+      "report_path": "reports/research/HPE_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 10,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management earns trust on execution (Juniper synergies ahead of plan, guide raises) but aggressive pricing tactics warrant skepticism on channel health and long-term server share.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "IBM",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/IBM_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 10,
+      "tier_reasons": [
+        "probe_default"
+      ],
+      "verdict": "Management earns trust \u2014 consistent guide-and-beat cadence.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    },
+    {
+      "ticker": "RBLX",
+      "last_report_date": "2026-05-31",
+      "days_stale": 1,
+      "thesis_status": "\u2014",
+      "watching": true,
+      "eligibility": [
+        "watchlist"
+      ],
+      "notes": "nan",
+      "report_path": "reports/research/RBLX_2026-05-31.md",
+      "tier": "C",
+      "tier_score": 10,
+      "tier_reasons": [
+        "watch_or_avoid_verdict"
+      ],
+      "verdict": "Avoid (new longs) \u2014 Hold only for existing positions with tight risk; Stage 4 downtrend.",
+      "research_confidence": "Medium",
+      "screener_summary": "\u2014",
+      "market_gate": "REDUCE_ONLY",
+      "thesis_confidence_1_5": "\u2014",
+      "tier_a_capped": false,
+      "tier_pin": ""
+    }
+  ],
+  "counts": {
+    "A": 0,
+    "B": 0,
+    "C": 13,
+    "D": 0
+  }
+}

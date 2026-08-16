@@ -1,0 +1,64 @@
+{
+  "ticker": "MU",
+  "as_of": "2026-06-02",
+  "generated_at": "2026-06-02T14:07:54.890905-07:00",
+  "force_refresh": false,
+  "watchlist_symbols": [
+    "ARM",
+    "DELL",
+    "DIS",
+    "DRAM",
+    "HPE",
+    "IBM",
+    "NOK",
+    "PLTR",
+    "RBLX",
+    "TSM",
+    "VECO"
+  ],
+  "summary": {
+    "reuse": 5,
+    "run": 5
+  },
+  "artifacts": {
+    "market_context": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-06-02.md"
+    },
+    "market_breadth": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-06-02.md"
+    },
+    "uptrend_analysis": {
+      "action": "reuse",
+      "path": "reports/market/uptrend/uptrend_analysis_2026-06-02_060622.json"
+    },
+    "market_top": {
+      "action": "run"
+    },
+    "exposure_posture": {
+      "action": "reuse",
+      "path": "reports/market/exposure/exposure_posture_2026-06-02_024025.json"
+    },
+    "fred_calendar": {
+      "action": "reuse",
+      "path": "reports/logs/market_context_2026-06-02.md"
+    },
+    "vcp_screener": {
+      "action": "run",
+      "reason": "no same-day screener covering ticker",
+      "run_hint": "python3 skills/vcp-screener/scripts/screen_vcp.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/screeners/vcp"
+    },
+    "canslim_screener": {
+      "action": "run",
+      "reason": "no same-day screener covering ticker",
+      "run_hint": "python3 skills/canslim-screener/scripts/screen_canslim.py --universe ARM DELL DIS DRAM HPE IBM NOK PLTR RBLX TSM VECO --output-dir reports/screeners/canslim"
+    },
+    "theme_detector": {
+      "action": "run"
+    },
+    "breakout_trade_planner": {
+      "action": "run"
+    }
+  }
+}

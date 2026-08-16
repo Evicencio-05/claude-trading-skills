@@ -46,6 +46,12 @@
 | commands/intraday-options.md | Running /intraday-options |
 | scripts/research_preflight.py | PASS 0 manifest before gated deep/update research |
 | scripts/update_stale_research.py | Zero-LLM staleness scan (optional backup watchlist hygiene) |
+| commands/options-flow-tail.md | Options flow screener → primary tail |
+| commands/ta-confluence.md | Fuse TW / GEX-VEX / operator charts |
+| commands/agentic-copilot-trade.md | Portfolio C co-pilot trade (confirm before place) |
+| commands/tradewhisperer-charts.md / gex-vex-maps / operator-charts | TA intake skills (user-supplied screenshots) |
+| scripts/research_preflight.py | PASS 0 manifest before deep/update research — reuse same-day batch artifacts |
+| scripts/update_stale_research.py | Zero-LLM staleness scan; queue at state/research_update_queue.json |
 | AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
 | project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
 | project-docs/reference/robinhood-mcp-integration.md | Robinhood Agentic MCP in Cursor, portfolio review, log-positions |
