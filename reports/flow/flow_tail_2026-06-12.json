@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-14T19:05:00-04:00",
+  "screener_session": "2026-06-12",
+  "market_context_path": "reports/logs/market_context_2026-06-12.json",
+  "bias": "long",
+  "account": "agentic",
+  "min_premium": 500000,
+  "posture_gate": "CAUTIOUS",
+  "posture_ceiling_pct": 50,
+  "theme_cluster": ["ALAB", "LRCX", "STM", "CIEN"],
+  "rows": [
+    {
+      "ticker": "STM",
+      "contract": "82C 2026-06-18",
+      "premium": 1100000,
+      "tail_score": 76,
+      "adjusted_score": 81,
+      "verdict": "primary",
+      "enrichment": {
+        "research": "missing",
+        "watchlist_tier": null,
+        "sector_adjustment": 5,
+        "earnings_days": 38
+      }
+    },
+    {
+      "ticker": "USO",
+      "contract": "136C 2026-06-24",
+      "premium": 3800000,
+      "tail_score": 75,
+      "adjusted_score": 70,
+      "verdict": "runner_up",
+      "enrichment": {
+        "research": "missing",
+        "watchlist_tier": null,
+        "sector_adjustment": -5,
+        "earnings_days": null
+      }
+    },
+    {
+      "ticker": "ALAB",
+      "contract": "392.5C 2026-06-18",
+      "premium": 2000000,
+      "tail_score": 70,
+      "adjusted_score": 70,
+      "verdict": "pass",
+      "pass_reason": "semi_cluster_prefer_STM"
+    },
+    {
+      "ticker": "LRCX",
+      "contract": "387.5C 2026-06-18",
+      "premium": 1300000,
+      "tail_score": 70,
+      "adjusted_score": 70,
+      "verdict": "pass",
+      "pass_reason": "semi_cluster_duplicate"
+    },
+    {
+      "ticker": "CIEN",
+      "contract": "470C 2026-06-18",
+      "premium": 1000000,
+      "tail_score": 65,
+      "adjusted_score": 65,
+      "verdict": "pass",
+      "pass_reason": "duplicate_ticker_lower_premium"
+    },
+    {
+      "ticker": "MSTR",
+      "contract": "139C 2026-06-18",
+      "premium": 2200000,
+      "tail_score": 55,
+      "adjusted_score": 55,
+      "verdict": "pass",
+      "pass_reason": "beta_proxy_weaker_confluence"
+    },
+    {
+      "ticker": "SNOW",
+      "contract": "252.5C 2026-06-18",
+      "premium": 254800,
+      "tail_score": 0,
+      "adjusted_score": 0,
+      "verdict": "disqualified",
+      "pass_reason": "below_floor"
+    },
+    {
+      "ticker": "CIEN",
+      "contract": "535C 2026-06-18",
+      "premium": 186000,
+      "tail_score": 0,
+      "adjusted_score": 0,
+      "verdict": "disqualified",
+      "pass_reason": "below_floor"
+    }
+  ],
+  "primary": {
+    "ticker": "STM",
+    "confidence": "medium",
+    "structure": "bull_call_spread",
+    "dte_guidance": "3-5 weeks",
+    "delta_target": "0.45-0.50",
+    "invalidation": "Close below $74 or semi group RS breakdown",
+    "ira_note": "spread_eligible"
+  },
+  "runner_up": {
+    "ticker": "USO",
+    "tail_score": 75,
+    "adjusted_score": 70,
+    "note": "macro_commodity_flow_not_single_name"
+  },
+  "pass": [
+    {"ticker": "SNOW", "reason": "below_floor"},
+    {"ticker": "CIEN", "contract": "535C", "reason": "below_floor"},
+    {"ticker": "ALAB", "reason": "semi_cluster_prefer_STM"},
+    {"ticker": "LRCX", "reason": "semi_cluster_duplicate"},
+    {"ticker": "CIEN", "contract": "470C", "reason": "duplicate_ticker_lower_premium"},
+    {"ticker": "MSTR", "reason": "beta_proxy_weaker_confluence"}
+  ],
+  "handoffs": [
+    "options-strategy-planner STM",
+    "intraday-options STM",
+    "deep-research STM",
+    "agentic-copilot-trade STM"
+  ],
+  "data_gaps": [
+    "vol_oi_delta_oi_unreadable_from_screenshot",
+    "fmp_earnings_confirm_timeout",
+    "entry_watchlist_stale_2026-06-01",
+    "no_research_reports_for_screened_tickers"
+  ]
+}

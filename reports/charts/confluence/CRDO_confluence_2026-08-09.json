@@ -1,0 +1,130 @@
+{
+  "source": "ta_confluence",
+  "ticker": "CRDO",
+  "as_of": "2026-08-09",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": "reports/charts/tradewhisperer/CRDO_tw_1D_2026-08-09.json",
+    "tw_weekly": "reports/charts/tradewhisperer/CRDO_tw_1W_2026-08-09.json",
+    "tw_list": null,
+    "gex": "reports/charts/gex_vex/CRDO_gex_2026-08-09.json",
+    "vex": "reports/charts/gex_vex/CRDO_vex_2026-08-09.json",
+    "operator": "reports/charts/operator/CRDO_operator_2026-08-09.json"
+  },
+  "score": 76,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 15,
+      "note": "Daily TW **GREEN** continuation (chart; not on Aug-7 list) — half-credit per rubric. Operator note aligned with lexicon: GREEN = continuation not dampened; BLUE not required for a clear trend-follow"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Weekly TW **BLUE** (+20.7% week, above MAs) — HTF supports long; no fight"
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 18,
+      "note": "VEX king 300/Aug-21 ($13567K) strongly supports path to fib 2.618~308; GEX also +250 at 300. Discount: GEX abs-king is ATM −283 at 250 + VEX −1892 at 250 after +8% day — chop before magnet"
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 14,
+      "note": "GEX∩VEX upside magnet **300 / 2026-08-21** on path to thesis (fib 2.618=308.67); also shared ATM negative 250 (friction, not destination)"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 9,
+      "note": "Channel breakout done, 50 SMA reclaimed, above 100/200, RSI white>50 after retest, clear 1.618→2.618 edge. Slight discount: spot sits on fib 1.618 after spike into ATM neg GEX/VEX"
+    }
+  },
+  "verdict": "PLAY",
+  "judgment": {
+    "devils_advocate": [
+      "GREEN +8% into ATM GEX −283 / VEX −1892 at 250 can wick/chop before delivering to the 300 king",
+      "Daily stoch-style ~89 already stretched — continuation can pause at 250 psychological / fib 1.618",
+      "If channel break fails and 50 SMA (~236) is lost, VEX −1926 at 225 can amplify toward fib 1.0=210.68"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily prints PINK or PINK_RED (or GREEN→PINK cancel) while long",
+      "maps": "Invalid if Aug-21 upside magnet leaves 300 / rolls down while ATM 250 negative expands as the active magnet",
+      "operator": "Invalid on daily close back below ~236 (50 SMA) or loss of channel break with RSI white breaking back under 50"
+    },
+    "not_allowed_to_ignore": [
+      "Daily is **GREEN continuation** (half rubric weight) — weekly **BLUE** is the HTF edge; GREEN is not 'dampened' per lexicon/operator",
+      "Map destination is **300** (near fib 2.618=308) — treat 370 / 3.618 as stretch after 300",
+      "ATM **negative** GEX/VEX at **250** means chase risk after +8% — prefer hold/retest of 1.618 / 50 SMA over market-buy at the high"
+    ],
+    "rr_sketch": {
+      "entry_zone": "240–250 (prefer hold/reclaim of fib 1.618~248 and 50 SMA~236 after any dig; avoid chasing the print high into ATM neg)",
+      "stop": 232.0,
+      "targets": [
+        {
+          "level": 270.0,
+          "note": "intermediate VEX/GEX node"
+        },
+        {
+          "level": 300.0,
+          "note": "GEX∩VEX primary magnet"
+        },
+        {
+          "level": 308.67,
+          "note": "operator fib 2.618"
+        }
+      ],
+      "rough_rr": "~3R to 300 from ~245 with stop ~232; ~3.5R to 308.67 — chase from 249.89 into ATM neg compresses edge"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all three sources; GREEN vs BLUE weight, ATM neg vs 300 magnet, and operator GREEN/BLUE coaching surfaced)"
+    },
+    "one_thing_to_verify": "Whether price can **hold fib 1.618 / 250** through ATM neg GEX−VEX without giving back the channel break — do not treat **300/308** as owed from the spike print."
+  },
+  "override": null,
+  "gaps": [
+    "CRDO not on list_tw_daily_2026-08-07 — daily/weekly colors from charts only",
+    "Operator SMA prints approximate; TW labels 236.32/195.16/168.39 used as cross-check"
+  ],
+  "hard_stops": [],
+  "spot": 249.89,
+  "change_pct": 8.22,
+  "operator_thesis": "Long CRDO — breakout of downward trend, reclaimed 50 SMA, RSI back above 50 after retest; clear for higher continuation. GREEN=continuation not dampened; BLUE not required for clear trend-follow.",
+  "operator_tw_note": "GREEN = bullish continuation (not dampened). BLUE = potential start — not always the only/best long candle; trend-following GREEN remains a clear setup. Rubric still half-weights GREEN vs BLUE for trigger score.",
+  "map_summary": {
+    "shared_upside_magnet": {
+      "strike": 300.0,
+      "expiration": "2026-08-21",
+      "gex_k": 250,
+      "vex_k": 13567
+    },
+    "atm_negative": {
+      "strike": 250.0,
+      "expiration": "2026-08-21",
+      "gex_k": -283,
+      "vex_k": -1892
+    },
+    "support_gex": [
+      {
+        "strike": 225.0,
+        "value_k": 92
+      },
+      {
+        "strike": 240.0,
+        "value_k": 71
+      }
+    ],
+    "downside_vex_risk": {
+      "strike": 225.0,
+      "expiration": "2026-08-21",
+      "value_k": -1926
+    }
+  },
+  "upgrade_notes": "Already PLAY — quality improves on hold/retest of 236–248 without losing channel break; degrade to WATCH if daily closes back under 50 SMA"
+}

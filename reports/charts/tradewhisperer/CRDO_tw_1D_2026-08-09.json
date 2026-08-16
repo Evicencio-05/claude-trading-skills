@@ -1,0 +1,61 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "CRDO",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "CRDO 1D @TradexWhisperer chart; last 249.89 (+8.45%); GREEN continuation candle; breakout of downtrend line; 50 SMA 236.32"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1D",
+    "last": 249.89,
+    "change": 19.46,
+    "change_pct": 8.45,
+    "ohlc": {
+      "o": 241.14,
+      "h": 250.0,
+      "l": 231.25,
+      "c": 249.89
+    },
+    "volume": null,
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 236.32,
+      "blue": 195.16,
+      "green": 168.39,
+      "purple": 143.26
+    },
+    "volume_profile_notes": "HVN shelf ~230–270 around spot; deeper shelf ~160–180",
+    "oscillators": {
+      "pane1": {
+        "blue": 89.13,
+        "orange": 89.35,
+        "note": "stochastic-style overbought after surge from oversold"
+      },
+      "pane2": {
+        "blue": -1.61,
+        "orange": -5.81,
+        "note": "MACD-style rising / bullish cross from below zero"
+      },
+      "pane3": {
+        "value": "200.33M",
+        "note": "OBV/flow rising"
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "CRDO absent from list_tw_daily_2026-08-07 — color from chart only",
+    "Full recent_candle_sequence truncated — latest GREEN confident",
+    "Operator note: GREEN = continuation (not dampened) — matches lexicon"
+  ],
+  "next": null
+}

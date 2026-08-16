@@ -48,6 +48,28 @@ For **## Pre-flight** checkboxes, record each: **done** | **skipped** | **failed
 
 For **Steps** that reference `commands/` or `skills/`, confirm the agent **linked or followed** them (not reimplemented inline long workflow text).
 
+## Phase 1.5 — Reference integrity
+
+Run when **any** applies:
+
+- Task prompt contained **## Reference audit**
+- Task family is `reports_layout`, `doc_sync`, or `codebase_audit`
+- Conversation or git evidence shows path moves, renames, or new registry files
+
+Steps:
+
+1. From task prompt or conversation, extract `OLD_STRING`(s) to search
+2. Readonly grep — acceptable exceptions: `reports/**` historical snapshots, `.cursor/prompts/archive/**`, dated retro files under `reports/prompts/`
+
+```bash
+rg -l 'OLD_STRING' --glob '!reports/**' --glob '!.git/**' --glob '!*.db'
+```
+
+3. If architecture/canonical path changed: confirm `decisions.md` has a dated entry; spot-check `project-docs/STATUS.md` and checklist links resolve
+4. Record hit count + paths in working notes — feeds matrix row below
+
+If no structural change detected, set Reference integrity to **n/a**.
+
 ## Phase 2 — Verification matrix
 
 Fill this table in chat (and in the retro report):
@@ -58,6 +80,7 @@ Fill this table in chat (and in the retro report):
 | Outputs | all / some / none | per-file paths |
 | Pre-flight | N/M done | list which |
 | Integration | ok / gaps | commands/skills used; IRA / Phase 5 / thesis_store / TDD if applicable |
+| Reference integrity | ok / gaps / n/a | rg hit count + paths; decisions.md yes/no |
 | Do not | clean / violations | trades, commits, secrets, direct `state/theses/` writes |
 
 **Repo gates (when task touched trading/portfolio/theses):**
@@ -73,7 +96,9 @@ Use normalized **root cause** slugs when possible (matches [state/prompt_learnin
 
 | # | What went wrong | Root cause | Suggested fix (one line) |
 |---|-----------------|------------|--------------------------|
-| 1 | | e.g. direct_state_theses_edit, stale_phase_name, wrong_output_path | |
+| 1 | | e.g. direct_state_theses_edit, stale_phase_name, wrong_output_path, incomplete_context | |
+
+Root cause `incomplete_context` → pattern id `incomplete_reference_audit` in learnings YAML.
 
 If **verify-and-fix-prompt** and task was **Tier 2 durable**, apply **minimal** edits to `.cursor/prompts/<task>.md` only. **Do not edit ephemeral prompts on disk** — fixes flow to learnings via retro + weekly distiller.
 
@@ -125,6 +150,7 @@ Only if user said **track follow-ups** or defects imply durable work:
 
 ## Rules
 - **Evidence only** — failed Goal without a missing file or clear gap is still **failed**
+- **Reference integrity gaps** count toward **partial** even if prompt Outputs were silent
 - **Do not redo** the full task unless user explicitly asks
 - **Always write retro** — even when Goal met (confirms patterns for distiller)
 - Prefer this file over per-task completion sections (single unbiased rule set)

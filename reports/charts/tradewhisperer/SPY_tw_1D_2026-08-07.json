@@ -1,0 +1,62 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "SPY",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "SPY 1D @TradexWhisperer TradingView chart (operator screenshot)"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1D",
+    "last": 773.26,
+    "change": 4.7,
+    "change_pct": 0.61,
+    "ohlc": {
+      "open": 771.02,
+      "high": 773.92,
+      "low": 769.61,
+      "close": 773.26
+    },
+    "volume": "38.33M",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "RED",
+      "BLUE",
+      "GREEN",
+      "GREEN",
+      "GREEN",
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 747.19,
+      "blue": 723.83,
+      "green": 702.97,
+      "purple": 672.15
+    },
+    "volume_profile_notes": "HVNs roughly 680 and 720; volume mass ~670\u2013725",
+    "oscillators": {
+      "pane1": {
+        "blue": 95.6,
+        "orange": 90.97
+      },
+      "pane2": {
+        "blue": 6.19,
+        "orange": 2.85
+      },
+      "pane3": {
+        "value": "11.23B"
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-07"
+  },
+  "confidence": "high",
+  "gaps": [
+    "oscillator pane names not labeled on chart",
+    "operator confirmed rightmost (most recent) bars are GREEN"
+  ],
+  "next": null
+}

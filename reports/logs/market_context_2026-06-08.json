@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-06-08",
+  "generated_at": "2026-06-08T06:08:42",
+  "sources": {
+    "breadth": "reports/market/breadth/market_breadth_2026-06-08_060840.json",
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-06-08_060841.json",
+    "sector": "reports/market/sector/sector_rotation_2026-06-08.md"
+  },
+  "breadth": {
+    "score": 34.5,
+    "zone": "Weakening",
+    "exposure_guidance": "40-60%",
+    "guidance": "Breadth deteriorating. Begin profit-taking and raise cash allocation.",
+    "strongest": {
+      "component": "divergence",
+      "label": "S&P 500 vs Breadth Divergence",
+      "score": 58.0
+    },
+    "weakest": {
+      "component": "cycle_position",
+      "label": "Peak/Trough Cycle Position",
+      "score": 10
+    },
+    "active_warnings": [],
+    "actions": [
+      "Take profits on weakest 25-40% of positions",
+      "No new momentum entries",
+      "Raise cash allocation significantly",
+      "Consider defensive sector rotation (XLU, XLP, XLV)",
+      "Watch for cycle trough signal for re-entry"
+    ]
+  },
+  "uptrend": {
+    "score": 39.2,
+    "zone": "Cautious",
+    "exposure_guidance": "Defensive (30-60%)",
+    "guidance": "Weak breadth environment. Prioritize capital preservation over gains.",
+    "strongest": {
+      "component": "momentum",
+      "label": "Momentum",
+      "score": 58
+    },
+    "weakest": {
+      "component": "market_breadth",
+      "label": "Market Breadth (Overall)",
+      "score": 20
+    },
+    "active_warnings": [
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Technology",
+    "cycle_phase": "Early",
+    "risk_regime": null,
+    "risk_score": null,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Technology",
+        "ratio": "23.2%"
+      },
+      {
+        "rank": "2",
+        "sector": "Real Estate",
+        "ratio": "22.1%"
+      },
+      {
+        "rank": "3",
+        "sector": "Industrials",
+        "ratio": "20.1%"
+      }
+    ],
+    "overbought": []
+  },
+  "synthesis": {
+    "posture": "REDUCE_ONLY",
+    "ceiling": "30%",
+    "headline": "Reduce Only \u2014 breadth 34.5/100, uptrend 39.2/100, leading sector Technology.",
+    "risk_flags": [
+      "SECTOR DIVERGENCE WARNING"
+    ],
+    "actions": [
+      "Significant cash allocation (40-70%)",
+      "Only hold strongest leaders in uptrending sectors",
+      "Tight stops on all positions",
+      "Consider defensive sector allocation",
+      "No new aggressive entries"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

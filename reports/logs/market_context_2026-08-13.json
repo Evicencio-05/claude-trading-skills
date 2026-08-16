@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-08-13",
+  "generated_at": "2026-08-13T06:12:30",
+  "sources": {
+    "breadth": "reports/market/breadth/market_breadth_2026-08-13_061229.json",
+    "uptrend": "reports/market/uptrend/uptrend_analysis_2026-08-13_061230.json",
+    "sector": "reports/market/sector/sector_rotation_2026-08-13.md"
+  },
+  "breadth": {
+    "score": 76.2,
+    "zone": "Healthy",
+    "exposure_guidance": "75-90%",
+    "guidance": "Above-average breadth. Normal operations with standard risk management.",
+    "strongest": {
+      "component": "breadth_level_trend",
+      "label": "Current Breadth Level & Trend",
+      "score": 90
+    },
+    "weakest": {
+      "component": "historical_percentile",
+      "label": "Historical Percentile",
+      "score": 60
+    },
+    "active_warnings": [],
+    "actions": [
+      "Normal position sizing",
+      "Standard stop-loss levels",
+      "New position entries allowed",
+      "Monitor for deterioration in leading indicators"
+    ]
+  },
+  "uptrend": {
+    "score": 55.2,
+    "zone": "Neutral",
+    "exposure_guidance": "Reduced Exposure (60-80%)",
+    "guidance": "Mixed signals. Participate selectively with tighter risk controls.",
+    "strongest": {
+      "component": "sector_rotation",
+      "label": "Sector Rotation",
+      "score": 76
+    },
+    "weakest": {
+      "component": "market_breadth",
+      "label": "Market Breadth (Overall)",
+      "score": 57
+    },
+    "active_warnings": [
+      {
+        "flag": "late_cycle",
+        "label": "LATE CYCLE WARNING",
+        "description": "Commodity sectors leading both cyclical and defensive groups. Historically associated with late-cycle inflation or sector rotation preceding broader market weakness.",
+        "actions": [
+          "Favor lower end of exposure range (e.g. 80% if guidance is 80-100%)",
+          "New entries limited to A-grade setups only",
+          "Tighten stops on commodity/cyclical positions",
+          "Monitor for commodity rollover as potential broad market lead indicator"
+        ]
+      },
+      {
+        "flag": "high_spread",
+        "label": "HIGH SELECTIVITY WARNING",
+        "description": "Wide spread between strongest and weakest sectors indicates highly selective market. Breadth may be masking narrowing leadership.",
+        "actions": [
+          "Concentrate on sectors with ratio above 10MA",
+          "Avoid lagging sectors even if trend is nominally 'up'",
+          "Reduce position count to highest-conviction ideas"
+        ]
+      },
+      {
+        "flag": "divergence",
+        "label": "SECTOR DIVERGENCE WARNING",
+        "description": "Significant divergence detected within sector groups. Some sectors within the same group are moving in opposite directions, suggesting hidden risk beneath the averages.",
+        "actions": [
+          "Verify individual sector trends before entering positions",
+          "Avoid sectors diverging from their group majority",
+          "Monitor for group convergence or further deterioration"
+        ]
+      }
+    ],
+    "warning_summary": "LATE CYCLE WARNING; HIGH SELECTIVITY WARNING; SECTOR DIVERGENCE WARNING",
+    "actions": [
+      "Reduce position sizes by 20-30%",
+      "Focus on strongest sectors only",
+      "Tighten stop-losses",
+      "Avoid low-quality setups",
+      "Increase cash allocation gradually"
+    ]
+  },
+  "sector": {
+    "leading_sector": "Energy",
+    "cycle_phase": "Mid",
+    "risk_regime": "RISK-ON",
+    "risk_score": 76,
+    "top_sectors": [
+      {
+        "rank": "1",
+        "sector": "Energy",
+        "ratio": "48.2%"
+      },
+      {
+        "rank": "2",
+        "sector": "Healthcare",
+        "ratio": "37.8%"
+      },
+      {
+        "rank": "3",
+        "sector": "Financial",
+        "ratio": "32.5%"
+      }
+    ],
+    "overbought": [
+      "Energy: 48.2%",
+      "Healthcare: 37.8%",
+      "Utilities: 2.5%"
+    ]
+  },
+  "synthesis": {
+    "posture": "NEW_ENTRY_ALLOWED",
+    "ceiling": "70%",
+    "headline": "New Entry Allowed \u2014 breadth 76.2/100, uptrend 55.2/100, leading sector Energy.",
+    "risk_flags": [
+      "LATE CYCLE WARNING",
+      "HIGH SELECTIVITY WARNING",
+      "SECTOR DIVERGENCE WARNING",
+      "Overbought sectors: Energy: 48.2%, Healthcare: 37.8%"
+    ],
+    "actions": [
+      "Reduce position sizes by 20-30%",
+      "Focus on strongest sectors only",
+      "Tighten stop-losses",
+      "Avoid low-quality setups",
+      "Increase cash allocation gradually"
+    ],
+    "watch_flag_count": 0
+  },
+  "position_flags": {
+    "urgent": [],
+    "watch": []
+  },
+  "macro_events": "none"
+}

@@ -13,3 +13,6 @@
 2026-05-31 | NOK | Verdict: Watch | Composite: 5.9/10 | Earnings: 2026-07-23 (est.) | File: reports/research/NOK_2026-05-31.md
 2026-05-31 | BB | Verdict: Watch | Composite: 5.6/10 | Earnings: 2026-06-25 (est.) | File: reports/research/BB_2026-05-31.md
 2026-05-31 | SNDK | Verdict: Watch / Avoid new chase | Composite: 6.4/10 | Earnings: 2026-08-13 | File: reports/research/SNDK_2026-05-31.md
+2026-08-16 | HIMS | Verdict: Watch | Composite: 4.8/10 | Earnings: 2026-11-02 (tent.) | File: reports/research/HIMS_2026-08-16.md
+2026-08-16 | WDC | Verdict: Watch | Composite: 5.8/10 | Earnings: 2026-10-29 (tent.) | File: reports/research/WDC_2026-08-16.md
+2026-08-16 | POWL | Verdict: Watch | Composite: 5.8/10 | Earnings: 2026-11-17 (tent.) | File: reports/research/POWL_2026-08-16.md

@@ -1,0 +1,127 @@
+{
+  "source": "ta_confluence",
+  "ticker": "UMAC",
+  "as_of": "2026-08-09",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": "reports/charts/tradewhisperer/UMAC_tw_1D_2026-08-07.json",
+    "tw_weekly": "reports/charts/tradewhisperer/UMAC_tw_1W_2026-08-07.json",
+    "tw_list": "reports/charts/tradewhisperer/list_tw_daily_2026-08-07.json",
+    "gex": "reports/charts/gex_vex/UMAC_gex_2026-08-09.json",
+    "vex": "reports/charts/gex_vex/UMAC_vex_2026-08-09.json",
+    "operator": "reports/charts/operator/UMAC_operator_2026-08-09.json"
+  },
+  "score": 73,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 15,
+      "note": "Daily TW **GREEN** (chart + list 2026-08-07) — long continuation half-credit; not BLUE/BLUE_GREEN trigger"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Weekly TW **GREEN** — HTF supports continuation (not fighting long)"
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 18,
+      "note": "Shared upside king 30/Aug-21 aligns with path toward fib 1.618~31.58; GEX floors 25/22.5 support breakout shelf. Discount: +8% chase, ATM front-week GEX 26=-83 chop, VEX -902 at 22.5 if shelf fails, modest VEX -85 near 32"
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 12,
+      "note": "GEX∩VEX king at 30 / 2026-08-21 on path to thesis; slight discount because operator stretch target is 31.58–32 / ATH beyond the king wall"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 8,
+      "note": "Clear 23.46 break/retest, 200 SMA bounce, channel, fib 1.618=31.58, RSI buyers ~60. Half-down for sitting on VP POC~26.25 after strong green day (edge clearer on hold of 23.46–25 than chase through ATM neg GEX)"
+    }
+  },
+  "verdict": "WATCH",
+  "judgment": {
+    "devils_advocate": [
+      "GREEN continuation after +8% into ATM negative GEX (−83 at 26) can stall/wick before delivering to the 30 king",
+      "Map king at 30 is a magnet *and* a wall — pin/reject risk before any fill of fib 1.618=31.58 or ATH",
+      "If 23.46 fails, VEX −902 at 22.5 can amplify a violent flush (not a gentle retest)"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily prints PINK or PINK_RED (or GREEN→PINK cancel) while long",
+      "maps": "Invalid if Aug-21 king leaves 30 / upside magnets roll down while 22.5 negative VEX expands as the active magnet",
+      "operator": "Invalid on daily close back below 23.46 (fib 1.0 / break-retest) or loss of ascending-channel structure with RSI white breaking back below 50"
+    },
+    "not_allowed_to_ignore": [
+      "TW is **GREEN continuation**, not a fresh BLUE trigger — half rubric weight vs candle-first BLUE setups",
+      "Shared map king is **30**, not 32 — treat fib 1.618/ATH as second-leg stretch after 30",
+      "Large negative VEX at **22.5** means a failed 23.46 retest can be violent, not orderly"
+    ],
+    "rr_sketch": {
+      "entry_zone": "24.5–26.5 (prefer hold/reclaim of 23.46–25 shelf over chasing 26+ into ATM neg GEX); spot 26.11 already extended",
+      "stop": 22.9,
+      "targets": [
+        {
+          "level": 30.0,
+          "note": "GEX∩VEX king / primary magnet"
+        },
+        {
+          "level": 31.58,
+          "note": "operator fib 1.618"
+        },
+        {
+          "level": 34.35,
+          "note": "ATH stretch"
+        }
+      ],
+      "rough_rr": "~1.2–1.6R to 30 from ~25.5 with stop ~22.9; ~2R+ to 31.58 if 30 clears — chase from 26.11 compresses R:R into the king"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all three sources; GREEN vs BLUE weight and 30-vs-32 stretch surfaced)"
+    },
+    "one_thing_to_verify": "Whether price can negotiate/clear the **30** map king without pinning — do not treat fib 1.618≈32 as owed while sitting on the ATM neg-GEX / POC shelf."
+  },
+  "override": null,
+  "gaps": [
+    "TW chart/list as_of 2026-08-07 vs maps/operator 2026-08-09 — color still GREEN on list; refresh if list updates",
+    "Exact SMA numeric prints unlabeled on operator panes"
+  ],
+  "hard_stops": [],
+  "spot": 26.11,
+  "change_pct": 7.94,
+  "operator_thesis": "Long UMAC. Broke above previous resistance at 23.46 and retested once. Previously bounced off the 200 SMA on the daily; now at a VP shelf and keeping within a longer-term upwards channel. Looking for continuation and maybe a retest of ATH around the 1.618 fib ~32.",
+  "map_summary": {
+    "shared_upside_magnet": {
+      "strike": 30.0,
+      "expiration": "2026-08-21",
+      "gex_k": 573,
+      "vex_k": 1918
+    },
+    "support_gex": [
+      {
+        "strike": 25.0,
+        "value_k": 258
+      },
+      {
+        "strike": 22.5,
+        "value_k": 301
+      }
+    ],
+    "downside_vex_risk": {
+      "strike": 22.5,
+      "value_k": -902
+    },
+    "atm_chop_gex": {
+      "strike": 26.0,
+      "expiration": "2026-08-14",
+      "value_k": -83
+    }
+  },
+  "upgrade_to_play": "Hold/reclaim 23.46–25 after a dig, or clean acceptance through 30 toward 31.58 with TW still GREEN/BLUE and RSI white holding 50"
+}

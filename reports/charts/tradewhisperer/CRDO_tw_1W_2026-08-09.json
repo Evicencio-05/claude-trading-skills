@@ -1,0 +1,61 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "CRDO",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "CRDO 1W @TradexWhisperer chart; O201.55 H250 L195.39 C249.89 (+20.73%); recent BLUE candles after pink; watermark TradexWhisperer"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1W",
+    "last": 249.89,
+    "change": 42.9,
+    "change_pct": 20.73,
+    "ohlc": {
+      "o": 201.55,
+      "h": 250.0,
+      "l": 195.39,
+      "c": 249.89
+    },
+    "volume": null,
+    "current_candle_color": "BLUE",
+    "recent_candle_sequence": [
+      "GREEN",
+      "PINK",
+      "BLUE",
+      "BLUE"
+    ],
+    "ma_levels": {
+      "orange": 165.15,
+      "blue": 114.37
+    },
+    "volume_profile_notes": "Major HVN shelf ~150–210; price above into thinner profile toward prior highs",
+    "oscillators": {
+      "pane1": {
+        "blue": 17.91,
+        "orange": 16.66,
+        "note": "curling up from oversold"
+      },
+      "pane2": {
+        "blue": 24.54,
+        "orange": 25.03,
+        "note": "high positive / near flat"
+      },
+      "pane3": {
+        "value": "369.34M",
+        "note": "accumulation rising"
+      }
+    },
+    "price_vs_mas": "above_all",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "No weekly TW list for CRDO — color from chart bodies",
+    "Sequence approximate from visible recent weeks"
+  ],
+  "next": null
+}

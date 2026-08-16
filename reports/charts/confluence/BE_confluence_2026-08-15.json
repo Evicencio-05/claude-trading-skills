@@ -1,0 +1,133 @@
+{
+  "source": "ta_confluence",
+  "ticker": "BE",
+  "as_of": "2026-08-15",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": null,
+    "tw_list": "reports/charts/tradewhisperer/list_tw_daily_2026-08-07.json",
+    "gex": "reports/charts/gex_vex/BE_gex_2026-08-15.json",
+    "vex": "reports/charts/gex_vex/BE_vex_2026-08-15.json",
+    "operator": "reports/charts/operator/BE_operator_2026-08-15.json"
+  },
+  "score": 42,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 0,
+      "note": "Daily TW list 2026-08-07 = **PINK_RED** — wrong-side for long (short-trigger color). Stale by 8 days vs recovery to 230, but still zero until refreshed"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "No weekly/monthly TW for BE — HTF absent → full credit per rubric"
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 10,
+      "note": "Distant upside magnets (VEX king 370; 270/280/300 positives) support long *destination*, but front-week **250 wall** (GEX −2134 / VEX −30366★) + ATM neg 230 block the path. Half-down to low: maps are magnet-rich above, gatekeeper-hostile near spot"
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 6,
+      "note": "Strong GEX∩VEX overlap at hostile **250** wall and ATM **230** neg — not thesis-supportive. Support zone **220** is a **fight** (GEX +704 vs VEX −7441). Upside overlap at 270 is past the wall"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 6,
+      "note": "Clean kill at fib 1.618=220.70; asymmetric to 285 *if* path clears. Discount: below declining 50 SMA (~255), RSI not buyer strength (~47), mid-recovery consolidation on secondary VP shelf"
+    }
+  },
+  "verdict": "NO_TRADE",
+  "judgment": {
+    "devils_advocate": [
+      "Last TW print on file is **PINK_RED** (2026-08-07) — long bias fights the only candle color we have until a fresh list/chart",
+      "VEX ★ **250 / −$30,366K** is the real near-term story — upside magnets at 270–370 are behind a hostile gatekeeper, not a clean path",
+      "GEX +704 at 220 looks like a floor, but VEX −7441 at the same strike means a break of 220.70 can be *violent* (amplify), not a gentle stop-out"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily remains/prints PINK or PINK_RED while forcing long (need fresh non-hostile color before PLAY)",
+      "maps": "Invalid if 250 wall expands as the active magnet / upside 270+ nodes roll down while 220/200 negatives dominate",
+      "operator": "Invalid on daily close below **220.70** (fib 1.618) — matches operator tight kill"
+    },
+    "not_allowed_to_ignore": [
+      "Front-week **250** GEX∩VEX negative wall sits between spot (~230) and first real upside positives (~260–270)",
+      "**220** is not dual-mode support — GEX floor vs VEX wicky fight",
+      "TW **PINK_RED** on last list (stale) — do not treat maps alone as a long trigger"
+    ],
+    "rr_sketch": {
+      "entry_zone": "228–232 (current) — only if accepting 250-wall negotiation risk; prefer wait for hold/reclaim structure with fresh TW",
+      "stop": 220.7,
+      "targets": [
+        {
+          "level": 250.0,
+          "note": "gatekeeper — negotiate/clear, not a profit target"
+        },
+        {
+          "level": 260.0,
+          "note": "GEX +578 / ~50 SMA zone"
+        },
+        {
+          "level": 270.0,
+          "note": "first large shared upside positive (GEX +304 / VEX +13466)"
+        },
+        {
+          "level": 285.0,
+          "note": "operator fib 2.618"
+        }
+      ],
+      "rough_rr": "~9R risk to 220.70 from ~230; ~30–40 pts to 260–270 (~3–4R) *if* 250 clears — but first obstacle is the wall, so chase R:R from spot is illusory until acceptance above 250"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "tw_fresh": false,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all map+operator sources; stale PINK_RED and 250-wall / 220-fight surfaced — NO_TRADE is disciplined)"
+    },
+    "one_thing_to_verify": "Do not overweight distant green upside magnets (370 king) while sitting under a starred **250** VEX wall — the wall is the near-term map, not the 370 magnet."
+  },
+  "override": null,
+  "gaps": [
+    "TW color from list_tw_daily_2026-08-07 only (PINK_RED) — 8 days stale; no same-day TW chart for BE",
+    "No weekly TW for BE",
+    "Operator SMA/RSI numerics estimated from chart"
+  ],
+  "hard_stops": [],
+  "spot": 229.94,
+  "change_pct": -2.46,
+  "operator_thesis": "Long BE. Looks pretty strong for the upside, but very tight invalidation if it breaks under this current level — most acceptable downside anything under 220.7.",
+  "map_summary": {
+    "vex_king": {
+      "strike": 370.0,
+      "expiration": "2026-09-18",
+      "value_k": 41245
+    },
+    "gex_king": {
+      "strike": 250.0,
+      "expiration": "2026-08-21",
+      "value_k": -2134
+    },
+    "overhead_wall": {
+      "strike": 250.0,
+      "expiration": "2026-08-21",
+      "gex_k": -2134,
+      "vex_k": -30366
+    },
+    "support_fight_220": {
+      "gex_k": 704,
+      "vex_k": -7441
+    },
+    "atm_neg": {
+      "strike": 230.0,
+      "gex_k": -1366,
+      "vex_k": -2457
+    }
+  },
+  "upgrade_to_watch": "Fresh daily TW not PINK/RED (ideally GREEN+) while holding 220.70 with RSI reclaim of 50",
+  "upgrade_to_play": "Clear/accept above **250** wall toward 260–270 with supportive TW + RSI buyer strength, or map reshuffle that shrinks 250 negatives and confirms 220 as dual-mode floor"
+}
