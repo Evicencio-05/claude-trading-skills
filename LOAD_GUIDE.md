@@ -16,7 +16,7 @@
 
 | Phase | Load | Skip |
 |-------|------|------|
-| **Phase 1** | project-docs/phase-1-research-copilot.md | All other phase docs |
+| **Phase 1** | project-docs/phase-1-research-copilot.md (TA + Co-pilot) | All other phase docs |
 | Phase 2 | project-docs/phase-2-learning-loop.md | All other phase docs |
 | Phase 3 | project-docs/phase-3-agentic-execution.md | All other phase docs |
 
@@ -26,6 +26,10 @@
 |------|-----------|
 | project-docs/trading-pipeline-checklist.md | Daily/weekly/trade operator cadence |
 | project-docs/playbook.md | Planning a trade, reviewing a position, running a command |
+| commands/ta-confluence.md | TA fusion session (candle_first / map_first) |
+| commands/tradewhisperer-charts.md · gex-vex-maps · operator-charts | Chart / list intakes |
+| commands/agentic-copilot-trade.md | Agentic (C) co-pilot place flow |
+| .cursor/skills/ta-confluence/references/prediction_log_v15.md | After confluence — prediction / process log |
 | project-docs/audit/skills_audit.md | Checking skill status, ratings, or operational notes |
 | project-docs/audit/skills_audit_detail.md | Investigating a specific skill in detail |
 | project-docs/reference/cost-discipline.md | Evaluating API costs or model routing |
@@ -34,22 +38,19 @@
 | project-docs/reference/tech-stack.md | Architecture decisions |
 | project-docs/reference/risk-register.md | Risk assessment or safety review |
 | decisions.md | A prior decision is being questioned or revisited |
-| commands/deep-research.md | Deep research workflow (Claude `/deep-research` or Cursor `deep-research` skill) |
-| commands/update-research.md | Update research workflow |
+| commands/deep-research.md | Optional fundamentals (not daily core) |
+| commands/update-research.md | Optional research refresh |
 | commands/intraday-options.md | Running /intraday-options |
 | commands/options-flow-tail.md | Options flow screener → primary tail |
-| commands/ta-confluence.md | Fuse TW / GEX-VEX / operator charts |
-| commands/agentic-copilot-trade.md | Portfolio C co-pilot trade (confirm before place) |
-| commands/tradewhisperer-charts.md / gex-vex-maps / operator-charts | TA intake skills (user-supplied screenshots) |
-| scripts/research_preflight.py | PASS 0 manifest before deep/update research — reuse same-day batch artifacts |
-| scripts/update_stale_research.py | Zero-LLM staleness scan; queue at state/research_update_queue.json |
+| scripts/research_preflight.py | PASS 0 before optional deep/update research |
+| scripts/update_stale_research.py | Zero-LLM staleness scan (optional) |
 | AGENTS.md | Choosing Cursor vs Claude Code vs terminal |
 | project-docs/reference/cursor-integration.md | Cursor setup, MCP, symlinks |
-| project-docs/reference/robinhood-mcp-integration.md | Robinhood Agentic MCP in Cursor, portfolio review, log-positions |
-| project-docs/reference/mcp-cursor-compat.md | Cursor MCP structuredContent wrapper (Robinhood, future servers) |
+| project-docs/reference/robinhood-mcp-integration.md | Robinhood Agentic MCP, portfolio review, log-positions (A+C) |
+| project-docs/reference/mcp-cursor-compat.md | Cursor MCP structuredContent wrapper |
 | .cursor/rules/ | Cursor auto-loads project-router; read on-demand if debugging rules |
 | CLAUDE.md (specific section) | Working on a specific skill's internals only |
-| commands/log-positions.md | After running robinhood_sync.py to log new positions to trader-memory-core |
+| commands/log-positions.md | After robinhood_sync (A) or Agentic fill (C) — **not IRA** |
 
 ## Never Load Routinely
 
@@ -71,12 +72,13 @@
 
 ## Key Operational Facts (do not look these up elsewhere)
 
-- Active phase: **Phase 1** (check STATUS.md)
-- economic-calendar-fetcher: BLOCKED on v3 — use scripts/fred_calendar.py (stable calendar available but FRED is primary)
-- exposure-coach: Schema mismatch FIXED 2026-05-10 — check STATUS.md for current state
-- vcp-screener / canslim / earnings-trade-analyzer: **Starter active** — use `--universe` for watchlist; full S&P 500 needs FMP Premium ($69/mo)
-- market-top-detector: works on Starter stable API (no `--static-basket` required)
-- Portfolio B is a Robinhood IRA — IRA options rules apply
+- Active phase: **Phase 1 — TA + Co-pilot** (check STATUS.md)
+- Daily core: TW lists → GEX/VEX → operator charts → `ta-confluence` → optional Agentic confirm
+- Deep research / FMP screeners: **on demand only** — not exit-blocking
+- Log theses for **Portfolio A + C only** — IRA (B) logging discontinued
+- Trade MCP: **Portfolio C (Agentic) only**
+- economic-calendar-fetcher: use `scripts/fred_calendar.py` if macro timing matters
+- vcp/canslim: Starter + `--universe` if screening; Premium not required for TA path
 - Full operational rules: project-docs/playbook.md
 
 ## Cursor sessions
@@ -85,14 +87,14 @@ Same load order as above. Cursor applies `.cursor/rules/project-router.mdc` auto
 
 1. Open repo in Cursor — rules load PROJECT charter constraints without pasting them each chat.
 2. Read `project-docs/STATUS.md` for this week's focus (or ask the agent to read it).
-3. Operator cadence (daily pre-market, weekly research, per-trade co-pilot): [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md).
-4. Invoke skills by name (`market-breadth-analyzer`, `deep-research on AAPL`, etc.) — see `.cursor/skills/README.md`.
-5. For workflows: use `.cursor/skills/deep-research`, `update-research`, `log-positions`, or `commands/*.md` directly.
+3. Operator cadence (daily TA + posture, weekly A/C review, per-trade co-pilot): [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md).
+4. Invoke TA skills by name (`ta-confluence`, `tradewhisperer-charts`, …) — see `.cursor/skills/README.md`.
+5. Optional fundamentals: `.cursor/skills/deep-research` / `update-research` on demand.
 
-**Portfolio:** In Cursor, connect Robinhood MCP (see `project-docs/reference/robinhood-mcp-integration.md`). Use skills `robinhood-portfolio-review` and `log-positions`. Scheduled taxable sync still uses `robinhood_sync.py`.
+**Portfolio:** Connect Robinhood MCP. Skills `robinhood-portfolio-review` and `log-positions` for **A + C**. Scheduled taxable sync: `robinhood_sync.py`. Do not run IRA four-questions logging.
 
 ## Claude Code sessions
 
 1. Read PROJECT.md, this file, STATUS.md (same as Cursor).
-2. Use slash commands in `commands/` when available (`/deep-research`, `/log-positions`).
+2. Use slash commands in `commands/` (`/ta-confluence`, `/agentic-copilot-trade`, `/log-positions`).
 3. Symlink `skills/<name>` → `~/.claude/skills/<name>` so the repo stays the single source of truth.

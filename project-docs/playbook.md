@@ -3,7 +3,18 @@
 > Canonical home for rules derived from live trading, audit,
 > and system operation. Load when planning trades or reviewing
 > positions. Updated at the end of each phase.
-> Last updated: 2026-05-29
+> Last updated: 2026-08-16
+
+---
+
+## Session core (TA-first)
+
+Daily product: TradeWhisperer **lists** + GEX/VEX + operator charts →
+`/ta-confluence` → PLAY/WATCH/NO_TRADE → optional `/agentic-copilot-trade` on
+Portfolio C. Deep research and FMP screeners are on-demand only.
+
+**Account scope:** Log and size for Portfolio **A** (taxable) and **C** (Agentic).
+**Do not log IRA (Portfolio B)** — operator discontinued four-questions cadence.
 
 ---
 
@@ -27,26 +38,15 @@ at $500 the token cost exceeds the signal value.
 
 ---
 
-## IRA Rules (Portfolio B)
+## IRA (Portfolio B) — out of operator scope
 
-**Portfolio B is a Robinhood IRA. All options must be IRA-eligible.**
-Permitted: long calls, long puts, covered calls, cash-secured puts.
-Not permitted: naked selling, undefined risk spreads, multi-leg
-strategies requiring margin.
+Portfolio B (Roth IRA) may appear in MCP account discovery. **Do not:**
+- Run `/log-positions` four-questions for IRA holdings
+- Treat IRA logging as a Phase 1 exit criterion
+- Spend session time on IRA thesis intake
 
-**Every options recommendation for Portfolio B must be flagged:**
-- IRA-eligible: [Yes/No] — [strategy name]
-Before presenting any options strategy as actionable for Portfolio B,
-confirm IRA eligibility. Non-eligible suggestions are educational only.
-
-**IRA capital is not easily replenished.**
-2026 contribution limit: $7,000 ($8,000 if 50+).
-Significant drawdown cannot be recovered the same way as
-a taxable account. This reinforces the importance of:
-- Sizing for maximum loss explicitly
-- Using defined-risk structures where possible
-- Not treating the IRA as a speculation account despite
-  the learning-first mandate
+MCP trades on IRA remain forbidden. If the operator later resumes IRA
+logging, restore rules from git history / decisions.md — until then skip B.
 
 ---
 
@@ -61,24 +61,24 @@ Only intermediate skill run artifacts (loose `.json` files) are gitignored.
 
 **Portfolios (2026-05-28):**
 
-| Label | Account | Size | Sync path |
-|-------|---------|------|-----------|
-| A | Robinhood taxable | ~$250 | `robinhood_sync.py` → `pending_ingest.json` |
-| B | Robinhood Roth IRA | ~$10K | Manual — thesis-manager or `/log-positions` |
-| C | Robinhood Agentic | ~$50 | Official Robinhood Agentic MCP (Cursor) |
+| Label | Account | Size | Sync / log path |
+|-------|---------|------|-----------------|
+| A | Robinhood taxable | ~$250 | `robinhood_sync.py` → `pending_ingest.json` → `/log-positions` |
+| B | Robinhood Roth IRA | ~$10K | **Do not log** (discover-only) |
+| C | Robinhood Agentic | ~$50 | Official Robinhood Agentic MCP → `/log-positions` after fills |
 
 **Robinhood sync workflow (Portfolio A):**
 1. `uv run python3 scripts/robinhood_sync.py` (2FA on first run only)
 2. Fill ACCOUNT_MAP in script with printed account IDs (refresh if login changed)
-3. Run `/log-positions` in Claude Code — answer 4 questions per position
+3. Run `/log-positions` for **taxable (A) only** — answer 4 questions per new A position
 
 **Robinhood Agentic MCP (Portfolio C):**
-Read all accounts; trade Agentic only. Co-pilot workflow:
+Trade Agentic only. Co-pilot workflow:
 [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md)
-(confirm → review → confirm → place). IRA (B) is read + thesis logging only —
-see [decisions.md](../decisions.md).
+(confirm → review → confirm → place). Log C fills to `robinhood_agentic`.
+Skip IRA (B) logging — see [decisions.md](../decisions.md) / PROJECT.md.
 
-What sync/MCP captures automatically: ticker, size, avg cost, account, options fields, IRA flags.
+What sync/MCP captures automatically: ticker, size, avg cost, account, options fields.
 What always requires human input: thesis, confidence, stop, target.
 
 **Scheduled sync:** `robinhood-sync.timer` at 4:30 PM ET weekdays — see [launchd/README.md](../launchd/README.md).
@@ -94,16 +94,12 @@ Nested `composite.composite_score` paths parse correctly (breadth/uptrend).
 LOW confidence when only breadth+uptrend provided is **expected** — missing
 `regime` and `top_risk` are in CRITICAL_INPUTS. Run weekly with full inputs when FMP allows.
 
-**vcp-screener is blocked on free FMP tier.**
-Batch quote endpoint restricted on free tier.
-FMP Starter ($29/mo) approved — upgrade before next live session.
-Until upgraded: skip vcp-screener step in stock selection pipeline.
-Manual VCP validation on CANSLIM candidates is the workaround.
+**vcp-screener (optional / demoted):** FMP Starter active — use `--universe`
+from watchlist. Full S&P 500 needs Premium (not approved). TA-first path
+does not require daily vcp runs.
 
-**market-top-detector: use --static-basket flag.**
-QQQ and sector ETFs blocked on free FMP tier.
---static-basket flag enables SPY-only mode.
-Loses 2 of 6 components but output remains useful.
+**market-top-detector:** works on Starter stable API for posture context;
+`--static-basket` only if ETF endpoints fail.
 
 **ftd-detector: SPY-only graceful degradation.**
 QQQ component blocked on free FMP tier.
@@ -114,9 +110,9 @@ NASDAQ component restored when FMP Starter is active.
 
 ## Portfolio Scale Rules
 
-Portfolio A: ~$250 Robinhood taxable (deployment capital).
-Portfolio B: ~$10K Robinhood IRA (full trading, IRA restrictions).
-Portfolio C: ~$50 Robinhood Agentic (equities; options later).
+Portfolio A: ~$250 Robinhood taxable (deployment capital) — sync + log.
+Portfolio B: ~$10K Robinhood IRA — out of logging scope.
+Portfolio C: ~$50 Robinhood Agentic (equities; options later) — trade + log.
 
 **Skill ratings that scale with portfolio size:**
 - exposure-coach: H:3 at $500 -> H:5 at $50K

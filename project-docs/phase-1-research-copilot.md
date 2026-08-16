@@ -1,48 +1,61 @@
-# Phase 1 — Research + Co-Pilot Trading
+# Phase 1 — TA + Co-Pilot Trading
 
-**Duration:** 4–6 weeks (active from 2026-05-29)
-**Goal:** Reliable daily research → thesis → co-pilot execution on Robinhood Agentic; production-ready swing pipeline and thesis logging.
+**Duration:** active from 2026-05-29; TA-first pivot 2026-08-09; charter A+C scope 2026-08-16  
+**Goal:** Reliable TA session → confluence brief → co-pilot execution on Robinhood Agentic (C); thesis logging for **A + C only**.
 
-**Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md) — daily, weekly, research, and per-trade steps.
+**Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md) — daily TA + posture, weekly broker snapshot, per-trade Agentic steps.
 
-**Prerequisites:** Phase 1 audit complete ([STATUS.md](STATUS.md), [skills_audit.md](audit/skills_audit.md)).
+**Prerequisites:** Phase 1 audit complete ([STATUS.md](STATUS.md), [skills_audit.md](audit/skills_audit.md)). TA intakes + `ta-confluence` shipped.
+
+> Filename kept as `phase-1-research-copilot.md` for stable links. Content is TA + Co-pilot.
 
 ---
 
 ## Why this phase exists
 
-The fork's stock/options skills and Robinhood MCP hybrid are built. The **swing research pipeline** and **thesis logging** are not yet production-ready for live Agentic trades. This phase closes that gap before advancing to the learning loop.
+Chart intakes, confluence, and Robinhood MCP co-pilot are built. The gap is **live full-stack TA sessions**, **confirmed Agentic fills from PLAY**, and **A/C thesis discipline** before the learning loop (Phase 2). Deep research and FMP screeners remain available on demand — they are not the daily product.
 
 ---
 
 ## Workstreams (parallel)
 
-### 1. Research pipeline
+### 1. TA pipeline (primary)
 
 | Item | Target |
 |------|--------|
-| FMP Starter | **Active** 2026-05-31 — watchlist vcp/canslim/earnings via `--universe`; full S&P 500 needs Premium ($69/mo) |
-| Daily batch → PASS 0 | Run watchlist screeners once/day; per-ticker deep/update research reuses via [`scripts/research_preflight.py`](../../scripts/research_preflight.py) ([`commands/deep-research.md`](../../commands/deep-research.md) PASS 0) |
-| Operator cadence | See checklist § [Daily](trading-pipeline-checklist.md#daily-trading-days), § [Weekly](trading-pipeline-checklist.md#weekly), § [Research](trading-pipeline-checklist.md#research-on-demand) |
+| Intakes | TW **lists** (color SoT) + GEX/VEX + operator charts → `reports/charts/` |
+| Resolve | `scripts/tw_list_resolve.py` shortlist / stack / overlap |
+| Fusion | `/ta-confluence` candle_first or map_first → PLAY/WATCH/NO_TRADE |
+| Prediction log | v1.5 after real sessions — [.cursor/skills/ta-confluence/references/prediction_log_v15.md](../.cursor/skills/ta-confluence/references/prediction_log_v15.md) |
+| Posture context | Daily `pre_market.py` (zero LLM) — filter size, not idea source |
 
-**Watchlist state:** [config/research_watchlist.yaml](../config/research_watchlist.yaml) · [config/research_exclude.yaml](../config/research_exclude.yaml) · staleness in [STATUS.md](STATUS.md) or latest `reports/logs/research_staleness_*.md`
+**Commands:** [ta-confluence.md](../commands/ta-confluence.md) · [tradewhisperer-charts.md](../commands/tradewhisperer-charts.md) · [gex-vex-maps.md](../commands/gex-vex-maps.md) · [operator-charts.md](../commands/operator-charts.md)
 
-### 2. Thesis discipline
+### 2. Thesis discipline (A + C only)
 
 | Item | Target |
 |------|--------|
-| Trade count | 10+ logged across ≥2 types (stock, option; paper OK) |
-| IRA | All open IRA positions in `trader-memory-core` via MCP `ingest-pending` + `log-positions` |
-| Pending | Close/log expired: TSLA, PENG (POWL closed 2026-05-29) |
+| Accounts | Log `robinhood_agentic` (C) and `robinhood_taxable` (A) only |
+| IRA (B) | **Do not log** — no four-questions cadence |
+| Trade count | Agentic fills + A positions via `trader-memory-core` (link confluence artifact when from TA) |
+| Pending | Close/log expired A/C theses as needed (TSLA, PENG historically) |
 | Rules | Never write `state/theses/` directly — `thesis_store.py` / thesis-manager only |
 
-### 3. Robinhood co-pilot (Agentic only)
+### 3. Robinhood co-pilot (Agentic C only)
 
 See checklist § [Per-trade co-pilot](trading-pipeline-checklist.md#per-trade-co-pilot-agentic-only).
 
 **Never MCP trade:** IRA (`ira_robinhood`), taxable (`robinhood_taxable`). Taxable sync stays on `robinhood_sync.py`.
 
-### 4. Cost & hygiene
+### 4. Optional research (on demand — not exit-blocking)
+
+| Item | Notes |
+|------|--------|
+| Deep / update research | [commands/deep-research.md](../commands/deep-research.md) when fundamentals matter |
+| Screeners | `--universe` watchlist on FMP Starter; Premium not required for Phase 1 |
+| Watchlist | [config/research_watchlist.yaml](../config/research_watchlist.yaml) |
+
+### 5. Cost & hygiene
 
 - Anthropic spend tracking toward exit (&lt;$20)
 - Pre-commit clean on commit
@@ -52,16 +65,17 @@ See checklist § [Per-trade co-pilot](trading-pipeline-checklist.md#per-trade-co
 
 ## Exit criteria (Phase 1 → Phase 2)
 
-Progress detail: [docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md).
+Progress: [STATUS.md](STATUS.md).
 
-- [x] FMP Starter active; `vcp-screener` run on watchlist universe at least once (11 quotes, 2026-05-31)
-- [ ] 14 consecutive trading days: `pre_market.py` + posture log (**12/14** unique days as of 2026-05-30)
-- [x] 5+ deep-research or update-research reports on active watchlist (5 tickers on disk; 2 stale need update)
-- [ ] 10+ trades logged across ≥2 types via `trader-memory-core`
-- [ ] 3+ co-pilot trades on Agentic via MCP (user-confirmed each)
-- [ ] IRA positions logged (MCP read + four questions)
-- [ ] `reports/portfolio/portfolio_review_*.md` for 2+ dates
+- [x] TA intakes + `ta-confluence` + `agentic-copilot-trade` shipped
+- [ ] Live full-stack confluence sessions (TW lists D+W + GEX/VEX + operator chart)
+- [ ] Prediction / process log v1.5 filled from real sessions
+- [ ] 3+ co-pilot trades on Agentic (C) via MCP (user-confirmed each)
+- [ ] A+C trades logged via `trader-memory-core` (IRA not required)
+- [ ] `reports/portfolio/portfolio_review_*.md` for 2+ dates (A+C focus)
 - [ ] Anthropic spend cap met; pre-commit clean
+
+**Not exit criteria:** deep-research count, FPS staleness, IRA logging, FMP Premium S&P universe.
 
 ---
 
@@ -69,7 +83,9 @@ Progress detail: [docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.
 
 - Autonomous MCP order placement (Phase 3 gate)
 - MCP trades on IRA or taxable
+- IRA thesis logging / four-questions
 - Upstream `skills/<name>/` rewrites except fixes in [decisions.md](../decisions.md)
+- Prioritizing parked FMP/CI research debt over TA path
 
 ---
 

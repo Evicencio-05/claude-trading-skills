@@ -9,13 +9,13 @@
 
 A private fork of `claude-trading-skills` extended into a personalized, continuously learning AI trading agent focused on:
 
-**US equities & options — research, market analysis, portfolio management, and Robinhood Agentic execution**
+**US equities & options — TA-first setup selection, market posture, portfolio hygiene, and Robinhood Agentic co-pilot execution**
 
-Deep research, screening, and trade planning using the existing 40+ skills. Covers swing trades, earnings plays, options strategies, and long-term positions across Robinhood accounts (taxable, IRA, Agentic).
+Primary loop: TradeWhisperer lists + Skylit GEX/VEX + operator charts → `ta-confluence` (PLAY/WATCH/NO_TRADE) → sized plan → user confirm → Agentic MCP place → thesis log. Deep research and FMP screeners are **on-demand support**, not the daily core.
 
 **Long-term vision:** An autonomous AI trading partner that learns from your trades, behavioral patterns, and outcomes — compounding edge over time.
 
-**Project posture:** Extend what exists. The stock research infrastructure is largely built. The gap is production-ready pipeline → thesis → co-pilot → learning loop → Agentic execution.
+**Project posture:** Extend what exists. Chart intakes and confluence are built. The gap is live TA sessions → confirmed Agentic fills → logged outcomes (A+C) → learning loop.
 
 ---
 
@@ -24,7 +24,8 @@ Deep research, screening, and trade planning using the existing 40+ skills. Cove
 - **Budget:** $30–50/mo target, $100/mo ceiling
 - **Time:** Limited weekly hours (college student)
 - **Capital:** ~$500 Robinhood across accounts (grows over time)
-- **Execution:** Robinhood Agentic MCP (Portfolio C); read all accounts, trade Agentic only
+- **Execution:** Robinhood Agentic MCP (Portfolio C); trade Agentic only
+- **Logging scope:** Portfolio C (Agentic) + Portfolio A (taxable individual) only — **do not log IRA (Portfolio B)**
 - **Hardware:** Local laptop/desktop only
 - **Repo:** Private fork; no upstream contributions yet
 
@@ -33,10 +34,10 @@ Deep research, screening, and trade planning using the existing 40+ skills. Cove
 ## Non-Negotiables (read every session)
 
 1. **Audit before building.** Use existing skills before extending them.
-2. **Robinhood MCP gates.** Read all accounts; trade Agentic account only; flag IRA-ineligible options before actionable advice.
+2. **Robinhood MCP gates.** Trade Agentic (C) only; never MCP-trade A or B. Thesis logging = **A + C only** (IRA logging discontinued).
 3. **No autonomous MCP execution before Phase 3B.** Co-pilot mode until Phase 3 sub-phase criteria met.
 4. **Risk controls are immutable from the agent.** Limits live in user-editable config, not agent-writable files.
-5. **Every trade is logged** to `trader-memory-core` — stocks and options.
+5. **Every A/C trade is logged** to `trader-memory-core` — stocks and options.
 6. **Cost discipline.** Default to free/local. Justify every paid subscription.
 7. **Human-in-the-loop for skill changes.** Auto-generated PRs require review.
 
@@ -48,12 +49,13 @@ Deep research, screening, and trade planning using the existing 40+ skills. Cove
 - Skylit ($99/mo) until Phase 2 exit with hard ROI criteria
 - Crypto, forex, mobile apps
 - Upstream contributions for now
+- **IRA (Portfolio B) thesis logging / four-questions cadence** — operator discontinued
 
 ---
 
 ## Current Status
 
-**Active phase:** Phase 1 — Research + Co-pilot. See `project-docs/STATUS.md` and `project-docs/phase-1-research-copilot.md`.
+**Active phase:** Phase 1 — TA + Co-pilot. See `project-docs/STATUS.md` and `project-docs/phase-1-research-copilot.md`.
 
 ---
 
@@ -74,7 +76,7 @@ Deep research, screening, and trade planning using the existing 40+ skills. Cove
 
 | Phase | Doc | Focus |
 |---|---|---|
-| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — Research pipeline + Robinhood co-pilot |
+| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — TA pipeline + Robinhood co-pilot (A+C) |
 | Phase 2 | `project-docs/phase-2-learning-loop.md` | Behavioral patterns, playbook, skill improvement |
 | Phase 3 | `project-docs/phase-3-agentic-execution.md` | Agentic MCP autonomous execution |
 
@@ -124,7 +126,8 @@ You cannot start Phase N until Phase N-1 exit criteria are met. When advancing:
 - **Co-pilot mode:** Agent surfaces alerts and recommendations; user confirms and executes
 - **Autonomous mode:** Agent executes within hard limits (Phase 3B+, Agentic account only)
 - **Kill switch:** User-triggered halt of all autonomous activity
+- **TA session:** TW lists + GEX/VEX + operator chart → `ta-confluence` brief
 
 ---
 
-*Last updated: 2026-05-29 | Owner: Ethan*
+*Last updated: 2026-08-16 | Owner: Ethan*

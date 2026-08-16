@@ -184,3 +184,12 @@ Decision: Ship `agentic-copilot-trade` (command + thin Cursor skill) with
 context gates → draft plan → user `confirm` → MCP `review_equity_order` → second confirm →
 `place_equity_order` → plan JSON + thesis_store. No autonomous place before Phase 3B.
 Revisit: After 3 filled co-pilot trades, tighten confirm phrasing if needed.
+
+**[2026-08-16] TA-first Phase 1 + A/C logging only.**
+Decision: Primary operator loop is TA intakes → `ta-confluence` → Agentic (C) co-pilot.
+Deep research / FMP screeners are on-demand, not exit-blocking. Thesis logging scope is
+Portfolio **A** (`robinhood_taxable`) + **C** (`robinhood_agentic`) only.
+**Discontinue IRA (B) four-questions / thesis logging** (operator time). MCP may still
+discover IRA accounts; do not spend sessions on IRA intake. Prediction log v1.5 template
+under `.cursor/skills/ta-confluence/references/prediction_log_v15.md`.
+Revisit: If operator resumes IRA logging, restore playbook IRA section from git history.
