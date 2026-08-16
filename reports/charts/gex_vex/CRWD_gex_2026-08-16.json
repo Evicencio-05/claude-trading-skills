@@ -1,0 +1,104 @@
+{
+  "source": "gex_vex",
+  "ticker": "CRWD",
+  "as_of": "2026-08-16",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot CRWD — spot 216.95 (−3.88%), map ~10:16:23"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 216.95,
+    "change": -8.74,
+    "change_pct": -3.88,
+    "atm_strike": 217.5,
+    "expirations": [
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-02",
+      "2026-10-16",
+      "2026-11-20"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 300.0,
+      "expiration": "2026-10-16",
+      "value_k": -833,
+      "sign": "neg",
+      "starred": false,
+      "note": "Distant upside abs outlier; not near-spot story"
+    },
+    "top_nodes": [
+      {"strike": 300.0, "expiration": "2026-10-16", "value_k": -833, "sign": "neg", "starred": false},
+      {"strike": 187.5, "expiration": "2026-09-18", "value_k": -680, "sign": "neg", "starred": true},
+      {"strike": 220.0, "expiration": "2026-08-21", "value_k": 487, "sign": "pos", "starred": false},
+      {"strike": 200.0, "expiration": "2026-08-21", "value_k": -428, "sign": "neg", "starred": false},
+      {"strike": 210.0, "expiration": "2026-08-21", "value_k": 407, "sign": "pos", "starred": false},
+      {"strike": 212.5, "expiration": "2026-08-21", "value_k": 406, "sign": "pos", "starred": false},
+      {"strike": 205.0, "expiration": "2026-10-16", "value_k": 365, "sign": "pos", "starred": false},
+      {"strike": 230.0, "expiration": "2026-09-18", "value_k": 305, "sign": "pos", "starred": false},
+      {"strike": 215.0, "expiration": "2026-08-21", "value_k": 272, "sign": "pos", "starred": false},
+      {"strike": 190.0, "expiration": "2026-08-28", "value_k": 183, "sign": "pos", "starred": false}
+    ],
+    "nodes_near_spot": [
+      {"strike": 220.0, "expiration": "2026-08-21", "value_k": 487, "sign": "pos"},
+      {"strike": 215.0, "expiration": "2026-08-21", "value_k": 272, "sign": "pos"},
+      {"strike": 212.5, "expiration": "2026-08-21", "value_k": 406, "sign": "pos"},
+      {"strike": 210.0, "expiration": "2026-08-21", "value_k": 407, "sign": "pos"}
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 210.0,
+        "expiration": "2026-08-21",
+        "value_k": 407,
+        "role": "positive_cushion_below_spot — pin/support vs cascade"
+      },
+      {
+        "strike": 200.0,
+        "expiration": "2026-08-21",
+        "value_k": -428,
+        "role": "first_negative_accelerator_under_cushion"
+      }
+    ],
+    "air_pockets": [
+      "Under 210 toward 200 — once positive cluster breaks, path into −428 at 200"
+    ],
+    "range_edges": {
+      "near_term_pos_cluster": "210–220 Aug-21",
+      "downside_neg": "200 Aug-21; 187.5 Sep-18 ★"
+    },
+    "map_timestamp": "2026-08-16 10:16:23",
+    "structure_notes": "Front-week positive GEX wall 210–220 cushions spot (pin risk for shorts). First clear neg at 200 Aug-21. Starred/large neg at 187.5 Sep-18 aligns with channel-bottom target zone. Distant −833 at 300 Oct-16 is abs king but far above.",
+    "confluence_with": {
+      "mode": "vex",
+      "artifact": "reports/charts/gex_vex/CRWD_vex_2026-08-16.json",
+      "overlap_zones": [
+        {
+          "strike": 187.5,
+          "note": "Shared thesis zone — GEX NEG (~−680★) vs VEX POS king (+25484): amplify vs magnet"
+        },
+        {
+          "strike": 200.0,
+          "note": "GEX NEG (~−428) vs VEX POS (+14471): accelerator vs support fight"
+        },
+        {
+          "strike": 230.0,
+          "note": "Both modes POS near 230 Sep"
+        }
+      ]
+    }
+  },
+  "confidence": "medium",
+  "gaps": [
+    "Full grid not transcribed — hotspots only",
+    "Exact cell $K near 210–220 have OCR ambiguity across reads; cluster sign/structure is reliable (pos cushion); |values| approximate"
+  ],
+  "next": null
+}

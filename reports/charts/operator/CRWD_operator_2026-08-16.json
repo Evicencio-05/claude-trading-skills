@@ -1,0 +1,95 @@
+{
+  "source": "operator",
+  "ticker": "CRWD",
+  "as_of": "2026-08-16",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "CRWD 1D NASDAQ chart: ascending channel from May; fib extensions; LuxAlgo VP; SMA 50/100/200; RSI pane; spot 216.95"
+    },
+    {
+      "type": "text",
+      "note": "Operator bias Short: weakening after long bullish run; RSI lower highs vs price higher highs; touched fib 2.618 at 227.08; target channel bottom ~190; low buy volume on last leg up — break lower could be significant"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 216.95,
+    "change": -8.74,
+    "change_pct": -3.88,
+    "volume": null,
+    "sma": {
+      "50": 178.0,
+      "100": 158.0,
+      "200": 142.0
+    },
+    "price_vs_sma": {
+      "50": "above",
+      "100": "above",
+      "200": "above"
+    },
+    "sr_levels": [227.5, 190.0, 173.43],
+    "fib_levels": [
+      {"ratio": "2.618", "price": 227.08, "color": "red"},
+      {"ratio": "1.618", "price": 173.43, "color": "blue"},
+      {"ratio": "1.0", "price": 140.28, "color": "white"},
+      {"ratio": "0.618", "price": 119.78, "color": "yellow"},
+      {"ratio": "0.5", "price": 113.45, "color": null},
+      {"ratio": "0", "price": 85.68, "color": "white"}
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "Long-term Low ~85.68 through mid-leg ~140.28 then extensions; 2.618 tags recent high",
+        "levels": [
+          {"ratio": "0", "price": 85.68},
+          {"ratio": "1.0", "price": 140.28},
+          {"ratio": "1.618", "price": 173.43},
+          {"ratio": "2.618", "price": 227.08}
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "visible range from ~85 low through ~227 swing high",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [105.0, 115.0, 125.0],
+      "trough_nodes": [],
+      "highest_volume_zones": ["100–130 deep HVN / primary acceptance"],
+      "lowest_volume_zones": ["~190–current — thin relative to base HVN; gap-like air above ~190"],
+      "profile_labels": {
+        "high": 227.5,
+        "low": 85.68
+      },
+      "colors_note": "orange/blue value-area nodes; gray lower volume"
+    },
+    "major_levels": [227.08, 190.0],
+    "rsi": {
+      "white": 60.0,
+      "yellow": null,
+      "mid_50": 50,
+      "buyer_strength": null,
+      "seller_strength": false,
+      "deterioration_watch": "White RSI made lower highs while price made higher highs into Aug; peaked >80 in June, now ~60 — buyers fading toward 50 from overbought",
+      "hold_note": "Not seller strength yet (need white < yellow and white < 50); momentum fade / bearish divergence only"
+    },
+    "channel": {
+      "type": "ascending_parallel",
+      "status": "rejected_upper_rail_pulling_back",
+      "notes": "Channel from ~May 2026; upper rail tagged with fib 2.618 ~227; lower rail currently ~190 (operator target)"
+    },
+    "earnings_markers": null,
+    "structure_notes": "Extended well above rising 50/100/200 SMAs. Rejection at fib 2.618 = 227.08 coinciding with channel top. Bearish RSI divergence + last up-leg on relatively lower volume. VP acceptance deep at 100–130; thin shelf under current price toward ~190.",
+    "operator_thesis": "Short after fib 2.618 / channel-top rejection with RSI divergence and weak volume; target channel bottom ~190; break lower may accelerate through thin VP.",
+    "chart_timestamp": "2026-08-16 ~10:13"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA prints approximate from chart scale (not labeled)",
+    "Yellow RSI line numeric not clearly readable — divergence assessed from white peaks only",
+    "Exact channel-bottom price ~190 is operator estimate (rail not price-labeled)"
+  ],
+  "next": null
+}
