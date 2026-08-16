@@ -1,0 +1,24 @@
+{
+  "source": "ta_confluence",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "as_of": "2026-08-15",
+  "shortlist": [
+    {
+      "ticker": "BE",
+      "tw_color": "PINK_RED",
+      "tw_as_of": "2026-08-07",
+      "score": 42,
+      "verdict": "NO_TRADE",
+      "spot": 229.94,
+      "king": "VEX 370 / 2026-09-18; near-term wall 250 / 2026-08-21"
+    }
+  ],
+  "gaps": [
+    "BE TW from list_tw_daily_2026-08-07 only (PINK_RED) — 8 days stale; no same-day TW chart",
+    "No weekly TW for BE"
+  ],
+  "override": null,
+  "updated": "BE map_first long confluence (NO_TRADE 42) — GEX+VEX+operator 2026-08-15"
+}

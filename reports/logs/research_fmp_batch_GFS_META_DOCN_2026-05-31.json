@@ -1,0 +1,248 @@
+{
+  "GFS": {
+    "ticker": "GFS",
+    "quote": {
+      "symbol": "GFS",
+      "name": "GLOBALFOUNDRIES Inc.",
+      "price": 79.97,
+      "changePercentage": -0.81855,
+      "change": -0.66,
+      "volume": 5892303,
+      "dayLow": 79.27,
+      "dayHigh": 82.79,
+      "yearHigh": 92.55,
+      "yearLow": 31.51,
+      "marketCap": 44496686683,
+      "priceAvg50": 60.2473,
+      "priceAvg200": 43.57528,
+      "exchange": "NASDAQ",
+      "open": 81.025,
+      "previousClose": 80.63,
+      "timestamp": 1780084801
+    },
+    "profile": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/profile/GFS"
+    },
+    "income": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/income-statement/GFS"
+    },
+    "balance": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/balance-sheet-statement/GFS"
+    },
+    "cashflow": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/cash-flow-statement/GFS"
+    },
+    "ratios": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/ratios/GFS"
+    },
+    "metrics": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/key-metrics/GFS"
+    },
+    "growth": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/financial-growth/GFS"
+    },
+    "earnings_calendar": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical/earning_calendar/GFS"
+    },
+    "analyst_estimates": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/analyst-estimates/GFS"
+    },
+    "price_target": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/price-target-consensus/GFS"
+    },
+    "grades": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/grade/GFS"
+    },
+    "insider": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/insider-trading"
+    },
+    "rsi": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/GFS"
+    },
+    "macd": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/GFS"
+    },
+    "historical": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical-price-full/GFS"
+    }
+  },
+  "META": {
+    "ticker": "META",
+    "quote": {
+      "symbol": "META",
+      "name": "Meta Platforms, Inc.",
+      "price": 632.51,
+      "changePercentage": -0.4376,
+      "change": -2.78,
+      "volume": 19806536,
+      "dayLow": 623.35,
+      "dayHigh": 634.5,
+      "yearHigh": 796.25,
+      "yearLow": 520.26,
+      "marketCap": 1605578129073,
+      "priceAvg50": 618.532,
+      "priceAvg200": 666.5715,
+      "exchange": "NASDAQ",
+      "open": 633.97,
+      "previousClose": 635.29,
+      "timestamp": 1780084801
+    },
+    "profile": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/profile/META"
+    },
+    "income": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/income-statement/META"
+    },
+    "balance": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/balance-sheet-statement/META"
+    },
+    "cashflow": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/cash-flow-statement/META"
+    },
+    "ratios": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/ratios/META"
+    },
+    "metrics": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/key-metrics/META"
+    },
+    "growth": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/financial-growth/META"
+    },
+    "earnings_calendar": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical/earning_calendar/META"
+    },
+    "analyst_estimates": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/analyst-estimates/META"
+    },
+    "price_target": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/price-target-consensus/META"
+    },
+    "grades": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/grade/META"
+    },
+    "insider": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/insider-trading"
+    },
+    "rsi": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/META"
+    },
+    "macd": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/META"
+    },
+    "historical": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical-price-full/META"
+    }
+  },
+  "DOCN": {
+    "ticker": "DOCN",
+    "quote": {
+      "symbol": "DOCN",
+      "name": "DigitalOcean Holdings, Inc.",
+      "price": 156.05,
+      "changePercentage": 2.7253,
+      "change": 4.14,
+      "volume": 2161307.74791,
+      "dayLow": 152,
+      "dayHigh": 158.74,
+      "yearHigh": 165.99,
+      "yearLow": 25.56,
+      "marketCap": 16286002200,
+      "priceAvg50": 111.4744,
+      "priceAvg200": 62.86535,
+      "exchange": "NYSE",
+      "open": 154.01,
+      "previousClose": 151.91,
+      "timestamp": 1780084799
+    },
+    "profile": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/profile/DOCN"
+    },
+    "income": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/income-statement/DOCN"
+    },
+    "balance": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/balance-sheet-statement/DOCN"
+    },
+    "cashflow": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/cash-flow-statement/DOCN"
+    },
+    "ratios": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/ratios/DOCN"
+    },
+    "metrics": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/key-metrics/DOCN"
+    },
+    "growth": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/financial-growth/DOCN"
+    },
+    "earnings_calendar": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical/earning_calendar/DOCN"
+    },
+    "analyst_estimates": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/analyst-estimates/DOCN"
+    },
+    "price_target": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/price-target-consensus/DOCN"
+    },
+    "grades": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/grade/DOCN"
+    },
+    "insider": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/insider-trading"
+    },
+    "rsi": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/DOCN"
+    },
+    "macd": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/technical_indicator/daily/DOCN"
+    },
+    "historical": {
+      "error": "403 forbidden",
+      "url": "https://financialmodelingprep.com/api/v3/historical-price-full/DOCN"
+    }
+  }
+}

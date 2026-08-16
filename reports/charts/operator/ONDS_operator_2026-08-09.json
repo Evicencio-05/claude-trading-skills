@@ -1,0 +1,124 @@
+{
+  "source": "operator",
+  "ticker": "ONDS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "ONDS 1D fib + SMA 50/100/200 + LuxAlgo VP + RSI: last 9.11; fib 0.382=9.25, 0.5=10.19, 0.618=11.14; on VP shelf ~8.5–9.2"
+    },
+    {
+      "type": "text",
+      "note": "Operator bias Long: reclaim 100 and 50 SMA daily; coming up to .382 fib — extension to .5 or .618 possible this week; sitting on VP shelf — jump to next higher shelf possible"
+    }
+  ],
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 9.11,
+    "change": 0.37,
+    "change_pct": 4.18,
+    "volume": null,
+    "sma": {
+      "50": 9.2,
+      "100": 9.45,
+      "200": 8.75
+    },
+    "price_vs_sma": {
+      "50": "below",
+      "100": "below",
+      "200": "above"
+    },
+    "sr_levels": [
+      4.3,
+      6.4,
+      7.7,
+      10.5,
+      11.3,
+      13.4
+    ],
+    "fib_levels": [
+      {
+        "ratio": "1.0",
+        "price": 14.19,
+        "color": null
+      },
+      {
+        "ratio": "0.786",
+        "price": 12.48,
+        "color": null
+      },
+      {
+        "ratio": "0.618",
+        "price": 11.14,
+        "color": null
+      },
+      {
+        "ratio": "0.5",
+        "price": 10.19,
+        "color": null
+      },
+      {
+        "ratio": "0.382",
+        "price": 9.25,
+        "color": null
+      },
+      {
+        "ratio": "0",
+        "price": 6.19,
+        "color": null
+      }
+    ],
+    "fib_sets": [
+      {
+        "anchor_note": "swing high ~14.19 to swing low ~6.19 (retracement up)",
+        "levels": [
+          {"ratio": "0.382", "price": 9.25},
+          {"ratio": "0.5", "price": 10.19},
+          {"ratio": "0.618", "price": 11.14},
+          {"ratio": "0.786", "price": 12.48},
+          {"ratio": "1.0", "price": 14.19}
+        ]
+      }
+    ],
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "visible profile from ~2025 base through current recovery",
+      "poc": null,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [8.75, 9.0, 10.5, 11.0],
+      "trough_nodes": [9.6],
+      "highest_volume_zones": [
+        "8.5–9.2 current shelf under/at spot",
+        "10.2–11.5 next higher shelf (aligns .5–.618 fib)"
+      ],
+      "lowest_volume_zones": [
+        "above ~9.5 toward 10.2 — LVN / thin air if 50/100 reclaim"
+      ],
+      "profile_labels": null,
+      "colors_note": "orange/blue value-area nodes; gray lower volume"
+    },
+    "major_levels": [7.13, 14.19],
+    "rsi": {
+      "white": 57.0,
+      "yellow": null,
+      "mid_50": 50,
+      "buyer_strength": true,
+      "seller_strength": false,
+      "deterioration_watch": null,
+      "hold_note": "white ~57 above 50 — hold reclaim of 50 on any dig"
+    },
+    "channel": null,
+    "earnings_markers": null,
+    "structure_notes": "Above 200 SMA (~8.75); below 50 (~9.20) and 100 (~9.45). Pressing fib 0.382=9.25 on current VP shelf. Clear LVN above into next shelf / fib 0.5–0.618 if SMAs reclaim.",
+    "operator_thesis": "Long ONDS — reclaim daily 50 and 100 SMA; at .382 fib with possible extension to .5/.618 this week; on VP shelf with jump to next higher shelf possible.",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "high",
+  "gaps": [
+    "SMA prints approximate from chart axis (50~9.20, 100~9.45, 200~8.75); cross-check TW pane labels 9.29/9.37",
+    "RSI yellow signal unlabeled — buyer_strength inferred from white>~50 only"
+  ],
+  "next": null
+}

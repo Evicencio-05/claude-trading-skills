@@ -1,0 +1,135 @@
+{
+  "source": "ta_confluence",
+  "ticker": "ONDS",
+  "as_of": "2026-08-09",
+  "mode": "map_first",
+  "period": "daily",
+  "bias": "long",
+  "artifacts": {
+    "tw": "reports/charts/tradewhisperer/ONDS_tw_1D_2026-08-07.json",
+    "tw_weekly": "reports/charts/tradewhisperer/ONDS_tw_1W_2026-08-07.json",
+    "tw_list": "reports/charts/tradewhisperer/list_tw_daily_2026-08-07.json",
+    "gex": "reports/charts/gex_vex/ONDS_gex_2026-08-09.json",
+    "vex": "reports/charts/gex_vex/ONDS_vex_2026-08-09.json",
+    "operator": "reports/charts/operator/ONDS_operator_2026-08-09.json"
+  },
+  "score": 74,
+  "factors": {
+    "tw_trigger_align": {
+      "weight": 30,
+      "score": 15,
+      "note": "Daily TW **GREEN** (list + 1D chart 2026-08-07) — long continuation half-credit; not BLUE/BLUE_GREEN trigger"
+    },
+    "htf_not_fighting": {
+      "weight": 20,
+      "score": 20,
+      "note": "Weekly TW **GREEN** large reclaim week (+21.6%, above orange MA ~8.95) — HTF supports, not fighting long"
+    },
+    "gex_vex_support": {
+      "weight": 25,
+      "score": 18,
+      "note": "Shared upside king 10/Sep-18 (GEX 1844 / VEX 2478) aligns with .5 fib / next VP shelf; GEX floors at 8 support shelf. Discount: near-term hostile GEX −941 at 9.5 Aug-28 and −562 at 10 Aug-14; VEX −537 at 8 if shelf fails"
+    },
+    "gex_vex_overlap": {
+      "weight": 15,
+      "score": 14,
+      "note": "GEX∩VEX king at 10 / 2026-09-18 on path to thesis (.5=10.19, next VP shelf); secondary overlap 13 toward .618=11.14"
+    },
+    "operator_structure": {
+      "weight": 10,
+      "score": 7,
+      "note": "Clear SMA reclaim trigger (50~9.20 / 100~9.45), fib 0.382=9.25, VP shelf→LVN→next shelf, RSI white~57 buyers. Half-down: still *below* 50/100 at decision zone — edge conditional on reclaim, not chase mid-chop"
+    }
+  },
+  "verdict": "WATCH",
+  "judgment": {
+    "devils_advocate": [
+      "GREEN continuation into fib 0.382 + 50/100 SMA sandwich can reject — daily stoch-style ~97 already stretched on TW 1D",
+      "Near-term GEX −941 at 9.5 (Aug-28) and −562 at 10 (Aug-14) can wick/chop *before* the Sep-18 king at 10 delivers",
+      "If current VP shelf fails, VEX −537 at 8 amplifies a flush toward 7.7 / 7.13 — not a gentle dig"
+    ],
+    "invalidation": {
+      "tw": "Invalid if daily prints PINK or PINK_RED (or GREEN→PINK cancel) while long",
+      "maps": "Invalid if Sep-18 king leaves 10 / upside magnets roll down while Aug 9.5–10 negative GEX expands as the active magnet",
+      "operator": "Invalid on daily close back below ~8.50 (loss of current VP shelf / 200 SMA zone) or loss of RSI white back under 50 with failed 50/100 reclaim"
+    },
+    "not_allowed_to_ignore": [
+      "TW is **GREEN continuation**, not a fresh BLUE trigger — half rubric weight",
+      "Spot is still **below** daily 50/100 SMA — thesis requires reclaim, not assumption",
+      "Shared map king is **10** (near .5 fib) — treat .618=11.14 as second-leg stretch after 10 clears; near-term neg GEX at 9.5–10 is real friction"
+    ],
+    "rr_sketch": {
+      "entry_zone": "9.25–9.50 on reclaim/hold of fib 0.382 + 50 SMA (prefer not chase 9.11 under both SMAs into −941 GEX); spot already pressing the gate",
+      "stop": 8.45,
+      "targets": [
+        {
+          "level": 10.0,
+          "note": "GEX∩VEX king / primary magnet"
+        },
+        {
+          "level": 10.19,
+          "note": "operator fib 0.5 / next VP shelf start"
+        },
+        {
+          "level": 11.14,
+          "note": "operator fib 0.618 / upper VP shelf"
+        }
+      ],
+      "rough_rr": "~1.5–2R to 10.0–10.19 from ~9.35 with stop ~8.45; ~2.5R+ to 11.14 if 10 clears — chase from under SMAs compresses edge into Aug neg GEX"
+    },
+    "process_grade": {
+      "tw_present": true,
+      "gex_and_vex_present": true,
+      "operator_present": true,
+      "conflicts_surfaced": true,
+      "override_used": false,
+      "line": "Process: solid (all three sources; GREEN vs BLUE weight, SMA-not-yet-reclaimed, and Aug neg GEX vs Sep king surfaced)"
+    },
+    "one_thing_to_verify": "Whether price can **reclaim and hold** the 50/100 SMA cluster (~9.29–9.45) through the Aug **9.5/−941** GEX gate — do not treat Sep king **10** / fib **.618** as owed from under the SMAs."
+  },
+  "override": null,
+  "gaps": [
+    "TW chart/list as_of 2026-08-07 vs maps/operator 2026-08-09 — color still GREEN on list; refresh if list updates",
+    "Operator SMA prints approximate; TW pane labels 9.29/9.37 used as cross-check",
+    "No weekly TW list — weekly GREEN from chart body"
+  ],
+  "hard_stops": [],
+  "spot": 9.11,
+  "change_pct": 4.18,
+  "operator_thesis": "Long ONDS — reclaim daily 50 and 100 SMA; at .382 fib with possible extension to .5/.618 this week; on VP shelf with jump to next higher shelf possible.",
+  "map_summary": {
+    "shared_upside_magnet": {
+      "strike": 10.0,
+      "expiration": "2026-09-18",
+      "gex_k": 1844,
+      "vex_k": 2478
+    },
+    "secondary_upside": {
+      "strike": 13.0,
+      "expiration": "2026-09-18",
+      "gex_k": 626,
+      "vex_k": 2188
+    },
+    "support_gex": [
+      {
+        "strike": 8.0,
+        "value_k": 671
+      },
+      {
+        "strike": 9.0,
+        "value_k": 354
+      }
+    ],
+    "near_term_hostile_gex": {
+      "strike": 9.5,
+      "expiration": "2026-08-28",
+      "value_k": -941
+    },
+    "downside_vex_risk": {
+      "strike": 8.0,
+      "expiration": "2026-08-21",
+      "value_k": -537
+    }
+  },
+  "upgrade_to_play": "Daily close/hold above 50+100 SMA (~9.29–9.45) and fib 0.382 with TW still GREEN/BLUE and RSI white holding 50 — then path to shared king 10 / .5 fib is PLAY-eligible"
+}

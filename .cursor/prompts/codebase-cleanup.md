@@ -10,7 +10,7 @@ Audit this fork for duplicated workflows, forked copies, stale docs, and unused 
 ## Pre-flight
 - [ ] Read `PROJECT.md`, `LOAD_GUIDE.md`, `project-docs/STATUS.md`, `PENDING_WORK.md`, `decisions.md`
 - [ ] Read `AGENTS.md` § Single source of truth
-- [ ] Confirm active phase: **Phase 1 — Audit & Activate** (no upstream skill rewrites except fixes logged in `decisions.md`)
+- [ ] Confirm active phase: **Phase 1 — Research + Co-Pilot** per `project-docs/STATUS.md` (no upstream skill rewrites except fixes logged in `decisions.md`)
 
 ## Phase 1 — Inventory (read-only)
 

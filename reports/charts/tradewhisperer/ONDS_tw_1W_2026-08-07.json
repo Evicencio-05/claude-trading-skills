@@ -1,0 +1,57 @@
+{
+  "source": "tradewhisperer",
+  "ticker": "ONDS",
+  "as_of": "2026-08-07",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "ONDS 1W @TradexWhisperer TradingView chart; O7.48 H9.20 L7.25 C9.11 (+21.63%); watermark Aug 7 22:33 UTC"
+    }
+  ],
+  "extracted": {
+    "category": "chart",
+    "timeframe": "1W",
+    "last": 9.11,
+    "change": 1.62,
+    "change_pct": 21.63,
+    "ohlc": {
+      "o": 7.48,
+      "h": 9.2,
+      "l": 7.25,
+      "c": 9.11
+    },
+    "volume": "380.05M",
+    "current_candle_color": "GREEN",
+    "recent_candle_sequence": [
+      "GREEN"
+    ],
+    "ma_levels": {
+      "orange": 8.95,
+      "blue": 5.21
+    },
+    "volume_profile_notes": "HVN shelf ~8–11; thinner above ~11.5 until ~14",
+    "oscillators": {
+      "pane1": {
+        "blue": 29.79,
+        "orange": 17.27,
+        "note": "hooking up from oversold"
+      },
+      "pane2": {
+        "blue": -0.0732,
+        "orange": 0.3285,
+        "note": "still below / converging"
+      },
+      "pane3": {
+        "value": "110.07M"
+      }
+    },
+    "price_vs_mas": "above_orange",
+    "chart_timestamp": "2026-08-07"
+  },
+  "confidence": "medium",
+  "gaps": [
+    "No weekly TW list for ONDS — color from chart body + context",
+    "Chart as_of Aug 7 vs maps Aug 9"
+  ],
+  "next": null
+}

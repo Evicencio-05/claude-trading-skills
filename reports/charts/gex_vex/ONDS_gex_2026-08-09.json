@@ -1,0 +1,197 @@
+{
+  "source": "gex_vex",
+  "ticker": "ONDS",
+  "as_of": "2026-08-09",
+  "inputs": [
+    {
+      "type": "image",
+      "note": "Skylit Heatseeker GEX screenshot ONDS Aug 9 14:18:48"
+    }
+  ],
+  "extracted": {
+    "category": "gex",
+    "vendor": "skylit",
+    "spot": 9.11,
+    "change": 0.37,
+    "change_pct": 4.18,
+    "atm_strike": 9.0,
+    "expirations": [
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04",
+      "2026-09-11",
+      "2026-09-18",
+      "2026-09-25",
+      "2026-10-16",
+      "2026-11-20"
+    ],
+    "strikes_visible": null,
+    "king_node": {
+      "strike": 10.0,
+      "expiration": "2026-09-18",
+      "value_k": 1844,
+      "sign": "pos",
+      "starred": true
+    },
+    "top_nodes": [
+      {
+        "strike": 10.0,
+        "expiration": "2026-09-18",
+        "value_k": 1844,
+        "sign": "pos",
+        "starred": true
+      },
+      {
+        "strike": 9.5,
+        "expiration": "2026-08-28",
+        "value_k": -941,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 8.0,
+        "expiration": "2026-08-21",
+        "value_k": 671,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 13.0,
+        "expiration": "2026-09-18",
+        "value_k": 626,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 10.0,
+        "expiration": "2026-08-14",
+        "value_k": -562,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 8.0,
+        "expiration": "2026-08-28",
+        "value_k": 512,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 14.0,
+        "expiration": "2026-09-18",
+        "value_k": 452,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 10.5,
+        "expiration": "2026-08-21",
+        "value_k": -363,
+        "sign": "neg",
+        "starred": false
+      },
+      {
+        "strike": 15.0,
+        "expiration": "2026-09-18",
+        "value_k": 364,
+        "sign": "pos",
+        "starred": false
+      },
+      {
+        "strike": 9.0,
+        "expiration": "2026-08-21",
+        "value_k": 354,
+        "sign": "pos",
+        "starred": false
+      }
+    ],
+    "nodes_near_spot": [
+      {
+        "strike": 9.0,
+        "expiration": "2026-08-21",
+        "value_k": 354,
+        "sign": "pos"
+      },
+      {
+        "strike": 8.0,
+        "expiration": "2026-08-21",
+        "value_k": 671,
+        "sign": "pos"
+      },
+      {
+        "strike": 9.5,
+        "expiration": "2026-08-28",
+        "value_k": -941,
+        "sign": "neg"
+      },
+      {
+        "strike": 10.0,
+        "expiration": "2026-08-14",
+        "value_k": -562,
+        "sign": "neg"
+      },
+      {
+        "strike": 10.0,
+        "expiration": "2026-09-18",
+        "value_k": 1844,
+        "sign": "pos"
+      }
+    ],
+    "gatekeeper_candidates": [
+      {
+        "strike": 9.5,
+        "expiration": "2026-08-28",
+        "value_k": -941,
+        "sign": "neg",
+        "note": "Largest near-spot negative — hostile chop/wick risk just above spot before Sep king"
+      },
+      {
+        "strike": 10.0,
+        "expiration": "2026-08-14",
+        "value_k": -562,
+        "sign": "neg",
+        "note": "Front-week negative at the same strike as Sep king — path friction this week"
+      },
+      {
+        "strike": 8.0,
+        "expiration": "2026-08-21",
+        "value_k": 671,
+        "sign": "pos",
+        "note": "Positive floor / support shelf below spot"
+      }
+    ],
+    "air_pockets": "Activity concentrated in Aug weeks near 8–10.5 and Sep-18 column at 10/13–15; far OTM cells thin",
+    "range_edges": {
+      "upside": 10.0,
+      "downside": 8.0
+    },
+    "map_timestamp": "2026-08-09 14:18:48",
+    "opex_note": "2026-09-18 dominant monthly column",
+    "confluence_with": {
+      "mode": "vex",
+      "overlap_zones": [
+        {
+          "strike": 10.0,
+          "expiration": "2026-09-18",
+          "note": "King on both GEX ($1844K) and VEX ($2478K)"
+        },
+        {
+          "strike": 13.0,
+          "expiration": "2026-09-18",
+          "note": "Secondary upside cluster both modes (GEX $626K / VEX $2188K)"
+        },
+        {
+          "strike": 8.0,
+          "expiration": "2026-08-21",
+          "note": "Elevated both modes near floor (GEX +$671K / VEX -$537K) — sign differs"
+        }
+      ]
+    }
+  },
+  "confidence": "high",
+  "gaps": [
+    "Full strike×expiry matrix not transcribed — top_nodes from visible hotspots only"
+  ],
+  "next": null
+}

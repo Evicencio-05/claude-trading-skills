@@ -24,10 +24,121 @@
       "note": "Operator bias Long: broke+retested 23.46; prior 200 SMA bounce; VP shelf; longer-term upward channel; continuation toward ATH / 1.618 Fib ~32"
     }
   ],
-  "extracted": {},
-  "confidence": null,
+  "extracted": {
+    "category": "operator",
+    "timeframe": "1D",
+    "last": 26.11,
+    "change": 1.93,
+    "change_pct": 7.94,
+    "volume": null,
+    "sma": {
+      "50": null,
+      "100": null,
+      "200": null
+    },
+    "price_vs_sma": {
+      "50": "above",
+      "100": "above",
+      "200": "above"
+    },
+    "sr_levels": [
+      22.93,
+      23.46,
+      26.11,
+      34.35
+    ],
+    "fib_levels": [
+      {
+        "ratio": "1.618",
+        "price": 31.58,
+        "color": "blue"
+      },
+      {
+        "ratio": "1.0",
+        "price": 23.46,
+        "color": "white"
+      },
+      {
+        "ratio": "0.786",
+        "price": 20.65,
+        "color": "orange"
+      },
+      {
+        "ratio": "0.618",
+        "price": 18.44,
+        "color": "yellow"
+      },
+      {
+        "ratio": "0.5",
+        "price": 16.89,
+        "color": "cyan"
+      },
+      {
+        "ratio": "0.382",
+        "price": 15.34,
+        "color": "brown"
+      },
+      {
+        "ratio": "0",
+        "price": 10.32,
+        "color": "white"
+      }
+    ],
+    "fib_sets": null,
+    "vp": {
+      "indicator": "luxalgo_vp_node_detection",
+      "lookback_note": "visible profile spans base + current leg",
+      "poc": 26.25,
+      "vah": null,
+      "val": null,
+      "peak_nodes": [
+        14.0,
+        16.0,
+        23.0,
+        26.0
+      ],
+      "trough_nodes": [],
+      "highest_volume_zones": [
+        "12–18 deep HVN / primary shelf",
+        "22–26 secondary shelf / near spot"
+      ],
+      "lowest_volume_zones": [
+        "above ~27 toward ATH — thinner profile"
+      ],
+      "profile_labels": {
+        "high": 34.36,
+        "poc_tw_overlap_note": "~26.25"
+      },
+      "colors_note": "orange/blue value-area nodes; gray lower volume"
+    },
+    "major_levels": [
+      34.35,
+      34.36
+    ],
+    "rsi": {
+      "white": 60.0,
+      "yellow": null,
+      "mid_50": 50,
+      "buyer_strength": true,
+      "seller_strength": false,
+      "deterioration_watch": null,
+      "hold_note": "white ~55–62 above 50 — buyers have strength; watch hold of 50 on any dip"
+    },
+    "channel": {
+      "type": "ascending",
+      "status": "holding_upper_half",
+      "notes": "longer-term upward channel; price above midline after break of ~23.46"
+    },
+    "earnings_markers": null,
+    "structure_notes": "Break and retest of 23.46 (fib 1.0); prior bounce off 200 SMA; consolidating on secondary VP shelf ~24–26; path to fib 1.618=31.58 / ATH ~34.35",
+    "operator_thesis": "Long UMAC. Broke above previous resistance at 23.46 and retested once. Previously bounced off the 200 SMA on the daily; now at a VP shelf and keeping within a longer-term upwards channel. Looking for continuation and maybe a retest of ATH around the 1.618 fib ~32.",
+    "chart_timestamp": "2026-08-09"
+  },
+  "confidence": "medium",
   "gaps": [
-    "schema not yet defined by operator"
+    "Exact numeric 50/100/200 SMA values not labeled on all panes — colors confirm price above all three",
+    "RSI yellow signal value not consistently labeled; white ~60 used",
+    "POC 26.25 from TW chart cross-note; LuxAlgo peak nodes approximate from screenshots"
   ],
-  "next": "await operator brief for this source"
+  "next": null
 }

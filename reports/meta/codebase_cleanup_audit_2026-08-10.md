@@ -1,20 +1,21 @@
-# Codebase Cleanup Audit — 2026-08-10
+# Codebase Cleanup Audit — 2026-08-10 (re-audit from `main`)
 
-**Mode:** audit-and-fix
-**Phase:** 1 — Research + Co-Pilot
+**Mode:** audit-only (default)
+**Branch:** `main` @ `a239a74` (= `origin/main`)
+**Phase:** 1 — Research + Co-Pilot Trading ([STATUS.md](../../project-docs/STATUS.md))
 **Scope:** Whole repo
-**Prior audit:** [codebase_cleanup_audit_2026-05-28.md](codebase_cleanup_audit_2026-05-28.md) (all batches done)
+**Prior runs:** [2026-05-28](codebase_cleanup_audit_2026-05-28.md) (executed); morning 2026-08-10 audit-and-fix (P0 indexes + migrator archive) **merged via PR #5**
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Findings | **12** (P0: 5 / P1: 4 / P2: 3) |
-| Estimated safe deletions | **1 script** → `scripts/archive/` (~227 lines) |
-| Estimated doc/index edits | **5 files** |
-| Estimated merges | **0** (no workflow body forks) |
+| Findings | **9** (P0: 2 / P1: 5 / P2: 2) |
+| Estimated safe deletions | **0** (no new dead tracked scripts) |
+| Estimated commits / adds | **1 package** — untracked `options-flow-tail` workflow |
+| Estimated doc merges | **3** (`AGENTS.md`, `LOAD_GUIDE.md`, cleanup prompt phase string) |
 
-**Overall health:** May 2026 cleanup held. New fork workflows (TA intakes, confluence, Agentic co-pilot, options-flow-tail) follow the thin-wrapper pattern. Main gaps are **index drift** (especially `options-flow-tail`) and one **finished one-shot migrator** still under `scripts/`.
+**Overall health:** Post-merge `main` is clean on tracked cleanup items (indexes updated, migrator archived, no broken symlinks). New gap: **indexes and skill README advertise `options-flow-tail`, but the command + skill are still untracked** — clone/CI will see dangling links. Untracked conviction WIP still breaks pre-push if present on disk.
 
 ---
 
@@ -22,21 +23,15 @@
 
 | Path | Duplicate of | Action | Risk |
 |------|--------------|--------|------|
-| `.cursor/skills/*/SKILL.md` (11 wrappers) | Matching `commands/*.md` | **Keep** — all link to `commands/`; no Pass 1/2 body copies | None |
-| `commands/review-portfolio.md` | ≠ `robinhood-portfolio-review` | **Keep** — research batch vs broker snapshot | None |
-| `commands/options-flow-tail.md` | skill + `references/tail_rubric.md` | **Keep** — command is SoT; skill thin; rubric correctly under skill refs | None |
-| `skills/scenario-analyzer/SKILL.md` | `commands/scenario-analyzer.md` | **Keep** — already thin wrapper (2026-05-28) | None |
-| `gex-vex-maps` / `tradewhisperer-charts` | skill slightly longer than command | **Keep** — skill = discovery + load table; command = phases | Low |
+| 11 fork-local wrappers | Matching `commands/*.md` | **Keep** — thin; link to `commands/` | None |
+| `commands/review-portfolio.md` | ≠ `robinhood-portfolio-review` | **Keep** | None |
+| `commands/options-flow-tail.md` + `.cursor/skills/options-flow-tail/` | Indexed in READMEs | **Commit** (P0) or remove index rows until ready | **High** — untracked SoT |
+| `skills/scenario-analyzer/SKILL.md` | `commands/scenario-analyzer.md` | **Keep** — thin wrapper | None |
+| Command-only workflows (`intraday-options`, `options-strategy-planner`, `review-portfolio`, `scenario-analyzer`) | No Cursor skill dir | **Keep** — command-only is fine | None |
 
-**Pass 1/Pass 2 fork check:** `deep-research` skill summarizes Pass 0–2 rules but points at `commands/deep-research.md` as SoT — acceptable thin wrapper, not a fork.
+**Pass 1/2 fork check:** No skill copies deep-research body; wrappers link out.
 
-**Routing table vs files (gaps only):**
-
-| File / skill | `commands-workflows.mdc` | `commands/README.md` | `.cursor/skills/README.md` |
-|--------------|--------------------------|----------------------|----------------------------|
-| `options-flow-tail` | **Missing** | **Missing** | **Missing** |
-| `log-trade-screenshot` | Yes | Yes | **Missing** |
-| All other `commands/*.md` | Yes | Yes | Yes (workflow rows) |
+**Routing table:** All `commands/*.md` present in `commands-workflows.mdc` and `commands/README.md` (including `options-flow-tail`).
 
 ---
 
@@ -53,14 +48,14 @@ Fork-local dirs (11): agentic-copilot-trade, deep-research, gex-vex-maps,
   robinhood-portfolio-review, ta-confluence, tradewhisperer-charts, update-research
 
 Broken symlinks: none
-Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
+Copied upstream trees: none
 ```
 
 | Path | Action | Risk |
 |------|--------|------|
-| 13 symlinks → `skills/<name>/` | **Keep** | None |
-| 11 fork-local wrappers | **Keep** — documented in `.cursor/skills/README.md` | None |
-| Prompt keep-list (4 wrappers only) | **Update** `.cursor/prompts/codebase-cleanup.md` — stale vs reality | Doc only |
+| Tracked fork-local dirs (10) | **Keep** | None |
+| `options-flow-tail/` (untracked) | **Add to git** with `commands/options-flow-tail.md` | Indexes already reference it |
+| Symlinks | **Keep** | None |
 
 ---
 
@@ -68,14 +63,14 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Path | Role | Action |
 |------|------|--------|
-| `scripts/robinhood_sync.py` | Portfolio A schedule → `pending_ingest.json` | **Keep** |
+| `scripts/robinhood_sync.py` | Portfolio A → `pending_ingest.json` | **Keep** |
 | `scripts/robinhood_mcp.py` | CLI + `ingest-pending` | **Keep** |
-| `scripts/robinhood_mcp_client.py` | MCP client library | **Keep** |
-| `scripts/robinhood_accounts.py` | YAML account map | **Keep** |
+| `scripts/robinhood_mcp_client.py` | MCP client | **Keep** |
+| `scripts/robinhood_accounts.py` | YAML map | **Keep** |
 | `scripts/mcp_stdio_structured_content_proxy.py` | Cursor compat | **Keep** |
 | `config/robinhood_accounts.yaml` | Canonical map | **Keep** |
 
-**Superseded ingest scripts:** None. Hybrid stack unchanged per `decisions.md`.
+No superseded ingest scripts. Hybrid stack unchanged.
 
 ---
 
@@ -83,13 +78,12 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Path | Issue | Action |
 |------|-------|--------|
-| `commands/README.md` + routing table + skills README | `options-flow-tail` unlisted | **Fix** (P0) |
-| `.cursor/skills/README.md` | Missing `log-trade-screenshot`, `options-flow-tail` | **Fix** (P0) |
-| `project-docs/reference/cursor-integration.md` | Wrapper list still names only 4 dirs | **Fix** → point at skills README (P0) |
-| `AGENTS.md` § Single source of truth | Says all `.cursor/skills` are symlinks | **Merge** note for fork-local wrappers (P1) |
-| `.cursor/prompts/codebase-cleanup.md` | Keep-list outdated (4 wrappers) | **Fix** (P0) |
-| `config/agentic_copilot.yaml` markdown link | File absent until user copies `.example` | **Keep** — intentional; procedural fallback documented |
-| Robinhood setup docs | Still multi-file | **Keep** — canonical = `robinhood-mcp-integration.md` |
+| `AGENTS.md` § Single source of truth | Says all `.cursor/skills` are symlinks | **Merge** — document fork-local exception (P1) |
+| `LOAD_GUIDE.md` | No on-demand rows for TA / options-flow / agentic | **Optional add** (P1) |
+| `.cursor/prompts/codebase-cleanup.md` Pre-flight | Still says “Phase 1 — Audit & Activate” | **Fix** string → STATUS title (P1) |
+| Indexes → `options-flow-tail` | Point at untracked files | **Commit package** (P0) |
+| Robinhood setup multi-doc | Canonical = `robinhood-mcp-integration.md` | **Keep** |
+| `cursor-integration.md` | Updated in morning P0 | **Keep** |
 
 ---
 
@@ -97,11 +91,12 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Path | Evidence | Action |
 |------|----------|--------|
-| `scripts/migrate_reports_layout.py` | Header: one-time; **0 repo refs**; category dirs present; no flat leftovers; no tests | **Archive** (P0, needs OK) |
-| `scripts/archive/*` | Prior P0 leftovers | **Keep** |
-| `scripts/fmp_verify_starter.py` | Referenced in `decisions.md` | **Keep** |
+| `scripts/archive/migrate_reports_layout.py` | Archived morning | **Keep** |
+| `scripts/build_entry_watchlist.py` | Untracked; referenced by options-flow-tail | **Commit with flow skill** or leave WIP (P1) |
+| `scripts/conviction_tiers.py` + `scripts/tests/test_conviction_tiers.py` | Untracked; `tier_pin` test fails vs `load_watchlist_config` | **Fix then commit**, or quarantine test (P1) — blocks pre-push when on disk |
+| `.cursor/rules/structural-changes.mdc` | Untracked reference rule | **Commit when ready** (P1) |
+| Bulk untracked `reports/**` | Operator artifacts | List only — no delete |
 | `package.json` | `mcp-remote` | **Keep** |
-| `reports/` bulk | User artifacts | List only — no delete |
 | `launchd/` | macOS reference | **Keep** |
 
 ---
@@ -109,8 +104,8 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 ## F. Fork policy check
 
 - No upstream `skills/<name>/` edits proposed.
-- Fork-local skills correctly live under `.cursor/skills/` + `commands/` (not copied into `skills/`).
-- No direct `state/theses/` write paths found in cleanup scope.
+- Do not write `state/theses/` directly.
+- Morning P0 did not touch upstream skills.
 
 ---
 
@@ -118,11 +113,10 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Action | Path | Reason | Verified by |
 |--------|------|--------|-------------|
-| Add index rows | `commands/README.md`, `.cursor/rules/commands-workflows.mdc`, `.cursor/skills/README.md` | `options-flow-tail` exists but unlisted | `rg` + file listing |
-| Add skill row | `.cursor/skills/README.md` | `log-trade-screenshot` missing from skills README | `rg` |
-| Doc pointer | `project-docs/reference/cursor-integration.md` | Stale 4-wrapper list | `ls .cursor/skills/` |
-| Update keep-list | `.cursor/prompts/codebase-cleanup.md` | Prompt contradicted fork-local pattern | Compare to skills README |
-| Archive | `scripts/migrate_reports_layout.py` → `scripts/archive/` | Finished one-shot; zero refs | `rg` + reports layout check |
+| Commit workflow package | `commands/options-flow-tail.md`, `.cursor/skills/options-flow-tail/**` | Indexes already list it; untracked breaks clone SoT | `git ls-files` empty; files on disk |
+| Quarantine or fix | `scripts/tests/test_conviction_tiers.py` | Untracked test fails pre-push (`KeyError: tier_pin`) | pytest + pre-push log |
+
+**User approval needed before any commit/delete.** Audit-only — not executing.
 
 ---
 
@@ -130,44 +124,56 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Action | From → To | Reason |
 |--------|-----------|--------|
-| Clarify SoT exception | `AGENTS.md` § Single source of truth | Document fork-local `.cursor/skills/` dirs |
-| On-demand row | `LOAD_GUIDE.md` | Optional: `options-flow-tail` / TA commands when relevant |
-| Soften bare yaml link | `commands/agentic-copilot-trade.md` | Prefer `.example` as primary clickable target |
-| Optional command file | `commands/robinhood-portfolio-review.md` | Parity with other workflows (still deferred) |
+| Clarify SoT | `AGENTS.md` | Fork-local `.cursor/skills/` dirs are allowed |
+| On-demand rows | `LOAD_GUIDE.md` | `options-flow-tail`, TA intakes, `agentic-copilot-trade` |
+| Fix phase string | `codebase-cleanup.md` Pre-flight | Match STATUS “Research + Co-Pilot” |
+| Pair commit | `build_entry_watchlist.py` (+ deps) | Supporting script for flow skill |
+| Finish or park | `conviction_tiers` WIP | Align `load_watchlist_config` with `tier_pin` or drop test |
 
 ---
 
-## P2 — Needs approval (behavior or upstream touch)
+## P2 — Needs approval
 
 | Action | Path | Risk | Ask user |
 |--------|------|------|----------|
-| Move fork-local skills into `skills/` | e.g. `options-flow-tail` | Architecture change vs current README | Prefer Cursor-only vs portable `skills/`? |
+| Add `commands/robinhood-portfolio-review.md` | skill-only today | Consistency | Worth it? |
+| Move fork-local skills under `skills/` | architecture | Breaks current README pattern | Prefer Cursor-only vs portable? |
 | Prune old reports | `reports/**` | Data loss | Retention window? |
-| Symlink more upstream skills | `.cursor/skills/` | Discovery vs token cost | Which daily stack? |
 
 ---
 
-## Intentionally kept (looked redundant but isn't)
+## Intentionally kept
 
 | Path | Why kept |
 |------|----------|
 | `review-portfolio` vs `robinhood-portfolio-review` | Different workflows |
-| Robinhood sync + MCP hybrid | Portfolios A vs B/C per `decisions.md` |
+| Robinhood sync + MCP hybrid | Per `decisions.md` |
 | `economic-calendar-fetcher` | Upstream; use `fred_calendar.py` |
-| `thesis_ingest.py` | Screener JSON only; ≠ `/log-positions` |
-| Chart skill refs under `.cursor/skills/*/references/` | Contracts/rubrics; commands link in |
-| `config/agentic_copilot.yaml` absent | Gitignored user copy of `.example` |
+| Command-only workflows without Cursor skill | Valid pattern |
+| `scripts/archive/*` | Historical one-shots |
 
 ---
 
 ## Not in scope
 
-- Upstream skill body rewrites
-- Merging portfolio review workflows
-- Removing Robinhood hybrid stack
+- Executing P0 (audit-only this run)
+- Upstream skill rewrites
 - Bulk `reports/` deletion
-- `docs/` / `CLAUDE.md` / `launchd/` removal
 - Committing unless user asks
+- Merging portfolio review workflows
+
+---
+
+## Recommended next (if user says `audit-and-fix`)
+
+1. **Batch A — track options-flow-tail** (no behavior change): add command + skill + rubric; keep indexes as-is.
+2. **Batch B — docs:** `AGENTS.md` SoT, cleanup prompt phase string, optional `LOAD_GUIDE`.
+3. **Batch C — conviction WIP:** fix `tier_pin` in `load_watchlist_config` **or** move failing test out of `scripts/tests/` until ready.
+
+```bash
+pre-commit run --all-files
+uv run python3 -m pytest scripts/tests/ -v
+```
 
 ---
 
@@ -175,12 +181,12 @@ Copied upstream skill trees: none (no skills/<name> twin for fork-local dirs)
 
 | Batch | Status | Changes |
 |-------|--------|---------|
-| 1 — indexes + docs | **Done** 2026-08-10 | `commands/README.md`, `commands-workflows.mdc`, `.cursor/skills/README.md`, `cursor-integration.md`, `codebase-cleanup.md` keep-list |
-| 2 — archive migrator | **Done** 2026-08-10 | `scripts/migrate_reports_layout.py` → `scripts/archive/`; archive README updated |
-
-Validation after each batch:
+| Morning audit-and-fix | Done (PR #5) | Indexes + migrator archive |
+| Re-audit `main` audit-only | Done | Report refreshed |
+| Batch A — tier_pin + docs | **Done** 2026-08-10 | `load_watchlist_config` preserves `tier_pin`; tracked test; `AGENTS.md` SoT; cleanup phase string; `LOAD_GUIDE` on-demand rows |
+| Batch B — track `options-flow-tail` | **Done** 2026-08-10 | Committed with cleanup fixes (`e662c88`) |
 
 ```bash
-pre-commit run --all-files
+pre-commit run --files <touched>
 uv run python3 -m pytest scripts/tests/ -v
 ```
