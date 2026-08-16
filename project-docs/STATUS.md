@@ -1,10 +1,10 @@
 # Project Status
 
-**Last updated:** 2026-08-09
-**Active phase:** Phase 1 — Research + Co-Pilot Trading
+**Last updated:** 2026-08-16
+**Active phase:** Phase 1 — TA Confluence + Co-Pilot Trading
 **Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md)
 **Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
-**Roadmap:** Equity-only — [decisions.md](../decisions.md) [2026-05-29]
+**Roadmap:** Equity TA-first — [decisions.md](../decisions.md) [2026-08-16]
 
 ## This Week's Focus
 
@@ -12,8 +12,11 @@
 - [x] **All three input contracts filled** — TW charts/lists · Skylit GEX/VEX · operator S/R+fib+VP+SMA
 - [x] **Fusion workflow** — `ta-confluence` (candle_first / map_first + judgment)
 - [x] **Agentic co-pilot command** — `agentic-copilot-trade` + `config/agentic_copilot.yaml.example`
-- [ ] Deep-research news strip — deferred
+- [x] **Charter rewrite** — TA-first product + Phase 2 learning loop reframed (2026-08-16)
+- [ ] Habit: confluence sessions when TW lists + maps + operator charts available
+- [ ] Seed playbook TA setups + charting coach notes from live sessions
 - [ ] **First Agentic trade filled** — user must reply **confirm** on presented plan (workflow ready)
+- [ ] Deep-research only on PLAY / verge (not default)
 
 ## Open Blockers
 
@@ -44,27 +47,29 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 - [x] MCP hybrid CLI + Cursor URL
 - [x] Phase 1 audit complete (Tier 1–2) — see [archive/phase-1-audit.md](archive/phase-1-audit.md)
 - [x] Operator checklist — [trading-pipeline-checklist.md](trading-pipeline-checklist.md) (daily / weekly / per-trade)
+- [x] TA-first charter + Phase 2 rewrite — 2026-08-16
 
 ## Phase 1 Exit Criteria Progress
 
 | Criterion | Status |
 |-----------|--------|
-| FMP Starter + vcp on watchlist | **Done** — 11-quote watchlist pass 2026-05-31 ([decisions.md](../decisions.md) [2026-05-31]) |
+| TA intakes + `ta-confluence` | **Done** — 2026-08-09 |
+| FMP Starter + optional watchlist tools | **Done** — 2026-05-31 (backup, not primary KPI) |
 | 14 days pre_market + posture log | **12/14** unique days (`reports/logs/posture_history.log`) |
-| 5+ deep/update on watchlist | HOOD/IBM/TSM/VECO @ 2026-05-31; MRAM/MU/P @ 2026-05-27; **FPS stale** |
+| Regular three-source confluence habit | In progress — lists through 2026-08-14 on disk |
 | 10+ trades logged, ≥2 types | ❌ 17 theses total (10 ACTIVE legacy + TE); not 10+ effective Phase 1 trades |
 | 3+ Agentic co-pilot MCP trades | **0/3 filled** — `/agentic-copilot-trade` ready; awaiting user confirm |
 | IRA logged via MCP | ❌ |
 | 2+ portfolio_review reports | **1/2** — `portfolio_review_2026-05-28.md` |
+| Deep-research gated (PLAY/verge/ask) | Charter rule live 2026-08-16 — enforce in sessions |
 | Anthropic &lt;$20, pre-commit | Open |
 
 ## Recent Changes
 
+- Charter + Phase 2 rewritten TA-first (pattern → playbook → postmortem) — 2026-08-16
 - TA-first intakes + `ta-confluence` + `agentic-copilot-trade` (2026-08-09)
+- TW list intakes + overlap through 2026-08-14
 - `report_paths` same-day discovery for ticker-stem chart filenames (2026-08-09)
 - FMP Starter verified + stable API fmp_client fixes (2026-05-31)
 - Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md))
-- TE thesis logged (`th_te_grw_20260529_034d`); POWL closed 2026-05-29
-- Pre-market run 2026-05-29: breadth 42.4, posture CAUTIOUS 50%
-- Trading pipeline checklist consolidated — [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
 - Futures scope removed; 3-phase equity roadmap ([decisions.md](../decisions.md) 2026-05-29)

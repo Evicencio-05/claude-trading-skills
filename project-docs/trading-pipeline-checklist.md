@@ -1,9 +1,10 @@
 # Trading Pipeline Checklist
 
-> **Last updated:** 2026-08-11 (TW list-first + HTF stack)
-> **Active phase:** [Phase 1 — Research + Co-Pilot](phase-1-research-copilot.md)
+> **Last updated:** 2026-08-16 (TA-first charter)
+> **Active phase:** [Phase 1 — TA Confluence + Co-Pilot](phase-1-research-copilot.md)
 >
-> Canonical operator cadence for research → thesis → co-pilot execution.
+> Canonical operator cadence for three-source TA → confluence → thesis → co-pilot.
+> Fundamentals / deep-research are optional backup (PLAY / verge / explicit ask).
 > Update this file when cadence changes; link to `commands/` for workflow detail — do not copy Pass 1/Pass 2 steps here.
 
 ---
@@ -48,35 +49,46 @@ Path registry: [`scripts/report_paths.py`](../scripts/report_paths.py)
 
 - [ ] Run `uv run python3 scripts/pre_market.py` (timer: `pre-market.timer` — see [launchd/README.md](../launchd/README.md))
 - [ ] Read `reports/logs/market_context_YYYY-MM-DD.json` (or `.md`) — posture, ceiling, position flags
-- [ ] **TW lists (prefer text)** — on long-lived branch `cursor/tw-ta-ingest-22c6`, ingest via `/tradewhisperer-charts` → `list_tw_daily_DATE` (+ weekly/monthly when posted). Charts only for finalists (structure). Then run PHASE 3 overlap (`tw_list_resolve.py overlap`) and note vs-benchmark + unmapped.
-- [ ] Optional TA session — `/ta-confluence candle_first` after lists + maps + operator chart ([ta-confluence.md](../commands/ta-confluence.md))
+- [ ] **TW lists (prefer text)** — when posted, ingest via `/tradewhisperer-charts` → `list_tw_daily_DATE` (+ weekly/monthly when available). Charts only for finalists (structure). Then run overlap (`tw_list_resolve.py overlap`) and note vs-benchmark + unmapped.
+- [ ] **TA session (primary)** — paste/provide GEX/VEX + operator chart → `/ta-confluence` ([ta-confluence.md](../commands/ta-confluence.md)). Ask for any missing source before scoring. Standing prompt: [ta-first-session.md](../.cursor/prompts/ta-first-session.md)
 
 ---
 
 ## Weekly
 
 - [ ] Ingest TW **weekly** (and monthly if posted) candle lists → `list_tw_weekly_*` / `list_tw_monthly_*` for HTF stacks
-- [ ] Run `uv run python3 scripts/update_stale_research.py` → queue + `reports/logs/research_staleness_*.md`
-- [ ] **Research watchlist batch** — [commands/review-portfolio.md](../commands/review-portfolio.md) or per-ticker [commands/update-research.md](../commands/update-research.md) from queue
+- [ ] **TA pattern distill** — review confluence notes; propose playbook / charting-coach deltas for human approve ([playbook.md](playbook.md), [phase-2-learning-loop.md](phase-2-learning-loop.md))
 - [ ] **Broker snapshot** — skill `robinhood-portfolio-review` → `reports/portfolio/portfolio_review_*.md`
 - [ ] **`exposure-coach`** — weekly posture synthesis when upstream JSON exists ([playbook.md](playbook.md))
+- [ ] Optional backup: `uv run python3 scripts/update_stale_research.py` only for tickers already in play from confluence / open theses
 
-> **Posture policy:** Daily posture = `pre_market.py` (zero LLM). `exposure-coach` = weekly synthesis **or** runs inside deep-research Pass 1 when researching a ticker — not a separate daily LLM call.
+> **Posture policy:** Daily posture = `pre_market.py` (zero LLM). `exposure-coach` = weekly synthesis — not a separate daily LLM call. Deep-research is not a weekly default.
 
 ---
 
-## Research (on demand)
+## TA session → thesis (primary)
 
 | Situation | Workflow |
 |-----------|----------|
-| New ticker | [commands/deep-research.md](../commands/deep-research.md) |
-| Report >14d stale or thesis changed | [commands/update-research.md](../commands/update-research.md) |
-| Screener hit | `thesis_ingest.py` (screener JSON) → deep-research → `thesis_store.link_report()` |
+| Lists + maps + operator chart ready | [commands/ta-confluence.md](../commands/ta-confluence.md) → PLAY / WATCH / NO_TRADE |
+| PLAY or strong WATCH | Draft thesis (trader-memory) with three-domain invalidation |
+| PLAY or verge of confluence (user OK) | Optional [commands/deep-research.md](../commands/deep-research.md) stress-test |
+| Agentic entry | [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md) |
 | Closed trade backfill | [commands/log-trade-screenshot.md](../commands/log-trade-screenshot.md) |
 
-**Live state:** [config/research_watchlist.yaml](../config/research_watchlist.yaml) · [config/research_exclude.yaml](../config/research_exclude.yaml) · staleness in [STATUS.md](STATUS.md) or latest `research_staleness_*.md`
+---
 
-**Screeners (FMP Starter active):** `vcp-screener`, `canslim-screener`, `earnings-trade-analyzer` → `pead-screener` — pass `--universe` from [config/research_watchlist.yaml](../config/research_watchlist.yaml); full S&P 500 needs Premium tier — see [phase-1-research-copilot.md](phase-1-research-copilot.md) exit criteria. Daily watchlist screener runs feed deep-research Pass 0 — do not re-run per ticker when same-day JSON exists.
+## Research backup (gated — on demand)
+
+| Situation | Workflow |
+|-----------|----------|
+| PLAY / verge / explicit ask — new ticker | [commands/deep-research.md](../commands/deep-research.md) |
+| Same gate — report stale or thesis changed | [commands/update-research.md](../commands/update-research.md) |
+| Optional screener shortlist | `thesis_ingest.py` → gated deep-research if still pursuing |
+
+**Live state (backup watchlist):** [config/research_watchlist.yaml](../config/research_watchlist.yaml) · [config/research_exclude.yaml](../config/research_exclude.yaml)
+
+**Screeners (optional backup):** `vcp-screener`, `canslim-screener`, `earnings-trade-analyzer` → `pead-screener` — `--universe` from watchlist; not the daily center of gravity.
 
 ---
 
@@ -86,7 +98,7 @@ Use [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md) (s
 
 - [ ] **Broker snapshot** — `robinhood-portfolio-review` (or `scripts/robinhood_mcp.py`) — buying power, exposure
 - [ ] Today's `pre_market` posture — new entry allowed?
-- [ ] Research + size — Phase 11 plan + `position-sizer` within `config/agentic_copilot.yaml` caps
+- [ ] Confluence + size — cite TW/maps/operator invalidation; `position-sizer` within `config/agentic_copilot.yaml` caps; deep-research only if PLAY/verge gate met
 - [ ] Present plan — entry, stop, target, risk $ (IRA N/A on Agentic)
 - [ ] **Stop — user replies `confirm` / `confirm plan and order`**
 - [ ] MCP `review_equity_order` then `place_equity_order` — **Portfolio C (Agentic) only**
@@ -114,6 +126,7 @@ Use [commands/agentic-copilot-trade.md](../commands/agentic-copilot-trade.md) (s
 
 ## Changelog
 
+- **2026-08-16** — TA-first charter: confluence primary; deep-research gated; weekly playbook distill
 - **2026-08-11** — TW list-first cadence; `scripts/tw_list_resolve.py` HTF stacks; confluence requires period list for PLAY
 - **2026-08-09** — TA-first chart intakes + `ta-confluence`; `agentic-copilot-trade` gates; TW filenames include `1D|1W|1M`
 - **2026-05-31** — Reports layout v2: category-grouped subdirs (`market/`, `screeners/`, `portfolio/`, etc.); `scripts/report_paths.py` registry

@@ -28,6 +28,7 @@ Full policy: [prompt-engine.md](prompt-engine.md) § Tier policy.
 
 | Prompt | Purpose |
 |--------|---------|
+| [ta-first-session.md](ta-first-session.md) | Standing TA-first session routing (three sources → confluence → playbook) |
 | [sync-phase-docs.md](sync-phase-docs.md) | Reconcile PENDING_WORK + STATUS + phase docs to disk evidence |
 | [codebase-cleanup.md](codebase-cleanup.md) | Audit overlap, dead code, doc duplication |
 | [systemd-stale-research-updater.md](systemd-stale-research-updater.md) | Weekly systemd job: stale research queue |
