@@ -9,10 +9,11 @@
 
 Phase 2 exit criteria met. Specifically:
 
-- 2+ playbook strategies passed equity backtest quality gates
-- Behavioral pattern detector operational
-- 30+ trades logged with full thesis discipline
-- Skill-improvement loop enabled with branch protection
+- Personal playbook has 3+ TA setups (TW + maps + operator conditions)
+- Charting coach / pattern journal habit active; ≥2 playbook rules operator-approved from distill
+- 30+ trades logged with thesis discipline; ≥5 closed with confluence-linked postmortems
+- Deep-research remains gated (not daily default)
+- Skylit paid-subscription YES/NO recorded in decisions.md
 
 If any of these are not true, **do not start Phase 3.** Go back and finish Phase 2.
 

@@ -2,15 +2,28 @@
 
 > Persistent task queue across Cursor, Claude Code, and terminal sessions.
 > **Last updated:** 2026-08-16
-> **Active phase:** Phase 1 — TA + Co-Pilot Trading
+> **Active phase:** Phase 1 — TA Confluence + Co-Pilot Trading
 > **Operator cadence:** [project-docs/trading-pipeline-checklist.md](project-docs/trading-pipeline-checklist.md)
 > **Session load order:** [PROJECT.md](PROJECT.md) → [LOAD_GUIDE.md](LOAD_GUIDE.md) → [project-docs/STATUS.md](project-docs/STATUS.md) → [phase-1-research-copilot.md](project-docs/phase-1-research-copilot.md)
+> **Standing prompt:** [.cursor/prompts/ta-first-session.md](.cursor/prompts/ta-first-session.md)
 
 **Legend:** Auto-execute = agent can do without approval. Needs approval = money/architecture. Needs data = human-only input.
 
 **Fork policy:** Do not modify upstream `skills/<name>/SKILL.md` or `skills/<name>/scripts/` except fixes listed in [decisions.md](decisions.md). Never write `state/theses/` directly — use `thesis_store.py` / thesis-manager.
 
 **Account scope:** Log and trade-plan **Portfolio C (Agentic)** + **Portfolio A (taxable)**. **Do not log IRA (Portfolio B).**
+
+**Product center:** TW → GEX/VEX → operator charts → `ta-confluence` → playbook. Deep-research gated (PLAY / verge / ask).
+
+---
+
+## Charter pivot (2026-08-16)
+
+- [x] Rewrite `PROJECT.md` + Phase 1/2/3 framing TA-first
+- [x] STATUS, LOAD_GUIDE, checklist, playbook, project-router, standing prompt
+- [x] A+C logging only — IRA four-questions discontinued
+- [ ] Live confluence habit + seed playbook TA setups / charting coach
+- [ ] First filled Agentic co-pilot trade (user `confirm`)
 
 ---
 
@@ -54,9 +67,9 @@ User-supplied images/exports only; no news/FMP fetch for the core loop.
 
 ---
 
-## Research pipeline (optional / demoted)
+## Research pipeline (optional backup — gated)
 
-Not Phase 1 exit-blocking. Run on demand only.
+Not Phase 1 exit-blocking. Use only for PLAY / verge / explicit ask, or open-thesis hygiene.
 
 **Watchlist (`reports/research/`, latest only):** HOOD/IBM/TSM/VECO @ 2026-05-31 | MRAM/MU/P @ 2026-05-27 | FPS @ 2026-05-13 (stale)
 
@@ -95,6 +108,7 @@ Touch only if it blocks commits or the Agentic path.
 - [x] FMP Starter + stable API fixes — verification 2026-05-31
 - [x] Thesis Manager CRUD consolidation (2026-05-31)
 - [x] TA intakes + confluence + list-first TW HTF (2026-08-09–11)
+- [x] Charter + Phase 2 TA-first rewrite (2026-08-16)
 
 ---
 

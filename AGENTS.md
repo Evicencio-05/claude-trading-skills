@@ -28,6 +28,8 @@ This repo supports **two AI harnesses** over one portable core (`skills/`, `scri
 3. [project-docs/STATUS.md](project-docs/STATUS.md)
 4. Active phase doc only (see STATUS.md)
 
+**Product center:** TW lists → GEX/VEX → operator charts → `ta-confluence` → playbook. Deep-research is gated (PLAY / verge / ask). Standing prompt: [`.cursor/prompts/ta-first-session.md`](.cursor/prompts/ta-first-session.md).
+
 Cursor loads (1)–(3) automatically via `.cursor/rules/project-router.mdc`.
 
 ## Cursor-specific

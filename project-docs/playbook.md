@@ -11,12 +11,22 @@
 
 Daily product: TradeWhisperer **lists** + GEX/VEX + operator charts →
 `/ta-confluence` → PLAY/WATCH/NO_TRADE → optional `/agentic-copilot-trade` on
-Portfolio C. Deep research and FMP screeners are on-demand only.
+Portfolio C. Deep research and FMP screeners are gated optional backup only.
 
 **Account scope:** Log and size for Portfolio **A** (taxable) and **C** (Agentic).
 **Do not log IRA (Portfolio B)** — operator discontinued four-questions cadence.
 
 ---
+
+## TA routing (charter)
+
+**Default path:** TradeWhisperer lists → Skylit GEX/VEX (pasted) → operator charts → `ta-confluence` → thesis / Agentic co-pilot.
+
+**Deep-research / fundamentals:** optional backup only — PLAY verdict, verge of confluence (operator OK), or explicit ask.
+
+**Artifact rule:** Ask for missing sources before forcing a score. Lists beat chart-inferred TW color. Operator chart required before PLAY. NO_TRADE is success.
+
+**Playbook edits:** Agent proposes; operator approves. Never silent overwrite of this file or risk config.
 
 ## Market Context Rules
 
@@ -123,15 +133,46 @@ Portfolio C: ~$50 Robinhood Agentic (equities; options later) — trade + log.
 
 ---
 
-## Playbook Setups (seed — expand from live trading)
+## Playbook Setups (seed — expand from confluence sessions)
 
-### Stock Setups
+Setups should cite all three sources. Expand via weekly distill ([phase-2-learning-loop.md](phase-2-learning-loop.md)).
 
-[To be populated after 10+ logged trades]
+### TA Setup template
+
+```markdown
+### Setup: [Name]
+- TW: period list color + HTF stack / fight rules
+- Maps: GEX/VEX magnets, kings, traps
+- Operator: S/R, fib, VP shelf, SMA stack
+- Entry trigger
+- Invalidation (TW + maps + operator)
+- Targets
+- When NOT to take it
+- Linked confluence / thesis IDs
+```
+
+### Stock / options setups
+
+[To be populated from live `ta-confluence` sessions — target 3+ before Phase 2 exit]
+
+---
+
+## Charting Coach (active learning)
+
+Operator-approved notes on markup hygiene. Newest first.
+
+| Date | Keep / Fix | Next session try |
+|------|------------|------------------|
+| _(empty)_ | | |
 
 ---
 
 ## Lessons Log (most recent first)
+
+**2026-08-16 — Charter pivot to TA-first**
+Center of gravity is three-source confluence and playbook learning.
+Fundamentals/deep-research demoted to gated backup. Phase 2 rewritten
+around pattern journal → charting coach → playbook → postmortem.
 
 **2026-05-09 — First live run**
 The week of 5/4-5/8 established that overnight momentum setups can carry

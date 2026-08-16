@@ -1,10 +1,10 @@
 # Project Status
 
 **Last updated:** 2026-08-16
-**Active phase:** Phase 1 — TA + Co-Pilot Trading
-**Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md) (retitled TA + Co-pilot; filename kept for links)
+**Active phase:** Phase 1 — TA Confluence + Co-Pilot Trading
+**Phase doc:** [phase-1-research-copilot.md](phase-1-research-copilot.md) (filename kept for links)
 **Operator cadence:** [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
-**Roadmap:** Equity-only — [decisions.md](../decisions.md) [2026-05-29]
+**Roadmap:** Equity TA-first — [decisions.md](../decisions.md) [2026-08-16]
 **Account scope:** Portfolio **C** (Agentic) + **A** (taxable individual). Portfolio **B** (IRA) — no thesis logging.
 
 ## This Week's Focus
@@ -13,12 +13,14 @@
 - [x] **All three input contracts filled** — TW charts/lists · Skylit GEX/VEX · operator S/R+fib+VP+SMA
 - [x] **Fusion workflow** — `ta-confluence` (candle_first / map_first + judgment)
 - [x] **Agentic co-pilot command** — `agentic-copilot-trade` + `config/agentic_copilot.yaml.example`
-- [x] **Charter align** — TA-first + A+C logging scope (IRA logging discontinued)
+- [x] **Charter rewrite** — TA-first product + Phase 2 learning loop reframed (2026-08-16)
+- [x] **A+C logging scope** — IRA logging discontinued (2026-08-16)
 - [x] Prediction log v1.5 **template + seed** — [prediction_log_v15.md](../.cursor/skills/ta-confluence/references/prediction_log_v15.md) · `reports/charts/confluence/prediction_log_2026-08-16.*`
 - [x] TA smoke inventory — [ta_smoke_inventory_2026-08-16.md](../reports/meta/ta_smoke_inventory_2026-08-16.md)
-- [ ] **Same-day live TA smoke** — fresh D+W lists + GEX/VEX + operator (no stale TW)
+- [ ] Habit: same-day confluence sessions (no stale TW) when lists + maps + operator available
+- [ ] Seed playbook TA setups + charting coach notes from live sessions
 - [ ] **First Agentic trade filled** — user must reply **confirm** on presented plan
-- [ ] Deep-research news strip — **parked** (not Phase 1 exit)
+- [ ] Deep-research only on PLAY / verge (not default) — **parked** as exit criterion
 
 ## Open Blockers
 
@@ -55,6 +57,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 - [x] MCP hybrid CLI + Cursor URL
 - [x] Phase 1 audit complete (Tier 1–2) — see [archive/phase-1-audit.md](archive/phase-1-audit.md)
 - [x] Operator checklist — [trading-pipeline-checklist.md](trading-pipeline-checklist.md) (daily / weekly / per-trade)
+- [x] TA-first charter + Phase 2 rewrite — 2026-08-16
 
 ## Phase 1 Exit Criteria Progress (TA-shaped, A+C)
 
@@ -67,6 +70,7 @@ Account map: [config/robinhood_accounts.yaml](../config/robinhood_accounts.yaml)
 | A+C trades logged via `trader-memory-core` | Open — log C fills + A sync; **IRA not required** |
 | 2+ portfolio_review reports (A+C focus) | **1/2** — `portfolio_review_2026-05-28.md` |
 | `pre_market` posture cadence | **Context** — 12/14 unique days (`reports/logs/posture_history.log`); not the main product |
+| Deep-research gated (PLAY/verge/ask) | Charter rule live 2026-08-16 — enforce in sessions |
 | Anthropic &lt;$20, pre-commit | Open |
 | Deep-research / FPS / IRA logging | **Not exit-blocking** (parked / discontinued) |
 
@@ -76,12 +80,10 @@ FMP `institutional-flow` v3 403, nine `fmp_client` forks, CI↔`run_all_tests.sh
 
 ## Recent Changes
 
-- Charter → TA-first; IRA logging discontinued; A+C scope (2026-08-16)
+- Charter + Phase 2 rewritten TA-first; IRA logging discontinued; A+C scope (2026-08-16)
 - TA-first intakes + `ta-confluence` + `agentic-copilot-trade` (2026-08-09)
+- TW list intakes + overlap through 2026-08-14
 - `report_paths` same-day discovery for ticker-stem chart filenames (2026-08-09)
 - FMP Starter verified + stable API fmp_client fixes (2026-05-31)
 - Docs synced to evidence 2026-05-30 ([docs_sync_2026-05-30.md](../reports/meta/docs_sync_2026-05-30.md))
-- TE thesis logged (`th_te_grw_20260529_034d`); POWL closed 2026-05-29
-- Pre-market run 2026-05-29: breadth 42.4, posture CAUTIOUS 50%
-- Trading pipeline checklist consolidated — [trading-pipeline-checklist.md](trading-pipeline-checklist.md)
 - Futures scope removed; 3-phase equity roadmap ([decisions.md](../decisions.md) 2026-05-29)

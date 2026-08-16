@@ -7,15 +7,23 @@
 
 ## What This Project Is
 
-A private fork of `claude-trading-skills` extended into a personalized, continuously learning AI trading agent focused on:
+A private fork of `claude-trading-skills` extended into a personalized, continuously learning AI trading co-pilot focused on:
 
-**US equities & options — TA-first setup selection, market posture, portfolio hygiene, and Robinhood Agentic co-pilot execution**
+**US equities & options — TA-first judgment from three sources → personal playbook → Robinhood Agentic co-pilot**
 
-Primary loop: TradeWhisperer lists + Skylit GEX/VEX + operator charts → `ta-confluence` (PLAY/WATCH/NO_TRADE) → sized plan → user confirm → Agentic MCP place → thesis log. Deep research and FMP screeners are **on-demand support**, not the daily core.
+Center of gravity is learning from your technical analysis, not fundamentals screeners or deep-research volume.
 
-**Long-term vision:** An autonomous AI trading partner that learns from your trades, behavioral patterns, and outcomes — compounding edge over time.
+| Source | Intake | Role |
+|--------|--------|------|
+| TradeWhisperer lists (+ optional charts) | `tradewhisperer-charts` | Color / HTF stack SoT — lists beat chart-inferred color |
+| Skylit GEX/VEX heatmaps | `gex-vex-maps` | Magnets, kings, traps, volatility context (user-pasted) |
+| Your TradingView markups | `operator-charts` | S/R, fibs, LuxAlgo VP, SMA stack, RSI — required before PLAY |
 
-**Project posture:** Extend what exists. Chart intakes and confluence are built. The gap is live TA sessions → confirmed Agentic fills → logged outcomes (A+C) → learning loop.
+Fusion: `ta-confluence` → PLAY / WATCH / NO_TRADE + judgment coaching. Thesis + Agentic co-pilot when confluence warrants (log **A + C** only). Fundamentals / FMP screeners / deep-research are **optional backup** — deep-research only on PLAY or when confluence is on the verge and you agree.
+
+**Long-term vision:** An autonomous partner that compounds edge from your TA patterns, charting habits, theses, and trade outcomes.
+
+**Project posture:** Extend what exists. TA intakes + confluence + Agentic co-pilot are built. The gap is live TA sessions → confirmed Agentic fills → logged outcomes (A+C) → playbook learning → eventual Agentic autonomy.
 
 ---
 
@@ -40,22 +48,24 @@ Primary loop: TradeWhisperer lists + Skylit GEX/VEX + operator charts → `ta-co
 5. **Every A/C trade is logged** to `trader-memory-core` — stocks and options.
 6. **Cost discipline.** Default to free/local. Justify every paid subscription.
 7. **Human-in-the-loop for skill changes.** Auto-generated PRs require review.
+8. **TA routing.** Default path is TW → GEX/VEX → operator charts → `ta-confluence`. Do not open deep-research or screener rabbit holes unless PLAY, verge-of-confluence (with user OK), or explicit ask. Ask for missing artifacts before forcing a verdict. NO_TRADE is a valid success. Propose playbook updates for review — never silently overwrite playbook or risk config.
 
 ---
 
 ## Out of Scope
 
 - CME futures / prop firm trading (Lucid, Tradovate) — archived 2026-05-29
-- Skylit ($99/mo) until Phase 2 exit with hard ROI criteria
+- Skylit **paid API / $99/mo subscription** until Phase 2 exit with hard ROI criteria (pasted Heatseeker screenshots remain in-scope)
 - Crypto, forex, mobile apps
 - Upstream contributions for now
+- Fundamentals-first product direction (screeners / deep-research as default daily work)
 - **IRA (Portfolio B) thesis logging / four-questions cadence** — operator discontinued
 
 ---
 
 ## Current Status
 
-**Active phase:** Phase 1 — TA + Co-pilot. See `project-docs/STATUS.md` and `project-docs/phase-1-research-copilot.md`.
+**Active phase:** Phase 1 — TA Confluence + Co-pilot. See `project-docs/STATUS.md` and `project-docs/phase-1-research-copilot.md`.
 
 ---
 
@@ -68,7 +78,7 @@ Primary loop: TradeWhisperer lists + Skylit GEX/VEX + operator charts → `ta-co
 3. Check the **Active Phase** below and read that phase doc only.
 4. If working on a specific skill, read that skill's `SKILL.md` after the phase doc.
 
-**Cursor:** Rules in `.cursor/rules/` apply automatically; see [AGENTS.md](AGENTS.md) for hybrid routing.
+**Cursor:** Rules in `.cursor/rules/` apply automatically; see [AGENTS.md](AGENTS.md) for hybrid routing. Standing TA session prompt: [`.cursor/prompts/ta-first-session.md`](.cursor/prompts/ta-first-session.md).
 
 **Claude Code:** Use `commands/` slash workflows; symlink skills from `skills/` to `~/.claude/skills/`.
 
@@ -76,8 +86,8 @@ Primary loop: TradeWhisperer lists + Skylit GEX/VEX + operator charts → `ta-co
 
 | Phase | Doc | Focus |
 |---|---|---|
-| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — TA pipeline + Robinhood co-pilot (A+C) |
-| Phase 2 | `project-docs/phase-2-learning-loop.md` | Behavioral patterns, playbook, skill improvement |
+| **Phase 1** | `project-docs/phase-1-research-copilot.md` | **Active** — TA intakes + confluence + A+C thesis + Agentic co-pilot |
+| Phase 2 | `project-docs/phase-2-learning-loop.md` | TA patterns → charting coach → playbook → postmortems |
 | Phase 3 | `project-docs/phase-3-agentic-execution.md` | Agentic MCP autonomous execution |
 
 ### Reference docs (load only when topic comes up)
@@ -122,11 +132,13 @@ You cannot start Phase N until Phase N-1 exit criteria are met. When advancing:
 
 ## Glossary
 
-- **Playbook:** The agent's evolving rulebook for stock/options setups
+- **Playbook:** Your evolving rulebook for TA setups (TW + maps + operator charts), reviewed by you
 - **Co-pilot mode:** Agent surfaces alerts and recommendations; user confirms and executes
 - **Autonomous mode:** Agent executes within hard limits (Phase 3B+, Agentic account only)
 - **Kill switch:** User-triggered halt of all autonomous activity
 - **TA session:** TW lists + GEX/VEX + operator chart → `ta-confluence` brief
+- **Three sources:** TradeWhisperer lists, Skylit GEX/VEX (pasted), operator charts
+- **Optional backup:** Fundamentals skills / deep-research — not the default path
 
 ---
 
