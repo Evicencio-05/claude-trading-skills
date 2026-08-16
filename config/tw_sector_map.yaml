@@ -73,95 +73,95 @@ benchmarks:
     name: Agriculture
     class: thematic
 tickers:
-  CVX:
-    benchmark: XLE
-    class: equity
-  XOM:
-    benchmark: XLE
-    class: equity
-  COP:
-    benchmark: XLE
-    class: equity
-  OXY:
-    benchmark: XLE
-    class: equity
   AAPL:
     benchmark: XLK
     class: equity
-  MSFT:
+  ABNB:
+    benchmark: XLY
+    class: equity
+  ADBE:
     benchmark: XLK
     class: equity
-  NVDA:
-    benchmark: SMH
-    class: equity
-  AVGO:
-    benchmark: SMH
-    class: equity
   AMD:
-    benchmark: SMH
-    class: equity
-  TSM:
-    benchmark: SMH
-    class: equity
-  INTC:
-    benchmark: SMH
-    class: equity
-  MU:
     benchmark: SMH
     class: equity
   AMZN:
     benchmark: XLY
     class: equity
-  META:
-    benchmark: XLC
+  ANET:
+    benchmark: XLK
     class: equity
-  GOOGL:
-    benchmark: XLC
+  APP:
+    benchmark: XLK
     class: equity
-  NFLX:
-    benchmark: XLC
+  ARM:
+    benchmark: SMH
     class: equity
-  TSLA:
+  ASML:
+    benchmark: SMH
+    class: equity
+  AVGO:
+    benchmark: SMH
+    class: equity
+  BA:
+    benchmark: XLI
+    class: equity
+  BIDU:
+    benchmark: XLK
+    class: equity
+  BRK.B:
+    benchmark: XLF
+    class: equity
+  BTC:
+    benchmark: SPY
+    class: crypto
+  CAT:
+    benchmark: XLI
+    class: equity
+  CMG:
     benchmark: XLY
     class: equity
-  ORCL:
-    benchmark: XLK
+  COIN:
+    benchmark: XLF
+    class: equity
+  COP:
+    benchmark: XLE
+    class: equity
+  COST:
+    benchmark: XLP
     class: equity
   CRM:
-    benchmark: XLK
-    class: equity
-  ADBE:
-    benchmark: XLK
-    class: equity
-  NOW:
-    benchmark: XLK
-    class: equity
-  SNOW:
-    benchmark: XLK
-    class: equity
-  PLTR:
-    benchmark: XLK
-    class: equity
-  PANW:
     benchmark: XLK
     class: equity
   CRWD:
     benchmark: XLK
     class: equity
-  JPM:
-    benchmark: XLF
+  CVX:
+    benchmark: XLE
+    class: equity
+  DELL:
+    benchmark: XLK
+    class: equity
+  DRS:
+    benchmark: XLI
+    class: equity
+  ETH:
+    benchmark: SPY
+    class: crypto
+  GE:
+    benchmark: XLI
+    class: equity
+  GOOGL:
+    benchmark: XLC
     class: equity
   GS:
     benchmark: XLF
     class: equity
-  V:
+  HCI:
     benchmark: XLF
     class: equity
-  MA:
-    benchmark: XLF
-    class: equity
-  BRK.B:
-    benchmark: XLF
+  HIMS:
+    benchmark: XLV
     class: equity
   HOOD:
     benchmark: XLF
@@ -169,25 +169,22 @@ tickers:
   IBKR:
     benchmark: XLF
     class: equity
-  COIN:
-    benchmark: XLF
+  IBM:
+    benchmark: XLK
     class: equity
-  LLY:
-    benchmark: XLV
+  INOD:
+    benchmark: XLK
     class: equity
-  UNH:
-    benchmark: XLV
+  INTC:
+    benchmark: SMH
     class: equity
   ISRG:
     benchmark: XLV
     class: equity
-  HIMS:
-    benchmark: XLV
+  JPM:
+    benchmark: XLF
     class: equity
-  COST:
-    benchmark: XLP
-    class: equity
-  WMT:
+  KO:
     benchmark: XLP
     class: equity
   KO:
@@ -198,18 +195,22 @@ tickers:
     class: equity
   SBUX:
     benchmark: XLY
+  LLY:
+    benchmark: XLV
     class: equity
-  CMG:
-    benchmark: XLY
+  MA:
+    benchmark: XLF
     class: equity
   CAT:
     benchmark: XLI
+  META:
+    benchmark: XLC
     class: equity
-  BA:
-    benchmark: XLI
+  MSFT:
+    benchmark: XLK
     class: equity
-  GE:
-    benchmark: XLI
+  MU:
+    benchmark: SMH
     class: equity
   NEE:
     benchmark: XLU
@@ -222,56 +223,88 @@ tickers:
     class: crypto
   INOD:
     benchmark: XLK
+  NFLX:
+    benchmark: XLC
+    class: equity
+  NKE:
+    benchmark: XLY
+    class: equity
+  NOW:
+    benchmark: XLK
+    class: equity
+  NVDA:
+    benchmark: SMH
+    class: equity
+  OKTA:
+    benchmark: XLK
+    class: equity
+  ORCL:
+    benchmark: XLK
+    class: equity
+  OXY:
+    benchmark: XLE
+    class: equity
+  PANW:
+    benchmark: XLK
+    class: equity
+  PGY:
+    benchmark: XLF
+    class: equity
+  PLTR:
+    benchmark: XLK
+    class: equity
+  PM:
+    benchmark: XLP
+    class: equity
+  QCOM:
+    benchmark: SMH
+    class: equity
+  RBLX:
+    benchmark: XLC
     class: equity
   RIVN:
     benchmark: XLY
     class: equity
-  UMAC:
+  SBUX:
+    benchmark: XLY
+    class: equity
+  SNOW:
     benchmark: XLK
     class: equity
   TSEM:
     benchmark: SMH
     class: equity
-  DELL:
-    benchmark: XLK
-    class: equity
-  IBM:
-    benchmark: XLK
-    class: equity
-  ARM:
-    benchmark: SMH
-    class: equity
-  QCOM:
-    benchmark: SMH
-    class: equity
-  ASML:
-    benchmark: SMH
-    class: equity
-  ANET:
-    benchmark: XLK
-    class: equity
-  ABNB:
+  TSLA:
     benchmark: XLY
     class: equity
-  U:
-    benchmark: XLK
-    class: equity
-  ZETA:
-    benchmark: XLK
-    class: equity
-  OKTA:
-    benchmark: XLK
-    class: equity
-  APP:
-    benchmark: XLK
+  TSM:
+    benchmark: SMH
     class: equity
   TTD:
     benchmark: XLC
     class: equity
-  RBLX:
-    benchmark: XLC
+  U:
+    benchmark: XLK
     class: equity
-  BIDU:
+  UMAC:
+    benchmark: XLK
+    class: equity
+  UNH:
+    benchmark: XLV
+    class: equity
+  V:
+    benchmark: XLF
+    class: equity
+  WMT:
+    benchmark: XLP
+    class: equity
+  XOM:
+    benchmark: XLE
+    class: equity
+  XYZ:
+    benchmark: XLF
+    class: equity
+  ZETA:
     benchmark: XLK
     class: equity
 pending:
