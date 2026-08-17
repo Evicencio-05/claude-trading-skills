@@ -5,24 +5,43 @@
   "mode": "map_first",
   "period": "daily",
   "bias": "short",
+  "tw_color": "PINK",
+  "tw_stack": {
+    "daily": "PINK",
+    "weekly": "BLUE_GREEN",
+    "monthly": "GREEN"
+  },
+  "htf": {
+    "fight": true,
+    "fierce": true,
+    "htf_absent": false,
+    "score_guide": "zero",
+    "reason": "fierce bullish HTF stack: ['BLUE_GREEN', 'GREEN']"
+  },
   "artifacts": {
     "tw": null,
-    "tw_list": null,
+    "tw_list": "reports/charts/tradewhisperer/list_tw_daily_2026-08-14.json",
+    "tw_lists": {
+      "daily": "reports/charts/tradewhisperer/list_tw_daily_2026-08-14.json",
+      "weekly": "reports/charts/tradewhisperer/list_tw_weekly_2026-08-14.json",
+      "monthly": "reports/charts/tradewhisperer/list_tw_monthly_2026-07-31.json"
+    },
+    "tw_chart": null,
     "gex": "reports/charts/gex_vex/CRWD_gex_2026-08-16.json",
     "vex": "reports/charts/gex_vex/CRWD_vex_2026-08-16.json",
     "operator": "reports/charts/operator/CRWD_operator_2026-08-16.json"
   },
-  "score": 53,
+  "score": 63,
   "factors": {
     "tw_trigger_align": {
       "weight": 30,
-      "score": 0,
-      "note": "No TW list/chart for CRWD (list_tw_daily_2026-08-07 has no CRWD). Short bias needs PINK/PINK_RED for full credit — missing → zero"
+      "score": 30,
+      "note": "Daily list 2026-08-14 = **PINK** — full short-trigger credit (prior session vs Sunday as_of; not stale)"
     },
     "htf_not_fighting": {
       "weight": 20,
-      "score": 20,
-      "note": "No weekly/monthly TW — HTF absent → full credit per rubric"
+      "score": 0,
+      "note": "Fierce HTF fight: weekly **BLUE_GREEN** + monthly **GREEN** vs short bias — score_guide=zero"
     },
     "gex_vex_support": {
       "weight": 25,
@@ -40,51 +59,54 @@
       "note": "Clean confluence: fib 2.618=227.08 + channel top rejection, RSI bearish divergence, thin VP above deep HVN, asymmetric to ~190. Slight discount: already −3.88% off highs / mid-channel; RSI ~60 not yet seller strength"
     }
   },
-  "verdict": "WATCH",
+  "verdict": "NO_TRADE",
   "judgment": {
     "devils_advocate": [
-      "No TW color — cannot confirm short-trigger candle; a daily BLUE/GREEN print would invalidate the fade thesis within 1–3 bars",
+      "Daily **PINK** is the short trigger, but HTF is fiercely bullish (**BLUE_GREEN** / **GREEN**) — fade into a still-bullish weekly/monthly stack is classic trap risk",
       "Front-week GEX **210–220 positive cushion** can pin/absorb and trap shorts chasing the −3.88% red day before 210 breaks",
       "VEX **240 +11.5M** overhead + still-extended price above rising SMAs — failed rejection → squeeze back toward channel top / fib 2.618"
     ],
     "invalidation": {
-      "tw": "Invalid if daily prints BLUE / BLUE_GREEN (or strong GREEN continuation) while forcing short — need PINK/PINK_RED (or at least non-hostile) before PLAY",
+      "tw": "Invalid if daily flips BLUE / BLUE_GREEN (or strong GREEN continuation) while forcing short; also treat unresolved fierce HTF fight (W BLUE_GREEN / M GREEN) as structural invalidation for PLAY",
       "maps": "Invalid if king/magnet migrates up (187.5 shrinks) while 220–240 positives expand as active magnets / rolling floors under spot",
       "operator": "Invalid on daily close back above **227.08** (fib 2.618 / channel top) — rejection thesis broken"
     },
     "not_allowed_to_ignore": [
+      "Fierce HTF fight: daily PINK under weekly BLUE_GREEN + monthly GREEN → hard stop NO_TRADE for short",
       "Spot is still **inside** the Aug-21 GEX positive cluster (210–220) — not in free-fall air yet",
-      "**200** is a GEX∩VEX **fight** (GEX neg / VEX +14.5M) — expect bounce/negotiation, not a clean vacuum to 187.5",
-      "TW color missing — maps + chart alone do not unlock PLAY"
+      "**200** is a GEX∩VEX **fight** (GEX neg / VEX +14.5M) — expect bounce/negotiation, not a clean vacuum to 187.5"
     ],
     "rr_sketch": {
-      "entry_zone": "Prefer wait: break/accept under **210** cushion, or rejection retest **220–227** with TW confirm — avoid chasing mid-cushion ~217",
+      "entry_zone": "Prefer wait: HTF de-escalates (weekly rolls off BLUE_GREEN) **and** break/accept under **210** cushion, or rejection retest **220–227** with non-fighting stack — avoid chasing mid-cushion ~217",
       "stop": 227.08,
       "targets": [
         {"level": 200.0, "note": "first map negotiation (GEX neg / VEX pos fight)"},
         {"level": 190.0, "note": "operator channel bottom"},
         {"level": 187.5, "note": "VEX king magnet / GEX neg amplify zone"}
       ],
-      "rough_rr": "From ~217 stop 227 (~10 pts) to 190 (~27 pts) ≈ 2.7R on paper — but first obstacle is the 210 pin + 200 fight, so chase R:R from spot is soft until under 210"
+      "rough_rr": "From ~217 stop 227 (~10 pts) to 190 (~27 pts) ≈ 2.7R on paper — but first obstacle is the 210 pin + 200 fight, and HTF fight blocks PLAY regardless"
     },
     "process_grade": {
-      "tw_present": false,
-      "tw_fresh": false,
+      "tw_present": true,
+      "tw_fresh": true,
       "gex_and_vex_present": true,
       "operator_present": true,
       "conflicts_surfaced": true,
       "override_used": false,
-      "line": "Process: solid (operator + both maps; TW gap and 210-cushion / 200-fight surfaced — WATCH is correct)"
+      "line": "Process: solid (TW stack filled; fierce HTF fight + 210-cushion / 200-fight surfaced — NO_TRADE is the hard-stop call)"
     },
-    "one_thing_to_verify": "Do not treat the VEX ★187.5 magnet as owed from 217 while sitting inside the GEX 210–220 positive cushion — the cushion is the near-term map, not the 187.5 king."
+    "one_thing_to_verify": "Do not let daily PINK override the fierce bullish HTF stack — weekly BLUE_GREEN + monthly GREEN is the hard stop, not a footnote."
   },
   "override": null,
   "gaps": [
-    "No TradeWhisperer list or chart for CRWD (daily list 2026-08-07 has no CRWD)",
-    "No weekly/monthly TW",
+    "TW daily/weekly lists dated 2026-08-14 (Fri) vs session as_of 2026-08-16 (Sun) — prior session, within stale cap",
+    "Monthly TW from 2026-07-31",
+    "No TW chart screenshot for CRWD (list color is SoT)",
     "GEX near-spot $K approximate (cluster structure reliable)"
   ],
-  "hard_stops": [],
+  "hard_stops": [
+    "Fierce HTF fight short: daily PINK under weekly BLUE_GREEN + monthly GREEN → NO_TRADE"
+  ],
   "spot": 216.95,
   "change_pct": -3.88,
   "operator_thesis": "Short after fib 2.618 / channel-top rejection with RSI divergence and weak up-leg volume; target channel bottom ~190; break lower may accelerate through thin VP.",
@@ -96,6 +118,6 @@
     "thesis_zone_187_5": {"gex_k": -680, "vex_k": 25484, "note": "sign fight — amplify vs magnet"},
     "overhead_reclaim_risk": {"strike": 240.0, "vex_k": 11478}
   },
-  "upgrade_to_watch": "Already WATCH — hold for TW color and/or map confirmation",
-  "upgrade_to_play": "Fresh daily TW PINK/PINK_RED (or non-hostile fade color) **and** accept/break under **210** GEX cushion toward 200, with rejection still valid under **227.08**; or map reshuffle that shrinks 210–220 positives while 187.5 remains king magnet"
+  "upgrade_to_watch": "Already past WATCH raw-score band — blocked by fierce HTF hard stop; revisit if weekly rolls off BLUE_GREEN while daily stays PINK/PINK_RED",
+  "upgrade_to_play": "HTF fight clears (weekly not BLUE_GREEN / monthly not fierce-bullish vs short) **and** accept/break under **210** GEX cushion toward 200, with rejection still valid under **227.08**; daily remains PINK/PINK_RED"
 }
