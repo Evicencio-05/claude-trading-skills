@@ -11,7 +11,7 @@ Ingest **user-supplied** TradeWhisperer inputs. **Lists are the candle-color sou
 
 **Resolver:** after lists are on disk, HTF stacks via `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of YYYY-MM-DD` (uses latest weekly/monthly list on or before that date).
 
-**Overlap + sector:** after list persist, `uv run python3 scripts/tw_list_resolve.py overlap --as-of YYYY-MM-DD --bias either --write-pending` → `overlap_tw_{as_of}.{md,json}` using [`config/tw_sector_map.yaml`](../config/tw_sector_map.yaml).
+**Overlap + sector:** after list persist, `uv run python3 scripts/tw_list_resolve.py overlap --as-of YYYY-MM-DD --bias either --write-pending` → `overlap_tw_{as_of}.{md,json}` using [`config/tw_sector_map.yaml`](../config/tw_sector_map.yaml). Overlap artifacts include a **Pre-start watch** table (W+M aligned, daily not started).
 
 ## PHASE 0 — INTAKE
 
@@ -43,6 +43,6 @@ After the session period list is on disk (and weekly/monthly exist or already on
    ```bash
    uv run python3 scripts/tw_list_resolve.py overlap --as-of {as_of} --bias either --write-pending
    ```
-2. Summarize in chat: top bull/bear overlaps and vs-benchmark rows (e.g. CVX/XOM vs XLE).
+2. Summarize in chat: top bull/bear overlaps, vs-benchmark rows (e.g. CVX/XOM vs XLE), and **Pre-start watch BEST** (note weekly freshness bucket: fresh ≤2d / aging / stale).
 3. Report `unmapped` / `pending_added` count. Promote `pending:` → `tickers:` in `config/tw_sector_map.yaml` when the operator assigns a real benchmark (no FMP/news lookup).
-4. Artifacts: `reports/charts/tradewhisperer/overlap_tw_{as_of}.{md,json}`.
+4. Artifacts: `reports/charts/tradewhisperer/overlap_tw_{as_of}.{md,json}` (includes `prestart` JSON + markdown footer).
