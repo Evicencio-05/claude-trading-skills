@@ -405,6 +405,247 @@ def score_overlap(stack: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def freshness_bucket(freshness_days: int) -> str:
+    """Map calendar days since weekly list to fresh|aging|stale."""
+    if freshness_days <= 2:
+        return "fresh"
+    if freshness_days <= 4:
+        return "aging"
+    return "stale"
+
+
+def _daily_list_paths_on_or_before(repo_root: Path, as_of: date) -> list[tuple[date, Path]]:
+    """Return (list_date, path) for daily lists on or before as_of, newest first."""
+    directory = artifact_dir(repo_root, "tradewhisperer_charts")
+    if not directory.exists():
+        return []
+    candidates: list[tuple[date, Path]] = []
+    for path in directory.glob("list_tw_daily_*.json"):
+        list_date = _list_as_of_from_name(path, "daily")
+        if list_date is None or list_date > as_of:
+            continue
+        candidates.append((list_date, path))
+    # Newest date first; among same date prefer last filename
+    by_date: dict[date, list[Path]] = {}
+    for list_date, path in candidates:
+        by_date.setdefault(list_date, []).append(path)
+    ordered: list[tuple[date, Path]] = []
+    for list_date in sorted(by_date.keys(), reverse=True):
+        paths = sorted(by_date[list_date])
+        ordered.append((list_date, paths[-1]))
+    return ordered
+
+
+def opposing_daily_streak(
+    repo_root: Path,
+    ticker: str,
+    as_of: date,
+    camp: str,
+) -> int:
+    """Count consecutive opposing daily colors from as_of backward.
+
+    Bull camp counts consecutive RED; bear camp counts consecutive GREEN.
+    Streak breaks on any other color or a missing day in the walk.
+    """
+    camp_key = camp.strip().lower()
+    if camp_key == "bull":
+        target = "RED"
+    elif camp_key == "bear":
+        target = "GREEN"
+    else:
+        raise ValueError(f"camp must be bull or bear, got {camp!r}")
+
+    symbol = ticker.strip().upper()
+    streak = 0
+    for _list_date, path in _daily_list_paths_on_or_before(repo_root, as_of):
+        try:
+            data = load_list(path)
+        except (OSError, ValueError, json.JSONDecodeError):
+            break
+        color = color_for_ticker(data, symbol)
+        if color is None or normalize_bucket(color) != target:
+            break
+        streak += 1
+    return streak
+
+
+_PRESTART_RULES = [
+    "w_m_same_camp",
+    "daily_not_same_camp_trigger",
+    "exclude_trim_daily",
+    "best_requires_weekly_trigger",
+    "prefer_fresh_weekly",
+    "bull_counts_red_daily_streak",
+    "bear_counts_green_daily_streak",
+    "cancel_risk_demoted",
+]
+
+
+def _weekly_trigger_rank(color: str | None, camp: str) -> int:
+    if not color:
+        return 0
+    key = normalize_bucket(color)
+    if camp == "bull":
+        if key == "BLUE_GREEN":
+            return 2
+        if key == "BLUE":
+            return 1
+    if camp == "bear":
+        if key == "PINK_RED":
+            return 2
+        if key == "PINK":
+            return 1
+    return 0
+
+
+def _prestart_sort_key(row: dict[str, Any]) -> tuple:
+    bucket = row.get("freshness_bucket") or "stale"
+    bucket_rank = {"fresh": 0, "aging": 1, "stale": 2}.get(str(bucket), 3)
+    clean_rank = 0 if row.get("opposing_clean") else 1
+    risk_rank = 0 if row.get("risk") == "ok" else 1
+    streak = int(row.get("red_daily_streak") or row.get("green_daily_streak") or 0)
+    trig = _weekly_trigger_rank(row.get("weekly"), str(row.get("camp") or ""))
+    return (bucket_rank, clean_rank, risk_rank, -streak, -trig, str(row.get("ticker") or ""))
+
+
+def find_prestarts(
+    repo_root: Path,
+    as_of: date,
+    *,
+    map_path: Path | None = None,
+) -> dict[str, Any]:
+    """Find W+M aligned pre-start watches (daily not yet a same-camp trigger)."""
+    weekly_path = find_list(repo_root, "weekly", as_of)
+    monthly_path = find_list(repo_root, "monthly", as_of)
+    daily_path = find_list(repo_root, "daily", as_of)
+
+    weekly_as_of: str | None = None
+    freshness_days = 0
+    if weekly_path is not None:
+        w_date = _list_as_of_from_name(weekly_path, "weekly")
+        if w_date is not None:
+            weekly_as_of = w_date.isoformat()
+            freshness_days = (as_of - w_date).days
+    bucket = freshness_bucket(freshness_days)
+
+    empty = {
+        "weekly_as_of": weekly_as_of,
+        "freshness_days": freshness_days,
+        "freshness_bucket": bucket,
+        "bull_best": [],
+        "bear_best": [],
+        "bull_context": [],
+        "bear_context": [],
+        "rules": list(_PRESTART_RULES),
+    }
+    if weekly_path is None or monthly_path is None:
+        return empty
+
+    try:
+        weekly_data = load_list(weekly_path)
+        monthly_data = load_list(monthly_path)
+    except (OSError, ValueError, json.JSONDecodeError):
+        return empty
+
+    w_idx = weekly_data["extracted"]["ticker_index"]
+    m_idx = monthly_data["extracted"]["ticker_index"]
+    d_idx: dict[str, str] = {}
+    if daily_path is not None:
+        try:
+            d_idx = load_list(daily_path)["extracted"]["ticker_index"]
+        except (OSError, ValueError, json.JSONDecodeError):
+            d_idx = {}
+
+    sector_path = map_path or default_sector_map_path(repo_root)
+    sector_map = (
+        load_sector_map(sector_path)
+        if sector_path.is_file()
+        else {"benchmarks": {}, "tickers": {}, "pending": {}}
+    )
+    benchmarks = set(sector_map.get("benchmarks") or {})
+
+    bull_best: list[dict[str, Any]] = []
+    bear_best: list[dict[str, Any]] = []
+    bull_context: list[dict[str, Any]] = []
+    bear_context: list[dict[str, Any]] = []
+
+    for symbol in sorted(set(w_idx) & set(m_idx)):
+        if symbol in benchmarks:
+            continue
+        weekly = normalize_bucket(w_idx[symbol])
+        monthly = normalize_bucket(m_idx[symbol])
+        wc = color_camp(weekly)
+        mc = color_camp(monthly)
+        if wc not in ("bull", "bear") or wc != mc:
+            continue
+
+        daily_raw = d_idx.get(symbol)
+        daily = normalize_bucket(daily_raw) if daily_raw else None
+        if daily == "TRIM_OPTION":
+            continue
+
+        if wc == "bull":
+            if daily in LONG_TRIGGERS:
+                continue
+            triggers = LONG_TRIGGERS
+            continuation = "GREEN"
+            cancel_daily = "PINK_RED"
+            clean_daily = "RED"
+        else:
+            if daily in SHORT_TRIGGERS:
+                continue
+            triggers = SHORT_TRIGGERS
+            continuation = "RED"
+            cancel_daily = "BLUE_GREEN"
+            clean_daily = "GREEN"
+
+        if weekly in triggers:
+            tier = "best"
+        elif weekly == continuation:
+            tier = "context"
+        else:
+            continue
+
+        risk = "cancel" if daily == cancel_daily else "ok"
+        opposing_clean = daily == clean_daily
+        streak = opposing_daily_streak(repo_root, symbol, as_of, wc)
+
+        row: dict[str, Any] = {
+            "ticker": symbol,
+            "daily": daily,
+            "weekly": weekly,
+            "monthly": monthly,
+            "camp": wc,
+            "tier": tier,
+            "freshness_days": freshness_days,
+            "freshness_bucket": bucket,
+            "risk": risk,
+            "opposing_clean": opposing_clean,
+        }
+        if wc == "bull":
+            row["red_daily_streak"] = streak
+            (bull_best if tier == "best" else bull_context).append(row)
+        else:
+            row["green_daily_streak"] = streak
+            (bear_best if tier == "best" else bear_context).append(row)
+
+    bull_best.sort(key=_prestart_sort_key)
+    bear_best.sort(key=_prestart_sort_key)
+    bull_context.sort(key=_prestart_sort_key)
+    bear_context.sort(key=_prestart_sort_key)
+
+    return {
+        "weekly_as_of": weekly_as_of,
+        "freshness_days": freshness_days,
+        "freshness_bucket": bucket,
+        "bull_best": bull_best,
+        "bear_best": bear_best,
+        "bull_context": bull_context,
+        "bear_context": bear_context,
+        "rules": list(_PRESTART_RULES),
+    }
+
+
 def default_sector_map_path(repo_root: Path) -> Path:
     """Return default config/tw_sector_map.yaml under repo root."""
     return repo_root / DEFAULT_SECTOR_MAP
@@ -626,6 +867,8 @@ def rank_overlap(
     if top > 0:
         ranked = ranked[:top]
 
+    prestart = find_prestarts(repo_root, as_of, map_path=sector_path)
+
     return {
         "as_of": as_of.isoformat(),
         "bias": bias_key,
@@ -637,7 +880,87 @@ def rank_overlap(
             "ranked": len(ranked),
             "unmapped": len(set(unmapped)),
         },
+        "prestart": prestart,
     }
+
+
+def _format_prestart_stack(row: dict[str, Any]) -> str:
+    return f"{row.get('daily') or '-'} / {row.get('weekly') or '-'} / {row.get('monthly') or '-'}"
+
+
+def _append_prestart_markdown(lines: list[str], prestart: dict[str, Any]) -> None:
+    """Append Pre-start watch sections to markdown lines."""
+    md_best_cap = 25
+    md_ctx_cap = 15
+    lines.extend(
+        [
+            "## Pre-start watch",
+            "",
+            "Rules: W+M same camp; daily not a same-camp trigger; prefer fresh weekly (≤2d);",
+            "bull counts consecutive red dailys; bear counts consecutive green dailys; cancel-risk demoted.",
+            "",
+            f"**Weekly as_of:** {prestart.get('weekly_as_of') or '—'} · "
+            f"**Freshness:** {prestart.get('freshness_days', '—')}d "
+            f"({prestart.get('freshness_bucket') or '—'})",
+            "",
+            "### Bull BEST",
+            "",
+            "| Ticker | D / W / M | Fresh | Red streak | Risk |",
+            "|--------|-----------|-------|----------:|------|",
+        ]
+    )
+    bull_best = prestart.get("bull_best") or []
+    if not bull_best:
+        lines.append("| — | — | — | — | — |")
+    else:
+        for row in bull_best[:md_best_cap]:
+            lines.append(
+                f"| {row.get('ticker')} | {_format_prestart_stack(row)} | "
+                f"{row.get('freshness_bucket')} | {row.get('red_daily_streak', 0)} | "
+                f"{row.get('risk')} |"
+            )
+    lines.extend(
+        [
+            "",
+            "### Bear BEST",
+            "",
+            "| Ticker | D / W / M | Fresh | Green streak | Risk |",
+            "|--------|-----------|-------|------------:|------|",
+        ]
+    )
+    bear_best = prestart.get("bear_best") or []
+    if not bear_best:
+        lines.append("| — | — | — | — | — |")
+    else:
+        for row in bear_best[:md_best_cap]:
+            lines.append(
+                f"| {row.get('ticker')} | {_format_prestart_stack(row)} | "
+                f"{row.get('freshness_bucket')} | {row.get('green_daily_streak', 0)} | "
+                f"{row.get('risk')} |"
+            )
+
+    bull_ctx = prestart.get("bull_context") or []
+    bear_ctx = prestart.get("bear_context") or []
+    lines.extend(
+        [
+            "",
+            "### Context (weekly continuation only)",
+            "",
+            "| Ticker | Camp | D / W / M | Fresh | Opposing streak | Risk |",
+            "|--------|------|-----------|-------|----------------:|------|",
+        ]
+    )
+    ctx_rows = list(bull_ctx[:md_ctx_cap]) + list(bear_ctx[:md_ctx_cap])
+    if not ctx_rows:
+        lines.append("| — | — | — | — | — | — |")
+    else:
+        for row in ctx_rows:
+            streak = row.get("red_daily_streak", row.get("green_daily_streak", 0))
+            lines.append(
+                f"| {row.get('ticker')} | {row.get('camp')} | {_format_prestart_stack(row)} | "
+                f"{row.get('freshness_bucket')} | {streak} | {row.get('risk')} |"
+            )
+    lines.append("")
 
 
 def write_overlap_artifacts(repo_root: Path, payload: dict[str, Any]) -> tuple[Path, Path]:
@@ -675,6 +998,11 @@ def write_overlap_artifacts(repo_root: Path, payload: dict[str, Any]) -> tuple[P
         lines.append("")
         lines.append(", ".join(unmapped[:80]) + (" …" if len(unmapped) > 80 else ""))
         lines.append("")
+
+    prestart = payload.get("prestart")
+    if isinstance(prestart, dict):
+        _append_prestart_markdown(lines, prestart)
+
     md_path.write_text("\n".join(lines), encoding="utf-8")
     return json_path, md_path
 

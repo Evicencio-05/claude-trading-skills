@@ -17,15 +17,19 @@ from tw_list_resolve import (
     color_for_ticker,
     compare_to_benchmark,
     find_list,
+    find_prestarts,
+    freshness_bucket,
     htf_fight,
     load_list,
     load_sector_map,
     normalize_bucket,
+    opposing_daily_streak,
     rank_overlap,
     resolve_benchmark,
     resolve_color_stack,
     score_overlap,
     shortlist,
+    write_overlap_artifacts,
     write_pending_stubs,
 )
 
@@ -541,3 +545,345 @@ def test_cli_map_lookup(tmp_path: Path):
     out = json.loads(proc.stdout)
     assert out["ticker"] == "CVX"
     assert out["benchmark"] == "XLE"
+
+
+def test_freshness_bucket_boundaries():
+    assert freshness_bucket(0) == "fresh"
+    assert freshness_bucket(2) == "fresh"
+    assert freshness_bucket(3) == "aging"
+    assert freshness_bucket(4) == "aging"
+    assert freshness_bucket(5) == "stale"
+    assert freshness_bucket(6) == "stale"
+
+
+def test_find_prestarts_bull_best_and_excludes_daily_trigger(tmp_path: Path):
+    as_of = date(2026, 8, 10)
+    _write_list(
+        tmp_path,
+        "daily",
+        as_of.isoformat(),
+        _list_payload(
+            period="daily",
+            as_of=as_of.isoformat(),
+            buckets={
+                "RED": ["AEHR"],
+                "BLUE": ["AMD"],
+                "TRIM_OPTION": ["LLY"],
+                "GREEN": ["XLE"],
+            },
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "weekly",
+        as_of.isoformat(),
+        _list_payload(
+            period="weekly",
+            as_of=as_of.isoformat(),
+            buckets={
+                "BLUE_GREEN": ["AEHR", "AMD", "LLY"],
+                "GREEN": ["XLE"],
+            },
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "monthly",
+        as_of.isoformat(),
+        _list_payload(
+            period="monthly",
+            as_of=as_of.isoformat(),
+            buckets={"GREEN": ["AEHR", "AMD", "LLY", "XLE"]},
+        ),
+    )
+    map_path = tmp_path / "tw_sector_map.yaml"
+    map_path.write_text(yaml.safe_dump(_sector_map_payload()), encoding="utf-8")
+
+    result = find_prestarts(tmp_path, as_of, map_path=map_path)
+    bull_tickers = [r["ticker"] for r in result["bull_best"]]
+    assert "AEHR" in bull_tickers
+    assert "AMD" not in bull_tickers  # already daily BLUE trigger
+    assert "LLY" not in bull_tickers  # TRIM_OPTION excluded
+    aehr = next(r for r in result["bull_best"] if r["ticker"] == "AEHR")
+    assert aehr["camp"] == "bull"
+    assert aehr["tier"] == "best"
+    assert aehr["risk"] == "ok"
+    assert aehr["opposing_clean"] is True
+    assert aehr["freshness_bucket"] == "fresh"
+    assert result["freshness_bucket"] == "fresh"
+
+
+def test_find_prestarts_cancel_risk_sorts_below_clean(tmp_path: Path):
+    as_of = date(2026, 8, 10)
+    _write_list(
+        tmp_path,
+        "daily",
+        as_of.isoformat(),
+        _list_payload(
+            period="daily",
+            as_of=as_of.isoformat(),
+            buckets={"RED": ["CLEAN"], "PINK_RED": ["RISKY"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "weekly",
+        as_of.isoformat(),
+        _list_payload(
+            period="weekly",
+            as_of=as_of.isoformat(),
+            buckets={"BLUE_GREEN": ["CLEAN", "RISKY"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "monthly",
+        as_of.isoformat(),
+        _list_payload(
+            period="monthly",
+            as_of=as_of.isoformat(),
+            buckets={"GREEN": ["CLEAN", "RISKY", "XLE"]},
+        ),
+    )
+    map_path = tmp_path / "tw_sector_map.yaml"
+    map_path.write_text(yaml.safe_dump(_sector_map_payload()), encoding="utf-8")
+
+    result = find_prestarts(tmp_path, as_of, map_path=map_path)
+    best = result["bull_best"]
+    tickers = [r["ticker"] for r in best]
+    assert tickers.index("CLEAN") < tickers.index("RISKY")
+    risky = next(r for r in best if r["ticker"] == "RISKY")
+    assert risky["risk"] == "cancel"
+    assert risky["opposing_clean"] is False
+    clean = next(r for r in best if r["ticker"] == "CLEAN")
+    assert clean["risk"] == "ok"
+
+
+def test_find_prestarts_stale_weekly_bucket(tmp_path: Path):
+    as_of = date(2026, 8, 20)
+    weekly_as_of = date(2026, 8, 14)  # 6 calendar days earlier → stale
+    _write_list(
+        tmp_path,
+        "daily",
+        as_of.isoformat(),
+        _list_payload(
+            period="daily",
+            as_of=as_of.isoformat(),
+            buckets={"RED": ["AEHR"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "weekly",
+        weekly_as_of.isoformat(),
+        _list_payload(
+            period="weekly",
+            as_of=weekly_as_of.isoformat(),
+            buckets={"BLUE_GREEN": ["AEHR"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "monthly",
+        "2026-07-31",
+        _list_payload(
+            period="monthly",
+            as_of="2026-07-31",
+            buckets={"GREEN": ["AEHR", "XLE"]},
+        ),
+    )
+    map_path = tmp_path / "tw_sector_map.yaml"
+    map_path.write_text(yaml.safe_dump(_sector_map_payload()), encoding="utf-8")
+
+    result = find_prestarts(tmp_path, as_of, map_path=map_path)
+    assert result["weekly_as_of"] == weekly_as_of.isoformat()
+    assert result["freshness_days"] == 6
+    assert result["freshness_bucket"] == "stale"
+    aehr = next(r for r in result["bull_best"] if r["ticker"] == "AEHR")
+    assert aehr["freshness_bucket"] == "stale"
+    assert aehr["freshness_days"] == 6
+
+
+def test_opposing_daily_streak_red_and_break(tmp_path: Path):
+    as_of = date(2026, 8, 12)
+    for day, color in (
+        ("2026-08-10", "RED"),
+        ("2026-08-11", "RED"),
+        ("2026-08-12", "RED"),
+    ):
+        _write_list(
+            tmp_path,
+            "daily",
+            day,
+            _list_payload(
+                period="daily",
+                as_of=day,
+                buckets={color: ["AEHR"]},
+            ),
+        )
+    assert opposing_daily_streak(tmp_path, "AEHR", as_of, "bull") == 3
+
+    # Intervening GREEN on 08-11 breaks streak when counting from 08-12
+    _write_list(
+        tmp_path,
+        "daily",
+        "2026-08-11",
+        _list_payload(
+            period="daily",
+            as_of="2026-08-11",
+            buckets={"GREEN": ["AEHR"]},
+        ),
+    )
+    assert opposing_daily_streak(tmp_path, "AEHR", as_of, "bull") == 1
+
+
+def test_find_prestarts_red_streak_on_row(tmp_path: Path):
+    as_of = date(2026, 8, 12)
+    for day in ("2026-08-10", "2026-08-11", "2026-08-12"):
+        _write_list(
+            tmp_path,
+            "daily",
+            day,
+            _list_payload(
+                period="daily",
+                as_of=day,
+                buckets={"RED": ["AEHR"], "GREEN": ["XLE"]},
+            ),
+        )
+    _write_list(
+        tmp_path,
+        "weekly",
+        as_of.isoformat(),
+        _list_payload(
+            period="weekly",
+            as_of=as_of.isoformat(),
+            buckets={"BLUE_GREEN": ["AEHR"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "monthly",
+        as_of.isoformat(),
+        _list_payload(
+            period="monthly",
+            as_of=as_of.isoformat(),
+            buckets={"GREEN": ["AEHR", "XLE"]},
+        ),
+    )
+    map_path = tmp_path / "tw_sector_map.yaml"
+    map_path.write_text(yaml.safe_dump(_sector_map_payload()), encoding="utf-8")
+
+    result = find_prestarts(tmp_path, as_of, map_path=map_path)
+    aehr = next(r for r in result["bull_best"] if r["ticker"] == "AEHR")
+    assert aehr["red_daily_streak"] == 3
+
+
+def test_write_overlap_artifacts_includes_prestart_section(tmp_path: Path):
+    as_of = date(2026, 8, 10)
+    payload = {
+        "as_of": as_of.isoformat(),
+        "bias": "either",
+        "ranked": [],
+        "unmapped": [],
+        "counts": {"daily_indexed": 0, "ranked": 0, "unmapped": 0},
+        "sources": {},
+        "prestart": {
+            "weekly_as_of": as_of.isoformat(),
+            "freshness_days": 0,
+            "freshness_bucket": "fresh",
+            "bull_best": [
+                {
+                    "ticker": "AEHR",
+                    "daily": "RED",
+                    "weekly": "BLUE_GREEN",
+                    "monthly": "GREEN",
+                    "camp": "bull",
+                    "tier": "best",
+                    "freshness_days": 0,
+                    "freshness_bucket": "fresh",
+                    "red_daily_streak": 2,
+                    "risk": "ok",
+                    "opposing_clean": True,
+                }
+            ],
+            "bear_best": [],
+            "bull_context": [],
+            "bear_context": [],
+            "rules": ["w_m_same_camp", "prefer_fresh_weekly"],
+        },
+    }
+    json_path, md_path = write_overlap_artifacts(tmp_path, payload)
+    md = md_path.read_text(encoding="utf-8")
+    assert "## Pre-start watch" in md
+    assert "### Bull BEST" in md
+    assert "### Bear BEST" in md
+    assert "AEHR" in md
+    data = json.loads(json_path.read_text(encoding="utf-8"))
+    assert "prestart" in data
+    assert data["prestart"]["bull_best"][0]["ticker"] == "AEHR"
+
+
+def test_cli_overlap_includes_prestart_key(tmp_path: Path):
+    as_of = date(2026, 8, 10)
+    _write_list(
+        tmp_path,
+        "daily",
+        as_of.isoformat(),
+        _list_payload(
+            period="daily",
+            as_of=as_of.isoformat(),
+            buckets={"RED": ["AEHR"], "BLUE_GREEN": ["CVX"], "GREEN": ["XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "weekly",
+        as_of.isoformat(),
+        _list_payload(
+            period="weekly",
+            as_of=as_of.isoformat(),
+            buckets={"BLUE_GREEN": ["AEHR"], "GREEN": ["CVX", "XLE"]},
+        ),
+    )
+    _write_list(
+        tmp_path,
+        "monthly",
+        as_of.isoformat(),
+        _list_payload(
+            period="monthly",
+            as_of=as_of.isoformat(),
+            buckets={"GREEN": ["AEHR", "CVX", "XLE"]},
+        ),
+    )
+    map_path = tmp_path / "config" / "tw_sector_map.yaml"
+    map_path.parent.mkdir(parents=True)
+    map_path.write_text(yaml.safe_dump(_sector_map_payload()), encoding="utf-8")
+
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(RESOLVE_SCRIPT),
+            "overlap",
+            "--as-of",
+            as_of.isoformat(),
+            "--bias",
+            "either",
+            "--top",
+            "5",
+            "--map",
+            str(map_path),
+            "--repo",
+            str(tmp_path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stderr
+    out = json.loads(proc.stdout)
+    assert "prestart" in out
+    assert "bull_best" in out["prestart"]
+    md = (
+        artifact_dir(tmp_path, "tradewhisperer_charts") / f"overlap_tw_{as_of.isoformat()}.md"
+    ).read_text(encoding="utf-8")
+    assert "## Pre-start watch" in md

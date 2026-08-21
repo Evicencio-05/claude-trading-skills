@@ -30,7 +30,7 @@ Artifact key: `tradewhisperer_charts`.
 
 HTF stack helper: `uv run python3 scripts/tw_list_resolve.py stack TICKER --as-of YYYY-MM-DD`.
 
-Overlap + sector (after list persist): `uv run python3 scripts/tw_list_resolve.py overlap --as-of YYYY-MM-DD --bias either --write-pending` — map: `config/tw_sector_map.yaml`.
+Overlap + sector (after list persist): `uv run python3 scripts/tw_list_resolve.py overlap --as-of YYYY-MM-DD --bias either --write-pending` — map: `config/tw_sector_map.yaml`. Overlap artifacts include a **Pre-start watch** (W+M aligned, daily not started).
 
 ## Guardrails
 
