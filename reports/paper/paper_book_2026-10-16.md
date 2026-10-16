@@ -16,6 +16,8 @@ and this book only records paper options. Alerts below are unpushed
 - Target prefers a king node over the first fib when both are on the sketch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).
 - Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
+- An open paper position carries until invalidation, the target, expiry, or a newer tape.
+- A dated earnings session does not open. A carried position flattens that morning.
 - TA older than one trading session is stale. Stale levels do not arm and do not alert.
 
 ## This session
@@ -61,6 +63,7 @@ and this book only records paper options. Alerts below are unpushed
 
 Robinhood tool `create_alert` and a TradingView price alert share each level.
 Create the TradingView alert only on rows marked create. Withheld means the tape is stale.
+Paste the session Pine on a chart and arm Any alert() function call.
 No webhook is configured. The alert does not place an order.
 
 | Ticker | Create | Condition | Role |
@@ -91,7 +94,9 @@ No webhook is configured. The alert does not place an order.
    MCP trade approvals default off, which lets a connected agent place live
    orders. Confirm approvals stay on, and confirm the next fresh book may push
    price alerts only.
-6. Earnings: sell immediately on the open. Should any name with earnings inside
-   the contract life be an automatic pass?
+6. A dated earnings session does not open, and a carried position flattens that
+   morning. A later ISO earnings date stays open until that open. Vague text
+   such as early September does not count. Say if the whole earnings week
+   should be a pass instead.
 7. A target that is not larger than a negative node between spot and the target
    stays a watch. Confirm that size check is the rug rule you want.

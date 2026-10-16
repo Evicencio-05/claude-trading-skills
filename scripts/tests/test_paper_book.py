@@ -13,9 +13,11 @@ from paper_book import (
     create_alert_arguments,
     decide_play,
     fetch_last_prices,
+    merge_carried,
     parse_yahoo_chart,
     push_create_alerts,
     render_markdown,
+    render_pine,
     weekday_lag,
     weekly_expiry,
 )
@@ -606,6 +608,101 @@ def test_push_create_alerts_refuses_stale_tape_and_order_tools():
         create_alert_arguments(fresh["rows"][0]["alerts"][0], ["symbol", "price"])["symbol"]
         == "TSEM"
     )
+
+
+def test_earnings_session_does_not_open():
+    row = decide_play(_play(earnings_on="2026-10-16"), date(2026, 10, 16))
+
+    assert row["status"] == "flat"
+    assert row["reason"] == "earnings_open"
+    assert row["paper_entry"] is None
+    assert row["alerts"] == []
+    assert row["earnings_on"] == "2026-10-16"
+
+
+def test_later_earnings_stays_open_until_that_morning():
+    row = decide_play(_play(earnings_on="2026-10-20"), date(2026, 10, 16))
+
+    assert row["status"] == "paper_open"
+    assert row["earnings_on"] == "2026-10-20"
+
+
+def test_vague_earnings_text_does_not_block():
+    row = decide_play(
+        _play(operator_extracted={"earnings_markers": "E visible early September"}),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row.get("earnings_on") is None
+
+
+def test_open_carries_across_a_stale_session_until_expiry():
+    opened = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 16))
+    stale = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 20))
+    assert stale["status"] == "stale"
+
+    carried = merge_carried([stale], {"rows": [opened]}, date(2026, 10, 20))
+
+    assert carried[0]["status"] == "paper_open"
+    assert carried[0]["paper_entry"] == 249.0
+    assert carried[0]["carried"] is True
+
+    expired = merge_carried(
+        [decide_play(_play(as_of="2026-10-15"), date(2026, 10, 26))],
+        {"rows": [opened]},
+        date(2026, 10, 26),
+    )
+    assert expired[0]["status"] == "expired"
+    assert expired[0]["reason"] == "expired"
+    assert expired[0]["alerts"] == []
+
+
+def test_carried_position_flattens_on_its_earnings_morning():
+    opened = decide_play(_play(earnings_on="2026-10-20"), date(2026, 10, 16))
+    stale = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 20))
+
+    carried = merge_carried([stale], {"rows": [opened]}, date(2026, 10, 20))
+
+    assert carried[0]["status"] == "flat"
+    assert carried[0]["reason"] == "earnings_open"
+
+
+def test_newer_tape_replaces_a_carried_position():
+    opened = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 16))
+    fresh = decide_play(_play(as_of="2026-10-19", verdict="NO_TRADE"), date(2026, 10, 19))
+
+    merged = merge_carried([fresh], {"rows": [opened]}, date(2026, 10, 19))
+
+    assert merged[0]["status"] == "flat"
+    assert merged[0]["reason"] == "no_trade"
+    assert merged[0].get("carried") is not True
+
+
+def test_same_tape_keeps_the_recorded_add():
+    opened = decide_play(_play(), date(2026, 10, 16))
+    opened["adds"] = [{"price": 255.0, "status": "open"}]
+    again = decide_play(_play(), date(2026, 10, 19))
+
+    merged = merge_carried([again], {"rows": [opened]}, date(2026, 10, 19))
+
+    assert merged[0]["status"] == "paper_open"
+    assert merged[0]["adds"] == [{"price": 255.0, "status": "open"}]
+
+
+def test_pine_script_arms_fresh_crosses_and_withholds_a_stale_tape():
+    armed = decide_play(_play(spot=252.49, change_pct=12.37), date(2026, 10, 16))
+    text = render_pine({"session_date": "2026-10-16", "rows": [armed]})
+
+    assert "//@version=6" in text
+    assert 'syminfo.ticker == "TSEM"' in text
+    assert "ta.crossunder(close, 248)" in text
+    assert "No brokerage order" in text
+
+    root = Path(__file__).resolve().parents[2]
+    stale = render_pine(build_book(root / "reports" / "charts" / "confluence", date(2026, 10, 16)))
+    assert "No alerts" in stale
+    assert "alert(" not in stale
 
 
 def test_paper_book_dir_is_registered(tmp_path: Path):

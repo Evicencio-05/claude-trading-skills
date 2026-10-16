@@ -9,6 +9,7 @@ project does not autonomously execute before Phase 3B.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import re
 import sys
@@ -21,6 +22,7 @@ MAX_WEEKDAY_LAG = 1
 ALERT_DESTINATION = "robinhood_create_alert"
 
 _ZONE_RE = re.compile(r"(\d+(?:\.\d+)?)\s*[\u2012\u2013\u2014-]\s*(\d+(?:\.\d+)?)")
+_EARNINGS_RE = re.compile(r"20\d{2}-\d{2}-\d{2}")
 
 
 def weekly_expiry(anchor: date) -> date:
@@ -540,6 +542,39 @@ def _decide_fresh(payload, anchor=None):
     return row
 
 
+def earnings_dates(payload):
+    """ISO dates only. A month name such as 'early September' is not a session."""
+    texts = []
+    direct = payload.get("earnings_on")
+    if isinstance(direct, str):
+        texts.append(direct)
+    extracted = payload.get("operator_extracted")
+    if isinstance(extracted, dict):
+        marker = extracted.get("earnings_markers")
+        if isinstance(marker, str):
+            texts.append(marker)
+        elif isinstance(marker, list):
+            texts.extend(str(item) for item in marker)
+    found = set()
+    for text in texts:
+        for match in _EARNINGS_RE.findall(text):
+            try:
+                found.add(date.fromisoformat(match))
+            except ValueError:
+                continue
+    return sorted(found)
+
+
+def _flatten_earnings(row):
+    row["status"] = "flat"
+    row["action"] = "flat"
+    row["reason"] = "earnings_open"
+    row["alerts"] = []
+    row["paper_entry"] = None
+    row["contract"] = None
+    return row
+
+
 def decide_play(payload, session, include_shadow=True):
     as_of = date.fromisoformat(payload["as_of"])
     lag = weekday_lag(as_of, session)
@@ -556,7 +591,65 @@ def decide_play(payload, session, include_shadow=True):
         row["shadow"] = _decide_fresh(payload, as_of) if include_shadow else None
         return row
     row["shadow"] = None
+    upcoming = [day for day in earnings_dates(payload) if day >= session]
+    if upcoming:
+        row["earnings_on"] = upcoming[0].isoformat()
+    if row.get("earnings_on") == session.isoformat() and row["status"] in {
+        "paper_open",
+        "armed_wait",
+    }:
+        return _flatten_earnings(row)
     return row
+
+
+def _position_done(row, session):
+    """Expiry and the earnings open end a carried paper position."""
+    if row.get("earnings_on") == session.isoformat():
+        row["carried"] = True
+        row["session_date"] = session.isoformat()
+        return _flatten_earnings(row)
+    expiry = (row.get("contract") or {}).get("expiry")
+    if isinstance(expiry, str):
+        try:
+            expiry_day = date.fromisoformat(expiry)
+        except ValueError:
+            expiry_day = None
+        if expiry_day is not None and session > expiry_day:
+            row["status"] = "expired"
+            row["action"] = "flat"
+            row["reason"] = "expired"
+            row["alerts"] = []
+    row["carried"] = True
+    row["session_date"] = session.isoformat()
+    return row
+
+
+def merge_carried(rows, prior, session):
+    """Keep a recorded paper_open until it ends or a newer tape replaces it."""
+    if not isinstance(prior, dict):
+        return rows
+    prior_open = {}
+    for row in prior.get("rows") or []:
+        ticker = row.get("ticker")
+        if ticker and row.get("status") == "paper_open":
+            prior_open[ticker] = row
+    if not prior_open:
+        return rows
+    merged = []
+    for row in rows:
+        previous = prior_open.pop(row.get("ticker"), None)
+        if previous is None:
+            merged.append(row)
+            continue
+        newer = (row.get("as_of") or "") > (previous.get("as_of") or "")
+        if newer and row.get("status") != "stale":
+            merged.append(row)
+            continue
+        merged.append(_position_done(copy.deepcopy(previous), session))
+    for ticker in sorted(prior_open):
+        merged.append(_position_done(copy.deepcopy(prior_open[ticker]), session))
+    merged.sort(key=lambda row: row.get("ticker") or "")
+    return merged
 
 
 def _repo_root(confluence_dir: Path):
@@ -656,10 +749,14 @@ def pattern_notes(rows):
     }
 
 
-def build_book(confluence_dir: Path, session: date):
+def build_book(confluence_dir: Path, session: date, prior=None):
     root = _repo_root(confluence_dir)
     payloads = [attach_tape(payload, root) for payload in load_latest_confluence(confluence_dir)]
-    rows = [decide_play(payload, session) for payload in payloads]
+    rows = merge_carried(
+        [decide_play(payload, session) for payload in payloads],
+        prior,
+        session,
+    )
     alerts = [alert for row in rows for alert in row["alerts"]]
     return {
         "session_date": session.isoformat(),
@@ -716,6 +813,8 @@ def render_markdown(book):
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",
         "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
+        "- An open paper position carries until invalidation, the target, expiry, or a newer tape.",
+        "- A dated earnings session does not open. A carried position flattens that morning.",
         "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",
         "",
         "## This session",
@@ -793,6 +892,7 @@ def render_markdown(book):
             "",
             "Robinhood tool `create_alert` and a TradingView price alert share each level.",
             "Create the TradingView alert only on rows marked create. Withheld means the tape is stale.",
+            "Paste the session Pine on a chart and arm Any alert() function call.",
             "No webhook is configured. The alert does not place an order.",
             "",
             "| Ticker | Create | Condition | Role |",
@@ -830,8 +930,10 @@ def render_markdown(book):
             "   MCP trade approvals default off, which lets a connected agent place live",
             "   orders. Confirm approvals stay on, and confirm the next fresh book may push",
             "   price alerts only.",
-            "6. Earnings: sell immediately on the open. Should any name with earnings inside",
-            "   the contract life be an automatic pass?",
+            "6. A dated earnings session does not open, and a carried position flattens that",
+            "   morning. A later ISO earnings date stays open until that open. Vague text",
+            "   such as early September does not count. Say if the whole earnings week",
+            "   should be a pass instead.",
             "7. A target that is not larger than a negative node between spot and the target",
             "   stays a watch. Confirm that size check is the rug rule you want.",
             "",
@@ -1107,11 +1209,68 @@ def push_create_alerts(book, caller, properties, *, allow=False):
     return {"pushed": len(calls), "reason": "create_alert", "calls": calls}
 
 
+def _pine_price(value):
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+    return str(number)
+
+
+def render_pine(book):
+    """Paste on a TradingView chart. Arm Any alert() function call. No order."""
+    lines = [
+        "//@version=6",
+        f'indicator("Paper book {book.get("session_date")}", overlay=true)',
+        "// Paper book. No brokerage order.",
+    ]
+    live = []
+    for row in book.get("rows") or []:
+        if row.get("status") == "stale":
+            continue
+        for alert in row.get("alerts") or []:
+            price = _num(alert.get("price"))
+            trigger = alert.get("trigger")
+            if price is None or trigger not in {"cross_above", "cross_below"}:
+                continue
+            live.append((row.get("ticker"), alert, price))
+    if not live:
+        lines.append("// No alerts. Stale tape stays flat.")
+        return "\n".join(lines) + "\n"
+    for ticker, alert, price in live:
+        cross = "ta.crossover" if alert["trigger"] == "cross_above" else "ta.crossunder"
+        message = str((alert.get("tradingview") or {}).get("message") or alert.get("note") or "")
+        message = message.replace("\\", "\\\\").replace('"', '\\"')
+        lines.append(f'if syminfo.ticker == "{ticker}" and {cross}(close, {_pine_price(price)})')
+        lines.append(f'    alert("{message}", alert.freq_once_per_bar)')
+    return "\n".join(lines) + "\n"
+
+
+def latest_prior(output_dir: Path, session: date):
+    """Most recent paper book strictly before this session."""
+    if not output_dir.is_dir():
+        return None
+    best = None
+    best_day = None
+    for path in output_dir.glob("paper_book_*.json"):
+        try:
+            book = json.loads(path.read_text(encoding="utf-8"))
+            day = date.fromisoformat(book["session_date"])
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+        if not isinstance(book, dict) or day >= session:
+            continue
+        if best_day is None or day > best_day:
+            best = book
+            best_day = day
+    return best
+
+
 def write_book(book, output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     stem = output_dir / f"paper_book_{book['session_date']}"
     stem.with_suffix(".json").write_text(json.dumps(book, indent=2) + "\n", encoding="utf-8")
     stem.with_suffix(".md").write_text(render_markdown(book), encoding="utf-8")
+    stem.with_suffix(".pine").write_text(render_pine(book), encoding="utf-8")
     return stem.with_suffix(".md")
 
 
@@ -1135,7 +1294,7 @@ def main(argv=None):
         print(f"ERROR: confluence dir not found: {args.confluence_dir}", file=sys.stderr)
         return 1
     session = date.fromisoformat(args.session_date)
-    book = build_book(args.confluence_dir, session)
+    book = build_book(args.confluence_dir, session, latest_prior(args.output_dir, session))
     if args.fetch_quotes:
         fetched = fetch_last_prices([row["ticker"] for row in book["rows"]], yahoo_getter)
         book["quote_errors"] = fetched["errors"]
