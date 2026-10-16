@@ -20,6 +20,7 @@ from paper_book import (
     push_create_alerts,
     render_markdown,
     render_pine,
+    target_path_label,
     weekday_lag,
     weekly_expiry,
 )
@@ -499,6 +500,52 @@ def test_rsi_below_50_blocks_a_long_fill():
     assert row["paper_entry"] is None
 
 
+def test_a_larger_long_target_is_a_reverse_rug():
+    assert (
+        target_path_label(
+            [
+                {"strike": 300.0, "value_k": 5000, "sign": "pos"},
+                {"strike": 260.0, "value_k": -100, "sign": "neg"},
+            ],
+            "long",
+            250.0,
+            300.0,
+        )
+        == "reverse_rug"
+    )
+
+
+def test_a_larger_short_target_is_a_rug():
+    assert (
+        target_path_label(
+            [
+                {"strike": 180.0, "value_k": -5000, "sign": "neg"},
+                {"strike": 200.0, "value_k": -100, "sign": "neg"},
+            ],
+            "short",
+            220.0,
+            180.0,
+        )
+        == "rug"
+    )
+
+
+def test_a_smaller_target_node_is_not_named_a_rug():
+    assert (
+        target_path_label(
+            [
+                {"strike": 300.0, "value_k": 100, "sign": "pos"},
+                {"strike": 260.0, "value_k": -500, "sign": "neg"},
+            ],
+            "long",
+            250.0,
+            300.0,
+        )
+        == "target_smaller_than_opposing"
+    )
+    assert target_path_label([], "long", 250.0, 300.0) is None
+
+
 def test_smaller_target_than_opposing_gex_does_not_open():
     row = decide_play(
         _play(
@@ -739,7 +786,12 @@ def test_uploaded_august_tape_is_flat_on_october_16():
     text = render_markdown(book)
     assert "withheld" in text
     assert "create_alert" in text
-    assert "rug" not in book["pattern_notes"]["named_rug_setups"]
+    assert book["pattern_notes"]["named_rug_setups"] == [
+        "CRDO reverse rug",
+        "ONDS reverse rug",
+        "RIVN reverse rug",
+        "TSEM reverse rug",
+    ]
 
 
 def test_below_50_sma_blocks_a_long_fill():

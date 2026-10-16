@@ -336,14 +336,14 @@ def rsi_against(rsi, bias):
     return white > 50
 
 
-def target_smaller_than_opposing(nodes, bias, spot, target):
-    """True when the target node is not larger than a negative node in the path."""
+def _target_node_sizes(nodes, bias, spot, target):
+    """Largest node at the target, and the largest negative node strictly in the path."""
     if not nodes or spot is None or target is None or target == 0 or bias not in {"long", "short"}:
-        return False
+        return None
     if bias == "long" and target <= spot:
-        return False
+        return None
     if bias == "short" and target >= spot:
-        return False
+        return None
     at_target = []
     opposing = []
     for node in nodes:
@@ -362,8 +362,30 @@ def target_smaller_than_opposing(nodes, bias, spot, target):
         if between and (sign == "neg" or value < 0):
             opposing.append(abs(value))
     if not at_target or not opposing:
+        return None
+    return max(at_target), max(opposing)
+
+
+def target_smaller_than_opposing(nodes, bias, spot, target):
+    """True when the target node is not larger than a negative node in the path."""
+    sizes = _target_node_sizes(nodes, bias, spot, target)
+    if sizes is None:
         return False
-    return max(at_target) <= max(opposing)
+    at_target, opposing = sizes
+    return at_target <= opposing
+
+
+def target_path_label(nodes, bias, spot, target):
+    """A long through a larger target node is a reverse-rug. A short is a rug."""
+    sizes = _target_node_sizes(nodes, bias, spot, target)
+    if sizes is None:
+        return None
+    at_target, opposing = sizes
+    if at_target <= opposing:
+        return "target_smaller_than_opposing"
+    if bias == "long":
+        return "reverse_rug"
+    return "rug"
 
 
 def _expiry_anchor(anchor):
@@ -615,6 +637,7 @@ def _decide_fresh(payload, anchor=None):
     row = _base_row(payload, zone, stop, target, target_note)
     verdict = payload.get("verdict")
     bias = payload.get("bias")
+    row["target_check"] = target_path_label(payload.get("map_nodes"), bias, row.get("spot"), target)
     hard_stops = payload.get("hard_stops") or []
 
     if verdict == "NO_TRADE":
@@ -1268,8 +1291,10 @@ def pattern_notes(rows):
         texts.append(shadow.get("operator_thesis") or "")
         texts.append(shadow.get("target_note") or "")
         blob = " ".join(texts)
-        if re.search(r"\brug\b", blob, re.IGNORECASE):
-            rug_names.append(row["ticker"])
+        shown = shadow or row
+        check = shown.get("target_check")
+        if check in {"rug", "reverse_rug"} and shown.get("status") not in {"flat", "stale"}:
+            rug_names.append(f"{row['ticker']} {check.replace('_', ' ')}")
         if re.search(r"\bRSI\b", blob):
             rsi += 1
         if (
@@ -1445,7 +1470,7 @@ def render_markdown(book):
             f"- Names on the latest confluence tape: {notes['ticker_count']}.",
             f"- King-node targets on the sketch: {notes['king_targets']}.",
             f"- RSI called out in the thesis or the one-thing-to-verify: {notes['rsi_mentions']}.",
-            "- Named rug / reverse-rug setups: "
+            "- Rug / reverse-rug passing the size check: "
             + (", ".join(notes["named_rug_setups"]) if notes["named_rug_setups"] else "none."),
             "- Fresh shadow would paper-open: " + (", ".join(opened) if opened else "none."),
             "- Fresh shadow would wait for the test: " + (", ".join(waited) if waited else "none."),

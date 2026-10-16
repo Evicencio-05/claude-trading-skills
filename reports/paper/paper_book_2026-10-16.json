@@ -62,10 +62,12 @@
         "contract": null,
         "alerts": [],
         "shadow": null,
+        "target_check": "reverse_rug",
         "status": "flat",
         "action": "flat",
         "reason": "no_trade"
       },
+      "target_check": "reverse_rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -168,10 +170,12 @@
           }
         ],
         "shadow": null,
+        "target_check": "reverse_rug",
         "status": "armed_wait",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
+      "target_check": "reverse_rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -225,10 +229,12 @@
         "contract": null,
         "alerts": [],
         "shadow": null,
+        "target_check": "rug",
         "status": "flat",
         "action": "flat",
         "reason": "no_trade"
       },
+      "target_check": "rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -310,10 +316,12 @@
           }
         ],
         "shadow": null,
+        "target_check": null,
         "status": "watch",
         "action": "alert_only",
         "reason": "wait_for_retest"
       },
+      "target_check": null,
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -367,10 +375,12 @@
         "contract": null,
         "alerts": [],
         "shadow": null,
+        "target_check": null,
         "status": "flat",
         "action": "flat",
         "reason": "no_trade"
       },
+      "target_check": null,
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -452,10 +462,12 @@
           }
         ],
         "shadow": null,
+        "target_check": "reverse_rug",
         "status": "watch",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
+      "target_check": "reverse_rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -539,10 +551,12 @@
           }
         ],
         "shadow": null,
+        "target_check": "reverse_rug",
         "status": "watch",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
+      "target_check": "reverse_rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -647,10 +661,12 @@
           }
         ],
         "shadow": null,
+        "target_check": "reverse_rug",
         "status": "armed_wait",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
+      "target_check": "reverse_rug",
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -736,10 +752,12 @@
           }
         ],
         "shadow": null,
+        "target_check": null,
         "status": "watch",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
+      "target_check": null,
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -749,7 +767,12 @@
   ],
   "pattern_notes": {
     "ticker_count": 9,
-    "named_rug_setups": [],
+    "named_rug_setups": [
+      "CRDO reverse rug",
+      "ONDS reverse rug",
+      "RIVN reverse rug",
+      "TSEM reverse rug"
+    ],
     "rsi_mentions": 3,
     "king_targets": 5
   }

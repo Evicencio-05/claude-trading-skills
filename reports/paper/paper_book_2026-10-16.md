@@ -75,7 +75,7 @@ and this book only records paper options. Alerts below are unpushed
 - Names on the latest confluence tape: 9.
 - King-node targets on the sketch: 5.
 - RSI called out in the thesis or the one-thing-to-verify: 3.
-- Named rug / reverse-rug setups: none.
+- Rug / reverse-rug passing the size check: CRDO reverse rug, ONDS reverse rug, RIVN reverse rug, TSEM reverse rug
 - Fresh shadow would paper-open: none.
 - Fresh shadow would wait for the test: CRDO, TSEM
 - Fresh shadow stays flat: BE, CRWD, HOOD
