@@ -1342,14 +1342,14 @@ def _with_longer_tf_fibs(latest, docs):
     return _with_prior_smas(merged, docs)
 
 
-def _with_prior_smas(latest, docs):
-    """A blank SMA on a shorter chart keeps the prior session's longer-timeframe SMA."""
-    extracted = dict(latest.get("extracted") or {})
+def _longer_tf_donors(latest, docs):
+    """Newer longer-timeframe charts from the prior session, newest first."""
+    extracted = latest.get("extracted") if isinstance(latest.get("extracted"), dict) else {}
     chart_tf = extracted.get("timeframe") or ""
     try:
         latest_day = date.fromisoformat(latest.get("as_of") or "")
     except ValueError:
-        return latest
+        return []
     donors = []
     for doc in docs:
         if doc.get("_source") == latest.get("_source") and doc.get("as_of") == latest.get("as_of"):
@@ -1366,6 +1366,44 @@ def _with_prior_smas(latest, docs):
             continue
         donors.append((doc.get("as_of") or "", doc.get("_source") or "", other))
     donors.sort(reverse=True)
+    return donors
+
+
+def _rsi_present(rsi):
+    if isinstance(rsi, dict):
+        if _num(rsi.get("white")) is not None:
+            return True
+        return rsi.get("buyer_strength") in {True, False} or rsi.get("seller_strength") in {
+            True,
+            False,
+        }
+    return _num(rsi) is not None
+
+
+def _with_prior_rsi(latest, docs):
+    """A chart with no RSI keeps the prior session's longer-timeframe RSI."""
+    extracted = dict(latest.get("extracted") or {})
+    if _rsi_present(extracted.get("rsi")):
+        return latest
+    for _, _, other in _longer_tf_donors(latest, docs):
+        rsi = other.get("rsi")
+        if not _rsi_present(rsi):
+            continue
+        extracted["rsi"] = dict(rsi) if isinstance(rsi, dict) else rsi
+        merged = dict(latest)
+        merged["extracted"] = extracted
+        return merged
+    return latest
+
+
+def _with_prior_smas(latest, docs):
+    """A blank SMA on a shorter chart keeps the prior session's longer-timeframe SMA."""
+    extracted = dict(latest.get("extracted") or {})
+    try:
+        date.fromisoformat(latest.get("as_of") or "")
+    except ValueError:
+        return latest
+    donors = _longer_tf_donors(latest, docs)
     sma = _resolved_sma_map(extracted.get("sma"))
     relations = _resolved_sma_map(extracted.get("price_vs_sma"))
     for _, _, other in donors:
@@ -1381,7 +1419,7 @@ def _with_prior_smas(latest, docs):
         extracted["price_vs_sma"] = relations
     merged = dict(latest)
     merged["extracted"] = extracted
-    return merged
+    return _with_prior_rsi(merged, docs)
 
 
 def merge_operator_plans(payloads, operator_docs, session):
@@ -1565,6 +1603,7 @@ def render_markdown(book):
         "  stays a watch, including when that price is blank and the chart says below.",
         "  A long under the blue 20 or the orange 200 still opens while it holds the green 50.",
         "  A blank 50 on a shorter chart uses the prior session's longer-timeframe 50.",
+        "  A chart with no RSI uses that prior session's RSI. Its own RSI wins.",
         "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",
         "",
         "## This session",
