@@ -15,6 +15,7 @@ from paper_book import (
     fetch_last_prices,
     merge_carried,
     parse_yahoo_chart,
+    plan_from_operator,
     push_create_alerts,
     render_markdown,
     render_pine,
@@ -703,6 +704,65 @@ def test_pine_script_arms_fresh_crosses_and_withholds_a_stale_tape():
     stale = render_pine(build_book(root / "reports" / "charts" / "confluence", date(2026, 10, 16)))
     assert "No alerts" in stale
     assert "alert(" not in stale
+
+
+def _operator_plan(**extracted_overrides):
+    extracted = {
+        "timeframe": "4H",
+        "last": 341.0,
+        "change_pct": 0.4,
+        "sma": {"20": None, "50": 330.0, "200": 300.0},
+        "fib_levels": [
+            {"ratio": "1.0", "price": 340.0},
+            {"ratio": "1.618", "price": 360.0},
+        ],
+        "vp": {"peak_nodes": [338.0]},
+        "sr_levels": [336.0],
+        "rsi": {"white": 55.0},
+        "operator_thesis": "Long AAPL. Daily is up and the 4H agrees. Test 340.",
+    }
+    extracted.update(extracted_overrides)
+    return {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": extracted,
+    }
+
+
+def test_four_hour_plan_without_daily_direction_stays_a_watch():
+    doc = _operator_plan(
+        operator_thesis="Long AAPL. 4H test of the 340 fib toward 360.",
+        last=345.0,
+    )
+    row = decide_play(plan_from_operator(doc), date(2026, 10, 16))
+
+    assert row["status"] == "watch"
+    assert row["paper_entry"] is None
+    assert row["verdict"] == "WATCH"
+    assert row["alerts"][0]["price"] == 340.0
+
+
+def test_daily_long_at_the_test_opens_from_an_operator_plan():
+    row = decide_play(plan_from_operator(_operator_plan()), date(2026, 10, 16))
+
+    assert row["status"] == "paper_open"
+    assert row["bias"] == "long"
+    assert row["paper_entry"] == 341.0
+    assert row["target"] == 360.0
+    assert row["four_hour"] == "agree"
+    assert row["invalidation"] < 340.0
+    assert row["contract"]["expiry"] == "2026-10-23"
+    assert row["contract"]["size_for_zero"] is True
+
+
+def test_blank_sma_colors_do_not_block_the_plan():
+    row = decide_play(
+        plan_from_operator(_operator_plan(sma={"20": None, "50": None, "200": None})),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["reason"] != "below_50_sma"
 
 
 def test_paper_book_dir_is_registered(tmp_path: Path):

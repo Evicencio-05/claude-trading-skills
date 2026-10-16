@@ -704,6 +704,153 @@ def attach_tape(payload, root: Path):
     return payload
 
 
+def _bias_from_thesis(text):
+    lowered = text or ""
+    long_at = re.search(r"\blong\b", lowered, re.IGNORECASE)
+    short_at = re.search(r"\bshort\b", lowered, re.IGNORECASE)
+    if long_at and short_at:
+        return "long" if long_at.start() < short_at.start() else "short"
+    if long_at:
+        return "long"
+    if short_at:
+        return "short"
+    return None
+
+
+def _level_prices(extracted):
+    prices = []
+    for item in operator_levels(extracted):
+        price = item["price"]
+        if price not in prices:
+            prices.append(price)
+    return prices
+
+
+def _plan_zone(bias, spot, prices):
+    if bias not in {"long", "short"} or spot is None or not prices:
+        return None
+    if bias == "long":
+        under = [price for price in prices if price <= spot]
+        if not under:
+            return None
+        low = max(under)
+        above = [price for price in prices if price > low]
+        high = min(above) if above else low
+        return (low, high)
+    over = [price for price in prices if price >= spot]
+    if not over:
+        return None
+    high = min(over)
+    below = [price for price in prices if price < high]
+    low = max(below) if below else high
+    return (low, high)
+
+
+def _plan_target(bias, prices, zone):
+    if not zone or bias not in {"long", "short"}:
+        return None
+    if bias == "long":
+        above = [price for price in prices if price > zone[1] + 1e-9]
+        if above:
+            return min(above)
+        if zone[1] > zone[0]:
+            return zone[1]
+        return None
+    below = [price for price in prices if price < zone[0] - 1e-9]
+    if below:
+        return max(below)
+    if zone[0] < zone[1]:
+        return zone[0]
+    return None
+
+
+def plan_from_operator(doc):
+    """Paper payload from an operator chart. No confluence verdict required.
+
+    A 4-hour chart supplies the levels. It becomes a PLAY only when the thesis
+    also states the daily direction. Otherwise it stays a watch.
+    """
+    extracted = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
+    thesis = extracted.get("operator_thesis") or ""
+    bias = _bias_from_thesis(thesis)
+    spot = _num(extracted.get("last"))
+    prices = _level_prices(extracted)
+    zone = _plan_zone(bias, spot, prices)
+    target = _plan_target(bias, prices, zone)
+    timeframe = str(extracted.get("timeframe") or "")
+    daily = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
+    four_hour = "agree" if timeframe.upper() in {"4H", "240"} and daily else "absent"
+    verdict = "PLAY" if bias and daily else "WATCH"
+    if timeframe.upper() in {"4H", "240"} and not daily:
+        verdict = "WATCH"
+    targets = [{"level": target, "note": "next operator level"}] if target is not None else []
+    return {
+        "ticker": doc.get("ticker"),
+        "as_of": doc.get("as_of"),
+        "verdict": verdict,
+        "bias": bias,
+        "spot": spot,
+        "change_pct": _num(extracted.get("change_pct")),
+        "hard_stops": [],
+        "operator_thesis": thesis,
+        "operator_extracted": extracted,
+        "four_hour": four_hour,
+        "judgment": {
+            "one_thing_to_verify": "Daily direction is in the thesis." if not daily else "",
+            "rr_sketch": {
+                "entry_zone": f"{zone[0]}-{zone[1]}" if zone else None,
+                "stop": None,
+                "targets": targets,
+            },
+        },
+        "_source": doc.get("_source"),
+    }
+
+
+def load_latest_operator(operator_dir: Path):
+    chosen = {}
+    if not operator_dir.is_dir():
+        return []
+    for path in sorted(operator_dir.glob("*_operator_*.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            continue
+        ticker = payload.get("ticker")
+        as_of = payload.get("as_of")
+        if not ticker or not as_of:
+            continue
+        payload = dict(payload)
+        payload["_source"] = path.name
+        prev = chosen.get(ticker)
+        if prev is None or (as_of, path.name) >= (prev["as_of"], prev["_source"]):
+            chosen[ticker] = payload
+    return [chosen[ticker] for ticker in sorted(chosen)]
+
+
+def merge_operator_plans(payloads, operator_docs, session):
+    """Use an operator plan when it is fresh, or newer than that ticker's confluence."""
+    by_ticker = {}
+    for payload in payloads:
+        ticker = payload.get("ticker")
+        if ticker:
+            by_ticker[ticker] = payload
+    for doc in operator_docs or []:
+        plan = plan_from_operator(doc)
+        ticker = plan.get("ticker")
+        as_of = plan.get("as_of")
+        if not ticker or not as_of:
+            continue
+        prev = by_ticker.get(ticker)
+        fresh = weekday_lag(date.fromisoformat(as_of), session) <= MAX_WEEKDAY_LAG
+        if prev is None:
+            if fresh:
+                by_ticker[ticker] = plan
+            continue
+        if as_of > prev.get("as_of", ""):
+            by_ticker[ticker] = plan
+    return [by_ticker[ticker] for ticker in sorted(by_ticker)]
+
+
 def load_latest_confluence(confluence_dir: Path):
     chosen = {}
     for path in sorted(confluence_dir.glob("*_confluence_*.json")):
@@ -752,6 +899,11 @@ def pattern_notes(rows):
 def build_book(confluence_dir: Path, session: date, prior=None):
     root = _repo_root(confluence_dir)
     payloads = [attach_tape(payload, root) for payload in load_latest_confluence(confluence_dir)]
+    payloads = merge_operator_plans(
+        payloads,
+        load_latest_operator(confluence_dir.parent / "operator"),
+        session,
+    )
     rows = merge_carried(
         [decide_play(payload, session) for payload in payloads],
         prior,

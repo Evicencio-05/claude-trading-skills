@@ -16,8 +16,9 @@ Replace the session date with the trading session being recorded. Default it to 
 ## PASS 1 — Tape
 
 1. Read the latest `reports/charts/confluence/{TICKER}_confluence_*.json` files.
-2. If the newest `as_of` is older than one trading session, say so. A stale tape is a flat book. Do not invent levels from memory.
-3. Ask for the missing day-before or pre-market TA (TradeWhisperer lists, GEX/VEX, operator charts) before treating any name as live.
+2. Also read `reports/charts/operator/{TICKER}_operator_*.json`. A fresh operator plan, or one newer than that ticker's confluence, is the tape. A 4-hour plan stays a watch until the thesis states the daily direction. Blue is the 20 SMA, green is the 50, orange is the 200.
+3. If the newest `as_of` is older than one trading session, say so. A stale tape is a flat book. Do not invent levels from memory.
+4. Ask for the missing day-before or pre-market TA (operator charts, and GEX/VEX when you have a paste) before treating any name as live.
 
 ## PASS 2 — Record
 
