@@ -134,6 +134,25 @@ def _alert(symbol, role, price, trigger, note):
 
 _FAMILY_RANK = {"fib": 0, "shelf": 1, "sma": 2, "trend": 3, "sr": 4}
 _SMA_RANK = {"200": 0, "100": 1, "50": 2, "20": 3}
+_TF_RANK = {
+    "1W": 1,
+    "W": 1,
+    "WEEKLY": 1,
+    "1WK": 1,
+    "1D": 2,
+    "D": 2,
+    "DAILY": 2,
+    "1DAY": 2,
+    "4H": 3,
+    "240": 3,
+    "1H": 4,
+    "60": 4,
+}
+
+
+def _tf_rank(timeframe):
+    token = re.sub(r"[^A-Z0-9]", "", (timeframe or "").upper())
+    return _TF_RANK.get(token, 5)
 
 
 def operator_levels(extracted):
@@ -142,21 +161,35 @@ def operator_levels(extracted):
         return []
     levels = []
 
-    def add(price, family, period_rank=0):
+    chart_rank = _tf_rank(extracted.get("timeframe"))
+
+    def add(price, family, period_rank=0, tf_rank=5):
         number = _num(price)
         if number is None:
             return
-        levels.append({"price": number, "family": family, "period_rank": period_rank})
+        levels.append(
+            {
+                "price": number,
+                "family": family,
+                "period_rank": period_rank,
+                "tf_rank": tf_rank,
+            }
+        )
+
+    def add_fib(fib, fallback):
+        if not isinstance(fib, dict):
+            return
+        rank = _tf_rank(fib.get("timeframe")) if fib.get("timeframe") else fallback
+        add(fib.get("price"), "fib", tf_rank=rank)
 
     for fib in extracted.get("fib_levels") or []:
-        if isinstance(fib, dict):
-            add(fib.get("price"), "fib")
+        add_fib(fib, chart_rank)
     for fib_set in extracted.get("fib_sets") or []:
         if not isinstance(fib_set, dict):
             continue
+        fallback = _tf_rank(fib_set.get("timeframe")) if fib_set.get("timeframe") else chart_rank
         for fib in fib_set.get("levels") or []:
-            if isinstance(fib, dict):
-                add(fib.get("price"), "fib")
+            add_fib(fib, fallback)
     for key, price in (extracted.get("sma") or {}).items():
         add(price, "sma", _SMA_RANK.get(str(key), 5))
     vp = extracted.get("vp") or {}
@@ -223,13 +256,14 @@ def opposing_cluster(levels, bias, spot, zone=None):
 
         def price_key(items):
             best_family = min(_FAMILY_RANK.get(item["family"], 9) for item in items)
-            best_period = min(
-                item.get("period_rank", 0)
-                for item in items
-                if _FAMILY_RANK.get(item["family"], 9) == best_family
-            )
+            same_family = [
+                item for item in items if _FAMILY_RANK.get(item["family"], 9) == best_family
+            ]
+            best_tf = min(item.get("tf_rank", 5) for item in same_family)
+            best_period = min(item.get("period_rank", 0) for item in same_family)
             return (
                 best_family,
+                best_tf,
                 -len({item["family"] for item in items}),
                 best_period,
                 abs(items[0]["price"] - spot),
@@ -1051,10 +1085,10 @@ def plan_from_operator(doc):
     }
 
 
-def load_latest_operator(operator_dir: Path):
-    chosen = {}
+def load_operator_docs(operator_dir: Path):
+    docs = []
     if not operator_dir.is_dir():
-        return []
+        return docs
     for path in sorted(operator_dir.glob("*_operator_*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(payload, dict):
@@ -1065,8 +1099,17 @@ def load_latest_operator(operator_dir: Path):
             continue
         payload = dict(payload)
         payload["_source"] = path.name
+        docs.append(payload)
+    return docs
+
+
+def load_latest_operator(operator_dir: Path):
+    chosen = {}
+    for payload in load_operator_docs(operator_dir):
+        ticker = payload.get("ticker")
         prev = chosen.get(ticker)
-        if prev is None or (as_of, path.name) >= (prev["as_of"], prev["_source"]):
+        stamp = (payload.get("as_of") or "", payload.get("_source") or "")
+        if prev is None or stamp >= (prev.get("as_of") or "", prev.get("_source") or ""):
             chosen[ticker] = payload
     return [chosen[ticker] for ticker in sorted(chosen)]
 
@@ -1085,6 +1128,53 @@ def _carry_fresh_nodes(plan, prev):
         plan["map_nodes"] = list(nodes)
 
 
+def _with_longer_tf_fibs(latest, docs):
+    """A newer 4H chart keeps daily or weekly fibs from the prior session."""
+    extracted = dict(latest.get("extracted") or {})
+    chart_tf = extracted.get("timeframe") or ""
+    try:
+        latest_day = date.fromisoformat(latest.get("as_of") or "")
+    except ValueError:
+        return latest
+    fibs = []
+    for fib in extracted.get("fib_levels") or []:
+        if isinstance(fib, dict):
+            item = dict(fib)
+            item.setdefault("timeframe", chart_tf)
+            fibs.append(item)
+    for doc in docs:
+        if doc.get("_source") == latest.get("_source") and doc.get("as_of") == latest.get("as_of"):
+            continue
+        other = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
+        other_tf = other.get("timeframe") or ""
+        if _tf_rank(other_tf) >= _tf_rank(chart_tf):
+            continue
+        try:
+            lag = weekday_lag(date.fromisoformat(doc.get("as_of") or ""), latest_day)
+        except ValueError:
+            continue
+        if lag > MAX_WEEKDAY_LAG:
+            continue
+        for fib in other.get("fib_levels") or []:
+            if isinstance(fib, dict) and _num(fib.get("price")) is not None:
+                item = dict(fib)
+                item["timeframe"] = other_tf
+                fibs.append(item)
+        for fib_set in other.get("fib_sets") or []:
+            if not isinstance(fib_set, dict):
+                continue
+            set_tf = fib_set.get("timeframe") or other_tf
+            for fib in fib_set.get("levels") or []:
+                if isinstance(fib, dict) and _num(fib.get("price")) is not None:
+                    item = dict(fib)
+                    item["timeframe"] = fib.get("timeframe") or set_tf
+                    fibs.append(item)
+    extracted["fib_levels"] = fibs
+    merged = dict(latest)
+    merged["extracted"] = extracted
+    return merged
+
+
 def merge_operator_plans(payloads, operator_docs, session):
     """Use an operator plan when it is fresh, or newer than that ticker's confluence."""
     by_ticker = {}
@@ -1092,7 +1182,15 @@ def merge_operator_plans(payloads, operator_docs, session):
         ticker = payload.get("ticker")
         if ticker:
             by_ticker[ticker] = payload
+    grouped = {}
     for doc in operator_docs or []:
+        ticker = doc.get("ticker")
+        if ticker:
+            grouped.setdefault(ticker, []).append(doc)
+    for ticker in sorted(grouped):
+        docs = grouped[ticker]
+        latest = max(docs, key=lambda doc: (doc.get("as_of") or "", doc.get("_source") or ""))
+        doc = _with_longer_tf_fibs(latest, docs)
         plan = plan_from_operator(doc)
         ticker = plan.get("ticker")
         as_of = plan.get("as_of")
@@ -1158,7 +1256,7 @@ def pattern_notes(rows):
 def build_book(confluence_dir: Path, session: date, prior=None):
     root = _repo_root(confluence_dir)
     payloads = [attach_tape(payload, root) for payload in load_latest_confluence(confluence_dir)]
-    operator_docs = load_latest_operator(confluence_dir.parent / "operator")
+    operator_docs = load_operator_docs(confluence_dir.parent / "operator")
     payloads = merge_operator_plans(payloads, operator_docs, session)
     rows = merge_carried(
         [decide_play(payload, session) for payload in payloads],
@@ -1230,6 +1328,7 @@ def render_markdown(book):
         "  crosses back through the paper entry. The core stays until invalidation or the target.",
         "- Invalidation is the nearest opposing cluster. Its price is the fib, then the",
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
+        "  A longer-timeframe fib beats a shorter one in that same cluster.",
         "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "  On a new operator chart, a starred positive king above is the long target,",

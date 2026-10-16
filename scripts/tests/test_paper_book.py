@@ -263,6 +263,87 @@ def test_fib_sets_the_cluster_invalidation_ahead_of_a_lower_shelf():
     assert row["invalidation_cluster"]["families"] == ["fib", "shelf", "sr"]
 
 
+def test_longer_timeframe_fib_beats_a_nearer_4h_fib():
+    row = decide_play(
+        _play(
+            spot=341.0,
+            change_pct=0.4,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "340-360",
+                    "stop": 300.0,
+                    "targets": [{"level": 400.0, "note": "king"}],
+                }
+            },
+            operator_extracted={
+                "fib_levels": [
+                    {"price": 330.0, "timeframe": "4H"},
+                    {"price": 328.0, "timeframe": "1D"},
+                ],
+                "vp": {"peak_nodes": [329.0]},
+                "rsi": {"white": 55.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["invalidation"] == 328.0
+
+
+def test_newer_4h_chart_keeps_yesterdays_daily_fib(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    daily = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "last": 341.0,
+            "fib_levels": [{"price": 328.0}],
+            "operator_thesis": "Long AAPL. Daily is up. Test 340, target 360.",
+        },
+    }
+    four_h = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 341.0,
+            "change_pct": 0.4,
+            "sma": {"50": 300.0},
+            "fib_levels": [{"price": 330.0}],
+            "vp": {"peak_nodes": [329.0]},
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long AAPL. Daily is up and the 4H agrees. Test 340, target 360.",
+        },
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["status"] == "paper_open"
+    assert row["invalidation"] == 328.0
+
+    stale = {
+        "ticker": "AAPL",
+        "as_of": "2026-08-09",
+        "extracted": {
+            "timeframe": "1D",
+            "fib_levels": [{"price": 310.0}],
+            "operator_thesis": "Long AAPL. Daily is up.",
+        },
+    }
+    (operator / "AAPL_operator_2026-08-09.json").write_text(json.dumps(stale))
+    (operator / "AAPL_operator_2026-10-14.json").unlink()
+
+    aged = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert aged["invalidation"] == 330.0
+
+
 def test_higher_period_sma_sets_invalidation_ahead_of_the_20():
     row = decide_play(
         _play(
