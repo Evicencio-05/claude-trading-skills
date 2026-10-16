@@ -1220,6 +1220,42 @@ def test_daily_long_at_the_test_opens_from_an_operator_plan():
     assert row["contract"]["size_for_zero"] is True
 
 
+def test_gap_and_volume_prices_do_not_become_the_entry():
+    common = dict(
+        last=341.0,
+        sma={"20": None, "50": None, "200": None},
+        fib_levels=[],
+        vp={"peak_nodes": []},
+        sr_levels=[320.0],
+    )
+    gap = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                **common,
+                operator_thesis="Long AAPL. Daily is up. Gap at 340. Test 338, target 360.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+    volume = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                **common,
+                operator_thesis="Long AAPL. Daily is up. Volume at 340. Test 338, target 360.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert gap["status"] == "paper_open"
+    assert gap["entry_zone"] == [338.0, 338.0]
+    assert gap["paper_entry"] == 341.0
+    assert gap["target"] == 360.0
+    assert volume["status"] == "paper_open"
+    assert volume["entry_zone"] == [338.0, 338.0]
+    assert volume["paper_entry"] == 341.0
+
+
 def test_thesis_sentence_sets_the_test_and_the_target():
     doc = _operator_plan(
         fib_levels=[],

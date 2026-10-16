@@ -16,6 +16,7 @@ and this book only records paper options. Alerts below are unpushed
   A fresh `NO_TRADE` stays flat.
 - Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).
   A level more than 3% of price away is the target, not a wider entry.
+  A gap, a volume print, or an A/D print is confluence. It is not the entry.
 - A bar moving more than 4% does not get a paper fill.
 - Add on a claim through the far side of the zone. Trim that add if price
   crosses back through the paper entry. The core stays until invalidation or the target.

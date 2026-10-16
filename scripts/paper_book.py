@@ -993,6 +993,13 @@ def _thesis_levels(text):
     for match in _THESIS_LEVEL_RE.finditer(source):
         if re.match(r"\s*(?:SMA|EMA)\b", source[match.end() :], re.IGNORECASE):
             continue
+        prefix = source[max(0, match.start() - 24) : match.start()]
+        if re.search(
+            r"\b(?:gaps?|volume|a/d|accumulation|distribution)(?:\s+fill)?\s+$",
+            prefix,
+            re.IGNORECASE,
+        ):
+            continue
         price = float(match.group(1))
         if price not in prices:
             prices.append(price)
@@ -1348,6 +1355,7 @@ def render_markdown(book):
         "  A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
         "  A level more than 3% of price away is the target, not a wider entry.",
+        "  A gap, a volume print, or an A/D print is confluence. It is not the entry.",
         f"- A bar moving more than {CHASE_ABS_CHANGE_PCT:g}% does not get a paper fill.",
         "- Add on a claim through the far side of the zone. Trim that add if price",
         "  crosses back through the paper entry. The core stays until invalidation or the target.",
