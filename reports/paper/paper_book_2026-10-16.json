@@ -4,6 +4,7 @@
   "broker_orders": "none",
   "alert_destination": "robinhood_create_alert",
   "phase_gate": "No live MCP orders before Phase 3B. Paper is this book only.",
+  "operator_as_of": "2026-08-16",
   "open_count": 0,
   "armed_count": 0,
   "rules": {

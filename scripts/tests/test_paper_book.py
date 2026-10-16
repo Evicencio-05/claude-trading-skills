@@ -698,12 +698,14 @@ def test_pine_script_arms_fresh_crosses_and_withholds_a_stale_tape():
     assert "//@version=6" in text
     assert 'syminfo.ticker == "TSEM"' in text
     assert "ta.crossunder(close, 248)" in text
+    assert "plot(" in text
     assert "No brokerage order" in text
 
     root = Path(__file__).resolve().parents[2]
     stale = render_pine(build_book(root / "reports" / "charts" / "confluence", date(2026, 10, 16)))
     assert "No alerts" in stale
     assert "alert(" not in stale
+    assert "plot(" not in stale
 
 
 def _operator_plan(**extracted_overrides):
@@ -727,6 +729,57 @@ def _operator_plan(**extracted_overrides):
         "as_of": "2026-10-15",
         "extracted": extracted,
     }
+
+
+def test_daily_chart_is_the_direction_without_the_word_daily():
+    thesis = "Long AAPL. Test 340, target 360."
+    opened = decide_play(
+        plan_from_operator(_operator_plan(timeframe="1D", operator_thesis=thesis)),
+        date(2026, 10, 16),
+    )
+
+    assert opened["verdict"] == "PLAY"
+    assert opened["status"] == "paper_open"
+    assert opened["four_hour"] == "absent"
+    assert opened["one_thing_to_verify"] == ""
+
+    weekly = decide_play(
+        plan_from_operator(_operator_plan(timeframe="1W", operator_thesis=thesis)),
+        date(2026, 10, 16),
+    )
+
+    assert weekly["verdict"] == "WATCH"
+    assert weekly["status"] == "watch"
+    assert weekly["paper_entry"] is None
+
+    stated = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                timeframe="1W",
+                operator_thesis="Long AAPL. Daily is up. Test 340, target 360.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert stated["verdict"] == "PLAY"
+    assert stated["status"] == "paper_open"
+
+
+def test_daily_chart_against_its_own_thesis_stays_a_watch():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                timeframe="1D",
+                operator_thesis="Long AAPL. Daily is down. Test 340, target 360.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "four_hour_fight"
+    assert row["paper_entry"] is None
 
 
 def test_four_hour_plan_without_daily_direction_stays_a_watch():

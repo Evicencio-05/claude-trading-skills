@@ -8,7 +8,9 @@ and this book only records paper options. Alerts below are unpushed
 
 ## Rules encoded from the operator read
 
-- Daily direction comes from the confluence verdict. A fresh `NO_TRADE` stays flat.
+- Daily direction comes from the confluence verdict or a daily operator chart.
+  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.
+  A fresh `NO_TRADE` stays flat.
 - Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).
 - A bar moving more than 4% does not get a paper fill.
 - Add on a claim through the far side of the zone. Trim that add if price
@@ -66,8 +68,9 @@ and this book only records paper options. Alerts below are unpushed
 
 Robinhood tool `create_alert` and a TradingView price alert share each level.
 Create the TradingView alert only on rows marked create. Withheld means the tape is stale.
-Paste the session Pine on a chart and arm Any alert() function call.
-No webhook is configured. The alert does not place an order.
+Paste the session Pine on each ticker's chart. It plots that ticker's levels.
+Arm Any alert() function call. No webhook is configured.
+The alert does not place an order.
 
 | Ticker | Create | Condition | Role |
 |--------|--------|-----------|------|
@@ -85,7 +88,7 @@ No webhook is configured. The alert does not place an order.
 
 ## Questions
 
-1. Newest confluence `as_of` in this book is 2026-08-16. If that is not last night or this pre-market, where is the later TA paste?
+1. Newest confluence `as_of` in this book is 2026-08-16. Newest operator chart on disk is 2026-08-16. Paste the day-before or pre-market charts if that is not the live plan.
 2. A claim through the far side adds at that edge in the same session and stays
    open. A cross back through the paper entry trims the add and keeps the core.
    Say if you want that add only after you confirm the claim held.

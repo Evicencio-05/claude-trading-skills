@@ -742,6 +742,12 @@ def _bias_from_thesis(text):
     return None
 
 
+def _chart_is_daily(timeframe):
+    """A daily operator chart is the directional read. 4H and weekly are not."""
+    token = re.sub(r"[^A-Z0-9]", "", (timeframe or "").upper())
+    return token in {"1D", "D", "DAILY", "1DAY"}
+
+
 def _daily_against(thesis, bias):
     """The daily is the direction. A 4-hour idea against that daily does not open."""
     if bias not in {"long", "short"}:
@@ -828,8 +834,8 @@ def _plan_target(bias, prices, zone):
 def plan_from_operator(doc):
     """Paper payload from an operator chart. No confluence verdict required.
 
-    A 4-hour chart supplies the levels. It becomes a PLAY only when the thesis
-    also states the daily direction. Otherwise it stays a watch.
+    A daily chart is the direction. A 4-hour or weekly chart becomes a PLAY only
+    when the thesis also states that daily direction. Otherwise it stays a watch.
     """
     extracted = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
     thesis = extracted.get("operator_thesis") or ""
@@ -839,12 +845,13 @@ def plan_from_operator(doc):
     zone = _plan_zone(bias, spot, prices)
     target = _plan_target(bias, prices, zone)
     timeframe = str(extracted.get("timeframe") or "")
-    daily = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
-    four_hour = "agree" if timeframe.upper() in {"4H", "240"} and daily else "absent"
+    daily_stated = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
+    daily = daily_stated or _chart_is_daily(timeframe)
+    four_hour = "agree" if timeframe.upper() in {"4H", "240"} and daily_stated else "absent"
     if _daily_against(thesis, bias):
         four_hour = "fight"
     verdict = "PLAY" if bias and daily else "WATCH"
-    if timeframe.upper() in {"4H", "240"} and not daily:
+    if timeframe.upper() in {"4H", "240"} and not daily_stated:
         verdict = "WATCH"
     targets = [{"level": target, "note": "next operator level"}] if target is not None else []
     return {
@@ -859,7 +866,7 @@ def plan_from_operator(doc):
         "operator_extracted": extracted,
         "four_hour": four_hour,
         "judgment": {
-            "one_thing_to_verify": "Daily direction is in the thesis." if not daily else "",
+            "one_thing_to_verify": "" if daily else "Daily direction is in the thesis.",
             "rr_sketch": {
                 "entry_zone": f"{zone[0]}-{zone[1]}" if zone else None,
                 "stop": None,
@@ -962,11 +969,8 @@ def pattern_notes(rows):
 def build_book(confluence_dir: Path, session: date, prior=None):
     root = _repo_root(confluence_dir)
     payloads = [attach_tape(payload, root) for payload in load_latest_confluence(confluence_dir)]
-    payloads = merge_operator_plans(
-        payloads,
-        load_latest_operator(confluence_dir.parent / "operator"),
-        session,
-    )
+    operator_docs = load_latest_operator(confluence_dir.parent / "operator")
+    payloads = merge_operator_plans(payloads, operator_docs, session)
     rows = merge_carried(
         [decide_play(payload, session) for payload in payloads],
         prior,
@@ -979,6 +983,10 @@ def build_book(confluence_dir: Path, session: date, prior=None):
         "broker_orders": "none",
         "alert_destination": ALERT_DESTINATION,
         "phase_gate": "No live MCP orders before Phase 3B. Paper is this book only.",
+        "operator_as_of": max(
+            (doc.get("as_of") for doc in operator_docs if doc.get("as_of")),
+            default=None,
+        ),
         "open_count": sum(1 for row in rows if row["status"] == "paper_open"),
         "armed_count": sum(1 for row in rows if row["status"] == "armed_wait"),
         "rules": {
@@ -1020,7 +1028,9 @@ def render_markdown(book):
         "",
         "## Rules encoded from the operator read",
         "",
-        "- Daily direction comes from the confluence verdict. A fresh `NO_TRADE` stays flat.",
+        "- Daily direction comes from the confluence verdict or a daily operator chart.",
+        "  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.",
+        "  A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
         f"- A bar moving more than {CHASE_ABS_CHANGE_PCT:g}% does not get a paper fill.",
         "- Add on a claim through the far side of the zone. Trim that add if price",
@@ -1110,8 +1120,9 @@ def render_markdown(book):
             "",
             "Robinhood tool `create_alert` and a TradingView price alert share each level.",
             "Create the TradingView alert only on rows marked create. Withheld means the tape is stale.",
-            "Paste the session Pine on a chart and arm Any alert() function call.",
-            "No webhook is configured. The alert does not place an order.",
+            "Paste the session Pine on each ticker's chart. It plots that ticker's levels.",
+            "Arm Any alert() function call. No webhook is configured.",
+            "The alert does not place an order.",
             "",
             "| Ticker | Create | Condition | Role |",
             "|--------|--------|-----------|------|",
@@ -1136,7 +1147,9 @@ def render_markdown(book):
             "",
             "1. Newest confluence `as_of` in this book is "
             + (max((row["as_of"] for row in book["rows"]), default="none"))
-            + ". If that is not last night or this pre-market, where is the later TA paste?",
+            + ". Newest operator chart on disk is "
+            + str(book.get("operator_as_of") or "none")
+            + ". Paste the day-before or pre-market charts if that is not the live plan.",
             "2. A claim through the far side adds at that edge in the same session and stays",
             "   open. A cross back through the paper entry trims the add and keeps the core.",
             "   Say if you want that add only after you confirm the claim held.",
@@ -1454,11 +1467,18 @@ def render_pine(book):
     if not live:
         lines.append("// No alerts. Stale tape stays flat.")
         return "\n".join(lines) + "\n"
-    for ticker, alert, price in live:
+    for index, (ticker, alert, price) in enumerate(live):
         cross = "ta.crossover" if alert["trigger"] == "cross_above" else "ta.crossunder"
         message = str((alert.get("tradingview") or {}).get("message") or alert.get("note") or "")
         message = message.replace("\\", "\\\\").replace('"', '\\"')
-        lines.append(f'if syminfo.ticker == "{ticker}" and {cross}(close, {_pine_price(price)})')
+        role = re.sub(r"[^A-Za-z0-9]", "", str(alert.get("role") or "level"))
+        symbol = re.sub(r"[^A-Za-z0-9]", "", str(ticker or "sym"))
+        name = f"{symbol}_{role}_{index}"
+        level = _pine_price(price)
+        title = f"{ticker} {alert.get('role')}".replace('"', "")
+        lines.append(f'{name} = syminfo.ticker == "{ticker}" ? {level} : na')
+        lines.append(f'plot({name}, "{title}")')
+        lines.append(f'if syminfo.ticker == "{ticker}" and {cross}(close, {level})')
         lines.append(f'    alert("{message}", alert.freq_once_per_bar)')
     return "\n".join(lines) + "\n"
 
