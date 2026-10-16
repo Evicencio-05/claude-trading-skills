@@ -888,6 +888,104 @@ def apply_marks(book, quotes):
     return book
 
 
+def parse_yahoo_chart(payload):
+    """Last regular-session price from a Yahoo chart JSON body."""
+    if not isinstance(payload, dict):
+        return None
+    results = (payload.get("chart") or {}).get("result") or []
+    if not results or not isinstance(results[0], dict):
+        return None
+    return _num((results[0].get("meta") or {}).get("regularMarketPrice"))
+
+
+def fetch_last_prices(tickers, getter):
+    """Last prices via an injected HTTP getter. One failure does not drop the rest."""
+    quotes = {}
+    errors = []
+    for ticker in tickers:
+        symbol = str(ticker or "").upper()
+        if not symbol:
+            continue
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=1d"
+        try:
+            payload = json.loads(getter(url))
+            price = parse_yahoo_chart(payload)
+        except (OSError, ValueError, TypeError) as exc:
+            errors.append({"ticker": symbol, "error": str(exc)})
+            continue
+        if price is None:
+            errors.append({"ticker": symbol, "error": "no price"})
+            continue
+        quotes[symbol] = price
+    return {"quotes": quotes, "errors": errors}
+
+
+def yahoo_getter(url):
+    import urllib.request
+
+    request = urllib.request.Request(url, headers={"User-Agent": "paper-book/1.0"})
+    with urllib.request.urlopen(request, timeout=10) as response:
+        return response.read().decode("utf-8")
+
+
+_ALERT_ARGUMENT_FIELDS = (
+    ("symbol", lambda alert: alert.get("symbol")),
+    ("ticker", lambda alert: alert.get("symbol")),
+    ("price", lambda alert: alert.get("price")),
+    ("trigger_price", lambda alert: alert.get("price")),
+    ("direction", lambda alert: "down" if alert.get("trigger") == "cross_below" else "up"),
+    ("condition", lambda alert: alert.get("trigger")),
+    ("note", lambda alert: alert.get("note")),
+)
+
+
+def create_alert_arguments(alert, properties):
+    """Map a paper alert onto whatever fields the live create_alert schema allows.
+
+    Robinhood's published pages name the tool and not its arguments. A push
+    waits until tools/list supplies the property names.
+    """
+    allowed = set(properties or [])
+    if not allowed:
+        return None
+    arguments = {}
+    for key, getter in _ALERT_ARGUMENT_FIELDS:
+        if key in allowed:
+            arguments[key] = getter(alert)
+    has_symbol = "symbol" in arguments or "ticker" in arguments
+    has_price = "price" in arguments or "trigger_price" in arguments
+    if not has_symbol or not has_price:
+        return None
+    return arguments
+
+
+def push_create_alerts(book, caller, properties, *, allow=False):
+    """Send create_alert only. Never places an order. Stale tapes send nothing."""
+    if not allow:
+        return {"pushed": 0, "reason": "push_not_allowed", "calls": []}
+    rows = book.get("rows") or []
+    if any(row.get("status") == "stale" for row in rows):
+        return {"pushed": 0, "reason": "stale_tape", "calls": []}
+    calls = []
+    for row in rows:
+        for alert in row.get("alerts") or []:
+            if alert.get("fired"):
+                continue
+            arguments = create_alert_arguments(alert, properties)
+            if arguments is None:
+                return {"pushed": 0, "reason": "schema_unverified", "calls": []}
+            calls.append({"tool": "create_alert", "arguments": arguments})
+    for call in calls:
+        if call["tool"] != "create_alert":
+            raise ValueError("paper book only creates alerts")
+        caller(call["tool"], call["arguments"])
+    for row in rows:
+        for alert in row.get("alerts") or []:
+            if not alert.get("fired"):
+                alert["pushed"] = True
+    return {"pushed": len(calls), "reason": "create_alert", "calls": calls}
+
+
 def write_book(book, output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     stem = output_dir / f"paper_book_{book['session_date']}"
@@ -906,13 +1004,22 @@ def main(argv=None):
         type=Path,
         help="JSON object of ticker to last price. Advances fresh rows only.",
     )
+    parser.add_argument(
+        "--fetch-quotes",
+        action="store_true",
+        help="Fetch last prices and advance fresh rows. Stale rows stay unchanged.",
+    )
     args = parser.parse_args(argv)
     if not args.confluence_dir.is_dir():
         print(f"ERROR: confluence dir not found: {args.confluence_dir}", file=sys.stderr)
         return 1
     session = date.fromisoformat(args.session_date)
     book = build_book(args.confluence_dir, session)
-    if args.quotes:
+    if args.fetch_quotes:
+        fetched = fetch_last_prices([row["ticker"] for row in book["rows"]], yahoo_getter)
+        book["quote_errors"] = fetched["errors"]
+        apply_marks(book, fetched["quotes"])
+    elif args.quotes:
         quotes = json.loads(args.quotes.read_text(encoding="utf-8"))
         if not isinstance(quotes, dict):
             print("ERROR: quotes JSON must be an object of ticker to price", file=sys.stderr)

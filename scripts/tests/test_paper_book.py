@@ -10,7 +10,11 @@ from paper_book import (
     CHASE_ABS_CHANGE_PCT,
     apply_marks,
     build_book,
+    create_alert_arguments,
     decide_play,
+    fetch_last_prices,
+    parse_yahoo_chart,
+    push_create_alerts,
     render_markdown,
     weekday_lag,
 )
@@ -445,6 +449,65 @@ def test_open_paper_invalidation_and_target():
     apply_marks(book, {"TSEM": 301.0})
     assert live["status"] == "target_hit"
     assert live["reason"] == "target_tagged"
+
+
+def test_yahoo_chart_parser_reads_the_regular_price():
+    assert (
+        parse_yahoo_chart({"chart": {"result": [{"meta": {"regularMarketPrice": 248.2}}]}}) == 248.2
+    )
+    assert parse_yahoo_chart({"chart": {"result": []}}) is None
+
+
+def test_fetch_last_prices_keeps_going_after_one_failure():
+    def getter(url):
+        if url.endswith("BAD?interval=1d&range=1d") or "BAD?" in url:
+            raise OSError("offline")
+        return '{"chart":{"result":[{"meta":{"regularMarketPrice": 11.5}}]}}'
+
+    fetched = fetch_last_prices(["ONDS", "BAD"], getter)
+
+    assert fetched["quotes"] == {"ONDS": 11.5}
+    assert fetched["errors"][0]["ticker"] == "BAD"
+
+
+def test_push_create_alerts_refuses_stale_tape_and_order_tools():
+    stale = build_book(
+        Path(__file__).resolve().parents[2] / "reports" / "charts" / "confluence",
+        date(2026, 10, 16),
+    )
+    calls = []
+    result = push_create_alerts(
+        stale, lambda tool, args: calls.append(tool), ["symbol", "price"], allow=True
+    )
+    assert result["reason"] == "stale_tape"
+    assert calls == []
+
+    fresh = {"rows": [decide_play(_play(spot=252.49, change_pct=12.37), date(2026, 10, 16))]}
+    refused = push_create_alerts(
+        fresh, lambda tool, args: calls.append(tool), ["symbol", "price"], allow=False
+    )
+    assert refused["reason"] == "push_not_allowed"
+    assert calls == []
+
+    unverified = push_create_alerts(
+        fresh, lambda tool, args: calls.append((tool, args)), [], allow=True
+    )
+    assert unverified["reason"] == "schema_unverified"
+    assert calls == []
+
+    pushed = push_create_alerts(
+        fresh,
+        lambda tool, args: calls.append((tool, args)),
+        ["symbol", "price", "direction"],
+        allow=True,
+    )
+    assert pushed["reason"] == "create_alert"
+    assert pushed["pushed"] == len(fresh["rows"][0]["alerts"])
+    assert {call[0] for call in calls} == {"create_alert"}
+    assert (
+        create_alert_arguments(fresh["rows"][0]["alerts"][0], ["symbol", "price"])["symbol"]
+        == "TSEM"
+    )
 
 
 def test_paper_book_dir_is_registered(tmp_path: Path):

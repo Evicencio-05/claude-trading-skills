@@ -49,7 +49,9 @@ uv run python3 scripts/paper_book.py \
   --quotes reports/paper/quotes_YYYY-MM-DD.json
 ```
 
-`quotes_YYYY-MM-DD.json` is `{"TICKER": 123.45}`. A tagged test on `armed_wait` records `paper_open` at the level. A tagged test on `watch` records the touch and does not open. Invalidation or the target flattens an open paper position.
+`quotes_YYYY-MM-DD.json` is `{"TICKER": 123.45}`. `--fetch-quotes` loads the last regular-session price instead. A tagged test on `armed_wait` records `paper_open` at the level. A tagged test on `watch` records the touch and does not open. Invalidation or the target flattens an open paper position. Stale rows ignore both sources.
+
+Robinhood `create_alert` is sent only after the operator allows the push, the book is fresh, and the live tool schema lists the argument names. The paper book does not call an order tool.
 
 ## PASS 3 — Stop
 
