@@ -429,6 +429,120 @@ def test_newer_4h_chart_keeps_yesterdays_daily_fib(tmp_path: Path):
     assert aged["invalidation"] == 330.0
 
 
+def test_newer_4h_keeps_yesterdays_daily_direction(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    daily = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "last": 341.0,
+            "fib_levels": [{"price": 328.0}],
+            "operator_thesis": "Long AAPL. Daily is up.",
+        },
+    }
+    four_h = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 341.0,
+            "change_pct": 0.4,
+            "sma": {"50": 300.0},
+            "fib_levels": [{"price": 330.0}],
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long AAPL. The 4H agrees. Test 340, target 360.",
+        },
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["status"] == "paper_open"
+    assert row["invalidation"] == 328.0
+
+    daily["extracted"]["operator_thesis"] = "Short AAPL. Daily is down."
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    blocked = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert blocked["status"] == "watch"
+    assert blocked["reason"] == "daily_against"
+
+    four_h["extracted"]["operator_thesis"] = "Long AAPL. Daily is down. Test 340, target 360."
+    daily["extracted"]["operator_thesis"] = "Long AAPL. Daily is up."
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+    explicit = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert explicit["status"] == "watch"
+    assert explicit["reason"] == "daily_against"
+
+    (operator / "AAPL_operator_2026-10-14.json").unlink()
+    four_h["extracted"]["operator_thesis"] = "Long AAPL. The 4H agrees. Test 340, target 360."
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+    (operator / "AAPL_operator_2026-08-09.json").write_text(
+        json.dumps(
+            {
+                "ticker": "AAPL",
+                "as_of": "2026-08-09",
+                "extracted": {
+                    "timeframe": "1D",
+                    "operator_thesis": "Long AAPL. Daily is up.",
+                },
+            }
+        )
+    )
+    aged = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert aged["verdict"] == "WATCH"
+    assert aged["status"] == "watch"
+
+
+def test_daily_chart_bias_carries_onto_the_next_weekly(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    (operator / "AAPL_operator_2026-10-14.json").write_text(
+        json.dumps(
+            {
+                "ticker": "AAPL",
+                "as_of": "2026-10-14",
+                "extracted": {
+                    "timeframe": "1D",
+                    "operator_thesis": "Long AAPL. Test 340, target 360.",
+                },
+            }
+        )
+    )
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(
+            {
+                "ticker": "AAPL",
+                "as_of": "2026-10-15",
+                "extracted": {
+                    "timeframe": "1W",
+                    "last": 341.0,
+                    "change_pct": 0.4,
+                    "sma": {"50": 300.0},
+                    "fib_levels": [{"price": 328.0}],
+                    "rsi": {"white": 55.0},
+                    "operator_thesis": "Long AAPL. Test 340, target 360.",
+                },
+            }
+        )
+    )
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["verdict"] == "PLAY"
+    assert row["status"] == "paper_open"
+
+
 def test_higher_period_sma_sets_invalidation_ahead_of_the_20():
     row = decide_play(
         _play(

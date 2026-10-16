@@ -9,7 +9,9 @@ and this book only records paper options. Alerts below are unpushed
 ## Rules encoded from the operator read
 
 - Daily direction comes from the confluence verdict or a daily operator chart.
-  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.
+  A 4-hour or weekly chart stays a watch until the daily direction is stated.
+  The prior session's daily chart supplies that direction when this chart does not.
+  An older daily does not follow.
   Daily holding above is up. Daily holding below is down.
   A thesis that puts the name in chop stays a watch.
   A 4H fight does not flat the daily swing. It withholds the scalp add.

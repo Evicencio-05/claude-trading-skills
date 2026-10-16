@@ -983,6 +983,64 @@ _DAILY_UP_RE = re.compile(
 )
 
 
+def _daily_side(text, timeframe):
+    """Up or down from a daily statement, or from the bias on a daily chart."""
+    down = _DAILY_DOWN_RE.search(text or "") is not None
+    up = _DAILY_UP_RE.search(text or "") is not None
+    if up and not down:
+        return "up"
+    if down and not up:
+        return "down"
+    if _chart_is_daily(timeframe):
+        bias = _bias_from_thesis(text)
+        if bias == "long":
+            return "up"
+        if bias == "short":
+            return "down"
+    return None
+
+
+def _prior_daily_relation(latest, docs):
+    """A 4H or weekly chart keeps the prior session's daily side. An older daily does not."""
+    extracted = latest.get("extracted") if isinstance(latest.get("extracted"), dict) else {}
+    thesis = extracted.get("operator_thesis") or ""
+    timeframe = str(extracted.get("timeframe") or "")
+    if _chart_is_daily(timeframe) or re.search(r"\bdaily\b", thesis, re.IGNORECASE):
+        return None
+    bias = _bias_from_thesis(thesis)
+    if bias not in {"long", "short"}:
+        return None
+    try:
+        latest_day = date.fromisoformat(latest.get("as_of") or "")
+    except ValueError:
+        return None
+    chosen = None
+    for doc in docs:
+        if doc.get("as_of") == latest.get("as_of") and doc.get("_source") == latest.get("_source"):
+            continue
+        if (doc.get("as_of") or "") > (latest.get("as_of") or ""):
+            continue
+        other = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
+        side = _daily_side(other.get("operator_thesis") or "", str(other.get("timeframe") or ""))
+        if side is None:
+            continue
+        try:
+            lag = weekday_lag(date.fromisoformat(doc.get("as_of") or ""), latest_day)
+        except ValueError:
+            continue
+        if lag > MAX_WEEKDAY_LAG:
+            continue
+        stamp = (doc.get("as_of") or "", doc.get("_source") or "")
+        if chosen is None or stamp > chosen[0]:
+            chosen = (stamp, side)
+    if chosen is None:
+        return None
+    side = chosen[1]
+    if (bias == "long" and side == "up") or (bias == "short" and side == "down"):
+        return "with"
+    return "against"
+
+
 def _daily_against(thesis, bias):
     """The daily is the direction. A 4-hour idea against that daily does not open.
 
@@ -1113,8 +1171,9 @@ def _plan_target(bias, prices, zone):
 def plan_from_operator(doc):
     """Paper payload from an operator chart. No confluence verdict required.
 
-    A daily chart is the direction. A 4-hour or weekly chart becomes a PLAY only
-    when the thesis also states that daily direction. Otherwise it stays a watch.
+    A daily chart is the direction. A 4-hour or weekly chart becomes a PLAY when
+    its thesis states that daily direction, or when the prior session's daily
+    chart does. An older daily does not follow.
     """
     extracted = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
     thesis = extracted.get("operator_thesis") or ""
@@ -1125,9 +1184,15 @@ def plan_from_operator(doc):
     target = _plan_target(bias, prices, zone)
     timeframe = str(extracted.get("timeframe") or "")
     daily_stated = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
+    daily_against = _daily_against(thesis, bias)
+    relation = doc.get("_prior_daily")
+    if relation == "with":
+        daily_stated = True
+    elif relation == "against":
+        daily_stated = True
+        daily_against = True
     daily = daily_stated or _chart_is_daily(timeframe)
     four_hour = _four_hour_state(thesis, bias)
-    daily_against = _daily_against(thesis, bias)
     chop = _CHOP_RE.search(thesis) is not None
     verdict = "PLAY" if bias and daily else "WATCH"
     if timeframe.upper() in {"4H", "240"} and not daily_stated:
@@ -1264,6 +1329,7 @@ def merge_operator_plans(payloads, operator_docs, session):
         docs = grouped[ticker]
         latest = max(docs, key=lambda doc: (doc.get("as_of") or "", doc.get("_source") or ""))
         doc = _with_longer_tf_fibs(latest, docs)
+        doc["_prior_daily"] = _prior_daily_relation(doc, docs)
         plan = plan_from_operator(doc)
         ticker = plan.get("ticker")
         as_of = plan.get("as_of")
@@ -1391,7 +1457,9 @@ def render_markdown(book):
         "## Rules encoded from the operator read",
         "",
         "- Daily direction comes from the confluence verdict or a daily operator chart.",
-        "  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.",
+        "  A 4-hour or weekly chart stays a watch until the daily direction is stated.",
+        "  The prior session's daily chart supplies that direction when this chart does not.",
+        "  An older daily does not follow.",
         "  Daily holding above is up. Daily holding below is down.",
         "  A thesis that puts the name in chop stays a watch.",
         "  A 4H fight does not flat the daily swing. It withholds the scalp add.",
