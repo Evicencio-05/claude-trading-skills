@@ -1,0 +1,4 @@
+//@version=6
+indicator("Paper book 2026-10-16", overlay=true)
+// Paper book. No brokerage order.
+// No alerts. The tape starts 2026-10-14.

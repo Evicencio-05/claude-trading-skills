@@ -32,6 +32,7 @@ ARTIFACT_DIRS: dict[str, str] = {
     "gex_vex_maps": "reports/charts/gex_vex",
     "operator_charts": "reports/charts/operator",
     "ta_confluence": "reports/charts/confluence",
+    "paper_book": "reports/paper",
 }
 
 # Filename prefix for glob matching (key -> prefix)
@@ -54,6 +55,7 @@ ARTIFACT_PREFIXES: dict[str, str] = {
     "gex_vex_maps": "gex_",
     "operator_charts": "operator_",
     "ta_confluence": "confluence_",
+    "paper_book": "paper_book_",
 }
 
 # Extra same-day globs for keys whose filenames are not `{prefix}{date}*`.
@@ -86,6 +88,7 @@ ARTIFACT_DATE_GLOBS: dict[str, tuple[str, ...]] = {
         "agentic_copilot_plan_*_{date}*",
         "agentic_copilot_plan_{date}*",
     ),
+    "paper_book": ("paper_book_{date}*",),
 }
 
 ARTIFACT_KEYS = frozenset(ARTIFACT_DIRS)

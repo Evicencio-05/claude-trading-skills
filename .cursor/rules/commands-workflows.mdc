@@ -17,6 +17,7 @@ When the user requests one of these workflows, read the linked file and follow i
 | Operator charts (your charting) | [commands/operator-charts.md](commands/operator-charts.md) or skill `operator-charts` |
 | TA confluence (candle-first / map-first) | [commands/ta-confluence.md](commands/ta-confluence.md) or skill `ta-confluence` |
 | Agentic co-pilot trade (Portfolio C) | [commands/agentic-copilot-trade.md](commands/agentic-copilot-trade.md) or skill `agentic-copilot-trade` |
+| Paper book from confluence | [commands/paper-book.md](commands/paper-book.md) — record only, no brokerage order |
 | Options flow screener → primary tail | [commands/options-flow-tail.md](commands/options-flow-tail.md) or skill `options-flow-tail` |
 | Log positions (A+C only — skip IRA) | [commands/log-positions.md](commands/log-positions.md) or skill `log-positions` |
 | Log trade from screenshot | [commands/log-trade-screenshot.md](commands/log-trade-screenshot.md) or skill `log-trade-screenshot` |

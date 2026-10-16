@@ -33,6 +33,7 @@
 | TA confluence brief | `reports/charts/confluence/session_confluence_{period}_DATE` · `{TICKER}_confluence_DATE` |
 | Prediction log v1.5 | `reports/charts/confluence/prediction_log_YYYY-MM-DD.{md,json}` |
 | Agentic co-pilot plan | `reports/logs/agentic_copilot_plan_{TICKER}_DATE.json` |
+| Paper options book | `reports/paper/paper_book_DATE.{md,json}` — record only, no brokerage order |
 | Prompt retros / digests | `reports/prompts/prompt_run_retro_*.md`, `reports/prompts/prompt_learning_digest_*.md` |
 | Meta / audit session outputs | `reports/meta/` |
 | Theses (A+C only) | `state/theses/` (via `thesis_store.py` only) |

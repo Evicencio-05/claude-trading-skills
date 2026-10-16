@@ -1,0 +1,25 @@
+{
+  "session_date": "2026-10-16",
+  "mode": "paper",
+  "broker_orders": "none",
+  "alert_destination": "robinhood_create_alert",
+  "phase_gate": "No live MCP orders before Phase 3B. Paper is this book only.",
+  "operator_as_of": null,
+  "open_count": 0,
+  "armed_count": 0,
+  "tape_floor": "2026-10-14",
+  "rules": {
+    "max_weekday_lag": 1,
+    "chase_abs_change_pct": 4.0,
+    "discount_fraction": 0.4,
+    "contract": "weekly or shorter, ATM to slightly ITM, size for 0"
+  },
+  "alerts": [],
+  "rows": [],
+  "pattern_notes": {
+    "ticker_count": 0,
+    "named_rug_setups": [],
+    "rsi_mentions": 0,
+    "king_targets": 0
+  }
+}

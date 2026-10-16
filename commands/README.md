@@ -15,6 +15,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | `/operator-charts TICKER` | [operator-charts.md](operator-charts.md) |
 | `/ta-confluence [candle_first\|map_first]` | [ta-confluence.md](ta-confluence.md) |
 | `/agentic-copilot-trade [TICKER]` | [agentic-copilot-trade.md](agentic-copilot-trade.md) |
+| `/paper-book` | [paper-book.md](paper-book.md) — record only, no brokerage order |
 | `/options-flow-tail` | [options-flow-tail.md](options-flow-tail.md) |
 | `/log-positions` | [log-positions.md](log-positions.md) — **A+C only** |
 | `/log-trade-screenshot` | [log-trade-screenshot.md](log-trade-screenshot.md) |
@@ -34,6 +35,7 @@ Install commands per [Claude Code docs](https://docs.claude.com/en/docs/claude-c
 | Operator charts | Skill `operator-charts` |
 | TA confluence | Skill `ta-confluence` (+ prediction log v1.5) |
 | Agentic co-pilot | Skill `agentic-copilot-trade` — Portfolio C; user `confirm` |
+| Paper book | [paper-book.md](paper-book.md) — confluence → `reports/paper/`; no brokerage order |
 | Options flow tail | Skill `options-flow-tail` |
 | Log positions | Skill `log-positions` — A+C only; skip IRA |
 | Trade screenshot backfill | Skill `log-trade-screenshot` |
