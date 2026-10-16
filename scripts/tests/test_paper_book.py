@@ -795,6 +795,61 @@ def test_four_hour_plan_without_daily_direction_stays_a_watch():
     assert row["alerts"][0]["price"] == 340.0
 
 
+def test_far_target_does_not_widen_the_entry_above_the_test():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=360.0,
+                sma={"20": None, "50": 300.0, "200": None},
+                fib_levels=[
+                    {"ratio": "1.0", "price": 340.0},
+                    {"ratio": "1.618", "price": 400.0},
+                ],
+                vp={"peak_nodes": []},
+                sr_levels=[],
+                operator_thesis="Long AAPL. Daily is up. Test 340, target 400.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "armed_wait"
+    assert row["paper_entry"] is None
+    assert row["target"] == 400.0
+    assert row["entry_zone"] == [340.0, 340.0]
+    entry = next(alert for alert in row["alerts"] if alert["role"] == "entry_test")
+    assert entry["price"] == 340.0
+    assert entry["trigger"] == "cross_below"
+    assert all(alert["role"] != "claim" for alert in row["alerts"])
+
+
+def test_nearby_level_is_the_claim_and_the_far_level_is_the_target():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=341.0,
+                sma={"20": None, "50": 300.0, "200": None},
+                fib_levels=[
+                    {"ratio": "1.0", "price": 340.0},
+                    {"ratio": "1.272", "price": 345.0},
+                    {"ratio": "1.618", "price": 400.0},
+                ],
+                vp={"peak_nodes": []},
+                sr_levels=[],
+                operator_thesis="Long AAPL. Daily is up. Test 340, target 400.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["entry_zone"] == [340.0, 345.0]
+    assert row["target"] == 400.0
+    claim = next(alert for alert in row["alerts"] if alert["role"] == "claim")
+    assert claim["price"] == 345.0
+    assert claim["trigger"] == "cross_above"
+
+
 def test_daily_long_at_the_test_opens_from_an_operator_plan():
     row = decide_play(plan_from_operator(_operator_plan()), date(2026, 10, 16))
 

@@ -31,7 +31,7 @@ uv run python3 scripts/paper_book.py \
 
 Read `reports/paper/paper_book_YYYY-MM-DD.md`.
 
-- `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0. Expiry is this Friday for a Monday–Wednesday decision and the next Friday for Thursday–Sunday.
+- `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0. Expiry is this Friday for a Monday–Wednesday decision and the next Friday for Thursday–Sunday. The fill is at the test. A level more than 3% of price past that test is the target, not a wider entry zone.
 - `armed_wait` and `watch` are alerts at the test. They are not fills.
 - `flat` / `stale` means no position and no alert.
 - Invalidation is the nearest fib / volume-shelf / SMA / trendline / S/R cluster against the trade when the operator chart is on file.

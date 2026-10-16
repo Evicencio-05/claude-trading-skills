@@ -167,12 +167,22 @@ def operator_levels(extracted):
     return levels
 
 
+def _price_band(spot):
+    """Levels farther apart than this are not the same entry area."""
+    return max(float(spot) * 0.03, 0.05)
+
+
+def _price_gap(spot):
+    """Cushion that still counts as sitting on a level."""
+    return max(float(spot) * 0.01, 0.02)
+
+
 def opposing_cluster(levels, bias, spot, zone=None):
     """Nearest band with at least two indicator families beyond the entry, against the trade."""
     if spot is None or bias not in {"long", "short"} or not levels:
         return None
-    band = max(float(spot) * 0.03, 0.05)
-    gap = max(float(spot) * 0.01, 0.02)
+    band = _price_band(spot)
+    gap = _price_gap(spot)
     if zone and len(zone) == 2:
         edge_low, edge_high = zone
     else:
@@ -310,6 +320,8 @@ def _ensure_claim_alert(row):
     if edges is None or bias not in {"long", "short"}:
         return
     low, high = edges
+    if high == low:
+        return
     if bias == "long":
         price, trigger = high, "cross_above"
     else:
@@ -329,6 +341,24 @@ def _entry_plan(bias, low, high, spot, change, allow_open):
     """Where a fresh long/short is allowed to open, or which test to alert."""
     band = DISCOUNT_FRACTION * (high - low)
     chase = change is not None and abs(change) > CHASE_ABS_CHANGE_PCT
+    if high == low:
+        cushion = _price_gap(spot)
+        if bias == "long":
+            if spot < low - cushion:
+                return "wait", low, "cross_above", "wait_for_test"
+            if spot > high + cushion:
+                return "wait", high, "cross_below", "wait_for_retest"
+            if allow_open and not chase:
+                return "open", spot, None, "paper_open"
+            return "wait", low, "cross_below", "wait_for_test"
+        if bias == "short":
+            if spot > high + cushion:
+                return "wait", high, "cross_below", "wait_for_test"
+            if spot < low - cushion:
+                return "wait", low, "cross_above", "wait_for_retest"
+            if allow_open and not chase:
+                return "open", spot, None, "paper_open"
+            return "wait", high, "cross_above", "wait_for_test"
     if bias == "long":
         if spot < low:
             return "wait", low, "cross_above", "wait_for_test"
@@ -799,7 +829,7 @@ def _plan_zone(bias, spot, prices):
         low = max(under)
         above = [price for price in prices if price > low]
         high = min(above) if above else low
-        return (low, high)
+        return _tighten_zone("long", spot, low, high)
     over = [price for price in prices if price >= spot]
     if over:
         high = min(over)
@@ -810,7 +840,16 @@ def _plan_zone(bias, spot, prices):
         high = max(under)
     below = [price for price in prices if price < high]
     low = max(below) if below else high
-    return (low, high)
+    return _tighten_zone("short", spot, low, high)
+
+
+def _tighten_zone(bias, spot, low, high):
+    """A far next level is the target. It does not extend the entry away from the test."""
+    if high - low <= _price_band(spot):
+        return (low, high)
+    if bias == "long":
+        return (low, low)
+    return (high, high)
 
 
 def _plan_target(bias, prices, zone):
@@ -1032,6 +1071,7 @@ def render_markdown(book):
         "  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.",
         "  A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
+        "  A level more than 3% of price away is the target, not a wider entry.",
         f"- A bar moving more than {CHASE_ABS_CHANGE_PCT:g}% does not get a paper fill.",
         "- Add on a claim through the far side of the zone. Trim that add if price",
         "  crosses back through the paper entry. The core stays until invalidation or the target.",
