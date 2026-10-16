@@ -19,6 +19,7 @@ from pathlib import Path
 CHASE_ABS_CHANGE_PCT = 4.0
 DISCOUNT_FRACTION = 0.4
 MAX_WEEKDAY_LAG = 1
+TAPE_FLOOR = date(2026, 10, 14)
 ALERT_DESTINATION = "robinhood_create_alert"
 
 _ZONE_RE = re.compile(r"(\d+(?:\.\d+)?)\s*[\u2012\u2013\u2014-]\s*(\d+(?:\.\d+)?)")
@@ -41,6 +42,14 @@ def weekly_expiry(anchor: date) -> date:
     if weekday == 5:
         return anchor + timedelta(days=6)
     return anchor + timedelta(days=5)
+
+
+def _on_tape(as_of) -> bool:
+    """Plans before 2026-10-14 are retired. Later charts are the tape."""
+    try:
+        return date.fromisoformat(as_of) >= TAPE_FLOOR
+    except (TypeError, ValueError):
+        return False
 
 
 def weekday_lag(as_of: date, session: date) -> int:
@@ -826,6 +835,7 @@ def _flatten_earnings(row):
     row["alerts"] = []
     row["paper_entry"] = None
     row["contract"] = None
+    row["levels"] = []
     return row
 
 
@@ -835,7 +845,7 @@ def decide_play(payload, session, include_shadow=True):
     row = _decide_fresh(payload, session)
     row["weekday_lag"] = lag
     row["session_date"] = session.isoformat()
-    if lag > MAX_WEEKDAY_LAG:
+    if lag > MAX_WEEKDAY_LAG and not _on_tape(payload["as_of"]):
         row["status"] = "stale"
         row["action"] = "flat"
         row["reason"] = "stale_ta"
@@ -845,6 +855,7 @@ def decide_play(payload, session, include_shadow=True):
         row["shadow"] = _decide_fresh(payload, as_of) if include_shadow else None
         return row
     row["shadow"] = None
+    _attach_level_plays(row, payload)
     upcoming = [day for day in earnings_dates(payload) if day >= session]
     if upcoming:
         row["earnings_on"] = upcoming[0].isoformat()
@@ -1135,6 +1146,65 @@ def _thesis_levels(text):
     return prices
 
 
+def _entry_side_prices(bias, spot, prices):
+    """Nearest entry first. Longs use levels at or under spot. Shorts use levels at or above."""
+    if bias == "long":
+        return sorted((price for price in prices if price <= spot), reverse=True)
+    if bias == "short":
+        return sorted(price for price in prices if price >= spot)
+    return []
+
+
+def _attach_level_plays(row, payload):
+    """Every own-chart and thesis entry is a paper level. A carried fib stays a stop."""
+    extracted = payload.get("operator_extracted")
+    if not isinstance(extracted, dict):
+        return
+    bias = row.get("bias")
+    spot = row.get("spot")
+    if bias not in {"long", "short"} or spot is None:
+        return
+    if row.get("status") in {"flat", "stale", "expired"}:
+        return
+    entries = _entry_side_prices(
+        bias, spot, _level_prices(extracted, payload.get("operator_thesis") or "")
+    )
+    if not entries:
+        return
+    chase = row.get("change_pct") is not None and abs(row["change_pct"]) > CHASE_ABS_CHANGE_PCT
+    playable = row.get("status") in {"paper_open", "armed_wait"}
+    levels = []
+    for price in entries:
+        near = abs(spot - price) <= _price_gap(spot)
+        if playable and row.get("status") == "paper_open" and near and not chase:
+            status = "paper_open"
+        elif playable:
+            status = "armed_wait"
+        else:
+            status = "watch"
+        levels.append({"price": price, "role": "entry", "status": status})
+    row["levels"] = levels
+    existing = {
+        alert.get("price") for alert in row.get("alerts") or [] if alert.get("role") == "entry_test"
+    }
+    for item in levels:
+        if item["status"] not in {"armed_wait", "watch"} or item["price"] in existing:
+            continue
+        if bias == "long":
+            trigger = "cross_below" if spot >= item["price"] else "cross_above"
+        else:
+            trigger = "cross_above" if spot <= item["price"] else "cross_below"
+        note = (
+            "Wait for the test. Do not buy the expansion bar."
+            if item["status"] == "armed_wait"
+            else "WATCH test only. Not a paper fill."
+        )
+        row.setdefault("alerts", []).append(
+            _alert(row.get("ticker"), "entry_test", item["price"], trigger, note)
+        )
+        existing.add(item["price"])
+
+
 def _level_prices(extracted, thesis=""):
     prices = []
     for item in operator_levels(extracted):
@@ -1265,7 +1335,7 @@ def load_operator_docs(operator_dir: Path):
             continue
         ticker = payload.get("ticker")
         as_of = payload.get("as_of")
-        if not ticker or not as_of:
+        if not ticker or not as_of or not _on_tape(as_of):
             continue
         payload = dict(payload)
         payload["_source"] = path.name
@@ -1450,7 +1520,9 @@ def merge_operator_plans(payloads, operator_docs, session):
         if not ticker or not as_of:
             continue
         prev = by_ticker.get(ticker)
-        fresh = weekday_lag(date.fromisoformat(as_of), session) <= MAX_WEEKDAY_LAG
+        fresh = (
+            _on_tape(as_of) or weekday_lag(date.fromisoformat(as_of), session) <= MAX_WEEKDAY_LAG
+        )
         if prev is None:
             if fresh:
                 by_ticker[ticker] = plan
@@ -1469,7 +1541,7 @@ def load_latest_confluence(confluence_dir: Path):
             continue
         ticker = payload.get("ticker")
         as_of = payload.get("as_of")
-        if not ticker or not as_of:
+        if not ticker or not as_of or not _on_tape(as_of):
             continue
         payload = dict(payload)
         payload["_source"] = path.name
@@ -1477,6 +1549,18 @@ def load_latest_confluence(confluence_dir: Path):
         if prev is None or (as_of, path.name) >= (prev["as_of"], prev["_source"]):
             chosen[ticker] = payload
     return [chosen[ticker] for ticker in sorted(chosen)]
+
+
+def _tally(rows, status):
+    """Count paper levels when a row lists them. Otherwise count the row."""
+    total = 0
+    for row in rows:
+        levels = row.get("levels")
+        if levels:
+            total += sum(1 for item in levels if item.get("status") == status)
+        elif row.get("status") == status:
+            total += 1
+    return total
 
 
 def pattern_notes(rows):
@@ -1529,8 +1613,9 @@ def build_book(confluence_dir: Path, session: date, prior=None):
             (doc.get("as_of") for doc in operator_docs if doc.get("as_of")),
             default=None,
         ),
-        "open_count": sum(1 for row in rows if row["status"] == "paper_open"),
-        "armed_count": sum(1 for row in rows if row["status"] == "armed_wait"),
+        "open_count": _tally(rows, "paper_open"),
+        "armed_count": _tally(rows, "armed_wait"),
+        "tape_floor": TAPE_FLOOR.isoformat(),
         "rules": {
             "max_weekday_lag": MAX_WEEKDAY_LAG,
             "chase_abs_change_pct": CHASE_ABS_CHANGE_PCT,
@@ -1611,7 +1696,12 @@ def render_markdown(book):
         "  A long under the blue 20 or the orange 200 still opens while it holds the green 50.",
         "  A blank 50 on a shorter chart uses the prior session's longer-timeframe 50.",
         "  A chart with no RSI uses that prior session's RSI. Its own RSI wins.",
-        "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",
+        "- Trade plans dated before 2026-10-14 are not the tape.",
+        "  A chart on or after that date stays live. The latest chart for that ticker is the plan.",
+        "  Each entry level is its own paper level. Spot within 1% of that level opens it.",
+        "  A farther entry level waits. One invalidation covers the name.",
+        "- TA older than one trading session is stale when it is also before that date.",
+        "  Stale levels do not arm and do not alert.",
         "",
         "## This session",
         "",
@@ -1622,6 +1712,26 @@ def render_markdown(book):
         lines.append(
             f"| {row['ticker']} | {row['as_of']} | {row['verdict']} | {row['status']} | {row['reason']} |"
         )
+    if not book["rows"]:
+        lines.extend(
+            [
+                "",
+                "Tape starts 2026-10-14. No chart dated 2026-10-14 or later is in the checkout.",
+            ]
+        )
+    level_rows = [(row["ticker"], item) for row in book["rows"] for item in row.get("levels") or []]
+    if level_rows:
+        lines.extend(
+            [
+                "",
+                "## Paper levels",
+                "",
+                "| Ticker | Price | Status |",
+                "|--------|-------|--------|",
+            ]
+        )
+        for ticker, item in level_rows:
+            lines.append(f"| {ticker} | {_fmt(item.get('price'))} | {item.get('status')} |")
     lines.extend(["", "## If that tape had been fresh", ""])
     lines.append("| Ticker | Shadow | Entry zone | Test / fill | Invalidation | Target |")
     lines.append("|--------|--------|------------|-------------|--------------|--------|")
@@ -1713,11 +1823,14 @@ def render_markdown(book):
             "",
             "## Questions",
             "",
-            "1. Newest confluence `as_of` in this book is "
-            + (max((row["as_of"] for row in book["rows"]), default="none"))
-            + ". Newest operator chart on disk is "
-            + str(book.get("operator_as_of") or "none")
-            + ". Paste the day-before or pre-market charts if that is not the live plan.",
+            "1. "
+            + (
+                "No chart dated 2026-10-14 or later is in the checkout."
+                if not book["rows"]
+                else "The tape starts 2026-10-14. Newest plan in this book is "
+                + max(row["as_of"] for row in book["rows"])
+                + ". Say if that is not the live plan."
+            ),
             "2. A claim through the far side adds at that edge in the same session and stays",
             "   open. A cross back through the paper entry trims the add and keeps the core.",
             "   Say if you want that add only after you confirm the claim held.",
@@ -1906,12 +2019,8 @@ def apply_marks(book, quotes):
             continue
         marks.append({"ticker": ticker, "result": "unchanged", "quote": quote, "status": status})
     book["marks"] = marks
-    book["open_count"] = sum(
-        1 for row in book.get("rows") or [] if row.get("status") == "paper_open"
-    )
-    book["armed_count"] = sum(
-        1 for row in book.get("rows") or [] if row.get("status") == "armed_wait"
-    )
+    book["open_count"] = _tally(book.get("rows") or [], "paper_open")
+    book["armed_count"] = _tally(book.get("rows") or [], "armed_wait")
     return book
 
 
@@ -2038,7 +2147,7 @@ def render_pine(book):
                 continue
             live.append((row.get("ticker"), alert, price))
     if not live:
-        lines.append("// No alerts. Stale tape stays flat.")
+        lines.append("// No alerts. The tape starts 2026-10-14.")
         return "\n".join(lines) + "\n"
     for index, (ticker, alert, price) in enumerate(live):
         cross = "ta.crossover" if alert["trigger"] == "cross_above" else "ta.crossunder"

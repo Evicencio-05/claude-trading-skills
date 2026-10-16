@@ -49,46 +49,35 @@ and this book only records paper options. Alerts below are unpushed
   A long under the blue 20 or the orange 200 still opens while it holds the green 50.
   A blank 50 on a shorter chart uses the prior session's longer-timeframe 50.
   A chart with no RSI uses that prior session's RSI. Its own RSI wins.
-- TA older than one trading session is stale. Stale levels do not arm and do not alert.
+- Trade plans dated before 2026-10-14 are not the tape.
+  A chart on or after that date stays live. The latest chart for that ticker is the plan.
+  Each entry level is its own paper level. Spot within 1% of that level opens it.
+  A farther entry level waits. One invalidation covers the name.
+- TA older than one trading session is stale when it is also before that date.
+  Stale levels do not arm and do not alert.
 
 ## This session
 
 | Ticker | As of | Verdict | Status | Why |
 |--------|-------|---------|--------|-----|
-| BE | 2026-08-15 | NO_TRADE | stale | stale_ta |
-| CRDO | 2026-08-09 | PLAY | stale | stale_ta |
-| CRWD | 2026-08-16 | NO_TRADE | stale | stale_ta |
-| HIMS | 2026-08-09 | WATCH | stale | stale_ta |
-| HOOD | 2026-08-08 | NO_TRADE | stale | stale_ta |
-| ONDS | 2026-08-09 | WATCH | stale | stale_ta |
-| RIVN | 2026-08-10 | WATCH | stale | stale_ta |
-| TSEM | 2026-08-09 | PLAY | stale | stale_ta |
-| UMAC | 2026-08-09 | WATCH | stale | stale_ta |
+
+Tape starts 2026-10-14. No chart dated 2026-10-14 or later is in the checkout.
 
 ## If that tape had been fresh
 
 | Ticker | Shadow | Entry zone | Test / fill | Invalidation | Target |
 |--------|--------|------------|-------------|--------------|--------|
-| BE | flat | 228-232 | - | 220.7 | 250 |
-| CRDO | armed_wait | 240-250 | 240 | 236 | 300 |
-| CRWD | flat | 220-227 | - | 227.08 | 187.5 |
-| HIMS | watch | 27.42-28.5 | 28.5 | 26.5 | 35 |
-| HOOD | flat | 93-95 | - | 90.83 | - |
-| ONDS | watch | 9.25-9.5 | 9.25 | 8.75 | 10 |
-| RIVN | watch | 15.95-16.45 | 15.95 | 15.34 | 20 |
-| TSEM | armed_wait | 248-255 | 248 | 236.75 | 300 |
-| UMAC | watch | 24.5-26.5 | 24.5 | 23.46 | 30 |
 
 ## Patterns in this tape
 
-- Names on the latest confluence tape: 9.
-- King-node targets on the sketch: 5.
-- RSI called out in the thesis or the one-thing-to-verify: 3.
-- Rug / reverse-rug passing the size check: CRDO reverse rug, ONDS reverse rug, RIVN reverse rug
+- Names on the latest confluence tape: 0.
+- King-node targets on the sketch: 0.
+- RSI called out in the thesis or the one-thing-to-verify: 0.
+- Rug / reverse-rug passing the size check: none.
 - Fresh shadow would paper-open: none.
-- Fresh shadow would wait for the test: CRDO, TSEM
-- Fresh shadow stays flat: BE, CRWD, HOOD
-- Fresh shadow watches: HIMS 28.5, ONDS 9.25, RIVN 15.95, UMAC 24.5
+- Fresh shadow would wait for the test: none.
+- Fresh shadow stays flat: none.
+- Fresh shadow watches: none.
 
 ## Alert path
 
@@ -100,21 +89,10 @@ The alert does not place an order.
 
 | Ticker | Create | Condition | Role |
 |--------|--------|-----------|------|
-| BE | no | - | - |
-| CRDO | withheld | Crossing down 240 | entry_test |
-| CRDO | withheld | Crossing down 236 | invalidation |
-| CRWD | no | - | - |
-| HIMS | withheld | Crossing down 28.5 | entry_test |
-| HOOD | no | - | - |
-| ONDS | withheld | Crossing up 9.25 | entry_test |
-| RIVN | withheld | Crossing down 15.95 | entry_test |
-| TSEM | withheld | Crossing down 248 | entry_test |
-| TSEM | withheld | Crossing down 236.75 | invalidation |
-| UMAC | withheld | Crossing down 24.5 | entry_test |
 
 ## Questions
 
-1. Newest confluence `as_of` in this book is 2026-08-16. Newest operator chart on disk is 2026-08-16. Paste the day-before or pre-market charts if that is not the live plan.
+1. No chart dated 2026-10-14 or later is in the checkout.
 2. A claim through the far side adds at that edge in the same session and stays
    open. A cross back through the paper entry trims the add and keeps the core.
    Say if you want that add only after you confirm the claim held.

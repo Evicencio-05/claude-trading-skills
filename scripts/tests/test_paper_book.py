@@ -1181,48 +1181,109 @@ def test_build_book_keeps_latest_ticker_and_writes_no_orders(tmp_path: Path):
     assert "TSEM" in text
 
 
-def test_uploaded_august_tape_is_flat_on_october_16():
+def test_uploaded_august_tape_is_out_of_the_october_book():
     root = Path(__file__).resolve().parents[2]
     book = build_book(root / "reports" / "charts" / "confluence", date(2026, 10, 16))
-    by_ticker = {row["ticker"]: row for row in book["rows"]}
 
+    assert book["rows"] == []
     assert book["open_count"] == 0
+    assert book["armed_count"] == 0
     assert book["alerts"] == []
-    assert set(by_ticker) == {
-        "BE",
-        "CRDO",
-        "CRWD",
-        "HIMS",
-        "HOOD",
-        "ONDS",
-        "RIVN",
-        "TSEM",
-        "UMAC",
-    }
-    assert all(row["status"] == "stale" for row in book["rows"])
-    assert by_ticker["TSEM"]["shadow"]["status"] == "armed_wait"
-    assert by_ticker["TSEM"]["shadow"]["alerts"][0]["price"] == 248.0
-    assert by_ticker["TSEM"]["shadow"]["contract"]["expiry"] == "2026-08-14"
-    assert by_ticker["CRDO"]["shadow"]["status"] == "armed_wait"
-    assert by_ticker["CRWD"]["shadow"]["status"] == "flat"
-    assert by_ticker["BE"]["shadow"]["status"] == "flat"
-    onds = by_ticker["ONDS"]["shadow"]["alerts"][0]
-    assert onds["price"] == 9.25
-    assert onds["trigger"] == "cross_above"
-    assert onds["destination"] == "robinhood_create_alert"
-    assert onds["tradingview"]["condition"] == "Crossing up"
-    assert onds["pushed"] is False
     text = render_markdown(book)
-    assert "withheld" in text
+    assert "Tape starts 2026-10-14." in text
+    assert "No chart dated 2026-10-14 or later is in the checkout." in text
+    assert "BE" not in text
     assert "create_alert" in text
-    assert book["pattern_notes"]["named_rug_setups"] == [
-        "CRDO reverse rug",
-        "ONDS reverse rug",
-        "RIVN reverse rug",
-    ]
-    assert by_ticker["TSEM"]["shadow"]["target_check"] is None
-    assert by_ticker["BE"]["shadow"]["target_check"] is None
-    assert by_ticker["CRWD"]["shadow"]["target_check"] == "rug"
+
+
+def test_near_entry_opens_and_a_farther_level_arms(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    daily = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "last": 345.0,
+            "fib_levels": [{"price": 328.0}],
+            "operator_thesis": "Long AAPL. Daily is up. Test 340, target 360.",
+        },
+    }
+    four_h = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 345.0,
+            "change_pct": 0.4,
+            "sma": {"20": 344.0, "50": 300.0},
+            "fib_levels": [{"price": 330.0}],
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long AAPL. Daily is up and the 4H agrees. Test 340, target 360.",
+        },
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+    by_price = {item["price"]: item["status"] for item in row["levels"]}
+
+    assert by_price[344.0] == "paper_open"
+    assert by_price[340.0] == "armed_wait"
+    assert 328.0 not in by_price
+    assert row["invalidation"] == 328.0
+    assert row["target"] == 360.0
+    assert row["status"] == "paper_open"
+
+
+def test_oct_14_plan_stays_live_until_a_newer_chart(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    wednesday = {
+        "ticker": "META",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 752.0,
+            "change_pct": 0.4,
+            "sma": {"50": 700.0},
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long META. Daily is up and the 4H agrees. Test 750, target 780.",
+        },
+    }
+    (operator / "META_operator_2026-10-14.json").write_text(json.dumps(wednesday))
+
+    first = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert first["ticker"] == "META"
+    assert first["as_of"] == "2026-10-14"
+    assert first["status"] != "stale"
+    assert 750.0 in {item["price"] for item in first["levels"]}
+
+    thursday = {
+        "ticker": "META",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 760.0,
+            "change_pct": 0.4,
+            "sma": {"50": 700.0},
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long META. Daily is up and the 4H agrees. Test 755, target 790.",
+        },
+    }
+    (operator / "META_operator_2026-10-15.json").write_text(json.dumps(thursday))
+
+    replaced = build_book(confluence, date(2026, 10, 16))["rows"][0]
+    prices = {item["price"] for item in replaced["levels"]}
+
+    assert replaced["as_of"] == "2026-10-15"
+    assert 755.0 in prices
+    assert 750.0 not in prices
 
 
 def test_below_50_sma_blocks_a_long_fill():
@@ -1306,9 +1367,19 @@ def test_stale_october_tape_ignores_quotes_through_the_levels():
 
     apply_marks(book, {"TSEM": 200.0, "CRDO": 200.0, "ONDS": 20.0})
 
+    assert book["rows"] == []
     assert book["open_count"] == 0
-    assert book["marks"]
-    assert all(mark["result"] == "unchanged" for mark in book["marks"])
+    assert book["marks"] == []
+
+    retired = {
+        "rows": [decide_play(_play(as_of="2026-08-09"), date(2026, 10, 16))],
+        "open_count": 0,
+        "armed_count": 0,
+    }
+    apply_marks(retired, {"TSEM": 200.0})
+
+    assert retired["open_count"] == 0
+    assert retired["marks"][0]["result"] == "unchanged"
 
 
 def test_watch_tag_does_not_open_a_position():
@@ -1453,10 +1524,7 @@ def test_fetch_last_prices_keeps_going_after_one_failure():
 
 
 def test_push_create_alerts_refuses_stale_tape_and_order_tools():
-    stale = build_book(
-        Path(__file__).resolve().parents[2] / "reports" / "charts" / "confluence",
-        date(2026, 10, 16),
-    )
+    stale = {"rows": [decide_play(_play(as_of="2026-08-09"), date(2026, 10, 16))]}
     calls = []
     result = push_create_alerts(
         stale, lambda tool, args: calls.append(tool), ["symbol", "price"], allow=True
@@ -1522,7 +1590,7 @@ def test_vague_earnings_text_does_not_block():
 def test_open_carries_across_a_stale_session_until_expiry():
     opened = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 16))
     stale = decide_play(_play(as_of="2026-10-15"), date(2026, 10, 20))
-    assert stale["status"] == "stale"
+    assert stale["status"] == "paper_open"
 
     carried = merge_carried([stale], {"rows": [opened]}, date(2026, 10, 20))
 
