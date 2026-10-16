@@ -728,6 +728,26 @@ def _bias_from_thesis(text):
     return None
 
 
+def _daily_against(thesis, bias):
+    """The daily is the direction. A 4-hour idea against that daily does not open."""
+    if bias not in {"long", "short"}:
+        return False
+    text = thesis or ""
+    down = re.search(
+        r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(down|weak|bearish)\b",
+        text,
+        re.IGNORECASE,
+    )
+    up = re.search(
+        r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(up|strong|bullish)\b",
+        text,
+        re.IGNORECASE,
+    )
+    if bias == "long":
+        return down is not None and up is None
+    return up is not None and down is None
+
+
 def _thesis_levels(text):
     prices = []
     for match in _THESIS_LEVEL_RE.finditer(text or ""):
@@ -807,6 +827,8 @@ def plan_from_operator(doc):
     timeframe = str(extracted.get("timeframe") or "")
     daily = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
     four_hour = "agree" if timeframe.upper() in {"4H", "240"} and daily else "absent"
+    if _daily_against(thesis, bias):
+        four_hour = "fight"
     verdict = "PLAY" if bias and daily else "WATCH"
     if timeframe.upper() in {"4H", "240"} and not daily:
         verdict = "WATCH"

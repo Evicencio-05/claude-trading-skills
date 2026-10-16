@@ -792,6 +792,38 @@ def test_break_below_from_the_thesis_arms_a_short_watch():
     assert entry["trigger"] == "cross_below"
 
 
+def test_daily_direction_against_the_trade_does_not_open():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(operator_thesis="Long AAPL. Daily is down. Test 340, target 360.")
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "four_hour_fight"
+    assert row["paper_entry"] is None
+
+    short = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=350.0,
+                rsi={"white": 40.0},
+                operator_thesis="Short AAPL. Daily is up. Break below 348 targets 340.",
+                fib_levels=[
+                    {"ratio": "1.0", "price": 348.0},
+                    {"ratio": "0.5", "price": 340.0},
+                ],
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert short["bias"] == "short"
+    assert short["status"] == "watch"
+    assert short["reason"] == "four_hour_fight"
+
+
 def test_blank_sma_colors_do_not_block_the_plan():
     row = decide_play(
         plan_from_operator(_operator_plan(sma={"20": None, "50": None, "200": None})),
