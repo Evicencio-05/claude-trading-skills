@@ -20,6 +20,9 @@ and this book only records paper options. Alerts below are unpushed
   volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
   A stacked price beats a lone nearer level of that same kind.
 - Target prefers a king node over the first fib when both are on the sketch.
+  On a new operator chart, a starred positive king above is the long target,
+  and a starred negative king below is the short target, when that king is
+  larger than the negative nodes in the path.
   A newer operator chart keeps GEX/VEX nodes from the prior session. A target
   that is not larger than a negative node in the path stays a watch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).

@@ -470,6 +470,42 @@ def _long_below_green_50(extracted, spot):
     return isinstance(relation, str) and relation.strip().lower() == "below"
 
 
+def _directional_king(nodes, bias, spot, zone):
+    """Starred king in the trade direction. Longs use a positive node above; shorts a negative node below."""
+    if not nodes or spot is None or bias not in {"long", "short"}:
+        return None
+    if zone and len(zone) == 2:
+        edge = zone[1] if bias == "long" else zone[0]
+    else:
+        edge = spot
+    best_strike = None
+    best_abs = -1.0
+    for node in nodes:
+        if not isinstance(node, dict) or not node.get("starred"):
+            continue
+        strike = _num(node.get("strike"))
+        value = _num(node.get("value_k"))
+        if strike is None or value is None:
+            continue
+        sign = str(node.get("sign") or "")
+        if bias == "long":
+            agrees = strike > edge and (sign == "pos" or value > 0)
+        else:
+            agrees = strike < edge and (sign == "neg" or value < 0)
+        if agrees and abs(value) > best_abs:
+            best_strike = strike
+            best_abs = abs(value)
+    return best_strike
+
+
+def _target_with_king(nodes, bias, spot, target, zone):
+    """Use the king when it is larger than the negative nodes in its path."""
+    king = _directional_king(nodes, bias, spot, zone)
+    if king is None or target_smaller_than_opposing(nodes, bias, spot, king):
+        return target
+    return king
+
+
 def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
     if verdict != "PLAY":
         return None
@@ -488,6 +524,13 @@ def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
 
 def _decide_fresh(payload, anchor=None):
     zone, stop, target, target_note = _sketch(payload)
+    if target_note == "next operator level":
+        upgraded = _target_with_king(
+            payload.get("map_nodes"), payload.get("bias"), payload.get("spot"), target, zone
+        )
+        if upgraded != target and upgraded is not None:
+            target = upgraded
+            target_note = "directional king"
     row = _base_row(payload, zone, stop, target, target_note)
     verdict = payload.get("verdict")
     bias = payload.get("bias")
@@ -1113,6 +1156,9 @@ def render_markdown(book):
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
         "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
+        "  On a new operator chart, a starred positive king above is the long target,",
+        "  and a starred negative king below is the short target, when that king is",
+        "  larger than the negative nodes in the path.",
         "  A newer operator chart keeps GEX/VEX nodes from the prior session. A target",
         "  that is not larger than a negative node in the path stays a watch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",

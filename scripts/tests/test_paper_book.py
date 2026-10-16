@@ -431,6 +431,76 @@ def test_fresh_operator_plan_keeps_the_prior_sessions_gex_nodes(tmp_path: Path):
     assert row["paper_entry"] is None
 
 
+def test_starred_king_in_the_trade_direction_becomes_the_target(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    prior = _play(
+        ticker="AAPL",
+        as_of="2026-10-14",
+        map_nodes=[
+            {"strike": 400.0, "value_k": 5000, "sign": "pos", "starred": True},
+            {"strike": 370.0, "value_k": -100, "sign": "neg"},
+        ],
+    )
+    (confluence / "AAPL_confluence_2026-10-14.json").write_text(json.dumps(prior))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(_operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360."))
+    )
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["target"] == 400.0
+    assert row["target_note"] == "directional king"
+    assert row["status"] == "paper_open"
+
+
+def test_negative_king_does_not_replace_a_long_target(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    prior = _play(
+        ticker="AAPL",
+        as_of="2026-10-14",
+        map_nodes=[{"strike": 400.0, "value_k": -9000, "sign": "neg", "starred": True}],
+    )
+    (confluence / "AAPL_confluence_2026-10-14.json").write_text(json.dumps(prior))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(_operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360."))
+    )
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["target"] == 360.0
+    assert row["status"] == "paper_open"
+
+
+def test_small_king_keeps_the_chart_target(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    prior = _play(
+        ticker="AAPL",
+        as_of="2026-10-14",
+        map_nodes=[
+            {"strike": 400.0, "value_k": 100, "sign": "pos", "starred": True},
+            {"strike": 370.0, "value_k": -500, "sign": "neg"},
+        ],
+    )
+    (confluence / "AAPL_confluence_2026-10-14.json").write_text(json.dumps(prior))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(_operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360."))
+    )
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert row["target"] == 360.0
+    assert row["status"] == "paper_open"
+
+
 def test_stale_gex_nodes_do_not_follow_a_new_operator_plan(tmp_path: Path):
     confluence = tmp_path / "confluence"
     operator = tmp_path / "operator"
