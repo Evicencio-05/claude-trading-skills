@@ -164,24 +164,25 @@ def operator_levels(extracted):
 
     chart_rank = _tf_rank(extracted.get("timeframe"))
 
-    def add(price, family, period_rank=0, tf_rank=5):
+    def add(price, family, period_rank=0, tf_rank=5, carried=False):
         number = _num(price)
         if number is None:
             return
-        levels.append(
-            {
-                "price": number,
-                "family": family,
-                "period_rank": period_rank,
-                "tf_rank": tf_rank,
-            }
-        )
+        item = {
+            "price": number,
+            "family": family,
+            "period_rank": period_rank,
+            "tf_rank": tf_rank,
+        }
+        if carried:
+            item["carried"] = True
+        levels.append(item)
 
     def add_fib(fib, fallback):
         if not isinstance(fib, dict):
             return
         rank = _tf_rank(fib.get("timeframe")) if fib.get("timeframe") else fallback
-        add(fib.get("price"), "fib", tf_rank=rank)
+        add(fib.get("price"), "fib", tf_rank=rank, carried=bool(fib.get("carried")))
 
     for fib in extracted.get("fib_levels") or []:
         add_fib(fib, chart_rank)
@@ -1137,6 +1138,8 @@ def _thesis_levels(text):
 def _level_prices(extracted, thesis=""):
     prices = []
     for item in operator_levels(extracted):
+        if item.get("carried"):
+            continue
         price = item["price"]
         if price not in prices:
             prices.append(price)
@@ -1326,6 +1329,7 @@ def _with_longer_tf_fibs(latest, docs):
             if isinstance(fib, dict) and _num(fib.get("price")) is not None:
                 item = dict(fib)
                 item["timeframe"] = other_tf
+                item["carried"] = True
                 fibs.append(item)
         for fib_set in other.get("fib_sets") or []:
             if not isinstance(fib_set, dict):
@@ -1335,6 +1339,7 @@ def _with_longer_tf_fibs(latest, docs):
                 if isinstance(fib, dict) and _num(fib.get("price")) is not None:
                     item = dict(fib)
                     item["timeframe"] = fib.get("timeframe") or set_tf
+                    item["carried"] = True
                     fibs.append(item)
     extracted["fib_levels"] = fibs
     merged = dict(latest)
@@ -1583,6 +1588,8 @@ def render_markdown(book):
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
         "  A labeled volume-profile POC is a shelf.",
         "  A longer-timeframe fib beats a shorter one in that same cluster.",
+        "  A newer 4-hour chart keeps daily or weekly fibs from the prior session.",
+        "  Those carried fibs set the stop. They do not move the test or the target.",
         "  A channel bound written with a tilde price joins that cluster.",
         "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",

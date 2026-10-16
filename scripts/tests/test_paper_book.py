@@ -429,6 +429,92 @@ def test_newer_4h_chart_keeps_yesterdays_daily_fib(tmp_path: Path):
     assert aged["invalidation"] == 330.0
 
 
+def test_carried_daily_fib_does_not_steal_the_4h_entry(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    daily = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "last": 345.0,
+            "fib_levels": [{"price": 344.0}],
+            "fib_sets": [{"timeframe": "1D", "levels": [{"price": 350.0}]}],
+            "operator_thesis": "Long AAPL. Daily is up. Test 340, target 360.",
+        },
+    }
+    four_h = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 345.0,
+            "change_pct": 0.4,
+            "sma": {"50": 300.0},
+            "fib_levels": [{"price": 330.0}],
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long AAPL. Daily is up and the 4H agrees. Test 340, target 360.",
+        },
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+
+    row = build_book(confluence, date(2026, 10, 16))["rows"][0]
+    entry = next(alert for alert in row["alerts"] if alert["role"] == "entry_test")
+
+    assert row["status"] == "armed_wait"
+    assert row["reason"] == "wait_for_retest"
+    assert row["entry_zone"] == [340.0, 340.0]
+    assert row["paper_entry"] is None
+    assert row["target"] == 360.0
+    assert row["invalidation"] == 330.0
+    assert entry["price"] == 340.0
+    assert entry["trigger"] == "cross_below"
+
+    short_daily = {
+        "ticker": "MSFT",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "last": 345.0,
+            "fib_levels": [{"price": 346.0}],
+            "operator_thesis": "Short MSFT. Daily is down. Test 350, target 330.",
+        },
+    }
+    short_4h = {
+        "ticker": "MSFT",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 345.0,
+            "change_pct": 0.4,
+            "sma": {"50": 400.0},
+            "fib_levels": [{"price": 360.0}],
+            "rsi": {"white": 45.0},
+            "operator_thesis": "Short MSFT. Daily is down and the 4H agrees. Test 350, target 330.",
+        },
+    }
+    (operator / "MSFT_operator_2026-10-14.json").write_text(json.dumps(short_daily))
+    (operator / "MSFT_operator_2026-10-15.json").write_text(json.dumps(short_4h))
+
+    short = next(
+        item
+        for item in build_book(confluence, date(2026, 10, 16))["rows"]
+        if item["ticker"] == "MSFT"
+    )
+    short_entry = next(alert for alert in short["alerts"] if alert["role"] == "entry_test")
+
+    assert short["status"] == "armed_wait"
+    assert short["entry_zone"] == [350.0, 350.0]
+    assert short["paper_entry"] is None
+    assert short["target"] == 330.0
+    assert short["invalidation"] == 360.0
+    assert short_entry["price"] == 350.0
+    assert short_entry["trigger"] == "cross_above"
+
+
 def test_newer_4h_keeps_yesterdays_daily_direction(tmp_path: Path):
     confluence = tmp_path / "confluence"
     operator = tmp_path / "operator"

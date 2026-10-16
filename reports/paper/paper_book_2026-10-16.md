@@ -26,6 +26,8 @@ and this book only records paper options. Alerts below are unpushed
   volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
   A labeled volume-profile POC is a shelf.
   A longer-timeframe fib beats a shorter one in that same cluster.
+  A newer 4-hour chart keeps daily or weekly fibs from the prior session.
+  Those carried fibs set the stop. They do not move the test or the target.
   A channel bound written with a tilde price joins that cluster.
   A stacked price beats a lone nearer level of that same kind.
 - Target prefers a king node over the first fib when both are on the sketch.
