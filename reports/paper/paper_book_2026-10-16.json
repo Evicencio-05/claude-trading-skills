@@ -682,6 +682,7 @@
         "families": [
           "fib",
           "shelf",
+          "trend",
           "sr"
         ]
       },
@@ -712,6 +713,7 @@
           "families": [
             "fib",
             "shelf",
+            "trend",
             "sr"
           ]
         },

@@ -14,6 +14,7 @@ from paper_book import (
     decide_play,
     fetch_last_prices,
     merge_carried,
+    operator_levels,
     parse_yahoo_chart,
     plan_from_operator,
     push_create_alerts,
@@ -261,6 +262,45 @@ def test_fib_sets_the_cluster_invalidation_ahead_of_a_lower_shelf():
 
     assert row["invalidation"] == 23.46
     assert row["invalidation_cluster"]["families"] == ["fib", "shelf", "sr"]
+
+
+def test_labeled_channel_bounds_in_the_note_are_trend_levels():
+    levels = operator_levels(
+        {"channel": {"notes": "Lower bound ~16.0–16.4. Midline ~18.25. Upper bound ~20.5."}}
+    )
+
+    assert sorted(item["price"] for item in levels) == [16.0, 16.4, 18.25, 20.5]
+    assert {item["family"] for item in levels} == {"trend"}
+
+
+def test_channel_note_without_a_bound_label_is_not_a_level():
+    levels = operator_levels(
+        {"channel": {"notes": "Bounce off 186 support inside the channel; break of ~23.46"}}
+    )
+
+    assert levels == []
+
+
+def test_channel_rail_uses_the_tilde_price_not_the_fib_ratio():
+    levels = operator_levels(
+        {"channel": {"notes": "upper rail tagged with fib 2.618 ~227; lower rail currently ~190"}}
+    )
+
+    assert sorted(item["price"] for item in levels) == [190.0, 227.0]
+
+
+def test_numeric_channel_bounds_win_over_the_note():
+    levels = operator_levels(
+        {
+            "channel": {
+                "lower": 27.0,
+                "upper": 38.5,
+                "notes": "Lower bound ~27–28 aligns with 27.42; upper ~38–40",
+            }
+        }
+    )
+
+    assert sorted(item["price"] for item in levels) == [27.0, 38.5]
 
 
 def test_longer_timeframe_fib_beats_a_nearer_4h_fib():

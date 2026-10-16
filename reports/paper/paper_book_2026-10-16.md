@@ -22,6 +22,7 @@ and this book only records paper options. Alerts below are unpushed
 - Invalidation is the nearest opposing cluster. Its price is the fib, then the
   volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
   A longer-timeframe fib beats a shorter one in that same cluster.
+  A channel bound written with a tilde price joins that cluster.
   A stacked price beats a lone nearer level of that same kind.
 - Target prefers a king node over the first fib when both are on the sketch.
   On a new operator chart, a starred positive king above is the long target,

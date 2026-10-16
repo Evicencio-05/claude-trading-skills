@@ -199,9 +199,34 @@ def operator_levels(extracted):
         add(price, "sr")
     channel = extracted.get("channel") or {}
     if isinstance(channel, dict):
+        labeled = False
         for key in ("upper", "lower", "high", "low"):
+            if _num(channel.get(key)) is not None:
+                labeled = True
             add(channel.get(key), "trend")
+        if not labeled:
+            for price in _channel_note_prices(channel.get("notes")):
+                add(price, "trend")
     return levels
+
+
+def _channel_note_prices(notes):
+    """Bound prices written as '~16.0' in a channel note. A fib ratio is not a bound."""
+    prices = []
+    pattern = re.compile(
+        r"\b(?:lower|upper|midline|rail|trendline|TL|bound)\b"
+        r"[^~]{0,80}~\$?(\d+(?:\.\d+)?)"
+        r"(?:\s*(?:\u2013|-)\s*(\d+(?:\.\d+)?))?",
+        re.IGNORECASE,
+    )
+    for match in pattern.finditer(notes or ""):
+        for group in match.groups():
+            if group is None:
+                continue
+            number = float(group)
+            if number not in prices:
+                prices.append(number)
+    return prices
 
 
 def _price_band(spot):
@@ -1329,6 +1354,7 @@ def render_markdown(book):
         "- Invalidation is the nearest opposing cluster. Its price is the fib, then the",
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
         "  A longer-timeframe fib beats a shorter one in that same cluster.",
+        "  A channel bound written with a tilde price joins that cluster.",
         "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "  On a new operator chart, a starred positive king above is the long target,",
