@@ -16,7 +16,7 @@ Replace the session date with the trading session being recorded. Default it to 
 ## PASS 1 — Tape
 
 1. Read the latest `reports/charts/confluence/{TICKER}_confluence_*.json` files.
-2. Also read `reports/charts/operator/{TICKER}_operator_*.json`. A fresh operator plan, or one newer than that ticker's confluence, is the tape. It keeps GEX/VEX nodes from a confluence file that is still within one trading session. Older maps do not follow the new chart. A daily chart is the direction. A 4-hour or weekly plan stays a watch until the thesis states that daily direction. Daily holding above is up. Daily holding below is down. A 20, 50, 100, or 200 followed by SMA is the moving average, not a price. Blue is the 20 SMA, green is the 50, orange is the 200.
+2. Also read `reports/charts/operator/{TICKER}_operator_*.json`. A fresh operator plan, or one newer than that ticker's confluence, is the tape. It keeps GEX/VEX nodes from a confluence file that is still within one trading session. Older maps do not follow the new chart. A daily chart is the direction. A 4-hour or weekly plan stays a watch until the thesis states that daily direction. Daily holding above is up. Daily holding below is down. A name the thesis puts in chop stays a watch. An explicit 4H fight withholds the scalp add and leaves the daily swing on. A missing 4H note does not block the open. A 20, 50, 100, or 200 followed by SMA is the moving average, not a price. Blue is the 20 SMA, green is the 50, orange is the 200.
 3. If the newest `as_of` is older than one trading session, say so. A stale tape is a flat book. Do not invent levels from memory.
 4. Ask for the missing day-before or pre-market TA (operator charts, and GEX/VEX when you have a paste) before treating any name as live.
 

@@ -11,6 +11,8 @@ and this book only records paper options. Alerts below are unpushed
 - Daily direction comes from the confluence verdict or a daily operator chart.
   A 4-hour or weekly chart stays a watch until the thesis states that daily direction.
   Daily holding above is up. Daily holding below is down.
+  A thesis that puts the name in chop stays a watch.
+  A 4H fight does not flat the daily swing. It withholds the scalp add.
   A fresh `NO_TRADE` stays flat.
 - Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).
   A level more than 3% of price away is the target, not a wider entry.
@@ -107,8 +109,9 @@ The alert does not place an order.
 3. Invalidation is the nearest cluster. Inside it, a fib beats a shelf, and a
    200 SMA beats a 20. Should that flatten the weekly on an intraday break,
    or only on a daily close?
-4. 4H agreement is not in the operator JSON. Should a missing 4H note block a
-   paper open, or only the scalp add?
+4. A missing 4H note does not block the paper open. An explicit 4H fight
+   withholds the scalp add and leaves the daily swing on. Say if a 4H fight
+   should flat the swing too.
 5. Robinhood `create_alert` can notify the Agentic account without an order.
    MCP trade approvals default off, which lets a connected agent place live
    orders. Confirm approvals stay on, and confirm the next fresh book may push

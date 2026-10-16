@@ -411,13 +411,17 @@ def test_larger_king_does_not_block_the_wait():
     assert row["reason"] == "wait_for_test"
 
 
-def test_four_hour_fight_caps_a_play():
+def test_four_hour_fight_withholds_the_scalp_and_keeps_the_swing():
     row = decide_play(_play(four_hour="fight"), date(2026, 10, 16))
 
-    assert row["status"] == "watch"
-    assert row["reason"] == "four_hour_fight"
-    assert row["paper_entry"] is None
+    assert row["status"] == "paper_open"
+    assert row["paper_entry"] is not None
     assert row["four_hour"] == "fight"
+    assert "Skip that scalp add" in row["contract"]["management"]
+    assert "1-minute options chart" in row["contract"]["management"]
+
+    agreed = decide_play(_play(), date(2026, 10, 16))
+    assert "Skip that scalp add" not in agreed["contract"]["management"]
 
 
 def test_play_missing_invalidation_does_not_open():
@@ -1009,8 +1013,9 @@ def test_daily_chart_against_its_own_thesis_stays_a_watch():
     )
 
     assert row["status"] == "watch"
-    assert row["reason"] == "four_hour_fight"
+    assert row["reason"] == "daily_against"
     assert row["paper_entry"] is None
+    assert row["four_hour"] == "absent"
 
 
 def test_four_hour_plan_without_daily_direction_stays_a_watch():
@@ -1140,7 +1145,7 @@ def test_daily_direction_against_the_trade_does_not_open():
     )
 
     assert row["status"] == "watch"
-    assert row["reason"] == "four_hour_fight"
+    assert row["reason"] == "daily_against"
     assert row["paper_entry"] is None
 
     short = decide_play(
@@ -1160,7 +1165,7 @@ def test_daily_direction_against_the_trade_does_not_open():
 
     assert short["bias"] == "short"
     assert short["status"] == "watch"
-    assert short["reason"] == "four_hour_fight"
+    assert short["reason"] == "daily_against"
 
 
 def test_daily_holding_above_fights_a_short_and_keeps_a_long():
@@ -1181,7 +1186,7 @@ def test_daily_holding_above_fights_a_short_and_keeps_a_long():
 
     assert short["bias"] == "short"
     assert short["status"] == "watch"
-    assert short["reason"] == "four_hour_fight"
+    assert short["reason"] == "daily_against"
     assert short["paper_entry"] is None
 
     opened = decide_play(
@@ -1210,7 +1215,7 @@ def test_daily_holding_below_fights_a_long():
 
     assert row["bias"] == "long"
     assert row["status"] == "watch"
-    assert row["reason"] == "four_hour_fight"
+    assert row["reason"] == "daily_against"
     assert row["paper_entry"] is None
 
 
@@ -1245,6 +1250,65 @@ def test_sma_period_in_the_thesis_is_not_a_price():
     assert row["status"] == "paper_open"
     assert row["entry_zone"][0] == 45.0
     assert row["target"] == 55.0
+
+
+def test_four_hour_fight_on_a_daily_up_plan_still_opens():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis=(
+                    "Long AAPL. Daily is up. The 4H is fighting. Test 340, target 360."
+                )
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["four_hour"] == "fight"
+    assert row["reason"] == "paper_open"
+    assert "Skip that scalp add" in row["contract"]["management"]
+
+
+def test_four_hour_chart_without_agreement_language_is_absent():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360.")
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["four_hour"] == "absent"
+
+
+def test_chop_stays_a_watch():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis="Long AAPL. Daily is up. Still in chop. Test 340, target 360."
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "chop"
+    assert row["paper_entry"] is None
+
+    trending = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis=(
+                    "Long AAPL. Daily is up and the 4H agrees. Out of chop. Test 340, target 360."
+                )
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert trending["status"] == "paper_open"
+    assert trending["four_hour"] == "agree"
 
 
 def test_blank_sma_colors_do_not_block_the_plan():

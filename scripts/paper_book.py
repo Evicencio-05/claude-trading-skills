@@ -318,7 +318,10 @@ def _expiry_anchor(anchor):
     return None
 
 
-def _contract(bias, anchor=None):
+def _contract(bias, anchor=None, four_hour=None):
+    scalp = "A scalp add uses the 20 SMA and the 50 SMA on the 1-minute options chart. "
+    if four_hour == "fight":
+        scalp += "Skip that scalp add while the 4H fights. "
     contract = {
         "instrument": "option",
         "right": "call" if bias == "long" else "put",
@@ -326,9 +329,9 @@ def _contract(bias, anchor=None):
         "moneyness": "atm_to_slightly_itm",
         "size_for_zero": True,
         "management": (
-            "Add or roll on a claim through the zone. A scalp add uses the 20 SMA "
-            "and the 50 SMA on the 1-minute options chart. Trim if the claim fails. "
-            "Flat if invalidation breaks. Do not reach far OTM."
+            "Add or roll on a claim through the zone. "
+            + scalp
+            + "Trim if the claim fails. Flat if invalidation breaks. Do not reach far OTM."
         ),
     }
     expiry_day = _expiry_anchor(anchor)
@@ -532,10 +535,12 @@ def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
         return "rsi_against"
     if bias == "long" and _long_below_green_50(extracted, spot):
         return "below_50_sma"
+    if payload.get("chop"):
+        return "chop"
     if target_smaller_than_opposing(payload.get("map_nodes"), bias, spot, target):
         return "target_smaller_than_opposing"
-    if payload.get("four_hour") == "fight":
-        return "four_hour_fight"
+    if payload.get("daily_against"):
+        return "daily_against"
     return None
 
 
@@ -615,7 +620,7 @@ def _decide_fresh(payload, anchor=None):
         row["action"] = "paper_open"
         row["reason"] = "paper_open"
         row["paper_entry"] = price
-        row["contract"] = _contract(bias, anchor)
+        row["contract"] = _contract(bias, anchor, row.get("four_hour"))
         row["alerts"] = [
             _alert(
                 row["ticker"],
@@ -641,7 +646,7 @@ def _decide_fresh(payload, anchor=None):
     if verdict == "WATCH":
         row["contract"] = None
     else:
-        row["contract"] = _contract(bias, anchor)
+        row["contract"] = _contract(bias, anchor, row.get("four_hour"))
     note = _entry_note(verdict, reason, trigger)
     alerts = [_alert(row["ticker"], "entry_test", price, trigger, note)]
     if verdict == "PLAY" and stop is not None:
@@ -851,6 +856,13 @@ def _bias_from_thesis(text):
     return None
 
 
+_CHOP_RE = re.compile(
+    r"\b(?:in|into|still)\s+chop\b|\bmid-?chop\b|\bchoppy\b|\bno trend\b|\brange-bound\b",
+    re.IGNORECASE,
+)
+_FOUR_HOUR_WORD = r"(?:4\s*h|4-hour|4 hour)"
+
+
 def _chart_is_daily(timeframe):
     """A daily operator chart is the directional read. 4H and weekly are not."""
     token = re.sub(r"[^A-Z0-9]", "", (timeframe or "").upper())
@@ -885,6 +897,35 @@ def _daily_against(thesis, bias):
     if bias == "long":
         return down is not None and up is None
     return up is not None and down is None
+
+
+def _four_hour_state(thesis, bias):
+    """4H agreement is extra confluence for the scalp. It is not the daily direction."""
+    text = thesis or ""
+    window = rf"\b{_FOUR_HOUR_WORD}\b.{{0,48}}"
+    if re.search(
+        window + r"\b(?:does not agree|doesn't agree|disagrees|fighting|fights|against)\b",
+        text,
+        re.IGNORECASE | re.DOTALL,
+    ):
+        return "fight"
+    if re.search(window + r"\bagrees?\b", text, re.IGNORECASE | re.DOTALL):
+        return "agree"
+    down = re.search(
+        window + r"\b(?:is\s+|remains\s+|stays\s+)?(?:down|weak|bearish)\b",
+        text,
+        re.IGNORECASE | re.DOTALL,
+    )
+    up = re.search(
+        window + r"\b(?:is\s+|remains\s+|stays\s+)?(?:up|strong|bullish)\b",
+        text,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if bias == "long" and down is not None and up is None:
+        return "fight"
+    if bias == "short" and up is not None and down is None:
+        return "fight"
+    return "absent"
 
 
 def _thesis_levels(text):
@@ -978,9 +1019,9 @@ def plan_from_operator(doc):
     timeframe = str(extracted.get("timeframe") or "")
     daily_stated = re.search(r"\bdaily\b", thesis, re.IGNORECASE) is not None
     daily = daily_stated or _chart_is_daily(timeframe)
-    four_hour = "agree" if timeframe.upper() in {"4H", "240"} and daily_stated else "absent"
-    if _daily_against(thesis, bias):
-        four_hour = "fight"
+    four_hour = _four_hour_state(thesis, bias)
+    daily_against = _daily_against(thesis, bias)
+    chop = _CHOP_RE.search(thesis) is not None
     verdict = "PLAY" if bias and daily else "WATCH"
     if timeframe.upper() in {"4H", "240"} and not daily_stated:
         verdict = "WATCH"
@@ -996,6 +1037,8 @@ def plan_from_operator(doc):
         "operator_thesis": thesis,
         "operator_extracted": extracted,
         "four_hour": four_hour,
+        "daily_against": daily_against,
+        "chop": chop,
         "judgment": {
             "one_thing_to_verify": "" if daily else "Daily direction is in the thesis.",
             "rr_sketch": {
@@ -1177,6 +1220,8 @@ def render_markdown(book):
         "- Daily direction comes from the confluence verdict or a daily operator chart.",
         "  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.",
         "  Daily holding above is up. Daily holding below is down.",
+        "  A thesis that puts the name in chop stays a watch.",
+        "  A 4H fight does not flat the daily swing. It withholds the scalp add.",
         "  A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
         "  A level more than 3% of price away is the target, not a wider entry.",
@@ -1314,8 +1359,9 @@ def render_markdown(book):
             "3. Invalidation is the nearest cluster. Inside it, a fib beats a shelf, and a",
             "   200 SMA beats a 20. Should that flatten the weekly on an intraday break,",
             "   or only on a daily close?",
-            "4. 4H agreement is not in the operator JSON. Should a missing 4H note block a",
-            "   paper open, or only the scalp add?",
+            "4. A missing 4H note does not block the paper open. An explicit 4H fight",
+            "   withholds the scalp add and leaves the daily swing on. Say if a 4H fight",
+            "   should flat the swing too.",
             "5. Robinhood `create_alert` can notify the Agentic account without an order.",
             "   MCP trade approvals default off, which lets a connected agent place live",
             "   orders. Confirm approvals stay on, and confirm the next fresh book may push",
@@ -1452,7 +1498,9 @@ def apply_marks(book, quotes):
                 row["reason"] = "test_tagged"
                 row["paper_entry"] = entry.get("price")
                 if row.get("contract") is None and row.get("bias") in {"long", "short"}:
-                    row["contract"] = _contract(row["bias"], row.get("session_date"))
+                    row["contract"] = _contract(
+                        row["bias"], row.get("session_date"), row.get("four_hour")
+                    )
                 _ensure_claim_alert(row)
                 marks.append(
                     {
