@@ -45,6 +45,7 @@ and this book only records paper options. Alerts below are unpushed
   blank period. A labeled 50 wins over green. A long under the green 50
   stays a watch, including when that price is blank and the chart says below.
   A long under the blue 20 or the orange 200 still opens while it holds the green 50.
+  A blank 50 on a shorter chart uses the prior session's longer-timeframe 50.
 - TA older than one trading session is stale. Stale levels do not arm and do not alert.
 
 ## This session

@@ -502,6 +502,81 @@ def test_newer_4h_keeps_yesterdays_daily_direction(tmp_path: Path):
     assert aged["status"] == "watch"
 
 
+def test_blank_4h_sma_keeps_yesterdays_daily_50(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    daily = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-14",
+        "extracted": {
+            "timeframe": "1D",
+            "sma": {"50": 350.0},
+            "operator_thesis": "Long AAPL. Daily is up.",
+        },
+    }
+    four_h = {
+        "ticker": "AAPL",
+        "as_of": "2026-10-15",
+        "extracted": {
+            "timeframe": "4H",
+            "last": 341.0,
+            "change_pct": 0.4,
+            "fib_levels": [{"price": 320.0}],
+            "rsi": {"white": 55.0},
+            "operator_thesis": "Long AAPL. The 4H agrees. Test 340, target 360.",
+        },
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+
+    blocked = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert blocked["status"] == "watch"
+    assert blocked["reason"] == "below_50_sma"
+
+    four_h["extracted"]["sma"] = {"50": 300.0}
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+    labeled = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert labeled["status"] == "paper_open"
+    assert labeled["invalidation"] == 320.0
+
+    four_h["extracted"].pop("sma")
+    daily["extracted"] = {
+        "timeframe": "1D",
+        "price_vs_sma": {"green": "below"},
+        "operator_thesis": "Long AAPL. Daily is up.",
+    }
+    (operator / "AAPL_operator_2026-10-14.json").write_text(json.dumps(daily))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+    unmarked = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert unmarked["status"] == "watch"
+    assert unmarked["reason"] == "below_50_sma"
+
+    (operator / "AAPL_operator_2026-10-14.json").unlink()
+    (operator / "AAPL_operator_2026-08-09.json").write_text(
+        json.dumps(
+            {
+                "ticker": "AAPL",
+                "as_of": "2026-08-09",
+                "extracted": {
+                    "timeframe": "1D",
+                    "sma": {"50": 350.0},
+                    "operator_thesis": "Long AAPL. Daily is up.",
+                },
+            }
+        )
+    )
+    four_h["extracted"]["operator_thesis"] = "Long AAPL. Daily is up. Test 340, target 360."
+    (operator / "AAPL_operator_2026-10-15.json").write_text(json.dumps(four_h))
+    aged = build_book(confluence, date(2026, 10, 16))["rows"][0]
+
+    assert aged["status"] == "paper_open"
+
+
 def test_daily_chart_bias_carries_onto_the_next_weekly(tmp_path: Path):
     confluence = tmp_path / "confluence"
     operator = tmp_path / "operator"

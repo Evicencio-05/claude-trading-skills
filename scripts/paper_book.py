@@ -1339,6 +1339,48 @@ def _with_longer_tf_fibs(latest, docs):
     extracted["fib_levels"] = fibs
     merged = dict(latest)
     merged["extracted"] = extracted
+    return _with_prior_smas(merged, docs)
+
+
+def _with_prior_smas(latest, docs):
+    """A blank SMA on a shorter chart keeps the prior session's longer-timeframe SMA."""
+    extracted = dict(latest.get("extracted") or {})
+    chart_tf = extracted.get("timeframe") or ""
+    try:
+        latest_day = date.fromisoformat(latest.get("as_of") or "")
+    except ValueError:
+        return latest
+    donors = []
+    for doc in docs:
+        if doc.get("_source") == latest.get("_source") and doc.get("as_of") == latest.get("as_of"):
+            continue
+        other = doc.get("extracted") if isinstance(doc.get("extracted"), dict) else {}
+        other_tf = other.get("timeframe") or ""
+        if _tf_rank(other_tf) >= _tf_rank(chart_tf):
+            continue
+        try:
+            lag = weekday_lag(date.fromisoformat(doc.get("as_of") or ""), latest_day)
+        except ValueError:
+            continue
+        if lag > MAX_WEEKDAY_LAG:
+            continue
+        donors.append((doc.get("as_of") or "", doc.get("_source") or "", other))
+    donors.sort(reverse=True)
+    sma = _resolved_sma_map(extracted.get("sma"))
+    relations = _resolved_sma_map(extracted.get("price_vs_sma"))
+    for _, _, other in donors:
+        for period, price in _resolved_sma_map(other.get("sma")).items():
+            if _present(price) and not _present(sma.get(period)):
+                sma[period] = price
+        for period, relation in _resolved_sma_map(other.get("price_vs_sma")).items():
+            if _present(relation) and not _present(relations.get(period)):
+                relations[period] = relation
+    if sma:
+        extracted["sma"] = sma
+    if relations:
+        extracted["price_vs_sma"] = relations
+    merged = dict(latest)
+    merged["extracted"] = extracted
     return merged
 
 
@@ -1522,6 +1564,7 @@ def render_markdown(book):
         "  blank period. A labeled 50 wins over green. A long under the green 50",
         "  stays a watch, including when that price is blank and the chart says below.",
         "  A long under the blue 20 or the orange 200 still opens while it holds the green 50.",
+        "  A blank 50 on a shorter chart uses the prior session's longer-timeframe 50.",
         "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",
         "",
         "## This session",
