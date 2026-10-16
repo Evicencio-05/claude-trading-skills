@@ -193,6 +193,7 @@ def operator_levels(extracted):
     for key, price in (extracted.get("sma") or {}).items():
         add(price, "sma", _SMA_RANK.get(str(key), 5))
     vp = extracted.get("vp") or {}
+    add(vp.get("poc"), "shelf")
     for price in vp.get("peak_nodes") or []:
         add(price, "shelf")
     for price in extracted.get("sr_levels") or []:
@@ -1386,6 +1387,7 @@ def render_markdown(book):
         "  crosses back through the paper entry. The core stays until invalidation or the target.",
         "- Invalidation is the nearest opposing cluster. Its price is the fib, then the",
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
+        "  A labeled volume-profile POC is a shelf.",
         "  A longer-timeframe fib beats a shorter one in that same cluster.",
         "  A channel bound written with a tilde price joins that cluster.",
         "  A stacked price beats a lone nearer level of that same kind.",

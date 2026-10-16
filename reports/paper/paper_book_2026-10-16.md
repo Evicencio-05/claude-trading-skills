@@ -22,6 +22,7 @@ and this book only records paper options. Alerts below are unpushed
   crosses back through the paper entry. The core stays until invalidation or the target.
 - Invalidation is the nearest opposing cluster. Its price is the fib, then the
   volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
+  A labeled volume-profile POC is a shelf.
   A longer-timeframe fib beats a shorter one in that same cluster.
   A channel bound written with a tilde price joins that cluster.
   A stacked price beats a lone nearer level of that same kind.

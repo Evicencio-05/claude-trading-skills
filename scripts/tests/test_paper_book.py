@@ -265,6 +265,50 @@ def test_fib_sets_the_cluster_invalidation_ahead_of_a_lower_shelf():
     assert row["invalidation_cluster"]["families"] == ["fib", "shelf", "sr"]
 
 
+def test_labeled_poc_joins_the_shelves():
+    levels = operator_levels({"vp": {"poc": 26.25, "peak_nodes": [14.0, 26.0]}})
+
+    assert [item["price"] for item in levels if item["family"] == "shelf"] == [
+        26.25,
+        14.0,
+        26.0,
+    ]
+
+
+def test_volume_trough_is_not_a_shelf():
+    levels = operator_levels({"vp": {"trough_nodes": [27.0], "peak_nodes": [26.0]}})
+
+    assert [item["price"] for item in levels] == [26.0]
+
+
+def test_poc_is_the_test_when_it_is_the_nearest_level():
+    row = decide_play(
+        plan_from_operator(
+            {
+                "ticker": "SPCX",
+                "as_of": "2026-10-15",
+                "extracted": {
+                    "timeframe": "1D",
+                    "last": 148.12,
+                    "change_pct": 0.4,
+                    "sma": {"50": 140.0},
+                    "vp": {"poc": 147.0, "peak_nodes": [130.0]},
+                    "sr_levels": [160.0],
+                    "rsi": {"white": 55.0},
+                    "operator_thesis": "Long SPCX. Daily is up.",
+                },
+            }
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["entry_zone"] == [147.0, 147.0]
+    assert row["paper_entry"] == 148.12
+    assert row["target"] == 160.0
+    assert row["status"] == "paper_open"
+    assert row["invalidation"] == 140.0
+
+
 def test_labeled_channel_bounds_in_the_note_are_trend_levels():
     levels = operator_levels(
         {"channel": {"notes": "Lower bound ~16.0–16.4. Midline ~18.25. Upper bound ~20.5."}}
