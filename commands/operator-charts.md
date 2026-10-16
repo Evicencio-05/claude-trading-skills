@@ -1,11 +1,11 @@
 ---
-description: "Ingest the operator's TradingView charts (S/R, fib extensions, LuxAlgo VP shelves, 50/100/200 SMA) into dated markdown+JSON artifacts."
+description: "Ingest the operator's TradingView charts (S/R, fib extensions, LuxAlgo VP shelves, 20/50/200 SMA) into dated markdown+JSON artifacts."
 argument-hint: "<TICKER>"
 ---
 
 # /operator-charts {TICKER}
 
-Ingest **user-supplied** personal chart images for `{TICKER}`. Five indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 50/100/200, white/yellow RSI strength.
+Ingest **user-supplied** personal chart images for `{TICKER}`. Five indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 20/50/200 (blue/green/orange), white/yellow RSI strength.
 
 **Co-pilot only.** No MCP orders. No cross-source merge. No news/FMP.
 
