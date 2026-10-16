@@ -1163,6 +1163,90 @@ def test_daily_direction_against_the_trade_does_not_open():
     assert short["reason"] == "four_hour_fight"
 
 
+def test_daily_holding_above_fights_a_short_and_keeps_a_long():
+    short = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=350.0,
+                rsi={"white": 40.0},
+                operator_thesis="Short AAPL. Daily holding above 50. Break below 348 targets 340.",
+                fib_levels=[
+                    {"ratio": "1.0", "price": 348.0},
+                    {"ratio": "0.5", "price": 340.0},
+                ],
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert short["bias"] == "short"
+    assert short["status"] == "watch"
+    assert short["reason"] == "four_hour_fight"
+    assert short["paper_entry"] is None
+
+    opened = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis="Long AAPL. Daily holding above the 50 SMA. Test 340, target 360."
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert opened["status"] == "paper_open"
+    assert opened["reason"] == "paper_open"
+    assert opened["target"] == 360.0
+
+
+def test_daily_holding_below_fights_a_long():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis="Long AAPL. Daily holding below the 50 SMA. Test 340, target 360."
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["bias"] == "long"
+    assert row["status"] == "watch"
+    assert row["reason"] == "four_hour_fight"
+    assert row["paper_entry"] is None
+
+
+def test_both_daily_directions_do_not_block_either_side():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                operator_thesis="Long AAPL. Daily is up and daily is down. Test 340, target 360."
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+
+
+def test_sma_period_in_the_thesis_is_not_a_price():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=45.2,
+                sma={"20": None, "50": None, "200": None},
+                fib_levels=[],
+                vp={"peak_nodes": []},
+                sr_levels=[44.0],
+                operator_thesis=("Long AAPL. Daily holding above the 50 SMA. Test 45, target 55."),
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["entry_zone"][0] == 45.0
+    assert row["target"] == 55.0
+
+
 def test_blank_sma_colors_do_not_block_the_plan():
     row = decide_play(
         plan_from_operator(_operator_plan(sma={"20": None, "50": None, "200": None})),

@@ -10,6 +10,7 @@ and this book only records paper options. Alerts below are unpushed
 
 - Daily direction comes from the confluence verdict or a daily operator chart.
   A 4-hour or weekly chart stays a watch until the thesis states that daily direction.
+  Daily holding above is up. Daily holding below is down.
   A fresh `NO_TRADE` stays flat.
 - Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).
   A level more than 3% of price away is the target, not a wider entry.

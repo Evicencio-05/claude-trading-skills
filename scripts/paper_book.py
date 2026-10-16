@@ -857,21 +857,31 @@ def _chart_is_daily(timeframe):
     return token in {"1D", "D", "DAILY", "1DAY"}
 
 
+_DAILY_DOWN_RE = re.compile(
+    r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(?:down|weak|bearish)\b"
+    r"|\bdaily\b(?:\s+\w+){0,4}\s+holding\s+below\b"
+    r"|\bdaily\b(?:\s+\w+){0,3}\s+(?:below|under)\b",
+    re.IGNORECASE,
+)
+_DAILY_UP_RE = re.compile(
+    r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(?:up|strong|bullish)\b"
+    r"|\bdaily\b(?:\s+\w+){0,4}\s+holding\s+above\b"
+    r"|\bdaily\b(?:\s+\w+){0,3}\s+(?:above|over)\b",
+    re.IGNORECASE,
+)
+
+
 def _daily_against(thesis, bias):
-    """The daily is the direction. A 4-hour idea against that daily does not open."""
+    """The daily is the direction. A 4-hour idea against that daily does not open.
+
+    "Daily is up" and "daily holding above" are up. "Daily is down" and
+    "daily holding below" are down. Both sides in one thesis do not block.
+    """
     if bias not in {"long", "short"}:
         return False
     text = thesis or ""
-    down = re.search(
-        r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(down|weak|bearish)\b",
-        text,
-        re.IGNORECASE,
-    )
-    up = re.search(
-        r"\bdaily\b(?:\s+\w+){0,4}\s+(?:is\s+|remains\s+|stays\s+)?(up|strong|bullish)\b",
-        text,
-        re.IGNORECASE,
-    )
+    down = _DAILY_DOWN_RE.search(text)
+    up = _DAILY_UP_RE.search(text)
     if bias == "long":
         return down is not None and up is None
     return up is not None and down is None
@@ -879,7 +889,10 @@ def _daily_against(thesis, bias):
 
 def _thesis_levels(text):
     prices = []
-    for match in _THESIS_LEVEL_RE.finditer(text or ""):
+    source = text or ""
+    for match in _THESIS_LEVEL_RE.finditer(source):
+        if re.match(r"\s*(?:SMA|EMA)\b", source[match.end() :], re.IGNORECASE):
+            continue
         price = float(match.group(1))
         if price not in prices:
             prices.append(price)
@@ -1163,6 +1176,7 @@ def render_markdown(book):
         "",
         "- Daily direction comes from the confluence verdict or a daily operator chart.",
         "  A 4-hour or weekly chart stays a watch until the thesis states that daily direction.",
+        "  Daily holding above is up. Daily holding below is down.",
         "  A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
         "  A level more than 3% of price away is the target, not a wider entry.",
