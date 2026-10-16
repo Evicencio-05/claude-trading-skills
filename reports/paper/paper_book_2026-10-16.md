@@ -11,9 +11,11 @@ and this book only records paper options. Alerts below are unpushed
 - Daily direction comes from the confluence verdict. A fresh `NO_TRADE` stays flat.
 - Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).
 - A bar moving more than 4% does not get a paper fill.
-- Add/roll is a later claim through the zone, not the first fill at the high.
+- Add on a claim through the far side of the zone. Trim that add if price
+  crosses back through the paper entry. The core stays until invalidation or the target.
 - Target prefers a king node over the first fib when both are on the sketch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).
+- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
 - TA older than one trading session is stale. Stale levels do not arm and do not alert.
 
 ## This session
@@ -78,9 +80,9 @@ No webhook is configured. The alert does not place an order.
 ## Questions
 
 1. Newest confluence `as_of` in this book is 2026-08-16. If that is not last night or this pre-market, where is the later TA paste?
-2. A paper fill requires the discount/premium 40% of the zone and a bar inside
-   4% absolute. Should a claim through the far side open
-   an add the same day, or only after you say the claim held?
+2. A claim through the far side adds at that edge in the same session and stays
+   open. A cross back through the paper entry trims the add and keeps the core.
+   Say if you want that add only after you confirm the claim held.
 3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.
    Should that flatten the weekly on an intraday break, or only on a daily close?
 4. 4H agreement is not in the operator JSON. Should a missing 4H note block a

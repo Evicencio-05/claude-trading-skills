@@ -30,7 +30,7 @@ uv run python3 scripts/paper_book.py \
 
 Read `reports/paper/paper_book_YYYY-MM-DD.md`.
 
-- `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0.
+- `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0. Expiry is this Friday for a Monday–Wednesday decision and the next Friday for Thursday–Sunday.
 - `armed_wait` and `watch` are alerts at the test. They are not fills.
 - `flat` / `stale` means no position and no alert.
 - Invalidation is the nearest fib / volume-shelf / SMA / trendline / S/R cluster against the trade when the operator chart is on file.
@@ -49,7 +49,7 @@ uv run python3 scripts/paper_book.py \
   --quotes reports/paper/quotes_YYYY-MM-DD.json
 ```
 
-`quotes_YYYY-MM-DD.json` is `{"TICKER": 123.45}`. `--fetch-quotes` loads the last regular-session price instead. A tagged test on `armed_wait` records `paper_open` at the level. A tagged test on `watch` records the touch and does not open. Invalidation or the target flattens an open paper position. Stale rows ignore both sources.
+`quotes_YYYY-MM-DD.json` is `{"TICKER": 123.45}`. `--fetch-quotes` loads the last regular-session price instead. A tagged test on `armed_wait` records `paper_open` at the level. A tagged test on `watch` records the touch and does not open. Invalidation or the target flattens an open paper position. A claim through the far side of the zone adds at that edge. A cross back through the paper entry trims the add and keeps the core. Stale rows ignore both sources.
 
 Robinhood `create_alert` is sent only after the operator allows the push, the book is fresh, and the live tool schema lists the argument names. The paper book does not call an order tool.
 
@@ -57,4 +57,4 @@ Robinhood `create_alert` is sent only after the operator allows the push, the bo
 
 Do not register these rows in `trader-memory-core`. They are not Portfolio A or C fills.
 
-Do not push `create_alert` unless the operator asked, the book is fresh, and the payload is the entry, invalidation, or target from that book.
+Do not push `create_alert` unless the operator asked, the book is fresh, and the payload is the entry, claim, invalidation, or target from that book.

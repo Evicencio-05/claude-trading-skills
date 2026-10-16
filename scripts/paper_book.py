@@ -23,6 +23,24 @@ ALERT_DESTINATION = "robinhood_create_alert"
 _ZONE_RE = re.compile(r"(\d+(?:\.\d+)?)\s*[\u2012\u2013\u2014-]\s*(\d+(?:\.\d+)?)")
 
 
+def weekly_expiry(anchor: date) -> date:
+    """Friday with enough life left for a weekly.
+
+    Monday through Wednesday use this Friday. Thursday, Friday, and the
+    weekend use the following Friday.
+    """
+    weekday = anchor.weekday()
+    if weekday <= 2:
+        return anchor + timedelta(days=4 - weekday)
+    if weekday == 3:
+        return anchor + timedelta(days=8)
+    if weekday == 4:
+        return anchor + timedelta(days=7)
+    if weekday == 5:
+        return anchor + timedelta(days=6)
+    return anchor + timedelta(days=5)
+
+
 def weekday_lag(as_of: date, session: date) -> int:
     """Trading sessions strictly after ``as_of`` through ``session``."""
     if as_of >= session:
@@ -242,8 +260,19 @@ def target_smaller_than_opposing(nodes, bias, spot, target):
     return max(at_target) <= max(opposing)
 
 
-def _contract(bias):
-    return {
+def _expiry_anchor(anchor):
+    if isinstance(anchor, date):
+        return anchor
+    if isinstance(anchor, str):
+        try:
+            return date.fromisoformat(anchor)
+        except ValueError:
+            return None
+    return None
+
+
+def _contract(bias, anchor=None):
+    contract = {
         "instrument": "option",
         "right": "call" if bias == "long" else "put",
         "tenor": "weekly_or_shorter",
@@ -254,6 +283,44 @@ def _contract(bias):
             "Flat if invalidation breaks. Do not reach far OTM."
         ),
     }
+    expiry_day = _expiry_anchor(anchor)
+    if expiry_day is not None:
+        contract["expiry"] = weekly_expiry(expiry_day).isoformat()
+    return contract
+
+
+def _zone_edges(row):
+    zone = row.get("entry_zone")
+    if not isinstance(zone, (list, tuple)) or len(zone) != 2:
+        return None
+    low = _num(zone[0])
+    high = _num(zone[1])
+    if low is None or high is None:
+        return None
+    return low, high
+
+
+def _ensure_claim_alert(row):
+    if _alert_by_role(row, "claim"):
+        return
+    edges = _zone_edges(row)
+    bias = row.get("bias")
+    if edges is None or bias not in {"long", "short"}:
+        return
+    low, high = edges
+    if bias == "long":
+        price, trigger = high, "cross_above"
+    else:
+        price, trigger = low, "cross_below"
+    row.setdefault("alerts", []).append(
+        _alert(
+            row.get("ticker"),
+            "claim",
+            price,
+            trigger,
+            "Claim through the zone. Paper add at this edge.",
+        )
+    )
 
 
 def _entry_plan(bias, low, high, spot, change, allow_open):
@@ -354,7 +421,7 @@ def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
     return None
 
 
-def _decide_fresh(payload):
+def _decide_fresh(payload, anchor=None):
     zone, stop, target, target_note = _sketch(payload)
     row = _base_row(payload, zone, stop, target, target_note)
     verdict = payload.get("verdict")
@@ -423,7 +490,7 @@ def _decide_fresh(payload):
         row["action"] = "paper_open"
         row["reason"] = "paper_open"
         row["paper_entry"] = price
-        row["contract"] = _contract(bias)
+        row["contract"] = _contract(bias, anchor)
         row["alerts"] = [
             _alert(
                 row["ticker"],
@@ -440,6 +507,7 @@ def _decide_fresh(payload):
                 target_note or "First target.",
             ),
         ]
+        _ensure_claim_alert(row)
         return row
 
     row["status"] = "armed_wait" if verdict == "PLAY" else "watch"
@@ -448,7 +516,7 @@ def _decide_fresh(payload):
     if verdict == "WATCH":
         row["contract"] = None
     else:
-        row["contract"] = _contract(bias)
+        row["contract"] = _contract(bias, anchor)
     note = _entry_note(verdict, reason, trigger)
     alerts = [_alert(row["ticker"], "entry_test", price, trigger, note)]
     if verdict == "PLAY" and stop is not None:
@@ -475,7 +543,7 @@ def _decide_fresh(payload):
 def decide_play(payload, session, include_shadow=True):
     as_of = date.fromisoformat(payload["as_of"])
     lag = weekday_lag(as_of, session)
-    row = _decide_fresh(payload)
+    row = _decide_fresh(payload, session)
     row["weekday_lag"] = lag
     row["session_date"] = session.isoformat()
     if lag > MAX_WEEKDAY_LAG:
@@ -485,7 +553,7 @@ def decide_play(payload, session, include_shadow=True):
         row["alerts"] = []
         row["paper_entry"] = None
         row["contract"] = None
-        row["shadow"] = _decide_fresh(payload) if include_shadow else None
+        row["shadow"] = _decide_fresh(payload, as_of) if include_shadow else None
         return row
     row["shadow"] = None
     return row
@@ -643,9 +711,11 @@ def render_markdown(book):
         "- Daily direction comes from the confluence verdict. A fresh `NO_TRADE` stays flat.",
         "- Enter at the test (discount 40% of the zone for longs, premium 40% for shorts).",
         f"- A bar moving more than {CHASE_ABS_CHANGE_PCT:g}% does not get a paper fill.",
-        "- Add/roll is a later claim through the zone, not the first fill at the high.",
+        "- Add on a claim through the far side of the zone. Trim that add if price",
+        "  crosses back through the paper entry. The core stays until invalidation or the target.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",
+        "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
         "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",
         "",
         "## This session",
@@ -749,9 +819,9 @@ def render_markdown(book):
             "1. Newest confluence `as_of` in this book is "
             + (max((row["as_of"] for row in book["rows"]), default="none"))
             + ". If that is not last night or this pre-market, where is the later TA paste?",
-            "2. A paper fill requires the discount/premium 40% of the zone and a bar inside",
-            f"   {CHASE_ABS_CHANGE_PCT:g}% absolute. Should a claim through the far side open",
-            "   an add the same day, or only after you say the claim held?",
+            "2. A claim through the far side adds at that edge in the same session and stays",
+            "   open. A cross back through the paper entry trims the add and keeps the core.",
+            "   Say if you want that add only after you confirm the claim held.",
             "3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.",
             "   Should that flatten the weekly on an intraday break, or only on a daily close?",
             "4. 4H agreement is not in the operator JSON. Should a missing 4H note block a",
@@ -776,6 +846,87 @@ def _crossed(trigger, level, quote):
     if trigger == "cross_above":
         return quote >= level
     return False
+
+
+def _flatten_adds(row):
+    for item in row.get("adds") or []:
+        if isinstance(item, dict) and item.get("status") == "open":
+            item["status"] = "flat"
+
+
+def _mark_open(row, quote):
+    """Invalidation and the target flatten. A claim adds; a failed claim trims."""
+    ticker = row.get("ticker")
+    invalidation = _alert_by_role(row, "invalidation")
+    target = _alert_by_role(row, "target")
+    if invalidation and _crossed(invalidation.get("trigger"), invalidation.get("price"), quote):
+        invalidation["fired"] = True
+        _flatten_adds(row)
+        row["status"] = "invalidated"
+        row["action"] = "flat"
+        row["reason"] = "invalidation_tagged"
+        return {
+            "ticker": ticker,
+            "result": "invalidated",
+            "price": invalidation.get("price"),
+            "quote": quote,
+            "status": row["status"],
+        }
+    if target and _crossed(target.get("trigger"), target.get("price"), quote):
+        target["fired"] = True
+        _flatten_adds(row)
+        row["status"] = "target_hit"
+        row["action"] = "flat"
+        row["reason"] = "target_tagged"
+        return {
+            "ticker": ticker,
+            "result": "target_hit",
+            "price": target.get("price"),
+            "quote": quote,
+            "status": row["status"],
+        }
+    adds = [item for item in (row.get("adds") or []) if isinstance(item, dict)]
+    open_adds = [item for item in adds if item.get("status") == "open"]
+    entry = _num(row.get("paper_entry"))
+    bias = row.get("bias")
+    fail_trigger = "cross_below" if bias == "long" else "cross_above"
+    if (
+        open_adds
+        and entry is not None
+        and bias in {"long", "short"}
+        and _crossed(fail_trigger, entry, quote)
+    ):
+        for item in open_adds:
+            item["status"] = "trimmed"
+        claim = _alert_by_role(row, "claim")
+        if claim:
+            claim["fired"] = False
+        row["status"] = "paper_open"
+        row["action"] = "paper_open"
+        row["reason"] = "claim_failed"
+        return {
+            "ticker": ticker,
+            "result": "claim_failed",
+            "price": entry,
+            "quote": quote,
+            "status": "paper_open",
+        }
+    _ensure_claim_alert(row)
+    claim = _alert_by_role(row, "claim")
+    if claim and not open_adds and _crossed(claim.get("trigger"), claim.get("price"), quote):
+        claim["fired"] = True
+        row.setdefault("adds", []).append({"price": claim.get("price"), "status": "open"})
+        row["status"] = "paper_open"
+        row["action"] = "paper_open"
+        row["reason"] = "claim_add"
+        return {
+            "ticker": ticker,
+            "result": "claim_add",
+            "price": claim.get("price"),
+            "quote": quote,
+            "status": "paper_open",
+        }
+    return {"ticker": ticker, "result": "unchanged", "quote": quote, "status": "paper_open"}
 
 
 def _alert_by_role(row, role):
@@ -809,7 +960,8 @@ def apply_marks(book, quotes):
                 row["reason"] = "test_tagged"
                 row["paper_entry"] = entry.get("price")
                 if row.get("contract") is None and row.get("bias") in {"long", "short"}:
-                    row["contract"] = _contract(row["bias"])
+                    row["contract"] = _contract(row["bias"], row.get("session_date"))
+                _ensure_claim_alert(row)
                 marks.append(
                     {
                         "ticker": ticker,
@@ -844,38 +996,7 @@ def apply_marks(book, quotes):
                 )
             continue
         if status == "paper_open":
-            invalidation = _alert_by_role(row, "invalidation")
-            target = _alert_by_role(row, "target")
-            if invalidation and _crossed(
-                invalidation.get("trigger"), invalidation.get("price"), quote
-            ):
-                invalidation["fired"] = True
-                row["status"] = "invalidated"
-                row["action"] = "flat"
-                row["reason"] = "invalidation_tagged"
-                result = "invalidated"
-                price = invalidation.get("price")
-            elif target and _crossed(target.get("trigger"), target.get("price"), quote):
-                target["fired"] = True
-                row["status"] = "target_hit"
-                row["action"] = "flat"
-                row["reason"] = "target_tagged"
-                result = "target_hit"
-                price = target.get("price")
-            else:
-                marks.append(
-                    {"ticker": ticker, "result": "unchanged", "quote": quote, "status": status}
-                )
-                continue
-            marks.append(
-                {
-                    "ticker": ticker,
-                    "result": result,
-                    "price": price,
-                    "quote": quote,
-                    "status": row["status"],
-                }
-            )
+            marks.append(_mark_open(row, quote))
             continue
         marks.append({"ticker": ticker, "result": "unchanged", "quote": quote, "status": status})
     book["marks"] = marks

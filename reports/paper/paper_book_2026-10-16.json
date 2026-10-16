@@ -131,7 +131,8 @@
           "tenor": "weekly_or_shorter",
           "moneyness": "atm_to_slightly_itm",
           "size_for_zero": true,
-          "management": "Add or roll on a claim through the zone. Trim if the claim fails. Flat if invalidation breaks. Do not reach far OTM."
+          "management": "Add or roll on a claim through the zone. Trim if the claim fails. Flat if invalidation breaks. Do not reach far OTM.",
+          "expiry": "2026-08-14"
         },
         "alerts": [
           {
@@ -609,7 +610,8 @@
           "tenor": "weekly_or_shorter",
           "moneyness": "atm_to_slightly_itm",
           "size_for_zero": true,
-          "management": "Add or roll on a claim through the zone. Trim if the claim fails. Flat if invalidation breaks. Do not reach far OTM."
+          "management": "Add or roll on a claim through the zone. Trim if the claim fails. Flat if invalidation breaks. Do not reach far OTM.",
+          "expiry": "2026-08-14"
         },
         "alerts": [
           {

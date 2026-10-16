@@ -17,6 +17,7 @@ from paper_book import (
     push_create_alerts,
     render_markdown,
     weekday_lag,
+    weekly_expiry,
 )
 from report_paths import artifact_dir
 
@@ -54,6 +55,15 @@ def test_weekday_lag_friday_to_monday_is_one_session():
     assert weekday_lag(date(2026, 8, 16), date(2026, 10, 16)) > 1
 
 
+def test_weekly_expiry_uses_this_friday_only_through_wednesday():
+    assert weekly_expiry(date(2026, 10, 12)) == date(2026, 10, 16)
+    assert weekly_expiry(date(2026, 10, 14)) == date(2026, 10, 16)
+    assert weekly_expiry(date(2026, 10, 15)) == date(2026, 10, 23)
+    assert weekly_expiry(date(2026, 10, 16)) == date(2026, 10, 23)
+    assert weekly_expiry(date(2026, 10, 17)) == date(2026, 10, 23)
+    assert weekly_expiry(date(2026, 10, 18)) == date(2026, 10, 23)
+
+
 def test_stale_play_stays_flat_and_withholds_alerts():
     row = decide_play(_play(as_of="2026-08-09", spot=252.49, change_pct=12.37), date(2026, 10, 16))
 
@@ -74,8 +84,12 @@ def test_quiet_discount_play_opens_a_paper_option():
     assert row["contract"]["tenor"] == "weekly_or_shorter"
     assert row["contract"]["moneyness"] == "atm_to_slightly_itm"
     assert row["contract"]["size_for_zero"] is True
+    assert row["contract"]["expiry"] == "2026-10-23"
     roles = {alert["role"] for alert in row["alerts"]}
-    assert roles == {"invalidation", "target"}
+    assert roles == {"invalidation", "target", "claim"}
+    claim = next(alert for alert in row["alerts"] if alert["role"] == "claim")
+    assert claim["price"] == 255.0
+    assert claim["trigger"] == "cross_above"
     assert row["target"] == 300.0
 
 
@@ -353,6 +367,7 @@ def test_uploaded_august_tape_is_flat_on_october_16():
     assert all(row["status"] == "stale" for row in book["rows"])
     assert by_ticker["TSEM"]["shadow"]["status"] == "armed_wait"
     assert by_ticker["TSEM"]["shadow"]["alerts"][0]["price"] == 248.0
+    assert by_ticker["TSEM"]["shadow"]["contract"]["expiry"] == "2026-08-14"
     assert by_ticker["CRDO"]["shadow"]["status"] == "armed_wait"
     assert by_ticker["CRWD"]["shadow"]["status"] == "flat"
     assert by_ticker["BE"]["shadow"]["status"] == "flat"
@@ -449,6 +464,89 @@ def test_open_paper_invalidation_and_target():
     apply_marks(book, {"TSEM": 301.0})
     assert live["status"] == "target_hit"
     assert live["reason"] == "target_tagged"
+
+
+def test_claim_through_the_zone_adds_and_a_failed_claim_trims():
+    opened = decide_play(_play(), date(2026, 10, 16))
+    book = {"rows": [opened]}
+
+    apply_marks(book, {"TSEM": 256.0})
+
+    assert opened["status"] == "paper_open"
+    assert opened["reason"] == "claim_add"
+    assert opened["paper_entry"] == 249.0
+    assert opened["adds"] == [{"price": 255.0, "status": "open"}]
+    assert book["open_count"] == 1
+
+    apply_marks(book, {"TSEM": 257.0})
+    assert opened["adds"] == [{"price": 255.0, "status": "open"}]
+    assert book["marks"][0]["result"] == "unchanged"
+
+    apply_marks(book, {"TSEM": 249.0})
+    assert opened["status"] == "paper_open"
+    assert opened["reason"] == "claim_failed"
+    assert opened["paper_entry"] == 249.0
+    assert opened["adds"] == [{"price": 255.0, "status": "trimmed"}]
+
+    apply_marks(book, {"TSEM": 256.0})
+    assert [item for item in opened["adds"] if item["status"] == "open"] == [
+        {"price": 255.0, "status": "open"}
+    ]
+
+
+def test_invalidation_flattens_the_core_and_the_add():
+    opened = decide_play(_play(), date(2026, 10, 16))
+    book = {"rows": [opened]}
+    apply_marks(book, {"TSEM": 256.0})
+    apply_marks(book, {"TSEM": 229.0})
+
+    assert opened["status"] == "invalidated"
+    assert opened["reason"] == "invalidation_tagged"
+    assert opened["action"] == "flat"
+    assert opened["adds"] == [{"price": 255.0, "status": "flat"}]
+
+
+def test_dip_to_the_entry_without_an_add_keeps_the_core():
+    opened = decide_play(_play(), date(2026, 10, 16))
+    book = {"rows": [opened]}
+
+    apply_marks(book, {"TSEM": 248.5})
+
+    assert opened["status"] == "paper_open"
+    assert opened["reason"] == "paper_open"
+    assert book["marks"][0]["result"] == "unchanged"
+
+
+def test_short_claim_adds_at_the_zone_low_and_trims_on_a_reclaim():
+    opened = decide_play(
+        _play(
+            ticker="CRWD",
+            bias="short",
+            spot=226.0,
+            change_pct=-1.0,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "220-227",
+                    "stop": 227.08,
+                    "targets": [{"level": 187.5, "note": "VEX king"}],
+                }
+            },
+        ),
+        date(2026, 10, 16),
+    )
+    book = {"rows": [opened]}
+
+    apply_marks(book, {"CRWD": 219.0})
+
+    assert opened["status"] == "paper_open"
+    assert opened["adds"] == [{"price": 220.0, "status": "open"}]
+    claim = next(alert for alert in opened["alerts"] if alert["role"] == "claim")
+    assert claim["trigger"] == "cross_below"
+
+    apply_marks(book, {"CRWD": 226.0})
+    assert opened["status"] == "paper_open"
+    assert opened["reason"] == "claim_failed"
+    assert opened["adds"] == [{"price": 220.0, "status": "trimmed"}]
 
 
 def test_yahoo_chart_parser_reads_the_regular_price():
