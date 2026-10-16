@@ -35,14 +35,14 @@ and this book only records paper options. Alerts below are unpushed
 | Ticker | Shadow | Entry zone | Test / fill | Invalidation | Target |
 |--------|--------|------------|-------------|--------------|--------|
 | BE | flat | 228-232 | - | 220.7 | 250 |
-| CRDO | armed_wait | 240-250 | 240 | 232 | 300 |
+| CRDO | armed_wait | 240-250 | 240 | 236 | 300 |
 | CRWD | flat | 220-227 | - | 227.08 | 187.5 |
-| HIMS | watch | 27.42-28.5 | 28.5 | 24 | 35 |
+| HIMS | watch | 27.42-28.5 | 28.5 | 26.5 | 35 |
 | HOOD | flat | 93-95 | - | 90.83 | - |
-| ONDS | watch | 9.25-9.5 | 9.25 | 8.45 | 10 |
-| RIVN | watch | 15.95-16.45 | 15.95 | 15 | 20 |
-| TSEM | armed_wait | 248-255 | 248 | 230 | 300 |
-| UMAC | watch | 24.5-26.5 | 24.5 | 22.9 | 30 |
+| ONDS | watch | 9.25-9.5 | 9.25 | 8.75 | 10 |
+| RIVN | watch | 15.95-16.45 | 15.95 | 15.29 | 20 |
+| TSEM | armed_wait | 248-255 | 248 | 236.75 | 300 |
+| UMAC | watch | 24.5-26.5 | 24.5 | 22.93 | 30 |
 
 ## Patterns in this tape
 
@@ -55,14 +55,34 @@ and this book only records paper options. Alerts below are unpushed
 - Fresh shadow stays flat: BE, CRWD, HOOD
 - Fresh shadow watches: HIMS 28.5, ONDS 9.25, RIVN 15.95, UMAC 24.5
 
+## Alert path
+
+Robinhood tool `create_alert` and a TradingView price alert share each level.
+Create the TradingView alert only on rows marked create. Withheld means the tape is stale.
+No webhook is configured. The alert does not place an order.
+
+| Ticker | Create | Condition | Role |
+|--------|--------|-----------|------|
+| BE | no | - | - |
+| CRDO | withheld | Crossing down 240 | entry_test |
+| CRDO | withheld | Crossing down 236 | invalidation |
+| CRWD | no | - | - |
+| HIMS | withheld | Crossing down 28.5 | entry_test |
+| HOOD | no | - | - |
+| ONDS | withheld | Crossing up 9.25 | entry_test |
+| RIVN | withheld | Crossing down 15.95 | entry_test |
+| TSEM | withheld | Crossing down 248 | entry_test |
+| TSEM | withheld | Crossing down 236.75 | invalidation |
+| UMAC | withheld | Crossing down 24.5 | entry_test |
+
 ## Questions
 
 1. Newest confluence `as_of` in this book is 2026-08-16. If that is not last night or this pre-market, where is the later TA paste?
 2. A paper fill requires the discount/premium 40% of the zone and a bar inside
    4% absolute. Should a claim through the far side open
    an add the same day, or only after you say the claim held?
-3. Invalidation in these artifacts is a daily-close level. For weeklies, do you
-   want the paper book to flatten on an intraday break instead?
+3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.
+   Should that flatten the weekly on an intraday break, or only on a daily close?
 4. 4H agreement is not in the operator JSON. Should a missing 4H note block a
    paper open, or only the scalp add?
 5. Robinhood `create_alert` can notify the Agentic account without an order.
@@ -71,5 +91,5 @@ and this book only records paper options. Alerts below are unpushed
    price alerts only.
 6. Earnings: sell immediately on the open. Should any name with earnings inside
    the contract life be an automatic pass?
-7. Rug and reverse-rug need a target node larger than the opposing -GEX node.
-   Mark that node on the next map paste so the book can require it.
+7. A target that is not larger than a negative node between spot and the target
+   stays a watch. Confirm that size check is the rug rule you want.

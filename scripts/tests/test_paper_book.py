@@ -149,6 +149,8 @@ def test_watch_alerts_the_reclaim_without_a_fill():
     assert row["contract"] is None
     assert row["alerts"][0]["trigger"] == "cross_above"
     assert row["alerts"][0]["price"] == 9.25
+    assert row["alerts"][0]["tradingview"]["condition"] == "Crossing up"
+    assert row["four_hour"] == "absent"
 
 
 def test_watch_hard_stop_still_alerts_the_pullback():
@@ -184,6 +186,109 @@ def test_play_hard_stop_does_not_open():
     assert row["paper_entry"] is None
     assert row["contract"] is None
     assert {alert["role"] for alert in row["alerts"]} == {"entry_test"}
+
+
+def test_nearest_indicator_cluster_sets_invalidation():
+    row = decide_play(
+        _play(
+            spot=252.49,
+            change_pct=12.37,
+            operator_extracted={
+                "fib_levels": [{"price": 236.75}, {"price": 186.0}],
+                "sma": {"50": 240.0, "100": 230.0},
+                "vp": {"peak_nodes": [186.0, 252.0]},
+                "sr_levels": [186.13],
+                "rsi": {"white": 54.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "armed_wait"
+    assert row["invalidation"] == 236.75
+    assert row["invalidation_cluster"]["families"] == ["fib", "sma"]
+    invalidation = next(alert for alert in row["alerts"] if alert["role"] == "invalidation")
+    assert invalidation["price"] == 236.75
+    assert invalidation["tradingview"]["condition"] == "Crossing down"
+
+
+def test_near_sma_beats_a_distant_indicator_stack():
+    row = decide_play(
+        _play(
+            spot=249.89,
+            change_pct=8.22,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "240-250",
+                    "stop": 232.0,
+                    "targets": [{"level": 300.0, "note": "king"}],
+                }
+            },
+            operator_extracted={
+                "sma": {"50": 236.0},
+                "fib_levels": [{"price": 210.68}],
+                "sr_levels": [210.0],
+                "rsi": {"white": 57.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["invalidation"] == 236.0
+    assert row["invalidation_cluster"]["families"] == ["sma"]
+
+
+def test_rsi_below_50_blocks_a_long_fill():
+    row = decide_play(
+        _play(operator_extracted={"rsi": {"white": 47.0}}),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "rsi_against"
+    assert row["paper_entry"] is None
+
+
+def test_smaller_target_than_opposing_gex_does_not_open():
+    row = decide_play(
+        _play(
+            map_nodes=[
+                {"strike": 300.0, "value_k": 100, "sign": "pos"},
+                {"strike": 260.0, "value_k": -500, "sign": "neg"},
+            ]
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "target_smaller_than_opposing"
+    assert row["paper_entry"] is None
+
+
+def test_larger_king_does_not_block_the_wait():
+    row = decide_play(
+        _play(
+            spot=252.49,
+            change_pct=12.37,
+            map_nodes=[
+                {"strike": 300.0, "value_k": 13567, "sign": "pos"},
+                {"strike": 250.0, "value_k": -283, "sign": "neg"},
+            ],
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "armed_wait"
+    assert row["reason"] == "wait_for_test"
+
+
+def test_four_hour_fight_caps_a_play():
+    row = decide_play(_play(four_hour="fight"), date(2026, 10, 16))
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "four_hour_fight"
+    assert row["paper_entry"] is None
+    assert row["four_hour"] == "fight"
 
 
 def test_play_missing_invalidation_does_not_open():
@@ -246,16 +351,15 @@ def test_uploaded_august_tape_is_flat_on_october_16():
     assert by_ticker["CRDO"]["shadow"]["status"] == "armed_wait"
     assert by_ticker["CRWD"]["shadow"]["status"] == "flat"
     assert by_ticker["BE"]["shadow"]["status"] == "flat"
-    assert by_ticker["ONDS"]["shadow"]["alerts"][0] == {
-        "symbol": "ONDS",
-        "kind": "price",
-        "role": "entry_test",
-        "price": 9.25,
-        "trigger": "cross_above",
-        "destination": "robinhood_create_alert",
-        "pushed": False,
-        "note": "WATCH reclaim test. Not a paper fill.",
-    }
+    onds = by_ticker["ONDS"]["shadow"]["alerts"][0]
+    assert onds["price"] == 9.25
+    assert onds["trigger"] == "cross_above"
+    assert onds["destination"] == "robinhood_create_alert"
+    assert onds["tradingview"]["condition"] == "Crossing up"
+    assert onds["pushed"] is False
+    text = render_markdown(book)
+    assert "withheld" in text
+    assert "create_alert" in text
     assert "rug" not in book["pattern_notes"]["named_rug_setups"]
 
 

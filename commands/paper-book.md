@@ -33,6 +33,9 @@ Read `reports/paper/paper_book_YYYY-MM-DD.md`.
 - `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0.
 - `armed_wait` and `watch` are alerts at the test. They are not fills.
 - `flat` / `stale` means no position and no alert.
+- Invalidation is the nearest fib / volume-shelf / SMA / trendline / S/R cluster against the trade when the operator chart is on file.
+- A long with RSI white under 50, a 4H fight, or a target smaller than a negative node in the path stays a watch.
+- The markdown lists the TradingView condition (`Crossing up` / `Crossing down`) beside the Robinhood `create_alert` level. Create those alerts only when the row says create.
 
 ## PASS 3 — Stop
 

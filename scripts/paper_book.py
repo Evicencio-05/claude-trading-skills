@@ -85,7 +85,16 @@ def _sketch(payload):
     return zone, stop, target, target_note
 
 
+def tradingview_condition(trigger):
+    if trigger == "cross_below":
+        return "Crossing down"
+    if trigger == "cross_above":
+        return "Crossing up"
+    return "Crossing"
+
+
 def _alert(symbol, role, price, trigger, note):
+    condition = tradingview_condition(trigger)
     return {
         "symbol": symbol,
         "kind": "price",
@@ -95,7 +104,136 @@ def _alert(symbol, role, price, trigger, note):
         "destination": ALERT_DESTINATION,
         "pushed": False,
         "note": note,
+        "tradingview": {
+            "condition": condition,
+            "price": price,
+            "message": f"{symbol} {role} {condition} {price}. Paper book. No brokerage order.",
+        },
     }
+
+
+def operator_levels(extracted):
+    """Fib, shelf, SMA, trend, and S/R prices from an operator chart."""
+    if not isinstance(extracted, dict):
+        return []
+    levels = []
+
+    def add(price, family):
+        number = _num(price)
+        if number is None:
+            return
+        levels.append({"price": number, "family": family})
+
+    for fib in extracted.get("fib_levels") or []:
+        if isinstance(fib, dict):
+            add(fib.get("price"), "fib")
+    for fib_set in extracted.get("fib_sets") or []:
+        if not isinstance(fib_set, dict):
+            continue
+        for fib in fib_set.get("levels") or []:
+            if isinstance(fib, dict):
+                add(fib.get("price"), "fib")
+    for price in (extracted.get("sma") or {}).values():
+        add(price, "sma")
+    vp = extracted.get("vp") or {}
+    for price in vp.get("peak_nodes") or []:
+        add(price, "shelf")
+    for price in extracted.get("sr_levels") or []:
+        add(price, "sr")
+    channel = extracted.get("channel") or {}
+    if isinstance(channel, dict):
+        for key in ("upper", "lower", "high", "low"):
+            add(channel.get(key), "trend")
+    return levels
+
+
+def opposing_cluster(levels, bias, spot, zone=None):
+    """Nearest band with at least two indicator families beyond the entry, against the trade."""
+    if spot is None or bias not in {"long", "short"} or not levels:
+        return None
+    band = max(float(spot) * 0.03, 0.05)
+    gap = max(float(spot) * 0.01, 0.02)
+    if zone and len(zone) == 2:
+        edge_low, edge_high = zone
+    else:
+        edge_low = edge_high = spot
+    opposing = []
+    for item in levels:
+        price = item["price"]
+        if bias == "long" and price < edge_low - gap:
+            opposing.append(item)
+        elif bias == "short" and price > edge_high + gap:
+            opposing.append(item)
+    opposing.sort(key=lambda item: abs(item["price"] - spot))
+    if not opposing:
+        return None
+    clusters = []
+    current = [opposing[0]]
+    for item in opposing[1:]:
+        if abs(item["price"] - current[0]["price"]) <= band:
+            current.append(item)
+        else:
+            clusters.append(current)
+            current = [item]
+    clusters.append(current)
+    nearest_price = clusters[0][0]["price"]
+
+    def packed(cluster):
+        families = sorted({item["family"] for item in cluster})
+        prices = [item["price"] for item in cluster]
+        invalidation = min(prices) if bias == "long" else max(prices)
+        return {"price": invalidation, "families": families, "levels": prices}
+
+    for cluster in clusters:
+        if len({item["family"] for item in cluster}) < 2:
+            continue
+        if abs(cluster[0]["price"] - nearest_price) <= band:
+            return packed(cluster)
+    return packed(clusters[0])
+
+
+def rsi_against(rsi, bias):
+    """Daily RSI through 50 is the strength filter. Missing RSI does not block."""
+    white = None
+    if isinstance(rsi, dict):
+        white = _num(rsi.get("white"))
+    else:
+        white = _num(rsi)
+    if white is None or bias not in {"long", "short"}:
+        return False
+    if bias == "long":
+        return white < 50
+    return white > 50
+
+
+def target_smaller_than_opposing(nodes, bias, spot, target):
+    """True when the target node is not larger than a negative node in the path."""
+    if not nodes or spot is None or target is None or target == 0 or bias not in {"long", "short"}:
+        return False
+    if bias == "long" and target <= spot:
+        return False
+    if bias == "short" and target >= spot:
+        return False
+    at_target = []
+    opposing = []
+    for node in nodes:
+        if not isinstance(node, dict):
+            continue
+        strike = _num(node.get("strike"))
+        value = _num(node.get("value_k"))
+        if strike is None or value is None:
+            continue
+        if abs(strike - target) / abs(target) <= 0.02:
+            at_target.append(abs(value))
+        between = (bias == "long" and spot < strike < target) or (
+            bias == "short" and target < strike < spot
+        )
+        sign = str(node.get("sign") or "")
+        if between and (sign == "neg" or value < 0):
+            opposing.append(abs(value))
+    if not at_target or not opposing:
+        return False
+    return max(at_target) <= max(opposing)
 
 
 def _contract(bias):
@@ -170,10 +308,41 @@ def _base_row(payload, zone, stop, target, target_note):
         "target_note": target_note,
         "operator_thesis": payload.get("operator_thesis") or "",
         "one_thing_to_verify": judgment.get("one_thing_to_verify") or "",
+        "four_hour": payload.get("four_hour") or "absent",
+        "sketch_stop": stop,
+        "invalidation_cluster": None,
         "contract": None,
         "alerts": [],
         "shadow": None,
     }
+
+
+def _apply_cluster(row, extracted, bias, stop):
+    spot = row.get("spot")
+    cluster = opposing_cluster(operator_levels(extracted), bias, spot, row.get("entry_zone"))
+    if not cluster:
+        return stop
+    row["sketch_stop"] = stop
+    row["invalidation"] = cluster["price"]
+    row["invalidation_cluster"] = {
+        "price": cluster["price"],
+        "families": cluster["families"],
+    }
+    return cluster["price"]
+
+
+def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
+    if verdict != "PLAY":
+        return None
+    if hard_stops:
+        return "hard_stop"
+    if rsi_against((extracted or {}).get("rsi"), bias):
+        return "rsi_against"
+    if target_smaller_than_opposing(payload.get("map_nodes"), bias, spot, target):
+        return "target_smaller_than_opposing"
+    if payload.get("four_hour") == "fight":
+        return "four_hour_fight"
+    return None
 
 
 def _decide_fresh(payload):
@@ -189,17 +358,23 @@ def _decide_fresh(payload):
         row["reason"] = "no_trade"
         return row
 
-    # A hard stop on a PLAY caps it at WATCH. WATCH already is the cap.
-    if verdict == "PLAY" and hard_stops:
+    extracted = (
+        payload.get("operator_extracted")
+        if isinstance(payload.get("operator_extracted"), dict)
+        else {}
+    )
+    stop = _apply_cluster(row, extracted, bias, stop)
+    cap = _play_cap(verdict, hard_stops, extracted, payload, bias, row["spot"], target)
+    if cap:
         verdict = "WATCH"
-        row["verdict"] = "PLAY"
-        row["_hard_stop"] = True
+        row["verdict"] = payload.get("verdict")
+        row["_cap"] = cap
 
     if verdict not in {"PLAY", "WATCH"}:
         row["status"] = "flat"
         row["action"] = "flat"
         row["reason"] = "unsupported_verdict"
-        row.pop("_hard_stop", None)
+        row.pop("_cap", None)
         return row
 
     if zone is None or row["spot"] is None or bias not in {"long", "short"}:
@@ -208,7 +383,9 @@ def _decide_fresh(payload):
         row["reason"] = "missing_entry_zone" if zone is None else "missing_bias"
         if row["spot"] is None and zone is not None:
             row["reason"] = "missing_spot"
-        row.pop("_hard_stop", None)
+        cap = row.pop("_cap", None)
+        if cap:
+            row["reason"] = cap
         return row
 
     allow_open = verdict == "PLAY" and stop is not None and target is not None
@@ -276,13 +453,13 @@ def _decide_fresh(payload):
             )
         )
     row["alerts"] = alerts
-    if row.get("_hard_stop"):
+    cap = row.pop("_cap", None)
+    if cap:
         row["status"] = "watch"
-        row["reason"] = "hard_stop"
+        row["reason"] = cap
         row["contract"] = None
         row["paper_entry"] = None
-        row["alerts"] = [alert for alert in alerts if alert["role"] == "entry_test"]
-    row.pop("_hard_stop", None)
+        row["alerts"] = [alert for alert in row["alerts"] if alert["role"] == "entry_test"]
     return row
 
 
@@ -303,6 +480,58 @@ def decide_play(payload, session, include_shadow=True):
         return row
     row["shadow"] = None
     return row
+
+
+def _repo_root(confluence_dir: Path):
+    if (
+        confluence_dir.name == "confluence"
+        and confluence_dir.parent.name == "charts"
+        and confluence_dir.parent.parent.name == "reports"
+    ):
+        return confluence_dir.parent.parent.parent
+    return confluence_dir
+
+
+def _read_artifact(root: Path, rel):
+    if not isinstance(rel, str) or not rel or rel.startswith("/") or ".." in Path(rel).parts:
+        return None
+    path = (root / rel).resolve()
+    try:
+        path.relative_to(root.resolve())
+    except ValueError:
+        return None
+    if not path.is_file():
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return data if isinstance(data, dict) else None
+
+
+def _extracted(doc):
+    if not isinstance(doc, dict):
+        return None
+    extracted = doc.get("extracted")
+    return extracted if isinstance(extracted, dict) else doc
+
+
+def attach_tape(payload, root: Path):
+    artifacts = payload.get("artifacts") or {}
+    operator = _extracted(_read_artifact(root, artifacts.get("operator")))
+    if operator:
+        payload["operator_extracted"] = operator
+    nodes = []
+    for key in ("gex", "vex"):
+        doc = _extracted(_read_artifact(root, artifacts.get(key)))
+        if not doc:
+            continue
+        king = doc.get("king_node")
+        if isinstance(king, dict):
+            nodes.append(king)
+        for node in doc.get("top_nodes") or []:
+            if isinstance(node, dict):
+                nodes.append(node)
+    if nodes:
+        payload["map_nodes"] = nodes
+    return payload
 
 
 def load_latest_confluence(confluence_dir: Path):
@@ -351,7 +580,9 @@ def pattern_notes(rows):
 
 
 def build_book(confluence_dir: Path, session: date):
-    rows = [decide_play(payload, session) for payload in load_latest_confluence(confluence_dir)]
+    root = _repo_root(confluence_dir)
+    payloads = [attach_tape(payload, root) for payload in load_latest_confluence(confluence_dir)]
+    rows = [decide_play(payload, session) for payload in payloads]
     alerts = [alert for row in rows for alert in row["alerts"]]
     return {
         "session_date": session.isoformat(),
@@ -479,6 +710,31 @@ def render_markdown(book):
             "- Fresh shadow stays flat: " + (", ".join(flat_names) if flat_names else "none."),
             "- Fresh shadow watches: " + (", ".join(watches) if watches else "none."),
             "",
+            "## Alert path",
+            "",
+            "Robinhood tool `create_alert` and a TradingView price alert share each level.",
+            "Create the TradingView alert only on rows marked create. Withheld means the tape is stale.",
+            "No webhook is configured. The alert does not place an order.",
+            "",
+            "| Ticker | Create | Condition | Role |",
+            "|--------|--------|-----------|------|",
+        ]
+    )
+    for row in book["rows"]:
+        shown = row["shadow"] or row
+        alerts = shown.get("alerts") or []
+        create = "withheld" if row["status"] == "stale" else "create"
+        if not alerts:
+            lines.append(f"| {row['ticker']} | no | - | - |")
+            continue
+        for alert in alerts:
+            tv = alert.get("tradingview") or {}
+            lines.append(
+                f"| {row['ticker']} | {create} | {tv.get('condition')} {_fmt(alert.get('price'))} | {alert['role']} |"
+            )
+    lines.extend(
+        [
+            "",
             "## Questions",
             "",
             "1. Newest confluence `as_of` in this book is "
@@ -487,8 +743,8 @@ def render_markdown(book):
             "2. A paper fill requires the discount/premium 40% of the zone and a bar inside",
             f"   {CHASE_ABS_CHANGE_PCT:g}% absolute. Should a claim through the far side open",
             "   an add the same day, or only after you say the claim held?",
-            "3. Invalidation in these artifacts is a daily-close level. For weeklies, do you",
-            "   want the paper book to flatten on an intraday break instead?",
+            "3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.",
+            "   Should that flatten the weekly on an intraday break, or only on a daily close?",
             "4. 4H agreement is not in the operator JSON. Should a missing 4H note block a",
             "   paper open, or only the scalp add?",
             "5. Robinhood `create_alert` can notify the Agentic account without an order.",
@@ -497,8 +753,8 @@ def render_markdown(book):
             "   price alerts only.",
             "6. Earnings: sell immediately on the open. Should any name with earnings inside",
             "   the contract life be an automatic pass?",
-            "7. Rug and reverse-rug need a target node larger than the opposing -GEX node.",
-            "   Mark that node on the next map paste so the book can require it.",
+            "7. A target that is not larger than a negative node between spot and the target",
+            "   stays a watch. Confirm that size check is the rug rule you want.",
             "",
         ]
     )

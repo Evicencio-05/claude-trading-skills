@@ -32,6 +32,9 @@
       "target_note": "gatekeeper \u2014 negotiate/clear, not a profit target",
       "operator_thesis": "Long BE. Looks pretty strong for the upside, but very tight invalidation if it breaks under this current level \u2014 most acceptable downside anything under 220.7.",
       "one_thing_to_verify": "Do not overweight distant green upside magnets (370 king) while sitting under a starred **250** VEX wall \u2014 the wall is the near-term map, not the 370 magnet.",
+      "four_hour": "absent",
+      "sketch_stop": 220.7,
+      "invalidation_cluster": null,
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -52,6 +55,9 @@
         "target_note": "gatekeeper \u2014 negotiate/clear, not a profit target",
         "operator_thesis": "Long BE. Looks pretty strong for the upside, but very tight invalidation if it breaks under this current level \u2014 most acceptable downside anything under 220.7.",
         "one_thing_to_verify": "Do not overweight distant green upside magnets (370 king) while sitting under a starred **250** VEX wall \u2014 the wall is the near-term map, not the 370 magnet.",
+        "four_hour": "absent",
+        "sketch_stop": 220.7,
+        "invalidation_cluster": null,
         "contract": null,
         "alerts": [],
         "shadow": null,
@@ -78,11 +84,19 @@
         250.0
       ],
       "paper_entry": null,
-      "invalidation": 232.0,
+      "invalidation": 236.0,
       "target": 300.0,
       "target_note": "GEX\u2229VEX primary magnet",
       "operator_thesis": "Long CRDO \u2014 breakout of downward trend, reclaimed 50 SMA, RSI back above 50 after retest; clear for higher continuation. GREEN=continuation not dampened; BLUE not required for clear trend-follow.",
       "one_thing_to_verify": "Whether price can **hold fib 1.618 / 250** through ATM neg GEX\u2212VEX without giving back the channel break \u2014 do not treat **300/308** as owed from the spike print.",
+      "four_hour": "absent",
+      "sketch_stop": 232.0,
+      "invalidation_cluster": {
+        "price": 236.0,
+        "families": [
+          "sma"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -98,11 +112,19 @@
           250.0
         ],
         "paper_entry": null,
-        "invalidation": 232.0,
+        "invalidation": 236.0,
         "target": 300.0,
         "target_note": "GEX\u2229VEX primary magnet",
         "operator_thesis": "Long CRDO \u2014 breakout of downward trend, reclaimed 50 SMA, RSI back above 50 after retest; clear for higher continuation. GREEN=continuation not dampened; BLUE not required for clear trend-follow.",
         "one_thing_to_verify": "Whether price can **hold fib 1.618 / 250** through ATM neg GEX\u2212VEX without giving back the channel break \u2014 do not treat **300/308** as owed from the spike print.",
+        "four_hour": "absent",
+        "sketch_stop": 232.0,
+        "invalidation_cluster": {
+          "price": 236.0,
+          "families": [
+            "sma"
+          ]
+        },
         "contract": {
           "instrument": "option",
           "right": "call",
@@ -120,17 +142,27 @@
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "Wait for the test. Do not buy the expansion bar."
+            "note": "Wait for the test. Do not buy the expansion bar.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 240.0,
+              "message": "CRDO entry_test Crossing down 240.0. Paper book. No brokerage order."
+            }
           },
           {
             "symbol": "CRDO",
             "kind": "price",
             "role": "invalidation",
-            "price": 232.0,
+            "price": 236.0,
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "Idea dies here before the paper fill."
+            "note": "Idea dies here before the paper fill.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 236.0,
+              "message": "CRDO invalidation Crossing down 236.0. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
@@ -162,6 +194,9 @@
       "target_note": "VEX king magnet / GEX neg amplify zone",
       "operator_thesis": "Short after fib 2.618 / channel-top rejection with RSI divergence and weak up-leg volume; target channel bottom ~190; break lower may accelerate through thin VP.",
       "one_thing_to_verify": "Do not let daily PINK override the fierce bullish HTF stack \u2014 weekly BLUE_GREEN + monthly GREEN is the hard stop, not a footnote.",
+      "four_hour": "absent",
+      "sketch_stop": 227.08,
+      "invalidation_cluster": null,
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -182,6 +217,9 @@
         "target_note": "VEX king magnet / GEX neg amplify zone",
         "operator_thesis": "Short after fib 2.618 / channel-top rejection with RSI divergence and weak up-leg volume; target channel bottom ~190; break lower may accelerate through thin VP.",
         "one_thing_to_verify": "Do not let daily PINK override the fierce bullish HTF stack \u2014 weekly BLUE_GREEN + monthly GREEN is the hard stop, not a footnote.",
+        "four_hour": "absent",
+        "sketch_stop": 227.08,
+        "invalidation_cluster": null,
         "contract": null,
         "alerts": [],
         "shadow": null,
@@ -208,11 +246,20 @@
         28.5
       ],
       "paper_entry": null,
-      "invalidation": 24.0,
+      "invalidation": 26.5,
       "target": 35.0,
       "target_note": "VEX king + GEX wall + fib ~0.786",
       "operator_thesis": "HIMS can continue higher and retest recent high ~38. Careful / unpredictable; can rocket. Long from current (~31.59) not bad, but long off 27.42 is best.",
       "one_thing_to_verify": "Whether **28 / Aug-21** still prints as the shared floor on the next map refresh if price dips \u2014 do not assume 27.42 fills just because it is 'best'.",
+      "four_hour": "absent",
+      "sketch_stop": 24.0,
+      "invalidation_cluster": {
+        "price": 26.5,
+        "families": [
+          "fib",
+          "trend"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -228,11 +275,20 @@
           28.5
         ],
         "paper_entry": null,
-        "invalidation": 24.0,
+        "invalidation": 26.5,
         "target": 35.0,
         "target_note": "VEX king + GEX wall + fib ~0.786",
         "operator_thesis": "HIMS can continue higher and retest recent high ~38. Careful / unpredictable; can rocket. Long from current (~31.59) not bad, but long off 27.42 is best.",
         "one_thing_to_verify": "Whether **28 / Aug-21** still prints as the shared floor on the next map refresh if price dips \u2014 do not assume 27.42 fills just because it is 'best'.",
+        "four_hour": "absent",
+        "sketch_stop": 24.0,
+        "invalidation_cluster": {
+          "price": 26.5,
+          "families": [
+            "fib",
+            "trend"
+          ]
+        },
         "contract": null,
         "alerts": [
           {
@@ -243,7 +299,12 @@
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "WATCH test only. Not a paper fill."
+            "note": "WATCH test only. Not a paper fill.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 28.5,
+              "message": "HIMS entry_test Crossing down 28.5. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
@@ -275,6 +336,9 @@
       "target_note": null,
       "operator_thesis": "",
       "one_thing_to_verify": "Whether you are overweighting the bounce into 50 SMA without a TW BLUE and without knowing if 109 is a Skylit ceiling or magnet.",
+      "four_hour": "absent",
+      "sketch_stop": 90.83,
+      "invalidation_cluster": null,
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -295,6 +359,9 @@
         "target_note": null,
         "operator_thesis": "",
         "one_thing_to_verify": "Whether you are overweighting the bounce into 50 SMA without a TW BLUE and without knowing if 109 is a Skylit ceiling or magnet.",
+        "four_hour": "absent",
+        "sketch_stop": 90.83,
+        "invalidation_cluster": null,
         "contract": null,
         "alerts": [],
         "shadow": null,
@@ -321,11 +388,20 @@
         9.5
       ],
       "paper_entry": null,
-      "invalidation": 8.45,
+      "invalidation": 8.75,
       "target": 10.0,
       "target_note": "GEX\u2229VEX king / primary magnet",
       "operator_thesis": "Long ONDS \u2014 reclaim daily 50 and 100 SMA; at .382 fib with possible extension to .5/.618 this week; on VP shelf with jump to next higher shelf possible.",
       "one_thing_to_verify": "Whether price can **reclaim and hold** the 50/100 SMA cluster (~9.29\u20139.45) through the Aug **9.5/\u2212941** GEX gate \u2014 do not treat Sep king **10** / fib **.618** as owed from under the SMAs.",
+      "four_hour": "absent",
+      "sketch_stop": 8.45,
+      "invalidation_cluster": {
+        "price": 8.75,
+        "families": [
+          "shelf",
+          "sma"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -341,11 +417,20 @@
           9.5
         ],
         "paper_entry": null,
-        "invalidation": 8.45,
+        "invalidation": 8.75,
         "target": 10.0,
         "target_note": "GEX\u2229VEX king / primary magnet",
         "operator_thesis": "Long ONDS \u2014 reclaim daily 50 and 100 SMA; at .382 fib with possible extension to .5/.618 this week; on VP shelf with jump to next higher shelf possible.",
         "one_thing_to_verify": "Whether price can **reclaim and hold** the 50/100 SMA cluster (~9.29\u20139.45) through the Aug **9.5/\u2212941** GEX gate \u2014 do not treat Sep king **10** / fib **.618** as owed from under the SMAs.",
+        "four_hour": "absent",
+        "sketch_stop": 8.45,
+        "invalidation_cluster": {
+          "price": 8.75,
+          "families": [
+            "shelf",
+            "sma"
+          ]
+        },
         "contract": null,
         "alerts": [
           {
@@ -356,7 +441,12 @@
             "trigger": "cross_above",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "WATCH reclaim test. Not a paper fill."
+            "note": "WATCH reclaim test. Not a paper fill.",
+            "tradingview": {
+              "condition": "Crossing up",
+              "price": 9.25,
+              "message": "ONDS entry_test Crossing up 9.25. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
@@ -383,11 +473,21 @@
         16.45
       ],
       "paper_entry": null,
-      "invalidation": 15.0,
+      "invalidation": 15.29,
       "target": 20.0,
       "target_note": "VEX/GEX upside magnet",
       "operator_thesis": "RIVN just touched the bottom of a well-respected channel and looks like it can keep in the range. Important data coming up but looks like a solid A+ play.",
       "one_thing_to_verify": "Whether 17 / Aug-14 still prints as the GEX star / VEX gate after the next map refresh \u2014 do not upgrade to PLAY while that pocket is untouched and expanding.",
+      "four_hour": "absent",
+      "sketch_stop": 15.0,
+      "invalidation_cluster": {
+        "price": 15.29,
+        "families": [
+          "fib",
+          "shelf",
+          "sr"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -403,11 +503,21 @@
           16.45
         ],
         "paper_entry": null,
-        "invalidation": 15.0,
+        "invalidation": 15.29,
         "target": 20.0,
         "target_note": "VEX/GEX upside magnet",
         "operator_thesis": "RIVN just touched the bottom of a well-respected channel and looks like it can keep in the range. Important data coming up but looks like a solid A+ play.",
         "one_thing_to_verify": "Whether 17 / Aug-14 still prints as the GEX star / VEX gate after the next map refresh \u2014 do not upgrade to PLAY while that pocket is untouched and expanding.",
+        "four_hour": "absent",
+        "sketch_stop": 15.0,
+        "invalidation_cluster": {
+          "price": 15.29,
+          "families": [
+            "fib",
+            "shelf",
+            "sr"
+          ]
+        },
         "contract": null,
         "alerts": [
           {
@@ -418,7 +528,12 @@
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "WATCH test only. Not a paper fill."
+            "note": "WATCH test only. Not a paper fill.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 15.95,
+              "message": "RIVN entry_test Crossing down 15.95. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
@@ -445,11 +560,20 @@
         255.0
       ],
       "paper_entry": null,
-      "invalidation": 230.0,
+      "invalidation": 236.75,
       "target": 300.0,
       "target_note": "map king + fib A 2.618",
       "operator_thesis": "TSEM bounced off 186 support and stayed within a channel. Looking for breakout of the channel toward higher fibs. Buy volume confirms buyer strength; reclaimed 100/50 SMA. RSI white above yellow and 50 = buyers have strength; want it to hold 50.",
       "one_thing_to_verify": "Whether RSI white holds the 50 reclaim on the next 1\u20132 sessions while price negotiates the 256\u2013268 fib/gatekeeper zone \u2014 do not assume 300 is owed.",
+      "four_hour": "absent",
+      "sketch_stop": 230.0,
+      "invalidation_cluster": {
+        "price": 236.75,
+        "families": [
+          "fib",
+          "sma"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -465,11 +589,20 @@
           255.0
         ],
         "paper_entry": null,
-        "invalidation": 230.0,
+        "invalidation": 236.75,
         "target": 300.0,
         "target_note": "map king + fib A 2.618",
         "operator_thesis": "TSEM bounced off 186 support and stayed within a channel. Looking for breakout of the channel toward higher fibs. Buy volume confirms buyer strength; reclaimed 100/50 SMA. RSI white above yellow and 50 = buyers have strength; want it to hold 50.",
         "one_thing_to_verify": "Whether RSI white holds the 50 reclaim on the next 1\u20132 sessions while price negotiates the 256\u2013268 fib/gatekeeper zone \u2014 do not assume 300 is owed.",
+        "four_hour": "absent",
+        "sketch_stop": 230.0,
+        "invalidation_cluster": {
+          "price": 236.75,
+          "families": [
+            "fib",
+            "sma"
+          ]
+        },
         "contract": {
           "instrument": "option",
           "right": "call",
@@ -487,17 +620,27 @@
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "Wait for the test. Do not buy the expansion bar."
+            "note": "Wait for the test. Do not buy the expansion bar.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 248.0,
+              "message": "TSEM entry_test Crossing down 248.0. Paper book. No brokerage order."
+            }
           },
           {
             "symbol": "TSEM",
             "kind": "price",
             "role": "invalidation",
-            "price": 230.0,
+            "price": 236.75,
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "Idea dies here before the paper fill."
+            "note": "Idea dies here before the paper fill.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 236.75,
+              "message": "TSEM invalidation Crossing down 236.75. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
@@ -524,11 +667,21 @@
         26.5
       ],
       "paper_entry": null,
-      "invalidation": 22.9,
+      "invalidation": 22.93,
       "target": 30.0,
       "target_note": "GEX\u2229VEX king / primary magnet",
       "operator_thesis": "Long UMAC. Broke above previous resistance at 23.46 and retested once. Previously bounced off the 200 SMA on the daily; now at a VP shelf and keeping within a longer-term upwards channel. Looking for continuation and maybe a retest of ATH around the 1.618 fib ~32.",
       "one_thing_to_verify": "Whether price can negotiate/clear the **30** map king without pinning \u2014 do not treat fib 1.618\u224832 as owed while sitting on the ATM neg-GEX / POC shelf.",
+      "four_hour": "absent",
+      "sketch_stop": 22.9,
+      "invalidation_cluster": {
+        "price": 22.93,
+        "families": [
+          "fib",
+          "shelf",
+          "sr"
+        ]
+      },
       "contract": null,
       "alerts": [],
       "shadow": {
@@ -544,11 +697,21 @@
           26.5
         ],
         "paper_entry": null,
-        "invalidation": 22.9,
+        "invalidation": 22.93,
         "target": 30.0,
         "target_note": "GEX\u2229VEX king / primary magnet",
         "operator_thesis": "Long UMAC. Broke above previous resistance at 23.46 and retested once. Previously bounced off the 200 SMA on the daily; now at a VP shelf and keeping within a longer-term upwards channel. Looking for continuation and maybe a retest of ATH around the 1.618 fib ~32.",
         "one_thing_to_verify": "Whether price can negotiate/clear the **30** map king without pinning \u2014 do not treat fib 1.618\u224832 as owed while sitting on the ATM neg-GEX / POC shelf.",
+        "four_hour": "absent",
+        "sketch_stop": 22.9,
+        "invalidation_cluster": {
+          "price": 22.93,
+          "families": [
+            "fib",
+            "shelf",
+            "sr"
+          ]
+        },
         "contract": null,
         "alerts": [
           {
@@ -559,7 +722,12 @@
             "trigger": "cross_below",
             "destination": "robinhood_create_alert",
             "pushed": false,
-            "note": "WATCH test only. Not a paper fill."
+            "note": "WATCH test only. Not a paper fill.",
+            "tradingview": {
+              "condition": "Crossing down",
+              "price": 24.5,
+              "message": "UMAC entry_test Crossing down 24.5. Paper book. No brokerage order."
+            }
           }
         ],
         "shadow": null,
