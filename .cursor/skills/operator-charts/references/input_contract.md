@@ -83,7 +83,7 @@ Optional extras (record if labeled): volume pane, earnings markers (`E`), channe
 
 ## Reading rules
 
-1. SMA colors on the operator's TradingView charts: blue→20, green→50, orange→200. Do not rename. Artifacts filed before 2026-10-14 used orange→50, blue→100, green→200; leave those numbers as filed.
+1. SMA colors on the operator's TradingView charts: blue→20, green→50, orange→200. Do not rename. Artifacts filed before 2026-10-14 used orange→50, blue→100, green→200; leave those numbers as filed. When a colored line is visible but the axis does not label its price, store `null` for that period and set `price_vs_sma` to `above`, `below`, or `at` from where price sits on the line.
 2. White lines = operator S/R; extract every readable level near price first, then distant.
 3. Fib: prefer labeled ratios; if label unreadable, store price with `ratio: null`. Multiple pasted fib anchors → `fib_sets`.
 4. VP shelves: load [luxalgo_vp_shelves.md](luxalgo_vp_shelves.md). Peaks = consolidation / acceptance; troughs / lowest volume = rejection / thin interest; highest volume = strong acceptance.

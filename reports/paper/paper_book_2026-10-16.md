@@ -18,7 +18,9 @@ and this book only records paper options. Alerts below are unpushed
 - Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
 - An open paper position carries until invalidation, the target, expiry, or a newer tape.
 - A dated earnings session does not open. A carried position flattens that morning.
-- Operator SMA colors: blue 20, green 50, orange 200. The long gate uses the green 50.
+- Operator SMA colors: blue 20, green 50, orange 200. A long under the green 50
+  stays a watch, including when that price is blank and the chart says below.
+  A long under the blue 20 or the orange 200 still opens while it holds the green 50.
 - TA older than one trading session is stale. Stale levels do not arm and do not alert.
 
 ## This session

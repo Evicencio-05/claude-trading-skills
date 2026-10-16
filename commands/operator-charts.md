@@ -5,7 +5,7 @@ argument-hint: "<TICKER>"
 
 # /operator-charts {TICKER}
 
-Ingest **user-supplied** personal chart images for `{TICKER}`. Five indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 20/50/200 (blue/green/orange), white/yellow RSI strength.
+Ingest **user-supplied** personal chart images for `{TICKER}`. Five indicators: white S/R, fib extensions, LuxAlgo VP shelves, SMA 20/50/200 (blue/green/orange), white/yellow RSI strength. When a colored SMA is visible and its price is not labeled, store null and set `price_vs_sma` to above, below, or at. Files dated before 2026-10-14 keep orange 50 / blue 100 / green 200.
 
 **Co-pilot only.** No MCP orders. No cross-source merge. No news/FMP.
 

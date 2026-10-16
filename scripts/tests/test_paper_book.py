@@ -834,5 +834,63 @@ def test_blank_sma_colors_do_not_block_the_plan():
     assert row["reason"] != "below_50_sma"
 
 
+def test_unlabeled_green_50_below_blocks_a_long():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                sma={"20": None, "50": None, "200": None},
+                price_vs_sma={"20": "below", "50": "below", "200": "above"},
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "below_50_sma"
+    assert row["paper_entry"] is None
+
+
+def test_pullback_under_blue_20_and_orange_200_holds_when_above_green_50():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                sma={"20": 350.0, "50": 330.0, "200": 400.0},
+                price_vs_sma={"20": "below", "50": "below", "200": "below"},
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "paper_open"
+    assert row["reason"] == "paper_open"
+    assert row["spot"] < 350.0
+    assert row["spot"] < 400.0
+
+
+def test_short_under_the_green_50_still_opens():
+    row = decide_play(
+        plan_from_operator(
+            _operator_plan(
+                last=339.0,
+                sma={"20": None, "50": None, "200": None},
+                price_vs_sma={"50": "below"},
+                rsi={"white": 40.0},
+                fib_levels=[
+                    {"ratio": "1.0", "price": 340.0},
+                    {"ratio": "0.5", "price": 330.0},
+                ],
+                vp={"peak_nodes": []},
+                sr_levels=[350.0],
+                operator_thesis="Short AAPL. Daily is down. Break below 340 targets 330.",
+            )
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["bias"] == "short"
+    assert row["status"] == "paper_open"
+    assert row["reason"] == "paper_open"
+
+
 def test_paper_book_dir_is_registered(tmp_path: Path):
     assert artifact_dir(tmp_path, "paper_book") == tmp_path / "reports" / "paper"

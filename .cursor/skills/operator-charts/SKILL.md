@@ -36,5 +36,5 @@ Artifact key: `operator_charts`.
 - User-supplied only — no WebSearch, news, or FMP
 - Co-pilot only — no MCP orders
 - Do not merge with TradeWhisperer or GEX/VEX in this skill
-- SMA colors: blue 20 / green 50 / orange 200. Files dated before 2026-10-14 keep the old orange 50 / blue 100 / green 200 reading.
+- SMA colors: blue 20 / green 50 / orange 200. Files dated before 2026-10-14 keep the old orange 50 / blue 100 / green 200 reading. If the line is visible and the price is not labeled, leave that SMA null and record `price_vs_sma` as above, below, or at.
 - RSI: white vs yellow vs 50 for buyer/seller strength (see input contract)
