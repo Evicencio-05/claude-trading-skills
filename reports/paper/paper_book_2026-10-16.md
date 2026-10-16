@@ -29,9 +29,10 @@ and this book only records paper options. Alerts below are unpushed
 - Target prefers a king node over the first fib when both are on the sketch.
   On a new operator chart, a starred positive king above is the long target,
   and a starred negative king below is the short target, when that king is
-  larger than the negative nodes in the path.
+  larger than the negative GEX in the path. A VEX negative does not count.
+  A negative node at a long target is not a reverse-rug.
   A newer operator chart keeps GEX/VEX nodes from the prior session. A target
-  that is not larger than a negative node in the path stays a watch.
+  that is not larger than the negative GEX in the path stays a watch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).
 - Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
 - An open paper position carries until invalidation, the target, expiry, or a newer tape.
@@ -76,7 +77,7 @@ and this book only records paper options. Alerts below are unpushed
 - Names on the latest confluence tape: 9.
 - King-node targets on the sketch: 5.
 - RSI called out in the thesis or the one-thing-to-verify: 3.
-- Rug / reverse-rug passing the size check: CRDO reverse rug, ONDS reverse rug, RIVN reverse rug, TSEM reverse rug
+- Rug / reverse-rug passing the size check: CRDO reverse rug, ONDS reverse rug, RIVN reverse rug
 - Fresh shadow would paper-open: none.
 - Fresh shadow would wait for the test: CRDO, TSEM
 - Fresh shadow stays flat: BE, CRWD, HOOD
@@ -124,5 +125,6 @@ The alert does not place an order.
    morning. A later ISO earnings date stays open until that open. Vague text
    such as early September does not count. Say if the whole earnings week
    should be a pass instead.
-7. A target that is not larger than a negative node between spot and the target
-   stays a watch. Confirm that size check is the rug rule you want.
+7. A target node has to point with the trade, and it has to be larger than
+   the negative GEX between spot and the target. A negative node at a long
+   target is not a reverse-rug. Confirm that size check is the rug rule.

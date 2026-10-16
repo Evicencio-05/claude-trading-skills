@@ -574,6 +574,54 @@ def test_a_larger_short_target_is_a_rug():
     )
 
 
+def test_a_negative_node_at_a_long_target_is_not_a_reverse_rug():
+    assert (
+        target_path_label(
+            [
+                {"strike": 300.0, "value_k": -19263, "sign": "neg"},
+                {"strike": 260.0, "value_k": -100, "sign": "neg"},
+            ],
+            "long",
+            250.0,
+            300.0,
+        )
+        is None
+    )
+
+
+def test_a_vex_negative_does_not_shrink_a_larger_gex_target():
+    assert (
+        target_path_label(
+            [
+                {"strike": 300.0, "value_k": 500, "sign": "pos", "source": "gex"},
+                {"strike": 260.0, "value_k": -100, "sign": "neg", "source": "gex"},
+                {"strike": 270.0, "value_k": -9000, "sign": "neg", "source": "vex"},
+            ],
+            "long",
+            250.0,
+            300.0,
+        )
+        == "reverse_rug"
+    )
+
+
+def test_a_short_ignores_positive_vex_at_the_target():
+    assert (
+        target_path_label(
+            [
+                {"strike": 187.5, "value_k": -680, "sign": "neg", "source": "gex"},
+                {"strike": 187.5, "value_k": 100, "sign": "pos", "source": "vex"},
+                {"strike": 200.0, "value_k": -100, "sign": "neg", "source": "gex"},
+                {"strike": 205.0, "value_k": -9000, "sign": "neg", "source": "vex"},
+            ],
+            "short",
+            216.95,
+            187.5,
+        )
+        == "rug"
+    )
+
+
 def test_a_smaller_target_node_is_not_named_a_rug():
     assert (
         target_path_label(
@@ -834,8 +882,10 @@ def test_uploaded_august_tape_is_flat_on_october_16():
         "CRDO reverse rug",
         "ONDS reverse rug",
         "RIVN reverse rug",
-        "TSEM reverse rug",
     ]
+    assert by_ticker["TSEM"]["shadow"]["target_check"] is None
+    assert by_ticker["BE"]["shadow"]["target_check"] is None
+    assert by_ticker["CRWD"]["shadow"]["target_check"] == "rug"
 
 
 def test_below_50_sma_blocks_a_long_fill():

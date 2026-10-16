@@ -337,8 +337,20 @@ def rsi_against(rsi, bias):
     return white > 50
 
 
+def _node_with_trade(node, bias, value):
+    """A long target is a positive node. A short target is a negative node."""
+    sign = str(node.get("sign") or "")
+    if bias == "long":
+        return sign == "pos" or value > 0
+    return sign == "neg" or value < 0
+
+
 def _target_node_sizes(nodes, bias, spot, target):
-    """Largest node at the target, and the largest negative node strictly in the path."""
+    """Largest node with the trade at the target, and the largest -GEX strictly in the path.
+
+    A VEX negative does not count as that -GEX. A node with no source still does,
+    so an untagged paste keeps the same check.
+    """
     if not nodes or spot is None or target is None or target == 0 or bias not in {"long", "short"}:
         return None
     if bias == "long" and target <= spot:
@@ -354,13 +366,14 @@ def _target_node_sizes(nodes, bias, spot, target):
         value = _num(node.get("value_k"))
         if strike is None or value is None:
             continue
-        if abs(strike - target) / abs(target) <= 0.02:
+        if abs(strike - target) / abs(target) <= 0.02 and _node_with_trade(node, bias, value):
             at_target.append(abs(value))
         between = (bias == "long" and spot < strike < target) or (
             bias == "short" and target < strike < spot
         )
         sign = str(node.get("sign") or "")
-        if between and (sign == "neg" or value < 0):
+        gex_negative = node.get("source") != "vex" and (sign == "neg" or value < 0)
+        if between and gex_negative:
             opposing.append(abs(value))
     if not at_target or not opposing:
         return None
@@ -906,10 +919,14 @@ def attach_tape(payload, root: Path):
             continue
         king = doc.get("king_node")
         if isinstance(king, dict):
-            nodes.append(king)
+            tagged = dict(king)
+            tagged["source"] = key
+            nodes.append(tagged)
         for node in doc.get("top_nodes") or []:
             if isinstance(node, dict):
-                nodes.append(node)
+                tagged = dict(node)
+                tagged["source"] = key
+                nodes.append(tagged)
     if nodes:
         payload["map_nodes"] = nodes
     return payload
@@ -1394,9 +1411,10 @@ def render_markdown(book):
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "  On a new operator chart, a starred positive king above is the long target,",
         "  and a starred negative king below is the short target, when that king is",
-        "  larger than the negative nodes in the path.",
+        "  larger than the negative GEX in the path. A VEX negative does not count.",
+        "  A negative node at a long target is not a reverse-rug.",
         "  A newer operator chart keeps GEX/VEX nodes from the prior session. A target",
-        "  that is not larger than a negative node in the path stays a watch.",
+        "  that is not larger than the negative GEX in the path stays a watch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",
         "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
         "- An open paper position carries until invalidation, the target, expiry, or a newer tape.",
@@ -1530,8 +1548,9 @@ def render_markdown(book):
             "   morning. A later ISO earnings date stays open until that open. Vague text",
             "   such as early September does not count. Say if the whole earnings week",
             "   should be a pass instead.",
-            "7. A target that is not larger than a negative node between spot and the target",
-            "   stays a watch. Confirm that size check is the rug rule you want.",
+            "7. A target node has to point with the trade, and it has to be larger than",
+            "   the negative GEX between spot and the target. A negative node at a long",
+            "   target is not a reverse-rug. Confirm that size check is the rug rule.",
             "",
         ]
     )

@@ -62,12 +62,12 @@
         "contract": null,
         "alerts": [],
         "shadow": null,
-        "target_check": "reverse_rug",
+        "target_check": null,
         "status": "flat",
         "action": "flat",
         "reason": "no_trade"
       },
-      "target_check": "reverse_rug",
+      "target_check": null,
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -661,12 +661,12 @@
           }
         ],
         "shadow": null,
-        "target_check": "reverse_rug",
+        "target_check": null,
         "status": "armed_wait",
         "action": "alert_only",
         "reason": "wait_for_test"
       },
-      "target_check": "reverse_rug",
+      "target_check": null,
       "status": "stale",
       "action": "flat",
       "reason": "stale_ta",
@@ -770,8 +770,7 @@
     "named_rug_setups": [
       "CRDO reverse rug",
       "ONDS reverse rug",
-      "RIVN reverse rug",
-      "TSEM reverse rug"
+      "RIVN reverse rug"
     ],
     "rsi_mentions": 3,
     "king_targets": 5
