@@ -34,7 +34,7 @@ Read `reports/paper/paper_book_YYYY-MM-DD.md`.
 - `paper_open` is a recorded option intent: weekly or shorter, ATM to slightly ITM, sized for 0. Expiry is this Friday for a Monday–Wednesday decision and the next Friday for Thursday–Sunday. The fill is at the test. A level more than 3% of price past that test is the target, not a wider entry zone.
 - `armed_wait` and `watch` are alerts at the test. They are not fills.
 - `flat` / `stale` means no position and no alert.
-- Invalidation is the nearest fib / volume-shelf / SMA / trendline / S/R cluster against the trade when the operator chart is on file.
+- Invalidation is the nearest fib / volume-shelf / SMA / trendline / S/R cluster against the trade when the operator chart is on file. The price inside that cluster is the fib, then the shelf, then the higher-period SMA.
 - A long with RSI white under 50, a 4H fight, price under the green 50, or a target smaller than a negative node in the path stays a watch. A blank 50 price still blocks when `price_vs_sma.50` is `below`. The blue 20 and the orange 200 do not block a long that is holding the green 50.
 - The markdown lists the TradingView condition (`Crossing up` / `Crossing down`) beside the Robinhood `create_alert` level. Create those alerts only when the row says create.
 - `reports/paper/paper_book_YYYY-MM-DD.pine` is the same live levels. Paste it on a chart and arm Any alert() function call. A stale tape has no `alert()` calls.

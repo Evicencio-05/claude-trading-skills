@@ -16,6 +16,9 @@ and this book only records paper options. Alerts below are unpushed
 - A bar moving more than 4% does not get a paper fill.
 - Add on a claim through the far side of the zone. Trim that add if price
   crosses back through the paper entry. The core stays until invalidation or the target.
+- Invalidation is the nearest opposing cluster. Its price is the fib, then the
+  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
+  A stacked price beats a lone nearer level of that same kind.
 - Target prefers a king node over the first fib when both are on the sketch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).
 - Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
@@ -50,9 +53,9 @@ and this book only records paper options. Alerts below are unpushed
 | HIMS | watch | 27.42-28.5 | 28.5 | 26.5 | 35 |
 | HOOD | flat | 93-95 | - | 90.83 | - |
 | ONDS | watch | 9.25-9.5 | 9.25 | 8.75 | 10 |
-| RIVN | watch | 15.95-16.45 | 15.95 | 15.29 | 20 |
+| RIVN | watch | 15.95-16.45 | 15.95 | 15.34 | 20 |
 | TSEM | armed_wait | 248-255 | 248 | 236.75 | 300 |
-| UMAC | watch | 24.5-26.5 | 24.5 | 22.93 | 30 |
+| UMAC | watch | 24.5-26.5 | 24.5 | 23.46 | 30 |
 
 ## Patterns in this tape
 
@@ -93,8 +96,9 @@ The alert does not place an order.
 2. A claim through the far side adds at that edge in the same session and stays
    open. A cross back through the paper entry trims the add and keeps the core.
    Say if you want that add only after you confirm the claim held.
-3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.
-   Should that flatten the weekly on an intraday break, or only on a daily close?
+3. Invalidation is the nearest cluster. Inside it, a fib beats a shelf, and a
+   200 SMA beats a 20. Should that flatten the weekly on an intraday break,
+   or only on a daily close?
 4. 4H agreement is not in the operator JSON. Should a missing 4H note block a
    paper open, or only the scalp add?
 5. Robinhood `create_alert` can notify the Agentic account without an order.

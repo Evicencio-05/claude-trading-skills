@@ -132,17 +132,21 @@ def _alert(symbol, role, price, trigger, note):
     }
 
 
+_FAMILY_RANK = {"fib": 0, "shelf": 1, "sma": 2, "trend": 3, "sr": 4}
+_SMA_RANK = {"200": 0, "100": 1, "50": 2, "20": 3}
+
+
 def operator_levels(extracted):
     """Fib, shelf, SMA, trend, and S/R prices from an operator chart."""
     if not isinstance(extracted, dict):
         return []
     levels = []
 
-    def add(price, family):
+    def add(price, family, period_rank=0):
         number = _num(price)
         if number is None:
             return
-        levels.append({"price": number, "family": family})
+        levels.append({"price": number, "family": family, "period_rank": period_rank})
 
     for fib in extracted.get("fib_levels") or []:
         if isinstance(fib, dict):
@@ -153,8 +157,8 @@ def operator_levels(extracted):
         for fib in fib_set.get("levels") or []:
             if isinstance(fib, dict):
                 add(fib.get("price"), "fib")
-    for price in (extracted.get("sma") or {}).values():
-        add(price, "sma")
+    for key, price in (extracted.get("sma") or {}).items():
+        add(price, "sma", _SMA_RANK.get(str(key), 5))
     vp = extracted.get("vp") or {}
     for price in vp.get("peak_nodes") or []:
         add(price, "shelf")
@@ -211,14 +215,29 @@ def opposing_cluster(levels, bias, spot, zone=None):
     def packed(cluster):
         families = sorted(
             {item["family"] for item in cluster},
-            key=lambda name: (
-                {"fib": 0, "shelf": 1, "sma": 2, "trend": 3, "sr": 4}.get(name, 9),
-                name,
-            ),
+            key=lambda name: (_FAMILY_RANK.get(name, 9), name),
         )
+        by_price = {}
+        for item in cluster:
+            by_price.setdefault(round(item["price"], 4), []).append(item)
+
+        def price_key(items):
+            best_family = min(_FAMILY_RANK.get(item["family"], 9) for item in items)
+            best_period = min(
+                item.get("period_rank", 0)
+                for item in items
+                if _FAMILY_RANK.get(item["family"], 9) == best_family
+            )
+            return (
+                best_family,
+                -len({item["family"] for item in items}),
+                best_period,
+                abs(items[0]["price"] - spot),
+            )
+
+        best = min(by_price.values(), key=price_key)
         prices = [item["price"] for item in cluster]
-        invalidation = min(prices) if bias == "long" else max(prices)
-        return {"price": invalidation, "families": families, "levels": prices}
+        return {"price": best[0]["price"], "families": families, "levels": prices}
 
     for cluster in clusters:
         if len({item["family"] for item in cluster}) < 2:
@@ -1075,6 +1094,9 @@ def render_markdown(book):
         f"- A bar moving more than {CHASE_ABS_CHANGE_PCT:g}% does not get a paper fill.",
         "- Add on a claim through the far side of the zone. Trim that add if price",
         "  crosses back through the paper entry. The core stays until invalidation or the target.",
+        "- Invalidation is the nearest opposing cluster. Its price is the fib, then the",
+        "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
+        "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",
         "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
@@ -1193,8 +1215,9 @@ def render_markdown(book):
             "2. A claim through the far side adds at that edge in the same session and stays",
             "   open. A cross back through the paper entry trims the add and keeps the core.",
             "   Say if you want that add only after you confirm the claim held.",
-            "3. Invalidation is now the nearest fib/shelf/SMA/trend/S/R cluster against the trade.",
-            "   Should that flatten the weekly on an intraday break, or only on a daily close?",
+            "3. Invalidation is the nearest cluster. Inside it, a fib beats a shelf, and a",
+            "   200 SMA beats a 20. Should that flatten the weekly on an intraday break,",
+            "   or only on a daily close?",
             "4. 4H agreement is not in the operator JSON. Should a missing 4H note block a",
             "   paper open, or only the scalp add?",
             "5. Robinhood `create_alert` can notify the Agentic account without an order.",

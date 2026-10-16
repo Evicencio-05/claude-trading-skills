@@ -234,6 +234,81 @@ def test_nearest_indicator_cluster_sets_invalidation():
     assert invalidation["tradingview"]["condition"] == "Crossing down"
 
 
+def test_fib_sets_the_cluster_invalidation_ahead_of_a_lower_shelf():
+    row = decide_play(
+        _play(
+            spot=26.11,
+            change_pct=1.0,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "24.5-26.5",
+                    "stop": 20.0,
+                    "targets": [{"level": 30.0, "note": "king"}],
+                }
+            },
+            operator_extracted={
+                "fib_levels": [{"price": 23.46}],
+                "vp": {"peak_nodes": [23.0]},
+                "sr_levels": [22.93],
+                "rsi": {"white": 55.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["invalidation"] == 23.46
+    assert row["invalidation_cluster"]["families"] == ["fib", "shelf", "sr"]
+
+
+def test_higher_period_sma_sets_invalidation_ahead_of_the_20():
+    row = decide_play(
+        _play(
+            spot=250.0,
+            change_pct=1.0,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "248-255",
+                    "stop": 200.0,
+                    "targets": [{"level": 300.0, "note": "king"}],
+                }
+            },
+            operator_extracted={
+                "sma": {"20": 230.0, "200": 236.0},
+                "rsi": {"white": 55.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["invalidation"] == 236.0
+    assert row["invalidation_cluster"]["families"] == ["sma"]
+
+
+def test_stacked_shelf_beats_a_lone_nearer_shelf():
+    row = decide_play(
+        _play(
+            spot=9.11,
+            change_pct=1.0,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "9.25-9.5",
+                    "stop": 8.0,
+                    "targets": [{"level": 10.0, "note": "next shelf"}],
+                }
+            },
+            operator_extracted={
+                "sma": {"200": 8.75},
+                "vp": {"peak_nodes": [9.0, 8.75]},
+                "rsi": {"white": 55.0},
+            },
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert row["invalidation"] == 8.75
+    assert row["invalidation_cluster"]["families"] == ["shelf", "sma"]
+
+
 def test_near_sma_beats_a_distant_indicator_stack():
     row = decide_play(
         _play(
