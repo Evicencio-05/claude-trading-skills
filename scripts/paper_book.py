@@ -248,15 +248,31 @@ def opposing_cluster(levels, bias, spot, zone=None):
 
 
 def rsi_against(rsi, bias):
-    """Daily RSI through 50 is the strength filter. Missing RSI does not block."""
-    white = None
+    """Daily RSI through 50 is the strength filter. Missing RSI does not block.
+
+    A long also stays a watch when the operator marked buyers as not in control,
+    or when the white line is under the yellow signal and that flag is absent.
+    """
+    if bias not in {"long", "short"}:
+        return False
+    buyer_strength = None
+    yellow = None
     if isinstance(rsi, dict):
         white = _num(rsi.get("white"))
+        yellow = _num(rsi.get("yellow"))
+        if rsi.get("buyer_strength") is True:
+            buyer_strength = True
+        elif rsi.get("buyer_strength") is False:
+            buyer_strength = False
     else:
         white = _num(rsi)
-    if white is None or bias not in {"long", "short"}:
+    if bias == "long" and buyer_strength is False:
+        return True
+    if white is None:
         return False
     if bias == "long":
+        if buyer_strength is not True and yellow is not None and white < yellow:
+            return True
         return white < 50
     return white > 50
 
@@ -310,7 +326,8 @@ def _contract(bias, anchor=None):
         "moneyness": "atm_to_slightly_itm",
         "size_for_zero": True,
         "management": (
-            "Add or roll on a claim through the zone. Trim if the claim fails. "
+            "Add or roll on a claim through the zone. A scalp add uses the 20 SMA "
+            "and the 50 SMA on the 1-minute options chart. Trim if the claim fails. "
             "Flat if invalidation breaks. Do not reach far OTM."
         ),
     }
@@ -1165,6 +1182,8 @@ def render_markdown(book):
         "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
         "- An open paper position carries until invalidation, the target, expiry, or a newer tape.",
         "- A dated earnings session does not open. A carried position flattens that morning.",
+        "- A long with RSI white under 50, white under the yellow signal, or",
+        "  buyer_strength false stays a watch. A marked buyer_strength true holds.",
         "- Operator SMA colors: blue 20, green 50, orange 200. A long under the green 50",
         "  stays a watch, including when that price is blank and the chart says below.",
         "  A long under the blue 20 or the orange 200 still opens while it holds the green 50.",

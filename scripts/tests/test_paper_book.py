@@ -88,6 +88,9 @@ def test_quiet_discount_play_opens_a_paper_option():
     assert row["contract"]["moneyness"] == "atm_to_slightly_itm"
     assert row["contract"]["size_for_zero"] is True
     assert row["contract"]["expiry"] == "2026-10-23"
+    assert "20 SMA" in row["contract"]["management"]
+    assert "50 SMA" in row["contract"]["management"]
+    assert "1-minute options chart" in row["contract"]["management"]
     roles = {alert["role"] for alert in row["alerts"]}
     assert roles == {"invalidation", "target", "claim"}
     claim = next(alert for alert in row["alerts"] if alert["role"] == "claim")
@@ -333,6 +336,35 @@ def test_near_sma_beats_a_distant_indicator_stack():
 
     assert row["invalidation"] == 236.0
     assert row["invalidation_cluster"]["families"] == ["sma"]
+
+
+def test_long_without_buyer_strength_stays_a_watch():
+    flagged = decide_play(
+        _play(
+            operator_extracted={
+                "rsi": {"white": 55.0, "yellow": 49.0, "buyer_strength": False},
+            }
+        ),
+        date(2026, 10, 16),
+    )
+    crossed = decide_play(
+        _play(operator_extracted={"rsi": {"white": 55.0, "yellow": 60.0}}),
+        date(2026, 10, 16),
+    )
+    held = decide_play(
+        _play(
+            operator_extracted={
+                "rsi": {"white": 55.0, "yellow": 60.0, "buyer_strength": True},
+            }
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert flagged["status"] == "watch"
+    assert flagged["reason"] == "rsi_against"
+    assert crossed["status"] == "watch"
+    assert crossed["reason"] == "rsi_against"
+    assert held["status"] == "paper_open"
 
 
 def test_rsi_below_50_blocks_a_long_fill():
