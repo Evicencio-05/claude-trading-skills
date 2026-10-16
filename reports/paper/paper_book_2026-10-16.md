@@ -41,7 +41,8 @@ and this book only records paper options. Alerts below are unpushed
 - A dated earnings session does not open. A carried position flattens that morning.
 - A long with RSI white under 50, white under the yellow signal, or
   buyer_strength false stays a watch. A marked buyer_strength true holds.
-- Operator SMA colors: blue 20, green 50, orange 200. A long under the green 50
+- Operator SMA colors: blue 20, green 50, orange 200. Those color names fill a
+  blank period. A labeled 50 wins over green. A long under the green 50
   stays a watch, including when that price is blank and the chart says below.
   A long under the blue 20 or the orange 200 still opens while it holds the green 50.
 - TA older than one trading session is stale. Stale levels do not arm and do not alert.

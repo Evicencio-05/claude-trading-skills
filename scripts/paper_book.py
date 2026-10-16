@@ -134,6 +134,7 @@ def _alert(symbol, role, price, trigger, note):
 
 _FAMILY_RANK = {"fib": 0, "shelf": 1, "sma": 2, "trend": 3, "sr": 4}
 _SMA_RANK = {"200": 0, "100": 1, "50": 2, "20": 3}
+_SMA_COLOR = {"blue": "20", "green": "50", "orange": "200"}
 _TF_RANK = {
     "1W": 1,
     "W": 1,
@@ -190,7 +191,7 @@ def operator_levels(extracted):
         fallback = _tf_rank(fib_set.get("timeframe")) if fib_set.get("timeframe") else chart_rank
         for fib in fib_set.get("levels") or []:
             add_fib(fib, fallback)
-    for key, price in (extracted.get("sma") or {}).items():
+    for key, price in _resolved_sma_map(extracted.get("sma")).items():
         add(price, "sma", _SMA_RANK.get(str(key), 5))
     vp = extracted.get("vp") or {}
     add(vp.get("poc"), "shelf")
@@ -570,18 +571,46 @@ def _apply_cluster(row, extracted, bias, stop):
     return cluster["price"]
 
 
+def _present(value):
+    if value is None:
+        return False
+    if isinstance(value, str) and not value.strip():
+        return False
+    return True
+
+
+def _resolved_sma_map(raw):
+    """Period keys win. Blue, green, and orange fill a blank 20, 50, or 200."""
+    if not isinstance(raw, dict):
+        return {}
+    colors = {}
+    periods = {}
+    for key, value in raw.items():
+        text = str(key).strip().lower()
+        if text in _SMA_COLOR:
+            colors[_SMA_COLOR[text]] = value
+        else:
+            periods[text] = value
+    resolved = dict(periods)
+    for period, value in colors.items():
+        if _present(value) and not _present(resolved.get(period)):
+            resolved[period] = value
+    return resolved
+
+
 def _long_below_green_50(extracted, spot):
     """Green 50 SMA. A blank price still counts when the chart says price is below it.
 
-    The labeled 50 price wins over price_vs_sma. Blue 20 and orange 200 do not
-    use this gate: a long can sit under those and still hold the green 50.
+    The labeled 50 price wins over price_vs_sma and over a green color key.
+    Blue 20 and orange 200 do not use this gate: a long can sit under those
+    and still hold the green 50.
     """
     if not isinstance(extracted, dict):
         return False
-    sma_50 = _num((extracted.get("sma") or {}).get("50"))
+    sma_50 = _num(_resolved_sma_map(extracted.get("sma")).get("50"))
     if sma_50 is not None and spot is not None:
         return spot < sma_50
-    relation = (extracted.get("price_vs_sma") or {}).get("50")
+    relation = _resolved_sma_map(extracted.get("price_vs_sma")).get("50")
     return isinstance(relation, str) and relation.strip().lower() == "below"
 
 
@@ -1489,7 +1518,8 @@ def render_markdown(book):
         "- A dated earnings session does not open. A carried position flattens that morning.",
         "- A long with RSI white under 50, white under the yellow signal, or",
         "  buyer_strength false stays a watch. A marked buyer_strength true holds.",
-        "- Operator SMA colors: blue 20, green 50, orange 200. A long under the green 50",
+        "- Operator SMA colors: blue 20, green 50, orange 200. Those color names fill a",
+        "  blank period. A labeled 50 wins over green. A long under the green 50",
         "  stays a watch, including when that price is blank and the chart says below.",
         "  A long under the blue 20 or the orange 200 still opens while it holds the green 50.",
         "- TA older than one trading session is stale. Stale levels do not arm and do not alert.",

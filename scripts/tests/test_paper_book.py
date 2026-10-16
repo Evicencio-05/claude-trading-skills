@@ -1013,6 +1013,48 @@ def test_below_50_sma_blocks_a_long_fill():
     assert row["paper_entry"] is None
 
 
+def test_color_named_smas_use_blue_20_green_50_orange_200():
+    levels = operator_levels({"sma": {"blue": 330.0, "green": 320.0, "orange": 280.0}})
+
+    by_price = {item["price"]: item["period_rank"] for item in levels}
+    assert by_price == {330.0: 3, 320.0: 2, 280.0: 0}
+
+    blocked = decide_play(
+        _play(
+            operator_extracted={
+                "sma": {"green": 260.0},
+                "rsi": {"white": 55.0},
+            }
+        ),
+        date(2026, 10, 16),
+    )
+    unlabeled = decide_play(
+        _play(
+            operator_extracted={
+                "price_vs_sma": {"green": "below"},
+                "rsi": {"white": 55.0},
+            }
+        ),
+        date(2026, 10, 16),
+    )
+    held = decide_play(
+        _play(
+            operator_extracted={
+                "sma": {"50": 200.0, "green": 260.0},
+                "price_vs_sma": {"blue": "below", "orange": "below"},
+                "rsi": {"white": 55.0},
+            }
+        ),
+        date(2026, 10, 16),
+    )
+
+    assert blocked["status"] == "watch"
+    assert blocked["reason"] == "below_50_sma"
+    assert unlabeled["status"] == "watch"
+    assert unlabeled["reason"] == "below_50_sma"
+    assert held["status"] == "paper_open"
+
+
 def test_quote_at_the_test_opens_a_fresh_arm():
     row = decide_play(_play(spot=252.49, change_pct=12.37), date(2026, 10, 16))
     book = {"rows": [row], "open_count": 0, "armed_count": 1}
