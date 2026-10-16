@@ -755,6 +755,43 @@ def test_daily_long_at_the_test_opens_from_an_operator_plan():
     assert row["contract"]["size_for_zero"] is True
 
 
+def test_thesis_sentence_sets_the_test_and_the_target():
+    doc = _operator_plan(
+        fib_levels=[],
+        vp={"peak_nodes": []},
+        sr_levels=[],
+        operator_thesis="Long AAPL. Daily is up and the 4H agrees. Test 340, target 360.",
+    )
+    row = decide_play(plan_from_operator(doc), date(2026, 10, 16))
+
+    assert row["status"] == "paper_open"
+    assert row["target"] == 360.0
+    assert row["entry_zone"][0] == 340.0
+
+
+def test_break_below_from_the_thesis_arms_a_short_watch():
+    doc = _operator_plan(
+        last=531.99,
+        sma={"20": None, "50": None, "200": None},
+        fib_levels=[],
+        vp={"peak_nodes": []},
+        sr_levels=[],
+        operator_thesis=(
+            "Retesting the channel top near the 4-hour 20 SMA, under a 4-hour volume shelf. "
+            "Break below 520 (also the 4-hour 50 SMA) targets the mid-band near 515."
+        ),
+    )
+    row = decide_play(plan_from_operator(doc), date(2026, 10, 16))
+
+    assert row["bias"] == "short"
+    assert row["status"] == "watch"
+    assert row["paper_entry"] is None
+    assert row["target"] == 515.0
+    entry = next(alert for alert in row["alerts"] if alert["role"] == "entry_test")
+    assert entry["price"] == 520.0
+    assert entry["trigger"] == "cross_below"
+
+
 def test_blank_sma_colors_do_not_block_the_plan():
     row = decide_play(
         plan_from_operator(_operator_plan(sma={"20": None, "50": None, "200": None})),

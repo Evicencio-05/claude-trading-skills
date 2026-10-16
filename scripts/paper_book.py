@@ -704,6 +704,13 @@ def attach_tape(payload, root: Path):
     return payload
 
 
+_THESIS_LEVEL_RE = re.compile(
+    r"\b(?:below|above|under|over|test|retest|target|targets|shelf|at)\s+"
+    r"(?:the\s+)?(?:mid-band\s+)?(?:near\s+)?\$?(\d+(?:\.\d+)?)",
+    re.IGNORECASE,
+)
+
+
 def _bias_from_thesis(text):
     lowered = text or ""
     long_at = re.search(r"\blong\b", lowered, re.IGNORECASE)
@@ -714,13 +721,29 @@ def _bias_from_thesis(text):
         return "long"
     if short_at:
         return "short"
+    if re.search(r"\bbreak below\b", lowered, re.IGNORECASE):
+        return "short"
+    if re.search(r"\bbreak above\b", lowered, re.IGNORECASE):
+        return "long"
     return None
 
 
-def _level_prices(extracted):
+def _thesis_levels(text):
+    prices = []
+    for match in _THESIS_LEVEL_RE.finditer(text or ""):
+        price = float(match.group(1))
+        if price not in prices:
+            prices.append(price)
+    return prices
+
+
+def _level_prices(extracted, thesis=""):
     prices = []
     for item in operator_levels(extracted):
         price = item["price"]
+        if price not in prices:
+            prices.append(price)
+    for price in _thesis_levels(thesis):
         if price not in prices:
             prices.append(price)
     return prices
@@ -738,9 +761,13 @@ def _plan_zone(bias, spot, prices):
         high = min(above) if above else low
         return (low, high)
     over = [price for price in prices if price >= spot]
-    if not over:
-        return None
-    high = min(over)
+    if over:
+        high = min(over)
+    else:
+        under = [price for price in prices if price < spot]
+        if not under:
+            return None
+        high = max(under)
     below = [price for price in prices if price < high]
     low = max(below) if below else high
     return (low, high)
@@ -774,7 +801,7 @@ def plan_from_operator(doc):
     thesis = extracted.get("operator_thesis") or ""
     bias = _bias_from_thesis(thesis)
     spot = _num(extracted.get("last"))
-    prices = _level_prices(extracted)
+    prices = _level_prices(extracted, thesis)
     zone = _plan_zone(bias, spot, prices)
     target = _plan_target(bias, prices, zone)
     timeframe = str(extracted.get("timeframe") or "")
