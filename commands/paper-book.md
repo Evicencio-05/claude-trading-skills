@@ -37,6 +37,20 @@ Read `reports/paper/paper_book_YYYY-MM-DD.md`.
 - A long with RSI white under 50, a 4H fight, or a target smaller than a negative node in the path stays a watch.
 - The markdown lists the TradingView condition (`Crossing up` / `Crossing down`) beside the Robinhood `create_alert` level. Create those alerts only when the row says create.
 
+## PASS 2b — Mark fresh levels
+
+After a fresh book exists, a quote file can advance it. Stale rows stay unchanged.
+
+```bash
+uv run python3 scripts/paper_book.py \
+  --session-date YYYY-MM-DD \
+  --confluence-dir reports/charts/confluence \
+  --output-dir reports/paper \
+  --quotes reports/paper/quotes_YYYY-MM-DD.json
+```
+
+`quotes_YYYY-MM-DD.json` is `{"TICKER": 123.45}`. A tagged test on `armed_wait` records `paper_open` at the level. A tagged test on `watch` records the touch and does not open. Invalidation or the target flattens an open paper position.
+
 ## PASS 3 — Stop
 
 Do not register these rows in `trader-memory-core`. They are not Portfolio A or C fills.

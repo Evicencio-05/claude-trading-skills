@@ -8,6 +8,7 @@ from pathlib import Path
 
 from paper_book import (
     CHASE_ABS_CHANGE_PCT,
+    apply_marks,
     build_book,
     decide_play,
     render_markdown,
@@ -361,6 +362,89 @@ def test_uploaded_august_tape_is_flat_on_october_16():
     assert "withheld" in text
     assert "create_alert" in text
     assert "rug" not in book["pattern_notes"]["named_rug_setups"]
+
+
+def test_below_50_sma_blocks_a_long_fill():
+    row = decide_play(
+        _play(operator_extracted={"sma": {"50": 260.0}, "rsi": {"white": 54.0}}),
+        date(2026, 10, 16),
+    )
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "below_50_sma"
+    assert row["paper_entry"] is None
+
+
+def test_quote_at_the_test_opens_a_fresh_arm():
+    row = decide_play(_play(spot=252.49, change_pct=12.37), date(2026, 10, 16))
+    book = {"rows": [row], "open_count": 0, "armed_count": 1}
+
+    apply_marks(book, {"TSEM": 247.5})
+
+    assert book["rows"][0]["status"] == "paper_open"
+    assert book["rows"][0]["paper_entry"] == 248.0
+    assert book["open_count"] == 1
+    assert book["marks"][0]["result"] == "paper_open"
+
+
+def test_quote_above_the_test_leaves_the_arm():
+    row = decide_play(_play(spot=252.49, change_pct=12.37), date(2026, 10, 16))
+    book = {"rows": [row]}
+
+    apply_marks(book, {"TSEM": 252.0})
+
+    assert book["rows"][0]["status"] == "armed_wait"
+    assert book["marks"][0]["result"] == "unchanged"
+
+
+def test_stale_october_tape_ignores_quotes_through_the_levels():
+    root = Path(__file__).resolve().parents[2]
+    book = build_book(root / "reports" / "charts" / "confluence", date(2026, 10, 16))
+
+    apply_marks(book, {"TSEM": 200.0, "CRDO": 200.0, "ONDS": 20.0})
+
+    assert book["open_count"] == 0
+    assert book["marks"]
+    assert all(mark["result"] == "unchanged" for mark in book["marks"])
+
+
+def test_watch_tag_does_not_open_a_position():
+    row = decide_play(
+        _play(
+            verdict="WATCH",
+            spot=9.11,
+            change_pct=1.0,
+            judgment={
+                "rr_sketch": {
+                    "entry_zone": "9.25-9.50",
+                    "stop": 8.45,
+                    "targets": [{"level": 10.0, "note": "king"}],
+                }
+            },
+        ),
+        date(2026, 10, 16),
+    )
+    book = {"rows": [row]}
+
+    apply_marks(book, {"TSEM": 9.5})
+
+    assert row["status"] == "watch"
+    assert row["reason"] == "test_tagged_watch"
+    assert row["paper_entry"] is None
+
+
+def test_open_paper_invalidation_and_target():
+    opened = decide_play(_play(), date(2026, 10, 16))
+    book = {"rows": [opened]}
+    apply_marks(book, {"TSEM": 229.0})
+    assert opened["status"] == "invalidated"
+    assert opened["reason"] == "invalidation_tagged"
+
+    live = decide_play(_play(), date(2026, 10, 16))
+    book = {"rows": [live]}
+    apply_marks(book, {"TSEM": 301.0})
+    assert live["status"] == "target_hit"
+    assert live["reason"] == "target_tagged"
 
 
 def test_paper_book_dir_is_registered(tmp_path: Path):

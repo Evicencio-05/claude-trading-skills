@@ -179,7 +179,13 @@ def opposing_cluster(levels, bias, spot, zone=None):
     nearest_price = clusters[0][0]["price"]
 
     def packed(cluster):
-        families = sorted({item["family"] for item in cluster})
+        families = sorted(
+            {item["family"] for item in cluster},
+            key=lambda name: (
+                {"fib": 0, "shelf": 1, "sma": 2, "trend": 3, "sr": 4}.get(name, 9),
+                name,
+            ),
+        )
         prices = [item["price"] for item in cluster]
         invalidation = min(prices) if bias == "long" else max(prices)
         return {"price": invalidation, "families": families, "levels": prices}
@@ -338,6 +344,9 @@ def _play_cap(verdict, hard_stops, extracted, payload, bias, spot, target):
         return "hard_stop"
     if rsi_against((extracted or {}).get("rsi"), bias):
         return "rsi_against"
+    sma_50 = _num(((extracted or {}).get("sma") or {}).get("50"))
+    if bias == "long" and sma_50 is not None and spot is not None and spot < sma_50:
+        return "below_50_sma"
     if target_smaller_than_opposing(payload.get("map_nodes"), bias, spot, target):
         return "target_smaller_than_opposing"
     if payload.get("four_hour") == "fight":
@@ -761,6 +770,124 @@ def render_markdown(book):
     return "\n".join(lines)
 
 
+def _crossed(trigger, level, quote):
+    if trigger == "cross_below":
+        return quote <= level
+    if trigger == "cross_above":
+        return quote >= level
+    return False
+
+
+def _alert_by_role(row, role):
+    for alert in row.get("alerts") or []:
+        if alert.get("role") == role:
+            return alert
+    return None
+
+
+def apply_marks(book, quotes):
+    """Advance a fresh book when a quote tags a level. Stale rows stay flat.
+
+    This is the paper alert loop. It does not call Robinhood or TradingView.
+    """
+    marks = []
+    for row in book.get("rows") or []:
+        ticker = row.get("ticker")
+        quote = _num((quotes or {}).get(ticker)) if isinstance(quotes, dict) else None
+        status = row.get("status")
+        if status in {"stale", "flat"} or quote is None:
+            marks.append(
+                {"ticker": ticker, "result": "unchanged", "quote": quote, "status": status}
+            )
+            continue
+        if status == "armed_wait":
+            entry = _alert_by_role(row, "entry_test")
+            if entry and _crossed(entry.get("trigger"), entry.get("price"), quote):
+                entry["fired"] = True
+                row["status"] = "paper_open"
+                row["action"] = "paper_open"
+                row["reason"] = "test_tagged"
+                row["paper_entry"] = entry.get("price")
+                if row.get("contract") is None and row.get("bias") in {"long", "short"}:
+                    row["contract"] = _contract(row["bias"])
+                marks.append(
+                    {
+                        "ticker": ticker,
+                        "result": "paper_open",
+                        "price": entry.get("price"),
+                        "quote": quote,
+                        "status": "paper_open",
+                    }
+                )
+            else:
+                marks.append(
+                    {"ticker": ticker, "result": "unchanged", "quote": quote, "status": status}
+                )
+            continue
+        if status == "watch":
+            entry = _alert_by_role(row, "entry_test")
+            if entry and _crossed(entry.get("trigger"), entry.get("price"), quote):
+                entry["fired"] = True
+                row["reason"] = "test_tagged_watch"
+                marks.append(
+                    {
+                        "ticker": ticker,
+                        "result": "watch_tagged",
+                        "price": entry.get("price"),
+                        "quote": quote,
+                        "status": "watch",
+                    }
+                )
+            else:
+                marks.append(
+                    {"ticker": ticker, "result": "unchanged", "quote": quote, "status": status}
+                )
+            continue
+        if status == "paper_open":
+            invalidation = _alert_by_role(row, "invalidation")
+            target = _alert_by_role(row, "target")
+            if invalidation and _crossed(
+                invalidation.get("trigger"), invalidation.get("price"), quote
+            ):
+                invalidation["fired"] = True
+                row["status"] = "invalidated"
+                row["action"] = "flat"
+                row["reason"] = "invalidation_tagged"
+                result = "invalidated"
+                price = invalidation.get("price")
+            elif target and _crossed(target.get("trigger"), target.get("price"), quote):
+                target["fired"] = True
+                row["status"] = "target_hit"
+                row["action"] = "flat"
+                row["reason"] = "target_tagged"
+                result = "target_hit"
+                price = target.get("price")
+            else:
+                marks.append(
+                    {"ticker": ticker, "result": "unchanged", "quote": quote, "status": status}
+                )
+                continue
+            marks.append(
+                {
+                    "ticker": ticker,
+                    "result": result,
+                    "price": price,
+                    "quote": quote,
+                    "status": row["status"],
+                }
+            )
+            continue
+        marks.append({"ticker": ticker, "result": "unchanged", "quote": quote, "status": status})
+    book["marks"] = marks
+    book["open_count"] = sum(
+        1 for row in book.get("rows") or [] if row.get("status") == "paper_open"
+    )
+    book["armed_count"] = sum(
+        1 for row in book.get("rows") or [] if row.get("status") == "armed_wait"
+    )
+    return book
+
+
 def write_book(book, output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     stem = output_dir / f"paper_book_{book['session_date']}"
@@ -774,12 +901,23 @@ def main(argv=None):
     parser.add_argument("--session-date", required=True, help="YYYY-MM-DD paper session")
     parser.add_argument("--confluence-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--quotes",
+        type=Path,
+        help="JSON object of ticker to last price. Advances fresh rows only.",
+    )
     args = parser.parse_args(argv)
     if not args.confluence_dir.is_dir():
         print(f"ERROR: confluence dir not found: {args.confluence_dir}", file=sys.stderr)
         return 1
     session = date.fromisoformat(args.session_date)
     book = build_book(args.confluence_dir, session)
+    if args.quotes:
+        quotes = json.loads(args.quotes.read_text(encoding="utf-8"))
+        if not isinstance(quotes, dict):
+            print("ERROR: quotes JSON must be an object of ticker to price", file=sys.stderr)
+            return 1
+        apply_marks(book, quotes)
     path = write_book(book, args.output_dir)
     print(
         f"paper book {book['session_date']}: open={book['open_count']} "
