@@ -20,6 +20,8 @@ and this book only records paper options. Alerts below are unpushed
   volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).
   A stacked price beats a lone nearer level of that same kind.
 - Target prefers a king node over the first fib when both are on the sketch.
+  A newer operator chart keeps GEX/VEX nodes from the prior session. A target
+  that is not larger than a negative node in the path stays a watch.
 - Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).
 - Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.
 - An open paper position carries until invalidation, the target, expiry, or a newer tape.

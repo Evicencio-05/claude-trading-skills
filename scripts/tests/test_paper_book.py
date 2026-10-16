@@ -403,6 +403,60 @@ def test_play_missing_invalidation_does_not_open():
     assert row["paper_entry"] is None
 
 
+def test_fresh_operator_plan_keeps_the_prior_sessions_gex_nodes(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    prior = _play(
+        ticker="AAPL",
+        as_of="2026-10-14",
+        map_nodes=[
+            {"strike": 360.0, "value_k": 100, "sign": "pos"},
+            {"strike": 350.0, "value_k": -500, "sign": "neg"},
+        ],
+    )
+    (confluence / "AAPL_confluence_2026-10-14.json").write_text(json.dumps(prior))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(_operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360."))
+    )
+
+    book = build_book(confluence, date(2026, 10, 16))
+    row = book["rows"][0]
+
+    assert row["ticker"] == "AAPL"
+    assert row["as_of"] == "2026-10-15"
+    assert row["status"] == "watch"
+    assert row["reason"] == "target_smaller_than_opposing"
+    assert row["paper_entry"] is None
+
+
+def test_stale_gex_nodes_do_not_follow_a_new_operator_plan(tmp_path: Path):
+    confluence = tmp_path / "confluence"
+    operator = tmp_path / "operator"
+    confluence.mkdir()
+    operator.mkdir()
+    prior = _play(
+        ticker="AAPL",
+        as_of="2026-08-09",
+        map_nodes=[
+            {"strike": 360.0, "value_k": 100, "sign": "pos"},
+            {"strike": 350.0, "value_k": -500, "sign": "neg"},
+        ],
+    )
+    (confluence / "AAPL_confluence_2026-08-09.json").write_text(json.dumps(prior))
+    (operator / "AAPL_operator_2026-10-15.json").write_text(
+        json.dumps(_operator_plan(operator_thesis="Long AAPL. Daily is up. Test 340, target 360."))
+    )
+
+    book = build_book(confluence, date(2026, 10, 16))
+    row = book["rows"][0]
+
+    assert row["as_of"] == "2026-10-15"
+    assert row["status"] == "paper_open"
+    assert row["reason"] == "paper_open"
+
+
 def test_build_book_keeps_latest_ticker_and_writes_no_orders(tmp_path: Path):
     src = tmp_path / "confluence"
     src.mkdir()

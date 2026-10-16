@@ -955,6 +955,20 @@ def load_latest_operator(operator_dir: Path):
     return [chosen[ticker] for ticker in sorted(chosen)]
 
 
+def _carry_fresh_nodes(plan, prev):
+    """A newer chart keeps yesterday's GEX/VEX. Older maps do not follow it."""
+    nodes = prev.get("map_nodes") if isinstance(prev, dict) else None
+    prev_as_of = prev.get("as_of") if isinstance(prev, dict) else None
+    if not nodes or not prev_as_of or not plan.get("as_of"):
+        return
+    try:
+        lag = weekday_lag(date.fromisoformat(prev_as_of), date.fromisoformat(plan["as_of"]))
+    except ValueError:
+        return
+    if lag <= MAX_WEEKDAY_LAG:
+        plan["map_nodes"] = list(nodes)
+
+
 def merge_operator_plans(payloads, operator_docs, session):
     """Use an operator plan when it is fresh, or newer than that ticker's confluence."""
     by_ticker = {}
@@ -975,6 +989,7 @@ def merge_operator_plans(payloads, operator_docs, session):
                 by_ticker[ticker] = plan
             continue
         if as_of > prev.get("as_of", ""):
+            _carry_fresh_nodes(plan, prev)
             by_ticker[ticker] = plan
     return [by_ticker[ticker] for ticker in sorted(by_ticker)]
 
@@ -1098,6 +1113,8 @@ def render_markdown(book):
         "  volume shelf, then the higher-period SMA (200, then 100, then 50, then 20).",
         "  A stacked price beats a lone nearer level of that same kind.",
         "- Target prefers a king node over the first fib when both are on the sketch.",
+        "  A newer operator chart keeps GEX/VEX nodes from the prior session. A target",
+        "  that is not larger than a negative node in the path stays a watch.",
         "- Contract is weekly or shorter, ATM to slightly ITM, sized for 0 (premium is the risk).",
         "- Weekly expiry is this Friday for a Mon–Wed decision, and the next Friday after that.",
         "- An open paper position carries until invalidation, the target, expiry, or a newer tape.",
